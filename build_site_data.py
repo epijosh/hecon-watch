@@ -686,24 +686,59 @@ def load_drug_spend() -> dict:
         except (ValueError, TypeError):
             return None
 
-    rows = []
+    _KEEP_UPPER = {"IV", "PBS", "ATC", "DNA", "RNA", "PEG", "HPV", "BCG", "MMR"}
+
+    def _title(name: str) -> str:
+        if not name or not name.isupper():
+            return name
+        return " ".join(w if w in _KEEP_UPPER else w.capitalize() for w in name.split())
+
+    raw_rows = []
     with open(path, encoding="utf-8") as f:
         for row in csv.DictReader(f):
             benefit = _int(row.get("gov_benefit_aud"))
             scripts = _int(row.get("scripts"))
-            cps     = _float(row.get("cost_per_script_aud"))
-            drug    = (row.get("drug_name") or "").strip()
+            drug    = _title((row.get("drug_name") or "").strip())
             if not drug or benefit is None:
                 continue
-            rows.append({
-                "drug_name":          drug,
-                "brand_name":         (row.get("brand_name") or "").strip(),
-                "atc_code":           (row.get("atc_code") or "").strip(),
-                "gov_benefit_aud":    benefit,
-                "scripts":            scripts,
-                "cost_per_script_aud": cps,
-                "report_year":        row.get("report_year", ""),
+            raw_rows.append({
+                "drug_name":   drug,
+                "brand_name":  (row.get("brand_name") or "").strip(),
+                "atc_code":    (row.get("atc_code") or "").strip(),
+                "gov_benefit_aud": benefit,
+                "scripts":     scripts or 0,
+                "_best_b":     benefit,
+                "report_year": row.get("report_year", ""),
             })
+
+    # Deduplicate — aggregate same drug across formulations
+    agg: dict = {}
+    for r in raw_rows:
+        key = r["drug_name"].lower()
+        if key not in agg:
+            agg[key] = r.copy()
+        else:
+            agg[key]["gov_benefit_aud"] += r["gov_benefit_aud"]
+            agg[key]["scripts"] = (agg[key]["scripts"] or 0) + (r["scripts"] or 0)
+            if r["gov_benefit_aud"] > agg[key]["_best_b"]:
+                agg[key]["_best_b"]    = r["gov_benefit_aud"]
+                agg[key]["brand_name"] = r["brand_name"]
+                agg[key]["atc_code"]   = r["atc_code"]
+
+    rows = []
+    for entry in agg.values():
+        b = entry["gov_benefit_aud"]
+        s = entry["scripts"]
+        cps = round(b / s, 2) if s and s > 0 else None
+        rows.append({
+            "drug_name":           entry["drug_name"],
+            "brand_name":          entry["brand_name"],
+            "atc_code":            entry["atc_code"],
+            "gov_benefit_aud":     b,
+            "scripts":             s if s else None,
+            "cost_per_script_aud": cps,
+            "report_year":         entry["report_year"],
+        })
 
     if not rows:
         print("  pbs_drug_spend.csv loaded but no rows parsed")

@@ -737,12 +737,16 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 36p
             <div>
               <div class="section-label" style="margin-bottom:4px">Top 20 drugs · government benefit paid</div>
               <div class="sans" style="font-size:11px;color:var(--text3);margin-bottom:14px" id="drug-spend-year-note">2023-24 financial year</div>
-              <ol class="rank-list" id="drug-spend-list"></ol>
+              <div style="max-height:520px;overflow-y:auto;padding-right:4px">
+                <ol class="rank-list" id="drug-spend-list"></ol>
+              </div>
             </div>
             <div>
               <div class="section-label" style="margin-bottom:4px">Most expensive per script</div>
               <div class="sans" style="font-size:11px;color:var(--text3);margin-bottom:14px">Government benefit per prescription dispensed</div>
-              <ol class="rank-list" id="drug-cps-list"></ol>
+              <div style="max-height:520px;overflow-y:auto;padding-right:4px">
+                <ol class="rank-list" id="drug-cps-list"></ol>
+              </div>
             </div>
           </div>
         </div>
@@ -2026,6 +2030,39 @@ function initExplore() {
     const yearNote = document.getElementById('drug-spend-year-note');
     if (yearNote && ds.report_year) yearNote.textContent = ds.report_year + '–' + (parseInt(ds.report_year)+1) + ' financial year';
 
+    // Build a PBAC lookup by drug name (normalised) for enrichment
+    const _pbacByDrug = {};
+    if (D.psd && D.psd.drugs) {
+      D.psd.drugs.forEach(drug => {
+        const key = (drug.drug || '').toLowerCase().trim();
+        if (!key) return;
+        if (!_pbacByDrug[key]) {
+          _pbacByDrug[key] = { therapy: drug.therapy_area || '', subs: 0, recs: 0 };
+        }
+        _pbacByDrug[key].subs++;
+        if ((drug.recommendation || '').toLowerCase().includes('recommended')) _pbacByDrug[key].recs++;
+      });
+    }
+
+    function _pbacBadge(drugName) {
+      const key = (drugName || '').toLowerCase().trim();
+      // Try exact, then first word
+      let info = _pbacByDrug[key];
+      if (!info) {
+        const firstWord = key.split(' ')[0];
+        info = Object.entries(_pbacByDrug).find(([k]) => k.startsWith(firstWord))?.[1];
+      }
+      if (!info) return '';
+      const parts = [];
+      if (info.therapy) parts.push(`<span class="sans" style="font-size:10px;color:var(--text3);background:var(--bg3);padding:1px 6px;border-radius:2px">${info.therapy}</span>`);
+      if (info.subs > 0) {
+        const recRate = info.subs > 0 ? Math.round((info.recs / info.subs) * 100) : 0;
+        const recCol  = recRate >= 70 ? '#2e7d32' : recRate >= 40 ? '#E65100' : 'var(--red)';
+        parts.push(`<span class="sans" style="font-size:10px;color:${recCol};background:var(--bg3);padding:1px 6px;border-radius:2px">${info.subs} PBAC sub${info.subs!==1?'s':''} · ${recRate}% rec</span>`);
+      }
+      return parts.length ? `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px">${parts.join('')}</div>` : '';
+    }
+
     // Top 20 by spend
     const spendEl = document.getElementById('drug-spend-list');
     if (spendEl && ds.top_spend && ds.top_spend.length > 0) {
@@ -2036,7 +2073,8 @@ function initExplore() {
         const str  = b >= 1e9 ? '$' + (b/1e9).toFixed(2) + 'B' : '$' + (b/1e6).toFixed(0) + 'M';
         const name = d.drug_name.charAt(0).toUpperCase() + d.drug_name.slice(1);
         const brand = d.brand_name ? ` <span style="color:var(--text3);font-size:11px">(${d.brand_name})</span>` : '';
-        return `<li class="rank-item" style="cursor:pointer" onclick="runSearch('${d.drug_name.toLowerCase()}')">
+        const badge = _pbacBadge(d.drug_name);
+        return `<li class="rank-item" style="cursor:pointer" onclick="runSearch('${d.drug_name.toLowerCase().replace(/'/g,"\\'")}')">
           <div class="rank-num">${i+1}</div>
           <div style="flex:1;min-width:0">
             <div style="font-weight:600;font-size:14px">${name}${brand}</div>
@@ -2046,6 +2084,7 @@ function initExplore() {
               </div>
               <span class="sans" style="font-size:12px;font-weight:600;color:var(--text2);flex-shrink:0">${str}</span>
             </div>
+            ${badge}
           </div>
         </li>`;
       }).join('');
@@ -2062,8 +2101,9 @@ function initExplore() {
         const name = d.drug_name.charAt(0).toUpperCase() + d.drug_name.slice(1);
         const scripts = d.scripts ? ` · ${(d.scripts/1000).toFixed(1)}k scripts` : '';
         // Colour code: > $10k = red, $1–10k = orange, <$1k = green
-        const col = cps > 10000 ? 'var(--red)' : cps > 1000 ? '#E65100' : '#2e7d32';
-        return `<li class="rank-item" style="cursor:pointer" onclick="runSearch('${d.drug_name.toLowerCase()}')">
+        const col  = cps > 10000 ? 'var(--red)' : cps > 1000 ? '#E65100' : '#2e7d32';
+        const badge = _pbacBadge(d.drug_name);
+        return `<li class="rank-item" style="cursor:pointer" onclick="runSearch('${d.drug_name.toLowerCase().replace(/'/g,"\\'")}')">
           <div class="rank-num">${i+1}</div>
           <div style="flex:1;min-width:0">
             <div style="font-weight:600;font-size:14px">${name}</div>
@@ -2074,6 +2114,7 @@ function initExplore() {
               <span class="sans" style="font-size:12px;font-weight:600;color:${col};flex-shrink:0">${str}/script</span>
             </div>
             <div class="sans" style="font-size:10px;color:var(--text3);margin-top:2px">${scripts}</div>
+            ${badge}
           </div>
         </li>`;
       }).join('');

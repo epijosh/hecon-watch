@@ -225,8 +225,76 @@ def parse_excel(path: Path) -> list[dict]:
     return best_rows
 
 
+def title_case_drug(name: str) -> str:
+    """Convert ALL CAPS drug names to Title Case, preserving known acronyms."""
+    if not name:
+        return name
+    # If already mixed case, leave it
+    if not name.isupper():
+        return name
+    # Known acronyms to keep uppercase
+    KEEP_UPPER = {"IV", "PBS", "ATC", "DNA", "RNA", "PEG", "HPV", "BCG", "MMR"}
+    words = name.split()
+    result = []
+    for w in words:
+        if w in KEEP_UPPER:
+            result.append(w)
+        else:
+            result.append(w.capitalize())
+    return " ".join(result)
+
+
+def deduplicate_rows(rows: list[dict]) -> list[dict]:
+    """
+    Aggregate rows with the same drug name (different formulations/brands).
+    Sums gov_benefit_aud and scripts; recomputes cost_per_script.
+    Keeps the brand name from the highest-spend row.
+    """
+    agg: dict[str, dict] = {}
+    for r in rows:
+        key = title_case_drug(r["drug_name"]).lower()
+        if key not in agg:
+            agg[key] = {
+                "drug_name":      title_case_drug(r["drug_name"]),
+                "brand_name":     r.get("brand_name", ""),
+                "atc_code":       r.get("atc_code", ""),
+                "gov_benefit_aud": r.get("gov_benefit_aud") or 0,
+                "scripts":         r.get("scripts") or 0,
+                "_best_benefit":   r.get("gov_benefit_aud") or 0,
+            }
+        else:
+            entry = agg[key]
+            b = r.get("gov_benefit_aud") or 0
+            s = r.get("scripts") or 0
+            entry["gov_benefit_aud"] = (entry["gov_benefit_aud"] or 0) + b
+            entry["scripts"] = (entry["scripts"] or 0) + s
+            # Keep brand name from the highest-spend row
+            if b > entry["_best_benefit"]:
+                entry["_best_benefit"] = b
+                entry["brand_name"] = r.get("brand_name", "")
+                entry["atc_code"]   = r.get("atc_code", "")
+
+    result = []
+    for entry in agg.values():
+        benefit = entry["gov_benefit_aud"]
+        scripts = entry["scripts"]
+        cps = round(benefit / scripts, 2) if scripts and scripts > 0 else None
+        if benefit < 1000:
+            continue
+        result.append({
+            "drug_name":           entry["drug_name"],
+            "brand_name":          entry["brand_name"],
+            "atc_code":            entry["atc_code"],
+            "gov_benefit_aud":     int(benefit) if benefit else None,
+            "scripts":             int(scripts) if scripts else None,
+            "cost_per_script_aud": cps,
+        })
+    return result
+
+
 def save_csv(rows: list[dict], path: Path, year: int, url: str):
-    """Write drug spend data to CSV."""
+    """Deduplicate, then write drug spend data to CSV."""
+    rows = deduplicate_rows(rows)
     # Sort by government benefit descending
     rows.sort(key=lambda r: r.get("gov_benefit_aud") or 0, reverse=True)
 
