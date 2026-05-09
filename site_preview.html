@@ -354,16 +354,14 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 36p
   <div class="container">
     <div class="nav-inner">
       <a href="#" class="nav-logo" onclick="clearSearch();return false;">PBAC<em>Watch</em></a>
-      <ul class="nav-links">
-        <li><a href="#" class="active">Dashboard</a></li>
-        <li><a href="#">PBAC decisions</a></li>
-        <li><a href="#">NICE comparison</a></li>
-        <li><a href="#">Drug lookup</a></li>
-        <li><a href="#">Analysis</a></li>
-        <li><a href="#">About</a></li>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#" id="nav-dashboard" class="active" onclick="navTo('dashboard');return false;">Dashboard</a></li>
+        <li><a href="#" id="nav-browse" onclick="navTo('browse');return false;">Browse decisions</a></li>
+        <li><a href="#" id="nav-analysis" onclick="navTo('analysis');return false;">Analysis</a></li>
+        <li><a href="#" id="nav-about" onclick="navTo('about');return false;">About</a></li>
       </ul>
       <div class="nav-actions">
-        <button class="btn-nav btn-red sans">Download data</button>
+        <button class="btn-nav sans" onclick="downloadData()">Download CSV</button>
         <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle dark mode">☽</button>
       </div>
     </div>
@@ -373,13 +371,13 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 36p
 <!-- Search hero -->
 <div class="search-hero">
   <div class="container">
-    <div class="search-eyebrow sans">1,632 PBAC decisions · 950 NICE appraisals · free, open-source</div>
+    <div class="search-eyebrow sans" id="search-eyebrow">1,632 PBAC public summary documents · free, open-source</div>
     <div class="search-wrap">
       <input
         class="search-input"
         id="search-input"
         type="text"
-        placeholder="Search a drug, TA number, or ask a question..."
+        placeholder="Search by drug name, brand name, or indication…"
         autocomplete="off"
         oninput="handleSearch(this.value)"
       >
@@ -388,11 +386,11 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 36p
     <div class="search-hint sans">
       Try:
       <strong onclick="runSearch('pembrolizumab')">pembrolizumab</strong> ·
-      <strong onclick="runSearch('venetoclax')">venetoclax</strong> ·
-      <strong onclick="runSearch('cancer')">cancer</strong> ·
-      <strong onclick="runSearch('prostate')">prostate</strong> ·
+      <strong onclick="runSearch('adalimumab')">adalimumab</strong> ·
+      <strong onclick="runSearch('nivolumab')">nivolumab</strong> ·
+      <strong onclick="runSearch('trastuzumab')">trastuzumab</strong> ·
+      <strong onclick="runSearch('oncology')">oncology</strong> ·
       <strong onclick="runSearch('rare disease')">rare disease</strong> ·
-      <strong onclick="runSearch('ta447')">TA447</strong> ·
       <strong onclick="runSearch('diabetes')">diabetes</strong>
     </div>
   </div>
@@ -725,10 +723,9 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 36p
 
       <nav class="tab-nav" role="tablist">
         <button class="tab-btn active" onclick="switchTab('tab-pbs',this)">Top PBS spend</button>
-        <button class="tab-btn" onclick="switchTab('tab-therapy',this)">Top therapy areas</button>
         <button class="tab-btn" onclick="switchTab('tab-trends',this)">PBAC trends</button>
-        <button class="tab-btn" onclick="switchTab('tab-listings',this)">New listings</button>
-        <button class="tab-btn" onclick="switchTab('tab-outcomes',this)">Outcomes deep dive</button>
+        <button class="tab-btn" onclick="switchTab('tab-listings',this)">Recent decisions</button>
+        <button class="tab-btn" onclick="switchTab('tab-outcomes',this)">Outcomes analysis</button>
       </nav>
 
       <!-- Tab 1: Top PBS spend -->
@@ -1750,6 +1747,9 @@ function buildLiveArticles() {
     document.getElementById('stat-psds').textContent = s.pbac_psds.toLocaleString();
     const yr = D.pbac.year_range;
     document.getElementById('stat-psds-note').textContent = yr[0] + ' – ' + yr[1];
+    // Update search eyebrow with real count
+    const ey = document.getElementById('search-eyebrow');
+    if (ey) ey.textContent = s.pbac_psds.toLocaleString() + ' PBAC public summary documents · free, open-source';
   }
   if (s.nice_tas > 0) {
     document.getElementById('stat-nice').textContent = s.nice_tas.toLocaleString();
@@ -2843,6 +2843,48 @@ function renderPBSChart(canvas, years, values, redCol, textCol, gridCol) {
 window.addEventListener('load', function() {
   buildPBSChart();
 });
+
+// ── Navigation ────────────────────────────────────────────────────────────────
+function navTo(section) {
+  // Update active link
+  document.querySelectorAll('#nav-links a').forEach(a => a.classList.remove('active'));
+  const el = document.getElementById('nav-' + section);
+  if (el) el.classList.add('active');
+
+  if (section === 'dashboard') {
+    clearSearch();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else if (section === 'browse') {
+    clearSearch();
+    // Make sure browse section visible and scroll to it
+    const bs = document.getElementById('browse-section');
+    if (bs) { bs.style.display = ''; bs.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  } else if (section === 'analysis') {
+    clearSearch();
+    const ex = document.getElementById('explore-section');
+    if (ex) ex.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else if (section === 'about') {
+    clearSearch();
+    const ft = document.querySelector('footer');
+    if (ft) ft.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function downloadData() {
+  // Build CSV from browse rows and trigger download
+  if (!_browseRows.length) { alert('No data loaded yet — run build_site_data.py first.'); return; }
+  const headers = ['drug_name','therapy_area','indication','pbac_outcome','year','submissions','icer_aud','nice_status','access_gap_months'];
+  const rows = _browseRows.map(r => [
+    r.name, r.therapy, (r.indication||'').replace(/,/g,' '), r.outcome, r.year||'', r.subs||'',
+    r.icer||'', r.nice||'', r.gap!=null?r.gap:'',
+  ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(','));
+  const csv = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'pbacwatch_decisions.csv';
+  a.click();
+}
 
 // ── Dark mode ─────────────────────────────────────────────────────────────────
 function toggleTheme() {
