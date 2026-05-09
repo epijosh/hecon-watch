@@ -294,6 +294,56 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 36p
   .footer-inner { grid-template-columns: 1fr 1fr; }
   .drug-grid { grid-template-columns: 1fr; }
 }
+
+/* ── Browse table ────────────────────────────────────────────── */
+#browse-section { border-bottom: 1px solid var(--border); }
+.browse-filter-bar { position: sticky; top: 52px; z-index: 50; background: var(--bg); border-bottom: 1px solid var(--border); }
+.browse-table-wrap { padding: 20px 0 40px; }
+.browse-top { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px; }
+.browse-count { font-family: var(--ui); font-size: 12px; color: var(--text3); }
+.dtable { width: 100%; border-collapse: collapse; font-size: 13px; }
+.dtable th { font-family: var(--ui); font-size: 9px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text3); padding: 7px 14px 7px 0; border-bottom: 2px solid var(--text); text-align: left; white-space: nowrap; cursor: pointer; user-select: none; transition: color .15s; }
+.dtable th:hover { color: var(--text2); }
+.dtable th.sorted { color: var(--red); }
+.dtable th .si { opacity: .35; font-size: 9px; margin-left: 2px; }
+.dtable th.sorted .si { opacity: 1; }
+.dtable td { padding: 9px 14px 9px 0; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.dtable tr:last-child td { border-bottom: none; }
+.dtable tbody tr { cursor: pointer; }
+.dtable tbody tr:hover td { background: var(--bg2); }
+.dtable tbody tr.row-selected td { background: var(--bg2); }
+.dtable tbody tr.row-selected td:first-child { box-shadow: inset 3px 0 0 var(--red); padding-left: 10px; }
+.dname { font-weight: 700; color: var(--text); font-size: 14px; }
+.dbrand { font-family: var(--ui); font-size: 11px; color: var(--text3); }
+.dind { font-size: 12px; color: var(--text2); font-style: italic; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.drec { display: inline-block; font-family: var(--ui); font-size: 10px; font-weight: 600; padding: 2px 6px; }
+.drec-y { background: #2e7d3218; color: #2e7d32; }
+.drec-n { background: #C6282818; color: var(--red); }
+.drec-d { background: #E6510018; color: #E65100; }
+.drec-u { background: var(--bg3); color: var(--text3); }
+.dicer { font-family: var(--ui); font-size: 12px; font-weight: 600; }
+.dgap { font-family: var(--ui); font-size: 12px; font-weight: 600; }
+.dgap-late { color: var(--red); }
+.dgap-early { color: #2e7d32; }
+
+/* ── Multi-result cards ─────────────────────────────────────── */
+.results-header { padding: 18px 0 14px; border-bottom: 2px solid var(--text); margin-bottom: 0; }
+.results-title { font-family: var(--display); font-size: 22px; font-weight: 700; letter-spacing: -.3px; }
+.results-sub { font-family: var(--ui); font-size: 12px; color: var(--text3); margin-left: 12px; }
+.mcard { display: grid; grid-template-columns: 1fr auto; border-bottom: 1px solid var(--border); padding: 14px 0; cursor: pointer; transition: padding-left .12s; }
+.mcard:hover { padding-left: 8px; }
+.mcard:hover .mcard-name { color: var(--red); }
+.mcard-name { font-family: var(--display); font-size: 19px; font-weight: 700; margin-bottom: 2px; transition: color .15s; }
+.mcard-meta { font-family: var(--ui); font-size: 11px; color: var(--text3); margin-bottom: 4px; }
+.mcard-ind { font-size: 13px; color: var(--text2); font-style: italic; }
+.mcard-aside { padding-left: 24px; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; justify-content: center; min-width: 140px; }
+.mcard-stat-label { font-family: var(--ui); font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); }
+.mcard-stat-val { font-weight: 700; font-size: 14px; text-align: right; }
+
+/* ── Back nav ───────────────────────────────────────────────── */
+.back-nav { display: inline-flex; align-items: center; gap: 8px; padding: 12px 0 20px; cursor: pointer; }
+.back-nav:hover .back-label { color: var(--red); }
+.back-label { font-family: var(--ui); font-size: 12px; font-weight: 600; color: var(--text3); transition: color .15s; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
 </style>
 </head>
 <body>
@@ -352,6 +402,54 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 36p
 <div id="search-results">
   <div class="container" style="padding-top:32px; padding-bottom:32px;">
     <div id="result-content"></div>
+  </div>
+</div>
+
+<!-- Browse section — default view, hidden only in detail mode -->
+<div id="browse-section">
+  <div class="browse-filter-bar">
+    <div class="container">
+      <div class="filter-row">
+        <span class="filter-label">Outcome:</span>
+        <button class="filter-pill active" onclick="filterBrowse('outcome','all',this)">All</button>
+        <button class="filter-pill" onclick="filterBrowse('outcome','recommended',this)">Recommended</button>
+        <button class="filter-pill" onclick="filterBrowse('outcome','not',this)">Not recommended</button>
+        <button class="filter-pill" onclick="filterBrowse('outcome','deferred',this)">Deferred</button>
+        <span style="display:inline-block;width:1px;height:16px;background:var(--border);margin:0 6px;vertical-align:middle"></span>
+        <span class="filter-label">Area:</span>
+        <button class="filter-pill active" id="filter-all-therapy" onclick="filterBrowse('therapy','all',this)">All</button>
+        <span id="therapy-filter-pills" style="display:contents"></span>
+      </div>
+    </div>
+  </div>
+  <div class="container browse-table-wrap">
+    <div class="browse-top">
+      <div>
+        <div class="section-label" style="margin-bottom:2px">All PBAC decisions</div>
+        <div class="browse-count" id="browse-count">Loading…</div>
+      </div>
+      <div class="sans" style="font-size:11px;color:var(--text3)">Click any row for full details · sort by column header</div>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="dtable" id="browse-table">
+        <thead>
+          <tr>
+            <th id="th-name" onclick="sortBrowse('name')">Drug <span class="si">↕</span></th>
+            <th id="th-therapy" onclick="sortBrowse('therapy')">Therapy area <span class="si">↕</span></th>
+            <th>Indication</th>
+            <th id="th-outcome" onclick="sortBrowse('outcome')">PBAC outcome <span class="si">↕</span></th>
+            <th id="th-year" onclick="sortBrowse('year')">Year <span class="si">↕</span></th>
+            <th id="th-subs" onclick="sortBrowse('subs')">Subs <span class="si">↕</span></th>
+            <th id="th-icer" onclick="sortBrowse('icer')">ICER <span class="si">↕</span></th>
+            <th>NICE</th>
+            <th id="th-gap" onclick="sortBrowse('gap')">Gap <span class="si">↕</span></th>
+          </tr>
+        </thead>
+        <tbody id="browse-tbody">
+          <tr><td colspan="9" style="text-align:center;padding:32px;font-family:var(--ui);font-size:13px;color:var(--text3)">Run build_site_data.py to populate the drug table</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 
@@ -875,52 +973,206 @@ function buildDrugDB() {
 
 const DRUG_LIST = Object.values(DRUG_DB).filter(d => d.indication);
 
-// ── Search logic ──────────────────────────────────────────────────────────────
-let searchActive = false;
+// ── Browse state ──────────────────────────────────────────────────────────────
+let _browseRows = [];
+let _browseFiltered = [];
+let _browseSort = { field: 'year', asc: false };
+let _browseFilters = { outcome: 'all', therapy: 'all' };
+let _currentMode = 'browse'; // 'browse' | 'results' | 'detail'
 
+// ── Fuzzy scoring ─────────────────────────────────────────────────────────────
+function scoreDrug(name, brand, indication, therapy, q) {
+  const n = (name||'').toLowerCase(), b = (brand||'').toLowerCase();
+  const ind = (indication||'').toLowerCase(), ta = (therapy||'').toLowerCase();
+  if (n === q) return 100;
+  if (b === q) return 95;
+  let score = 0;
+  if (n.startsWith(q)) score = Math.max(score, 75);
+  if (b.startsWith(q)) score = Math.max(score, 65);
+  const words = n.split(/[-\s]/);
+  if (words.some(w => w.startsWith(q))) score = Math.max(score, 60);
+  if (n.includes(q)) score = Math.max(score, 50);
+  if (b.includes(q)) score = Math.max(score, 42);
+  if (ind.includes(q)) score = Math.max(score, 22);
+  if (ta.includes(q)) score = Math.max(score, 14);
+  const tokens = q.split(/\s+/).filter(t => t.length > 2);
+  if (tokens.length > 1) {
+    let ts = 0;
+    tokens.forEach(t => { if (n.includes(t)) ts += 20; if (b.includes(t)) ts += 15; if (ind.includes(t)) ts += 8; if (ta.includes(t)) ts += 4; });
+    score = Math.max(score, ts);
+  }
+  return score;
+}
+
+// ── Browse table ──────────────────────────────────────────────────────────────
+function buildBrowseRows() {
+  const D = window.SITE_DATA;
+  const rows = [];
+  const seen = new Set();
+  if (D && D.psd && D.psd.drugs) {
+    for (const [key, pd] of Object.entries(D.psd.drugs)) {
+      seen.add(key);
+      const dd = DRUG_DB[key] || {};
+      rows.push({ name: key, brand: pd.brand_name || (dd.aka && dd.aka[0]) || '', therapy: pd.therapy_area || dd.therapy || '', indication: pd.indication || dd.indication || '', outcome: pd.recommendation || dd.pbac_status || '', year: pd.latest_year ? parseInt(pd.latest_year) : null, subs: pd.submissions || 1, icer: pd.icer_high || pd.icer_low || null, nice: dd.nice_status || '', gap: typeof dd.gap_months === 'number' ? dd.gap_months : null, _pd: pd, _dd: dd });
+    }
+  }
+  for (const [key, dd] of Object.entries(DRUG_DB)) {
+    if (seen.has(key) || !dd.indication) continue;
+    rows.push({ name: key, brand: (dd.aka && dd.aka[0]) || '', therapy: dd.therapy || '', indication: dd.indication || '', outcome: dd.pbac_status || '', year: dd.pbac_date ? parseInt(dd.pbac_date) : null, subs: null, icer: null, nice: dd.nice_status || '', gap: typeof dd.gap_months === 'number' ? dd.gap_months : null, _pd: null, _dd: dd });
+  }
+  return rows;
+}
+
+function initBrowse() {
+  _browseRows = buildBrowseRows();
+  if (!_browseRows.length) return;
+  const therapyCounts = {};
+  _browseRows.forEach(r => { if (r.therapy) therapyCounts[r.therapy] = (therapyCounts[r.therapy] || 0) + 1; });
+  const topTherapies = Object.entries(therapyCounts).sort((a,b) => b[1]-a[1]).slice(0,6).map(x=>x[0]);
+  const pc = document.getElementById('therapy-filter-pills');
+  if (pc) pc.innerHTML = topTherapies.map(t => `<button class="filter-pill" onclick="filterBrowse('therapy','${t.replace(/'/g,"\\'")}',this)">${t}</button>`).join('');
+  applyBrowseFilters();
+}
+
+function applyBrowseFilters(searchQuery) {
+  let rows = _browseRows;
+  const { outcome, therapy } = _browseFilters;
+  if (outcome !== 'all') rows = rows.filter(r => { const rec = (r.outcome||'').toLowerCase(); if (outcome === 'recommended') return rec.startsWith('recommended') && !rec.startsWith('not'); if (outcome === 'not') return rec.startsWith('not'); if (outcome === 'deferred') return rec === 'deferred'; return true; });
+  if (therapy !== 'all') rows = rows.filter(r => r.therapy === therapy);
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    rows = rows.map(r => ({ ...r, _score: scoreDrug(r.name, r.brand, r.indication, r.therapy, q) })).filter(r => r._score > 0).sort((a,b) => b._score - a._score);
+  } else {
+    const { field, asc } = _browseSort;
+    rows = [...rows].sort((a,b) => { let va=a[field], vb=b[field]; if(va==null&&vb==null)return 0; if(va==null)return 1; if(vb==null)return -1; if(typeof va==='string'){va=va.toLowerCase();vb=vb.toLowerCase();} return asc?(va>vb?1:va<vb?-1:0):(va<vb?1:va>vb?-1:0); });
+  }
+  _browseFiltered = rows;
+  renderBrowseTable(rows);
+}
+
+function renderBrowseTable(rows) {
+  const tbody = document.getElementById('browse-tbody');
+  const countEl = document.getElementById('browse-count');
+  if (!tbody) return;
+  if (countEl) { const t = _browseRows.length; countEl.textContent = rows.length===t ? `${t.toLocaleString()} decisions` : `${rows.length.toLocaleString()} of ${t.toLocaleString()} decisions`; }
+  if (!rows.length) { tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:32px;font-family:var(--ui);font-size:13px;color:var(--text3)">No decisions match these filters</td></tr>`; return; }
+  const recCls = r => { const v=(r.outcome||'').toLowerCase(); return v.startsWith('recommended')&&!v.startsWith('not')?'drec-y':v.startsWith('not')?'drec-n':v==='deferred'?'drec-d':'drec-u'; };
+  const recLabel = r => { const v=(r.outcome||''); if(v.toLowerCase().startsWith('recommended')&&!v.toLowerCase().startsWith('not'))return'Recommended'; if(v.toLowerCase().startsWith('not'))return'Not rec.'; return v||'—'; };
+  const icerFmt = v => !v?'—':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v/1000)+'k';
+  const icerCol = v => !v?'var(--text3)':v>150000?'var(--red)':v>75000?'#E65100':'#2e7d32';
+  const gapFmt = g => g==null?'—':g>0?`<span class="dgap dgap-late">+${g}mo</span>`:g<0?`<span class="dgap dgap-early">${g}mo</span>`:'<span class="dgap">0</span>';
+  tbody.innerHTML = rows.slice(0,300).map(r => {
+    const title = r.name.charAt(0).toUpperCase()+r.name.slice(1);
+    const safe = r.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    return `<tr onclick="selectBrowseRow('${safe}')"><td><div class="dname">${title}</div>${r.brand?`<div class="dbrand">${r.brand}</div>`:''}</td><td><span class="sans" style="font-size:12px;color:var(--text2)">${r.therapy||'—'}</span></td><td><div class="dind" title="${(r.indication||'').replace(/"/g,'&quot;')}">${r.indication||'—'}</div></td><td><span class="drec ${recCls(r)}">${recLabel(r)}</span></td><td><span class="sans" style="font-size:12px">${r.year||'—'}</span></td><td><span class="sans" style="font-size:12px;font-weight:${(r.subs||0)>1?'700':'400'};color:${(r.subs||0)>1?'var(--red)':'var(--text2)'}">${r.subs||'—'}</span></td><td><span class="dicer" style="color:${icerCol(r.icer)}">${icerFmt(r.icer)}</span></td><td><span class="sans" style="font-size:11px;color:${r.nice.startsWith('Recommended')?'#2e7d32':r.nice.startsWith('Not')?'var(--red)':'var(--text3)'}">${r.nice||'—'}</span></td><td>${gapFmt(r.gap)}</td></tr>`;
+  }).join('');
+  if (rows.length > 300) tbody.innerHTML += `<tr><td colspan="9" style="text-align:center;padding:14px;font-family:var(--ui);font-size:11px;color:var(--text3)">Showing 300 of ${rows.length} — use search or filters to narrow results</td></tr>`;
+}
+
+function sortBrowse(field) {
+  if (_browseSort.field === field) _browseSort.asc = !_browseSort.asc;
+  else { _browseSort.field = field; _browseSort.asc = (field === 'name'); }
+  ['name','therapy','outcome','year','subs','icer','gap'].forEach(f => { const el=document.getElementById('th-'+f); if(el)el.classList.toggle('sorted',f===field); });
+  applyBrowseFilters();
+}
+
+function filterBrowse(type, val, btn) {
+  _browseFilters[type] = val;
+  const row = btn.closest('.filter-row');
+  if (row) { row.querySelectorAll('.filter-pill').forEach(p => { if((p.getAttribute('onclick')||'').includes(`'${type}'`))p.classList.remove('active'); }); btn.classList.add('active'); }
+  applyBrowseFilters();
+}
+
+function selectBrowseRow(drugName) {
+  document.querySelectorAll('#browse-tbody tr.row-selected').forEach(r => r.classList.remove('row-selected'));
+  document.querySelectorAll('#browse-tbody tr').forEach(r => { if((r.getAttribute('onclick')||'').includes(drugName.replace(/\\/g,'\\\\').replace(/'/g,"\\'")))r.classList.add('row-selected'); });
+  _currentMode = 'detail';
+  document.getElementById('browse-section').style.display = 'none';
+  document.getElementById('main-content').style.display = 'none';
+  document.getElementById('search-results').classList.add('active');
+  const key = drugName.toLowerCase();
+  const row = _browseRows.find(r => r.name === key);
+  const drugObj = DRUG_DB[key] || (row && row._dd) || { name: key, indication: row && row.indication, therapy: row && row.therapy };
+  showDrugResult(drugObj);
+}
+
+// ── Search logic ──────────────────────────────────────────────────────────────
 function handleSearch(val) {
   const q = val.trim().toLowerCase();
-  const clearBtn = document.getElementById('search-clear');
-  clearBtn.classList.toggle('visible', q.length > 0);
+  document.getElementById('search-clear').classList.toggle('visible', q.length > 0);
+  if (!q) { clearSearch(); return; }
 
-  if (!q) { showMain(); return; }
-
-  // TA number pattern: "ta447" or "ta 447"
+  // TA number
   const taMatch = q.match(/^ta\s*(\d+)$/i);
   if (taMatch) {
     const taNum = parseInt(taMatch[1]);
-    // Try to find in NICE search index first
     if (window.SITE_DATA && window.SITE_DATA.nice && window.SITE_DATA.nice.search_index) {
       const entry = window.SITE_DATA.nice.search_index.find(e => e.ta === taNum);
-      if (entry) { showNICEResults(val.trim(), [entry]); return; }
+      if (entry) { _toResults(); showNICEResults(val.trim(), [entry]); return; }
     }
-    showTAResult(taNum);
+    _toResults(); showTAResult(taNum); return;
+  }
+
+  // Score all known drugs
+  const seenKeys = new Set();
+  const candidates = [];
+  Object.values(DRUG_DB).forEach(d => {
+    if (!d.name) return;
+    const score = scoreDrug(d.name, (d.aka||[]).join(' '), d.indication||'', d.therapy||'', q);
+    if (score > 0) { seenKeys.add(d.name); candidates.push({ drugObj: d, score }); }
+  });
+  _browseRows.forEach(r => {
+    if (seenKeys.has(r.name)) return;
+    const score = scoreDrug(r.name, r.brand, r.indication, r.therapy, q);
+    if (score > 0) candidates.push({ drugObj: r._dd || { name: r.name, indication: r.indication, therapy: r.therapy, pbac_status: r.outcome }, score });
+  });
+  candidates.sort((a,b) => b.score - a.score);
+
+  if (candidates.length > 0) {
+    _toResults();
+    applyBrowseFilters(q);
+    showMultiDrugResults(candidates.map(c => c.drugObj), q);
     return;
   }
 
-  // Drug name match — search live DRUG_DB (includes matched drugs once loaded)
-  const liveDrugs = Object.values(DRUG_DB).filter(d => d.indication || d.name);
-  const results = liveDrugs.filter(d =>
-    d.name.includes(q) ||
-    (d.aka||[]).some(a => a.toLowerCase().includes(q)) ||
-    (d.indication||'').toLowerCase().includes(q)
-  );
-
-  if (results.length > 0) {
-    showDrugResult(results[0]);
-    return;
-  }
-
-  // Full-text search against NICE index (handles "cancer", "prostate", therapy areas, etc.)
+  // NICE full-text fallback
   if (window.SITE_DATA && window.SITE_DATA.nice && window.SITE_DATA.nice.search_index) {
     const niceResults = searchNICEIndex(q);
-    if (niceResults.length > 0) {
-      showNICEResults(val.trim(), niceResults);
-      return;
-    }
+    if (niceResults.length > 0) { _toResults(); showNICEResults(val.trim(), niceResults); return; }
   }
 
-  showNoResult(val.trim());
+  _toResults(); showNoResult(val.trim());
+}
+
+function showMultiDrugResults(drugs, query) {
+  const recColour = rec => { if(!rec)return'var(--text3)'; if(rec.startsWith('Recommended')&&!rec.startsWith('Not'))return'#2e7d32'; if(rec.startsWith('Not'))return'var(--red)'; return'#E65100'; };
+  const recLabel = rec => { if(!rec)return''; if(rec.startsWith('Recommended')&&!rec.startsWith('Not'))return'Listed'; if(rec.startsWith('Not'))return'Not listed'; return rec; };
+  const cards = drugs.slice(0,25).map(d => {
+    const pd = getPBACData(d.name);
+    const title = (d.name||'').charAt(0).toUpperCase()+(d.name||'').slice(1);
+    const rec = (pd&&pd.recommendation)||d.pbac_status||'';
+    const year = (pd&&pd.latest_year)||(d.pbac_date?d.pbac_date.toString().slice(0,4):'');
+    const subs = (pd&&pd.submissions)||null;
+    const icer = pd&&pd.icer_high?'$'+Math.round(pd.icer_high/1000)+'k':'';
+    const therapy = (pd&&pd.therapy_area)||d.therapy||'';
+    const indication = (pd&&pd.indication)||d.indication||'';
+    const brand = (d.aka||[]).filter(Boolean).join(', ');
+    const safe = (d.name||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    return `<div class="mcard" onclick="selectFromResults('${safe}')"><div><div class="mcard-name">${title}</div><div class="mcard-meta">${[therapy,brand,year].filter(Boolean).join(' · ')}</div><div class="mcard-ind">${indication||'—'}</div></div><div class="mcard-aside">${rec?`<div><div class="mcard-stat-label">PBAC</div><div class="mcard-stat-val" style="font-size:13px;color:${recColour(rec)}">${recLabel(rec)}</div></div>`:''} ${subs>1?`<div><div class="mcard-stat-label">Submissions</div><div class="mcard-stat-val" style="color:var(--red)">${subs}</div></div>`:''} ${icer?`<div><div class="mcard-stat-label">ICER</div><div class="mcard-stat-val" style="font-size:12px">${icer}</div></div>`:''}</div></div>`;
+  }).join('');
+  document.getElementById('result-content').innerHTML = `
+    <div class="results-header"><span class="results-title">${drugs.length} result${drugs.length!==1?'s':''} for "${query}"</span>${drugs.length>25?`<span class="results-sub">Showing top 25</span>`:''}</div>
+    <div>${cards}</div>
+    <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)"><span class="sans" style="font-size:12px;color:var(--text3);cursor:pointer" onclick="clearSearch()">← Back to all decisions</span></div>`;
+}
+
+function selectFromResults(drugName) {
+  const key = (drugName||'').toLowerCase();
+  const row = _browseRows.find(r => r.name === key);
+  const drugObj = DRUG_DB[key] || (row&&row._dd) || { name: key, indication: row&&row.indication, therapy: row&&row.therapy, pbac_status: row&&row.outcome };
+  _currentMode = 'detail';
+  document.getElementById('browse-section').style.display = 'none';
+  showDrugResult(drugObj);
 }
 
 function runSearch(term) {
@@ -936,16 +1188,23 @@ function clearSearch() {
   showMain();
 }
 
+function _toResults() {
+  document.getElementById('main-content').style.display = 'none';
+  document.getElementById('search-results').classList.add('active');
+  _currentMode = 'results';
+}
+
 function showMain() {
   document.getElementById('search-results').classList.remove('active');
+  document.getElementById('browse-section').style.display = '';
   document.getElementById('main-content').style.display = '';
-  searchActive = false;
+  _currentMode = 'browse';
+  applyBrowseFilters();
 }
 
 function hideMain() {
   document.getElementById('main-content').style.display = 'none';
   document.getElementById('search-results').classList.add('active');
-  searchActive = true;
 }
 
 function showDrugResult(d) {
@@ -1058,7 +1317,14 @@ function showDrugResult(d) {
   const keyTrials   = pd && pd.key_trials ? pd.key_trials : '';
   const population  = pd && pd.population_per_year ? pd.population_per_year.toLocaleString() : '';
 
+  const _prevSearchVal = document.getElementById('search-input').value.trim();
+  const backLabel = _prevSearchVal ? `← Back to results for "${_prevSearchVal}"` : `← All PBAC decisions`;
+  const backAction = _prevSearchVal ? `handleSearch(document.getElementById('search-input').value)` : `clearSearch()`;
+
   document.getElementById('result-content').innerHTML = `
+    <div class="back-nav" onclick="${backAction}">
+      <span class="back-label">${backLabel}</span>
+    </div>
     <div class="result-drug">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
         <div class="section-label" style="margin-bottom:0">${therapy}</div>
@@ -1271,6 +1537,9 @@ function showNICEResults(query, results) {
 
   // Load matched drugs into DRUG_DB for search
   buildDrugDB();
+
+  // Populate browse table with real data
+  initBrowse();
 
   // Update stats bar
   const s = D.stats;
