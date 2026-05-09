@@ -733,6 +733,50 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 36p
 
         <!-- Drug-level spend (shows when fetch_pbs_drug_spend.py has been run) -->
         <div id="drug-spend-section" style="display:none">
+
+          <!-- Stat strip -->
+          <div id="spend-stat-strip" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px">
+            <div style="background:var(--bg2);border:1px solid var(--border);padding:16px 20px">
+              <div class="sans" style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:4px">Total PBS outlay</div>
+              <div id="spend-stat-total" style="font-family:var(--display);font-size:26px;font-weight:700;color:var(--text)">—</div>
+              <div class="sans" id="spend-stat-year" style="font-size:10px;color:var(--text3);margin-top:2px">government benefit paid</div>
+            </div>
+            <div style="background:var(--bg2);border:1px solid var(--border);padding:16px 20px">
+              <div class="sans" style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:4px">Drugs on PBS</div>
+              <div id="spend-stat-drugs" style="font-family:var(--display);font-size:26px;font-weight:700;color:var(--text)">—</div>
+              <div class="sans" style="font-size:10px;color:var(--text3);margin-top:2px">unique medicines tracked</div>
+            </div>
+            <div style="background:var(--bg2);border:1px solid var(--border);padding:16px 20px">
+              <div class="sans" style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:4px">Top drug</div>
+              <div id="spend-stat-top" style="font-family:var(--display);font-size:16px;font-weight:700;color:var(--text);line-height:1.2;margin-bottom:2px">—</div>
+              <div class="sans" id="spend-stat-top-val" style="font-size:10px;color:var(--text3);margin-top:2px">highest government benefit</div>
+            </div>
+          </div>
+
+          <!-- Charts row -->
+          <div style="display:grid;grid-template-columns:3fr 2fr;gap:32px;align-items:start;margin-bottom:32px">
+            <div>
+              <div class="section-label" style="margin-bottom:12px">Top 10 drugs by government benefit</div>
+              <div style="position:relative;height:300px">
+                <div id="spend-bar-placeholder" style="height:100%;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center">
+                  <span class="sans" style="font-size:12px;color:var(--text3)">Loading chart…</span>
+                </div>
+                <canvas id="spend-bar-chart" style="display:none;height:300px"></canvas>
+              </div>
+            </div>
+            <div>
+              <div class="section-label" style="margin-bottom:12px">Spend by therapy area</div>
+              <div style="position:relative;height:300px">
+                <div id="spend-donut-placeholder" style="height:100%;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center">
+                  <span class="sans" style="font-size:12px;color:var(--text3)">Loads with PBAC data</span>
+                </div>
+                <canvas id="spend-donut-chart" style="display:none;height:300px"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <hr class="rule" style="margin-bottom:28px">
+
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;margin-bottom:32px">
             <div>
               <div class="section-label" style="margin-bottom:4px">Top 20 drugs · government benefit paid</div>
@@ -2063,6 +2107,37 @@ function initExplore() {
       return parts.length ? `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px">${parts.join('')}</div>` : '';
     }
 
+    // ── Summary stats strip ─────────────────────────────────────────────────
+    // Sum all spend from by_drug if available, else fall back to top_spend sum
+    let grandTotal = 0;
+    if (ds.by_drug) {
+      grandTotal = Object.values(ds.by_drug).reduce((s,r) => s + (r.gov_benefit_aud||0), 0);
+    }
+    if (!grandTotal && ds.top_spend) {
+      grandTotal = ds.top_spend.reduce((s,r) => s + (r.gov_benefit_aud||0), 0);
+    }
+    const totalStr = grandTotal >= 1e9 ? '$' + (grandTotal/1e9).toFixed(2) + 'B' : '$' + (grandTotal/1e6).toFixed(0) + 'M';
+    const el_total = document.getElementById('spend-stat-total');
+    const el_drugs = document.getElementById('spend-stat-drugs');
+    const el_top   = document.getElementById('spend-stat-top');
+    const el_topv  = document.getElementById('spend-stat-top-val');
+    const el_yr    = document.getElementById('spend-stat-year');
+    if (el_total) el_total.textContent = totalStr;
+    if (el_drugs) el_drugs.textContent = ds.total ? ds.total.toLocaleString() : '—';
+    if (el_top && ds.top_spend && ds.top_spend[0]) {
+      const topDrug = ds.top_spend[0];
+      el_top.textContent = topDrug.drug_name.charAt(0).toUpperCase() + topDrug.drug_name.slice(1);
+      const tv = topDrug.gov_benefit_aud;
+      if (el_topv) el_topv.textContent = (tv >= 1e9 ? '$'+(tv/1e9).toFixed(2)+'B' : '$'+(tv/1e6).toFixed(0)+'M') + ' · highest government benefit';
+    }
+    if (el_yr && ds.report_year) el_yr.textContent = ds.report_year + '–' + (parseInt(ds.report_year)+1) + ' financial year';
+
+    // ── Bar chart: top 10 by spend ──────────────────────────────────────────
+    buildSpendBarChart(ds.top_spend ? ds.top_spend.slice(0,10) : []);
+
+    // ── Donut chart: spend by therapy area ─────────────────────────────────
+    buildSpendDonutChart(ds.top_spend || [], _pbacByDrug);
+
     // Top 20 by spend
     const spendEl = document.getElementById('drug-spend-list');
     if (spendEl && ds.top_spend && ds.top_spend.length > 0) {
@@ -2326,6 +2401,136 @@ function buildTrendsChart() {
     document.head.appendChild(s);
   }
   _trendsBuilt = true;
+}
+
+// ── PBS Spend bar chart (top 10 drugs, horizontal) ───────────────────────────
+function buildSpendBarChart(drugs) {
+  const canvas = document.getElementById('spend-bar-chart');
+  const ph     = document.getElementById('spend-bar-placeholder');
+  if (!canvas || !drugs.length) return;
+
+  const isDark  = document.documentElement.dataset.theme === 'dark';
+  const redCol  = isDark ? '#EF5350' : '#C62828';
+  const textCol = isDark ? '#B0A898' : '#706860';
+  const gridCol = isDark ? '#2C2820' : '#E8E2D4';
+
+  const labels = drugs.map(d => {
+    const n = d.drug_name.charAt(0).toUpperCase() + d.drug_name.slice(1);
+    return n.length > 22 ? n.slice(0,22)+'…' : n;
+  });
+  const values = drugs.map(d => +(d.gov_benefit_aud/1e6).toFixed(1));
+
+  const renderFn = () => {
+    if (ph) ph.style.display = 'none';
+    canvas.style.display = 'block';
+    new Chart(canvas, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          data: values,
+          backgroundColor: redCol + '55',
+          borderColor: redCol,
+          borderWidth: 1.5,
+          borderRadius: 2,
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#1A1208', titleColor: '#F0EDE4', bodyColor: '#B0A898',
+            titleFont: { family: "'Lora', Georgia, serif", size: 12 },
+            bodyFont:  { family: '-apple-system,BlinkMacSystemFont,sans-serif', size: 11 },
+            callbacks: { label: item => ` $${item.raw.toFixed(0)}M govt benefit` }
+          }
+        },
+        scales: {
+          x: { grid: { color: gridCol, lineWidth: .5 }, ticks: { color: textCol, font: { size: 10 }, callback: v => '$'+v+'M' }, border: { color: gridCol } },
+          y: { grid: { display: false }, ticks: { color: textCol, font: { size: 10, family: '-apple-system,BlinkMacSystemFont,sans-serif' } }, border: { display: false } }
+        }
+      }
+    });
+  };
+
+  if (window.Chart) { renderFn(); } else {
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js';
+    s.onload = renderFn;
+    document.head.appendChild(s);
+  }
+}
+
+// ── PBS Spend donut chart (spend by therapy area) ─────────────────────────────
+function buildSpendDonutChart(drugs, pbacByDrug) {
+  const canvas = document.getElementById('spend-donut-chart');
+  const ph     = document.getElementById('spend-donut-placeholder');
+  if (!canvas || !drugs.length || !pbacByDrug) return;
+
+  // Map each drug → therapy area via PBAC lookup
+  const taSpend = {};
+  drugs.forEach(d => {
+    const key = (d.drug_name||'').toLowerCase().trim();
+    let info = pbacByDrug[key];
+    if (!info) {
+      const fw = key.split(' ')[0];
+      info = Object.entries(pbacByDrug).find(([k]) => k.startsWith(fw))?.[1];
+    }
+    const ta = (info && info.therapy) ? info.therapy : 'Other';
+    taSpend[ta] = (taSpend[ta] || 0) + (d.gov_benefit_aud || 0);
+  });
+
+  const sorted = Object.entries(taSpend).sort((a,b)=>b[1]-a[1]);
+  if (!sorted.length) return;
+
+  const PALETTE = ['#C62828','#1565C0','#2E7D32','#6A1B9A','#E65100','#00838F','#F57F17','#AD1457','#4527A0','#558B2F','#37474F'];
+  const labels = sorted.map(([ta]) => ta);
+  const values = sorted.map(([,v]) => +(v/1e6).toFixed(1));
+  const colors = sorted.map((_,i) => PALETTE[i % PALETTE.length]);
+
+  const isDark  = document.documentElement.dataset.theme === 'dark';
+  const textCol = isDark ? '#B0A898' : '#706860';
+
+  const renderFn = () => {
+    if (ph) ph.style.display = 'none';
+    canvas.style.display = 'block';
+    new Chart(canvas, {
+      type: 'doughnut',
+      data: {
+        labels,
+        datasets: [{
+          data: values,
+          backgroundColor: colors.map(c => c + 'CC'),
+          borderColor: colors,
+          borderWidth: 1.5,
+          hoverOffset: 6,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        cutout: '58%',
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { color: textCol, font: { size: 9, family: '-apple-system,BlinkMacSystemFont,sans-serif' }, boxWidth: 10, padding: 8, usePointStyle: true }
+          },
+          tooltip: {
+            backgroundColor: '#1A1208', titleColor: '#F0EDE4', bodyColor: '#B0A898',
+            callbacks: { label: item => ` $${item.raw.toFixed(0)}M — ${item.label}` }
+          }
+        }
+      }
+    });
+  };
+
+  if (window.Chart) { renderFn(); } else {
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js';
+    s.onload = renderFn;
+    document.head.appendChild(s);
+  }
 }
 
 // ── PBS Explore chart (horizontal bar) ───────────────────────────────────────
