@@ -545,9 +545,9 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 36p
         <div style="font-size:22px;font-weight:700;letter-spacing:-.3px">Thirty years of PBS spending: from $1.8 billion to $18.4 billion</div>
       </div>
       <p style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;color:var(--text3);margin-bottom:24px">Government benefit paid to dispensing pharmacists. Source: Medicare Statistics, humanservices.gov.au.</p>
-      <div style="position:relative;height:260px;width:100%" id="pbs-chart-wrap">
+      <div style="position:relative;height:260px;width:100%;overflow:hidden" id="pbs-chart-wrap">
         <canvas id="pbs-chart" style="width:100%;height:100%"></canvas>
-        <div id="pbs-chart-placeholder" style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text3);font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px">
+        <div id="pbs-chart-placeholder" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--text3);font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;background:var(--bg2);border:1px solid var(--border)">
           Run <code style="background:var(--bg3);padding:2px 6px;border-radius:2px">python build_site_data.py</code> to load real PBS data
         </div>
       </div>
@@ -759,8 +759,8 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 36p
             <!-- Bar chart -->
             <div>
               <div class="section-label" style="margin-bottom:10px">Top 10 by government benefit</div>
-              <div style="position:relative;height:280px">
-                <div id="spend-bar-placeholder" style="height:100%;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center">
+              <div style="position:relative;height:280px;overflow:hidden">
+                <div id="spend-bar-placeholder" style="position:absolute;inset:0;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center">
                   <span class="sans" style="font-size:12px;color:var(--text3)">Loading chart…</span>
                 </div>
                 <canvas id="spend-bar-chart" style="display:none;height:280px"></canvas>
@@ -770,8 +770,8 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 36p
             <!-- Donut chart -->
             <div>
               <div class="section-label" style="margin-bottom:10px">Spend by therapy area</div>
-              <div style="position:relative;height:280px">
-                <div id="spend-donut-placeholder" style="height:100%;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center">
+              <div style="position:relative;height:280px;overflow:hidden">
+                <div id="spend-donut-placeholder" style="position:absolute;inset:0;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center">
                   <span class="sans" style="font-size:12px;color:var(--text3)">Loads with PBAC data</span>
                 </div>
                 <canvas id="spend-donut-chart" style="display:none;height:280px"></canvas>
