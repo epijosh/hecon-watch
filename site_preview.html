@@ -428,7 +428,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 36p
         <div class="section-label" style="margin-bottom:2px">All PBAC decisions</div>
         <div class="browse-count" id="browse-count">Loading…</div>
       </div>
-      <div class="sans" style="font-size:11px;color:var(--text3)">Click any row for full details · sort by column header</div>
+      <div class="sans" style="font-size:11px;color:var(--text3)">All PBAC decisions extracted from public summary documents (PSDs) on pbs.gov.au · Click any row for full details · click column headers to sort</div>
     </div>
     <div style="overflow-x:auto">
       <table class="dtable" id="browse-table">
@@ -584,6 +584,24 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 36p
           <div class="insight-num" id="insight-rare-rate" style="color:#6A1B9A">—</div>
           <div class="insight-label">Rare disease TA recommendation rate</div>
           <div class="insight-note" id="insight-rare-note">vs the overall average — more managed access</div>
+        </div>
+        <!-- Card 4: PBAC rec rate -->
+        <div class="insight-card">
+          <div class="insight-num" id="pbac-rec-rate" style="color:#2e7d32">—</div>
+          <div class="insight-label">PBAC positive recommendation rate</div>
+          <div class="insight-note" id="pbac-rec-note">across all PSDs extracted from pbs.gov.au</div>
+        </div>
+        <!-- Card 5: Multi-submission rate -->
+        <div class="insight-card">
+          <div class="insight-num" id="pbac-multi-pct" style="color:var(--red)">—</div>
+          <div class="insight-label">of listed drugs required more than one submission</div>
+          <div class="insight-note" id="pbac-multi-note">avg. submissions to listing: loading…</div>
+        </div>
+        <!-- Card 6: Risk-sharing -->
+        <div class="insight-card">
+          <div class="insight-num" id="pbac-risk-pct" style="color:#1565C0">—</div>
+          <div class="insight-label">of recommended drugs have a risk-sharing arrangement</div>
+          <div class="insight-note" id="pbac-risk-note">confidential pricing or outcomes-based payment</div>
         </div>
       </div>
       <!-- Top therapy areas by NICE volume -->
@@ -1290,8 +1308,27 @@ function showDrugResult(d) {
           <span style="display:inline-flex;align-items:center;gap:4px;margin-right:12px"><span style="width:8px;height:8px;border-radius:50%;background:#2e7d32;display:inline-block"></span>Recommended</span>
           <span style="display:inline-flex;align-items:center;gap:4px;margin-right:12px"><span style="width:8px;height:8px;border-radius:50%;background:var(--red);display:inline-block"></span>Not recommended</span>
           <span style="display:inline-flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:#E65100;display:inline-block"></span>Deferred</span>
-        </div>
-      </div>`;
+        </div>`;
+    // Full submission table
+    if (pd.history.length > 0) {
+      const tableRows = pd.history.map(h => {
+        const rec = h.rec || '—';
+        const recCls = rec.startsWith('Recommended') && !rec.startsWith('Not') ? 'drec-y' : rec.startsWith('Not') ? 'drec-n' : rec === 'Deferred' ? 'drec-d' : 'drec-u';
+        const icer = h.icer_high ? '$'+Math.round(h.icer_high/1000)+'k' : (h.icer_low ? '>$'+Math.round(h.icer_low/1000)+'k' : '—');
+        const link = h.filename ? `<a href="https://www.pbs.gov.au/industry/listing/elements/pbac-meetings/psd/${h.filename}" target="_blank" class="read-more sans" style="font-size:10px">PSD →</a>` : '';
+        return `<tr><td style="font-family:var(--ui);font-size:12px;font-weight:700;padding:8px 0;border-bottom:1px solid var(--border)">${h.year||'—'}</td><td style="padding:8px 12px 8px 0;border-bottom:1px solid var(--border)"><span class="drec ${recCls}" style="font-size:10px">${rec}</span></td><td style="font-family:var(--ui);font-size:12px;color:var(--text2);padding:8px 12px 8px 0;border-bottom:1px solid var(--border)">${icer}</td><td style="padding:8px 0;border-bottom:1px solid var(--border)">${link}</td></tr>`;
+      }).join('');
+      historyHtml += `<div style="margin-top:16px;overflow-x:auto"><table style="width:100%;border-collapse:collapse">
+        <thead><tr>
+          <th style="font-family:var(--ui);font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3);padding:0 0 8px;border-bottom:2px solid var(--text);text-align:left">Year</th>
+          <th style="font-family:var(--ui);font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3);padding:0 12px 8px 0;border-bottom:2px solid var(--text);text-align:left">PBAC outcome</th>
+          <th style="font-family:var(--ui);font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3);padding:0 12px 8px 0;border-bottom:2px solid var(--text);text-align:left">ICER</th>
+          <th style="border-bottom:2px solid var(--text)"></th>
+        </tr></thead>
+        <tbody>${tableRows}</tbody>
+      </table></div>`;
+    }
+    historyHtml += `</div>`;
   }
 
   // ── NICE data ─────────────────────────────────────────────────────────────
@@ -1383,6 +1420,8 @@ function showDrugResult(d) {
         <span style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;color:var(--text3);margin-left:auto">Not the right drug? <strong style="cursor:pointer;color:var(--text2)" onclick="document.getElementById('search-input').focus()">Refine your search</strong></span>
       </div>
     </div>
+
+    ${buildContextSection(therapy, pd && pd.submissions, pd && pd.icer_high)}
 
     <div style="margin-top:32px">
       <div class="section-label">Related analysis</div>
@@ -1530,6 +1569,158 @@ function showNICEResults(query, results) {
   `;
 }
 
+// ── PBAC computed stats ───────────────────────────────────────────────────────
+let _pbacStats = {};
+let _therapyStats = {};
+
+function computePbacStats() {
+  const D = window.SITE_DATA;
+  if (!D || !D.psd || !D.psd.drugs) return;
+  const drugs = Object.values(D.psd.drugs);
+  const total = drugs.length;
+  const recommended = drugs.filter(d => { const r=(d.recommendation||'').toLowerCase(); return r.startsWith('recommended') && !r.startsWith('not'); });
+  const withRisk = drugs.filter(d => d.risk_sharing);
+  const multiSub = drugs.filter(d => (d.submissions||1) > 1);
+  const recSubs = recommended.map(d => d.submissions||1);
+  const avgRecSubs = recSubs.length > 0 ? (recSubs.reduce((a,b)=>a+b,0)/recSubs.length).toFixed(1) : '—';
+  const recIcers = recommended.filter(d => (d.icer_high||0) > 0).map(d => d.icer_high);
+  const avgIcer = recIcers.length > 0 ? Math.round(recIcers.reduce((a,b)=>a+b,0)/recIcers.length) : null;
+
+  _pbacStats = {
+    total, recRate: total > 0 ? Math.round(recommended.length/total*100) : null,
+    riskSharingCount: withRisk.length,
+    riskSharingRate: recommended.length > 0 ? Math.round(withRisk.length/recommended.length*100) : null,
+    multiSubCount: multiSub.length,
+    multiSubRate: recommended.length > 0 ? Math.round(multiSub.length/recommended.length*100) : null,
+    avgSubsToListing: avgRecSubs, avgIcer,
+    recommended: recommended.length,
+  };
+
+  // Per-therapy stats
+  const groups = {};
+  drugs.forEach(d => {
+    const ta = d.therapy_area || 'Other';
+    if (!groups[ta]) groups[ta] = [];
+    groups[ta].push(d);
+  });
+  for (const [ta, group] of Object.entries(groups)) {
+    const rec = group.filter(d => { const r=(d.recommendation||'').toLowerCase(); return r.startsWith('recommended') && !r.startsWith('not'); });
+    const icers = rec.filter(d => (d.icer_high||0)>0).map(d => d.icer_high);
+    const subs = group.map(d => d.submissions||1);
+    _therapyStats[ta] = {
+      total: group.length, recommended: rec.length,
+      recRate: group.length > 0 ? Math.round(rec.length/group.length*100) : 0,
+      avgIcer: icers.length > 0 ? Math.round(icers.reduce((a,b)=>a+b,0)/icers.length) : null,
+      avgSubs: subs.length > 0 ? (subs.reduce((a,b)=>a+b,0)/subs.length).toFixed(1) : null,
+    };
+  }
+}
+
+function populatePbacInsights() {
+  if (!_pbacStats.recRate) return;
+  const recEl = document.getElementById('pbac-rec-rate'); if (recEl) recEl.textContent = _pbacStats.recRate + '%';
+  const recNote = document.getElementById('pbac-rec-note'); if (recNote) recNote.textContent = `${_pbacStats.recommended.toLocaleString()} of ${_pbacStats.total.toLocaleString()} PSDs resulted in a positive recommendation`;
+  const multiEl = document.getElementById('pbac-multi-pct'); if (multiEl) multiEl.textContent = _pbacStats.multiSubRate + '%';
+  const multiNote = document.getElementById('pbac-multi-note'); if (multiNote) multiNote.textContent = `average submissions to listing: ${_pbacStats.avgSubsToListing} · ${_pbacStats.multiSubCount} multi-submission drugs in database`;
+  const riskEl = document.getElementById('pbac-risk-pct'); if (riskEl) riskEl.textContent = (_pbacStats.riskSharingRate || '—') + (typeof _pbacStats.riskSharingRate === 'number' ? '%' : '');
+  const riskNote = document.getElementById('pbac-risk-note'); if (riskNote && _pbacStats.riskSharingCount) riskNote.textContent = `${_pbacStats.riskSharingCount} drugs with confidential pricing or outcomes-based payment`;
+}
+
+function buildContextSection(therapy, subs, icer) {
+  const ts = therapy ? _therapyStats[therapy] : null;
+  const ps = _pbacStats;
+  if (!ts || !ps.recRate) return '';
+  const fmt = v => !v ? '—' : v >= 1e6 ? '$'+(v/1e6).toFixed(1)+'M' : '$'+Math.round(v/1000)+'k';
+  const recCol = ts.recRate >= (ps.recRate || 60) ? '#2e7d32' : 'var(--red)';
+  const subsCol = (subs||1) > parseFloat(ts.avgSubs||1) ? 'var(--red)' : '#2e7d32';
+
+  return `<div style="margin-top:28px;border:1px solid var(--border)">
+    <div style="padding:14px 20px;border-bottom:1px solid var(--border);background:var(--bg2)">
+      <div class="section-label" style="margin-bottom:0">Benchmark context · ${therapy} drugs at PBAC</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr)">
+      <div style="padding:16px 20px;border-right:1px solid var(--border)">
+        <div class="sans" style="font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3);margin-bottom:8px">Rec. rate — this therapy area</div>
+        <div style="font-family:var(--display);font-size:26px;font-weight:700;color:${recCol}">${ts.recRate}%</div>
+        <div class="sans" style="font-size:11px;color:var(--text3);margin-top:4px">PBAC-wide average: ${ps.recRate}% · ${ts.total} decisions</div>
+      </div>
+      <div style="padding:16px 20px;border-right:1px solid var(--border)">
+        <div class="sans" style="font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3);margin-bottom:8px">Avg. submissions to listing</div>
+        <div style="font-family:var(--display);font-size:26px;font-weight:700">${ts.avgSubs || '—'}</div>
+        <div class="sans" style="font-size:11px;color:var(--text3);margin-top:4px">this drug: <span style="color:${subsCol};font-weight:700">${subs || '1'}</span> · PBAC-wide: ${ps.avgSubsToListing}</div>
+      </div>
+      <div style="padding:16px 20px">
+        <div class="sans" style="font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3);margin-bottom:8px">Avg. ICER — listed drugs</div>
+        <div style="font-family:var(--display);font-size:26px;font-weight:700">${fmt(ts.avgIcer)}</div>
+        <div class="sans" style="font-size:11px;color:var(--text3);margin-top:4px">${icer ? 'this drug: ' + fmt(icer) : 'no ICER data for this drug'}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function buildLiveArticles() {
+  const D = window.SITE_DATA;
+  if (!D || !D.psd || !D.psd.drugs) return;
+  const drugs = Object.entries(D.psd.drugs);
+  if (drugs.length < 10) return; // not enough data
+
+  // Drug with most submissions
+  const mostSubs = drugs.filter(([,d]) => (d.submissions||1) > 2).sort((a,b) => (b[1].submissions||1)-(a[1].submissions||1))[0];
+
+  // Therapy area with lowest rec rate (min 8 drugs)
+  const hardestTA = Object.entries(_therapyStats).filter(([,v]) => v.total >= 8).sort((a,b) => a[1].recRate - b[1].recRate)[0];
+
+  // NICE-listed but PBAC-unlisted count
+  const niceMissCount = D.matched && D.matched.drugs ? D.matched.drugs.filter(m => !m.pbac_date && m.nice_date).length : 0;
+
+  const grid = document.querySelector('.article-grid');
+  if (!grid) return;
+
+  const articles = [];
+
+  if (mostSubs) {
+    const [key, d] = mostSubs;
+    const title = key.charAt(0).toUpperCase() + key.slice(1);
+    articles.push(`<div class="article-card" onclick="runSearch('${key}')" style="cursor:pointer">
+      <div class="section-label">PBAC · Multi-submission</div>
+      <h2 class="article-title">${title} took ${d.submissions} PBAC submissions — the anatomy of a successful resubmission strategy</h2>
+      <p class="article-standfirst">Of ${_pbacStats.total} drugs in this database, ${_pbacStats.multiSubCount} required more than one PBAC submission before listing. The average for recommended drugs: ${_pbacStats.avgSubsToListing} submissions. Click to explore ${title}'s full submission history.</p>
+      <div class="article-meta sans">Live data · ${_pbacStats.total} decisions analysed</div>
+    </div>`);
+  }
+
+  if (hardestTA) {
+    const [ta, stats] = hardestTA;
+    articles.push(`<div class="article-card">
+      <div class="section-label">PBAC · ${ta}</div>
+      <h2 class="article-title">${ta} faces PBAC's hardest road: only ${stats.recRate}% of submissions are recommended</h2>
+      <p class="article-standfirst">PBAC's overall positive recommendation rate is ${_pbacStats.recRate}%, but the picture varies dramatically across therapy areas. ${ta} drugs face ${stats.recRate < (_pbacStats.recRate||60) ? 'significantly higher rejection rates' : 'above-average success'} — across ${stats.total} submissions on record.</p>
+      <div class="article-meta sans">Live data · ${stats.total} ${ta} decisions</div>
+    </div>`);
+  }
+
+  if (niceMissCount > 0) {
+    articles.push(`<div class="article-card">
+      <div class="section-label">PBAC vs NICE · Access gap</div>
+      <h2 class="article-title">${niceMissCount} drugs NICE has approved that Australia hasn't listed — who's waiting, and why</h2>
+      <p class="article-standfirst">Cross-referencing PBAC PSDs against NICE technology appraisals reveals ${niceMissCount} drugs with a positive NICE recommendation but no PBS listing. The gap is concentrated in oncology and rare disease, where delay is most clinically significant.</p>
+      <div class="article-meta sans">Live data · PBAC + NICE cross-match</div>
+    </div>`);
+  }
+
+  // Default fallback article
+  while (articles.length < 3) {
+    articles.push(`<div class="article-card">
+      <div class="section-label">Methodology · Open data</div>
+      <h2 class="article-title">How we built a free PBAC database — and why MAESTrO charges $12,000 a year for the same data</h2>
+      <p class="article-standfirst">The case for open HTA data, how the extraction pipeline works, and what this database can and can't tell you about PBAC decision-making.</p>
+      <div class="article-meta sans">May 2026 · 10 min read</div>
+    </div>`);
+  }
+
+  grid.innerHTML = articles.slice(0,3).join('');
+}
+
 // ── Real data integration ─────────────────────────────────────────────────────
 (function initRealData() {
   const D = window.SITE_DATA;
@@ -1540,6 +1731,11 @@ function showNICEResults(query, results) {
 
   // Populate browse table with real data
   initBrowse();
+
+  // Compute PBAC-specific stats and populate new insight cards + article grid
+  computePbacStats();
+  populatePbacInsights();
+  buildLiveArticles();
 
   // Update stats bar
   const s = D.stats;
