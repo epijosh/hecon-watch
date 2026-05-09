@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PBAC PSD Dashboard</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #2563eb;
+      --primary-light: #eff6ff;
+      --violet: #7c3aed;
+      --green: #059669;
+      --amber: #d97706;
+      --red: #dc2626;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-400: #94a3b8;
+      --gray-600: #475569;
+      --gray-800: #1e293b;
+      --gray-900: #0f172a;
+      --radius: 10px;
+      --shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+      --shadow-md: 0 4px 6px rgba(0,0,0,.07), 0 2px 4px rgba(0,0,0,.06);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--gray-50);
+      color: var(--gray-900);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* ─── Banner ─────────────────────────────── */
+    #setup-banner {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      background: #fefce8;
+      border-bottom: 1px solid #fde047;
+      padding: 10px 24px;
+      font-size: 13px;
+      color: #713f12;
+    }
+    #setup-banner code {
+      background: #fef9c3;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    #setup-banner .badge-est {
+      background: #fde047;
+      color: #713f12;
+      font-weight: 700;
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    /* ─── Header ─────────────────────────────── */
+    header {
+      background: white;
+      border-bottom: 1px solid var(--gray-200);
+      padding: 18px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    header h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--gray-900);
+      letter-spacing: -.3px;
+    }
+    header p {
+      font-size: 12px;
+      color: var(--gray-400);
+      margin-top: 1px;
+    }
+    #data-status {
+      font-size: 12px;
+      color: var(--gray-600);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .dot-live { width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block; }
+    .dot-est  { width:8px;height:8px;border-radius:50%;background:var(--amber);display:inline-block; }
+
+    /* ─── Main layout ────────────────────────── */
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 24px 28px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* ─── KPI cards ──────────────────────────── */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .kpi-card {
+      background: white;
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-200);
+      padding: 18px 20px;
+      box-shadow: var(--shadow);
+    }
+    .kpi-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--gray-400);
+      margin-bottom: 6px;
+    }
+    .kpi-value {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--gray-900);
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+    .kpi-sub {
+      font-size: 12px;
+      color: var(--gray-400);
+      margin-top: 4px;
+    }
+    .kpi-card.accent-blue .kpi-value { color: var(--primary); }
+    .kpi-card.accent-red  .kpi-value { color: var(--red); }
+    .kpi-card.accent-green .kpi-value { color: var(--green); }
+    .kpi-card.accent-violet .kpi-value { color: var(--violet); }
+
+    /* ─── Chart cards ────────────────────────── */
+    .chart-row {
+      display: grid;
+      gap: 16px;
+    }
+    .chart-row.two-col { grid-template-columns: 2fr 1fr; }
+    .chart-row.one-col { grid-template-columns: 1fr; }
+
+    .chart-card {
+      background: white;
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-200);
+      padding: 20px 24px;
+      box-shadow: var(--shadow);
+    }
+    .chart-card h2 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 4px;
+      letter-spacing: -.1px;
+    }
+    .chart-card .chart-sub {
+      font-size: 12px;
+      color: var(--gray-400);
+      margin-bottom: 16px;
+    }
+    .chart-wrap { position: relative; }
+    .chart-wrap.tall { height: 320px; }
+    .chart-wrap.medium { height: 260px; }
+    .chart-wrap.drugs { height: 520px; }
+
+    /* ─── Gap analysis section ───────────────── */
+    .gap-section {
+      background: white;
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-200);
+      padding: 20px 24px;
+      box-shadow: var(--shadow);
+    }
+    .gap-section h2 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 4px;
+    }
+    .gap-section .gap-sub {
+      font-size: 12px;
+      color: var(--gray-400);
+      margin-bottom: 16px;
+    }
+
+    .gap-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .gap-card {
+      border-radius: 8px;
+      border: 1.5px solid;
+      padding: 12px 14px;
+    }
+    .gap-card.available {
+      border-color: #bbf7d0;
+      background: #f0fdf4;
+    }
+    .gap-card.pending {
+      border-color: var(--gray-200);
+      background: var(--gray-100);
+    }
+    .gap-card .gc-meeting {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gray-800);
+    }
+    .gap-card .gc-status {
+      font-size: 11px;
+      font-weight: 600;
+      margin-top: 2px;
+      margin-bottom: 6px;
+    }
+    .gc-status.avail { color: var(--green); }
+    .gc-status.pend  { color: var(--gray-400); }
+    .gap-card .gc-est {
+      font-size: 12px;
+      color: var(--gray-600);
+    }
+    .gap-card .gc-link {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .gap-card .gc-link:hover { text-decoration: underline; }
+
+    .gap-total-box {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* ─── Responsive ─────────────────────────── */
+    @media (max-width: 900px) {
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .chart-row.two-col { grid-template-columns: 1fr; }
+      .gap-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      main { padding: 16px; }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .gap-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Setup banner (shown when psd_data.js hasn't been run yet) -->
+<div id="setup-banner">
+  <span class="badge-est">Estimated data</span>
+  To load your actual collection: run <code>generate_psd_data.py</code> in this folder, then reload this page.
+</div>
+
+<header>
+  <div>
+    <h1>PBAC PSD Database</h1>
+    <p>Australian Pharmaceutical Benefits Advisory Committee — Public Summary Documents</p>
+  </div>
+  <div id="data-status">
+    <span id="status-dot"></span>
+    <span id="status-label"></span>
+  </div>
+</header>
+
+<main>
+
+  <!-- KPI row -->
+  <div class="kpi-grid">
+    <div class="kpi-card accent-blue">
+      <div class="kpi-label">Total PSDs in collection</div>
+      <div class="kpi-value" id="kpi-total">—</div>
+      <div class="kpi-sub" id="kpi-total-sub"></div>
+    </div>
+    <div class="kpi-card accent-violet">
+      <div class="kpi-label">Unique drugs / items</div>
+      <div class="kpi-value" id="kpi-drugs">—</div>
+      <div class="kpi-sub">distinct drug entries</div>
+    </div>
+    <div class="kpi-card accent-green">
+      <div class="kpi-label">Collection year range</div>
+      <div class="kpi-value" id="kpi-range">—</div>
+      <div class="kpi-sub" id="kpi-range-sub"></div>
+    </div>
+    <div class="kpi-card accent-red">
+      <div class="kpi-label">Missing PBAC meetings</div>
+      <div class="kpi-value" id="kpi-missing">6</div>
+      <div class="kpi-sub">Mar 2024 → Nov 2025 (~215 PSDs)</div>
+    </div>
+  </div>
+
+  <!-- Chart row 1: year bar + therapy donut -->
+  <div class="chart-row two-col">
+    <div class="chart-card">
+      <h2>PSDs by PBAC Meeting Year</h2>
+      <div class="chart-sub">Number of public summary documents published per calendar year</div>
+      <div class="chart-wrap tall">
+        <canvas id="yearChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <h2>By Therapy Area</h2>
+      <div class="chart-sub">Breakdown of collection by clinical domain</div>
+      <div class="chart-wrap medium" style="height:300px">
+        <canvas id="therapyChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart row 2: top drugs horizontal bar -->
+  <div class="chart-row one-col">
+    <div class="chart-card">
+      <h2>Most-Submitted Drugs</h2>
+      <div class="chart-sub">Drugs with multiple PBAC appearances (resubmissions, new indications, biosimilars)</div>
+      <div class="chart-wrap drugs">
+        <canvas id="drugChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gap analysis -->
+  <div class="gap-section">
+    <h2>📥 Missing PBAC Meetings — What to Download</h2>
+    <div class="gap-sub">
+      Your collection ends at <strong>November 2023</strong>. The following PBAC meetings have published PSDs that aren't in your database yet.
+      PSDs are published ~4 months after each meeting. March 2026 PSDs are not yet available (expected ~July 2026).
+    </div>
+
+    <div class="gap-grid" id="gap-grid">
+      <!-- filled by JS -->
+    </div>
+
+    <div class="gap-total-box" id="gap-total-box"></div>
+  </div>
+
+</main>
+
+<!-- Try to load real data generated by generate_psd_data.py -->
+<script src="psd_data.js"></script>
+
+<script>
+// ─────────────────────────────────────────────────────────
+// FALLBACK ESTIMATED DATA (used if psd_data.js not found)
+// ─────────────────────────────────────────────────────────
+const FALLBACK_DATA = {
+  isEstimate: true,
+  generated: null,
+  total: 1415,
+  uniqueDrugs: 342,
+  yearRange: [2008, 2023],
+  byYear: {
+    '2008': 20, '2009': 25, '2010': 30, '2011': 38, '2012': 45,
+    '2013': 85, '2014': 105, '2015': 96, '2016': 100, '2017': 103,
+    '2018': 112, '2019': 118, '2020': 122, '2021': 132, '2022': 145, '2023': 131
+  },
+  byTherapy: {
+    'Oncology': 538,
+    'Immunology / Rheumatology': 269,
+    'Other': 198,
+    'Rare Disease': 156,
+    'Diabetes / Endocrine': 99,
+    'Cardiovascular': 85,
+    'Neurology': 71,
+    'Infectious Disease': 42,
+    'Respiratory': 13,
+  },
+  topDrugs: [
+    { drug: 'adalimumab', count: 18 },
+    { drug: 'rituximab', count: 13 },
+    { drug: 'pembrolizumab', count: 11 },
+    { drug: 'bevacizumab', count: 10 },
+    { drug: 'nivolumab', count: 10 },
+    { drug: 'trastuzumab', count: 9 },
+    { drug: 'aflibercept', count: 8 },
+    { drug: 'abiraterone', count: 8 },
+    { drug: 'acalabrutinib', count: 8 },
+    { drug: 'ibrutinib', count: 8 },
+    { drug: 'venetoclax', count: 8 },
+    { drug: 'etanercept', count: 7 },
+    { drug: 'enzalutamide', count: 7 },
+    { drug: 'certolizumab', count: 6 },
+    { drug: 'olaparib', count: 6 },
+    { drug: 'palbociclib', count: 6 },
+    { drug: 'secukinumab', count: 6 },
+    { drug: 'zanubrutinib', count: 5 },
+    { drug: 'abemaciclib', count: 5 },
+    { drug: 'atezolizumab', count: 5 },
+    { drug: 'adrenaline', count: 5 },
+    { drug: 'alirocumab', count: 4 },
+    { drug: 'abatacept', count: 4 },
+    { drug: 'daratumumab', count: 5 },
+    { drug: 'lenalidomide', count: 5 },
+  ],
+};
+
+// ─────────────────────────────────────────────────────────
+// MISSING MEETINGS DATA (factual — from web search)
+// ─────────────────────────────────────────────────────────
+const MISSING_MEETINGS = [
+  {
+    meeting: 'March 2024',
+    code: '2024-03',
+    status: 'available',
+    estimatedPSDs: 35,
+    url: 'https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2024-03',
+  },
+  {
+    meeting: 'July 2024',
+    code: '2024-07',
+    status: 'available',
+    estimatedPSDs: 38,
+    url: 'https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2024-07',
+  },
+  {
+    meeting: 'November 2024',
+    code: '2024-11',
+    status: 'available',
+    estimatedPSDs: 36,
+    url: 'https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2024-11',
+  },
+  {
+    meeting: 'March 2025',
+    code: '2025-03',
+    status: 'available',
+    estimatedPSDs: 34,
+    url: 'https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2025-03',
+  },
+  {
+    meeting: 'July 2025',
+    code: '2025-07',
+    status: 'available',
+    estimatedPSDs: 37,
+    url: 'https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2025-07',
+  },
+  {
+    meeting: 'November 2025',
+    code: '2025-11',
+    status: 'available',
+    estimatedPSDs: 35,
+    url: 'https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2025-11',
+  },
+  {
+    meeting: 'March 2026',
+    code: '2026-03',
+    status: 'pending',
+    estimatedPSDs: null,
+    url: null,
+  },
+];
+
+// ─────────────────────────────────────────────────────────
+// THERAPY AREA COLOURS
+// ─────────────────────────────────────────────────────────
+const THERAPY_COLORS = {
+  'Oncology':                  '#ef4444',
+  'Immunology / Rheumatology': '#3b82f6',
+  'Other':                     '#94a3b8',
+  'Rare Disease':               '#8b5cf6',
+  'Diabetes / Endocrine':       '#10b981',
+  'Cardiovascular':             '#f97316',
+  'Neurology':                  '#6366f1',
+  'Infectious Disease':         '#0891b2',
+  'Respiratory':                '#06b6d4',
+};
+
+// ─────────────────────────────────────────────────────────
+// BOOT
+// ─────────────────────────────────────────────────────────
+const DATA = (typeof PSD_DATA !== 'undefined') ? PSD_DATA : FALLBACK_DATA;
+const isEstimate = DATA.isEstimate;
+
+// Show banner if using estimated data
+if (isEstimate) {
+  document.getElementById('setup-banner').style.display = 'flex';
+}
+
+// Status indicator
+const dotEl = document.getElementById('status-dot');
+const labelEl = document.getElementById('status-label');
+if (isEstimate) {
+  dotEl.className = 'dot-est';
+  labelEl.textContent = 'Showing estimated data';
+} else {
+  dotEl.className = 'dot-live';
+  labelEl.textContent = 'Live data · Generated ' + DATA.generated;
+}
+
+// ─── KPIs ───────────────────────────────────────────────
+document.getElementById('kpi-total').textContent = DATA.total.toLocaleString();
+document.getElementById('kpi-total-sub').textContent = isEstimate ? 'estimated — run script for actual' : 'from ' + DATA.total.toLocaleString() + ' PDFs parsed';
+document.getElementById('kpi-drugs').textContent = DATA.uniqueDrugs.toLocaleString();
+document.getElementById('kpi-range').textContent = DATA.yearRange[0] + '–' + DATA.yearRange[1];
+document.getElementById('kpi-range-sub').textContent = (DATA.yearRange[1] - DATA.yearRange[0] + 1) + ' years of PBAC history';
+
+// ─── Year bar chart ──────────────────────────────────────
+(function() {
+  const years = Object.keys(DATA.byYear);
+  const counts = Object.values(DATA.byYear);
+
+  const colors = years.map(y => {
+    const n = parseInt(y);
+    if (n >= 2020) return '#2563eb';
+    if (n >= 2015) return '#3b82f6';
+    if (n >= 2010) return '#60a5fa';
+    return '#93c5fd';
+  });
+
+  new Chart(document.getElementById('yearChart'), {
+    type: 'bar',
+    data: {
+      labels: years,
+      datasets: [{
+        label: 'PSDs published',
+        data: counts,
+        backgroundColor: colors,
+        borderRadius: 4,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: ctx => 'PBAC Meeting Year: ' + ctx[0].label,
+            label: ctx => ctx.raw + ' PSDs',
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { font: { size: 11 }, color: '#64748b' }
+        },
+        y: {
+          beginAtZero: true,
+          grid: { color: '#f1f5f9' },
+          ticks: { font: { size: 11 }, color: '#64748b' }
+        }
+      }
+    }
+  });
+})();
+
+// ─── Therapy donut chart ─────────────────────────────────
+(function() {
+  const entries = Object.entries(DATA.byTherapy);
+  const labels = entries.map(e => e[0]);
+  const counts = entries.map(e => e[1]);
+  const colors = labels.map(l => THERAPY_COLORS[l] || '#cbd5e1');
+
+  new Chart(document.getElementById('therapyChart'), {
+    type: 'doughnut',
+    data: {
+      labels,
+      datasets: [{
+        data: counts,
+        backgroundColor: colors,
+        borderWidth: 2,
+        borderColor: '#ffffff',
+        hoverBorderColor: '#ffffff',
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '60%',
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            font: { size: 11 },
+            color: '#475569',
+            padding: 10,
+            boxWidth: 12,
+            boxHeight: 12,
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+              const pct = ((ctx.raw / total) * 100).toFixed(1);
+              return ctx.label + ': ' + ctx.raw + ' (' + pct + '%)';
+            }
+          }
+        }
+      }
+    }
+  });
+})();
+
+// ─── Top drugs horizontal bar ────────────────────────────
+(function() {
+  const drugs = (DATA.topDrugs || []).slice(0, 25);
+  const labels = drugs.map(d => d.drug.replace(/-/g, ' '));
+  const counts = drugs.map(d => d.count);
+
+  // Blue gradient based on rank
+  const bgColors = counts.map((_, i) => {
+    const lightness = Math.max(45, 75 - i * 1.2);
+    return `hsl(221, 83%, ${lightness}%)`;
+  });
+
+  new Chart(document.getElementById('drugChart'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'PBAC appearances',
+        data: counts,
+        backgroundColor: bgColors,
+        borderRadius: 4,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: ctx => ctx[0].label,
+            label: ctx => ctx.raw + ' PBAC appearance' + (ctx.raw !== 1 ? 's' : ''),
+          }
+        }
+      },
+      scales: {
+        x: {
+          beginAtZero: true,
+          grid: { color: '#f1f5f9' },
+          ticks: { font: { size: 11 }, color: '#64748b', stepSize: 1 }
+        },
+        y: {
+          grid: { display: false },
+          ticks: {
+            font: { size: 11 },
+            color: '#475569',
+          }
+        }
+      }
+    }
+  });
+})();
+
+// ─── Gap analysis ────────────────────────────────────────
+(function() {
+  const grid = document.getElementById('gap-grid');
+  let totalEstimated = 0;
+  let availableCount = 0;
+
+  MISSING_MEETINGS.forEach(m => {
+    const card = document.createElement('div');
+    card.className = 'gap-card ' + m.status;
+
+    const estText = m.estimatedPSDs
+      ? '~' + m.estimatedPSDs + ' PSDs estimated'
+      : 'PSDs not yet published (~July 2026)';
+
+    const linkHtml = m.url
+      ? `<a class="gc-link" href="${m.url}" target="_blank">Browse PSDs on PBS website →</a>`
+      : '';
+
+    const statusText = m.status === 'available' ? '✓ PSDs published' : '⏳ Pending publication';
+    const statusClass = m.status === 'available' ? 'avail' : 'pend';
+
+    card.innerHTML = `
+      <div class="gc-meeting">${m.meeting} PBAC Meeting</div>
+      <div class="gc-status ${statusClass}">${statusText}</div>
+      <div class="gc-est">${estText}</div>
+      ${linkHtml}
+    `;
+
+    grid.appendChild(card);
+
+    if (m.estimatedPSDs) totalEstimated += m.estimatedPSDs;
+    if (m.status === 'available') availableCount++;
+  });
+
+  document.getElementById('gap-total-box').innerHTML =
+    `📊 <strong>${availableCount} meetings with published PSDs</strong> available to download — approximately <strong>${totalEstimated} PSDs</strong> to add to your collection.` +
+    ` Links above go directly to each meeting's PSD index on pbs.gov.au.`;
+})();
+</script>
+
+</body>
+</html>

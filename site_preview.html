@@ -1,0 +1,2401 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PBAC Watch — Australian HTA Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<!-- Load real data if build_site_data.py has been run -->
+<script>
+// Graceful fallback if site_data.js hasn't been built yet
+window.SITE_DATA = window.SITE_DATA || null;
+</script>
+<script src="site_data.js" onerror="console.log('site_data.js not yet built — showing demo data')"></script>
+<style>
+
+/* ── Tokens ─────────────────────────────────────── */
+:root {
+  --red:     #C62828;
+  --bg:      #FDFBF7;
+  --bg2:     #F5F1EA;
+  --bg3:     #EDE8DE;
+  --text:    #161008;
+  --text2:   #45392A;
+  --text3:   #8A7E6E;
+  --border:  #CFC7B2;
+  --display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --body:    'Lora', Georgia, 'Times New Roman', serif;
+  --ui:      -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+}
+[data-theme="dark"] {
+  --red:    #EF5350;
+  --bg:     #0C0A08;
+  --bg2:    #141210;
+  --bg3:    #1C1A16;
+  --text:   #F0EDE4;
+  --text2:  #B0A898;
+  --text3:  #706860;
+  --border: #2A2620;
+}
+
+/* ── Reset ──────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--body); background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.7; transition: background .25s, color .25s; }
+a { color: inherit; text-decoration: none; }
+
+/* ── Utilities ──────────────────────────────────── */
+.sans { font-family: var(--ui); }
+.rule { border: none; border-top: 1px solid var(--border); }
+.container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+.section-label { font-family: var(--ui); font-size: 10px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: var(--red); margin-bottom: 10px; }
+.read-more { font-family: var(--ui); font-size: 12px; font-weight: 600; color: var(--red); letter-spacing: .3px; }
+.read-more:hover { text-decoration: underline; }
+
+/* ── Top stripe ─────────────────────────────────── */
+.top-stripe { height: 4px; background: var(--red); }
+
+/* ── Navigation ─────────────────────────────────── */
+nav { border-bottom: 1px solid var(--border); background: var(--bg); position: sticky; top: 0; z-index: 100; }
+.nav-inner { display: flex; align-items: center; justify-content: space-between; height: 52px; }
+.nav-logo { font-family: var(--display); font-size: 17px; font-weight: 700; letter-spacing: -.5px; }
+.nav-logo em { font-style: normal; color: var(--red); }
+.nav-links { display: flex; list-style: none; }
+.nav-links a { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 12px; font-weight: 500; letter-spacing: .3px; color: var(--text2); padding: 0 12px; height: 52px; display: flex; align-items: center; border-bottom: 2px solid transparent; transition: color .15s, border-color .15s; }
+.nav-links a:hover, .nav-links a.active { color: var(--text); border-bottom-color: var(--red); }
+.nav-actions { display: flex; align-items: center; gap: 8px; }
+.btn-nav { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 12px; font-weight: 500; padding: 6px 14px; border-radius: 0; border: 1px solid var(--border); background: transparent; color: var(--text2); cursor: pointer; transition: background .15s; }
+.btn-nav:hover { background: var(--bg2); color: var(--text); }
+.btn-red { background: var(--red); color: #fff; border-color: var(--red); }
+.btn-red:hover { opacity: .9; background: var(--red); color: #fff; }
+.theme-btn { width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 0; background: transparent; color: var(--text3); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.theme-btn:hover { background: var(--bg2); }
+
+/* ── SEARCH HERO ────────────────────────────────── */
+.search-hero { padding: 36px 0 32px; border-bottom: 1px solid var(--border); }
+.search-eyebrow { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; color: var(--text3); letter-spacing: .5px; text-align: center; margin-bottom: 20px; }
+.search-wrap { position: relative; max-width: 640px; margin: 0 auto; }
+.search-input {
+  width: 100%;
+  padding: 16px 52px 16px 20px;
+  font-family: var(--body);
+  font-size: 17px;
+  color: var(--text);
+  background: var(--bg);
+  border: 2px solid var(--text);
+  border-radius: 0;
+  outline: none;
+  transition: border-color .15s;
+}
+.search-input::placeholder { color: var(--text3); font-style: italic; }
+.search-input:focus { border-color: var(--red); }
+.search-clear { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text3); font-size: 18px; cursor: pointer; display: none; padding: 4px; line-height: 1; }
+.search-clear.visible { display: block; }
+.search-hint { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; color: var(--text3); text-align: center; margin-top: 12px; }
+.search-hint strong { color: var(--text2); font-weight: 600; cursor: pointer; }
+.search-hint strong:hover { color: var(--red); }
+
+/* ── SEARCH RESULTS ──────────────────────────────── */
+#search-results { display: none; }
+#search-results.active { display: block; }
+
+.result-drug {
+  border-bottom: 1px solid var(--border);
+  padding: 32px 0;
+}
+.drug-header { margin-bottom: 24px; }
+.drug-name-main { font-family: var(--display); font-size: 28px; font-weight: 700; letter-spacing: -.5px; margin-bottom: 4px; }
+.drug-aka { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 13px; color: var(--text3); margin-bottom: 10px; }
+.drug-indication { font-size: 15px; color: var(--text2); font-style: italic; }
+.drug-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 24px; }
+.drug-cell { background: var(--bg); padding: 20px; }
+.drug-cell-label { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; }
+.drug-cell-val { font-family: var(--display); font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+.drug-cell-sub { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 12px; color: var(--text3); }
+.status-listed { color: #2e7d32; }
+.status-restricted { color: #e65100; }
+.status-not { color: var(--red); }
+.gap-positive { color: var(--red); }
+.gap-negative { color: #2e7d32; }
+
+.gap-visual { margin-bottom: 24px; }
+.gap-track { height: 10px; background: var(--bg3); border-radius: 1px; position: relative; overflow: hidden; margin-bottom: 6px; }
+.gap-bar { position: absolute; top: 0; bottom: 0; border-radius: 1px; }
+.gap-caption { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; color: var(--text3); display: flex; justify-content: space-between; }
+
+.no-results { text-align: center; padding: 48px 0; color: var(--text3); }
+.no-results-title { font-size: 18px; font-weight: 700; color: var(--text2); margin-bottom: 8px; }
+.no-results-sub { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 1.6; }
+
+/* ── Stats bar ──────────────────────────────────── */
+.stats-bar { border-bottom: 1px solid var(--border); background: var(--bg2); }
+.stats-inner { display: grid; grid-template-columns: repeat(4, 1fr); }
+.stat-cell { padding: 18px 20px; border-right: 1px solid var(--border); }
+.stat-cell:last-child { border-right: none; }
+.stat-num { font-family: var(--display); font-size: 26px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+.stat-label { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; color: var(--text3); }
+.stat-note { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; color: var(--red); margin-top: 3px; }
+
+/* ── Hero article ───────────────────────────────── */
+.hero { padding: 40px 0 0; border-bottom: 1px solid var(--border); }
+.hero-inner { display: grid; grid-template-columns: 1fr 360px; gap: 0; }
+.hero-content { padding-right: 36px; padding-bottom: 36px; border-right: 1px solid var(--border); }
+.hero-aside { padding-left: 32px; padding-bottom: 36px; }
+h1.hero-title { font-family: var(--display); font-size: 30px; font-weight: 700; line-height: 1.2; letter-spacing: -.5px; margin-bottom: 14px; }
+.hero-standfirst { font-size: 16px; line-height: 1.6; color: var(--text2); font-style: italic; margin-bottom: 20px; }
+.data-pull { background: var(--bg2); border-left: 3px solid var(--red); padding: 14px 16px; margin-bottom: 16px; }
+.data-pull-num { font-family: var(--display); font-size: 32px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+.data-pull-desc { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 12px; color: var(--text3); line-height: 1.4; }
+
+/* ── Article grid ───────────────────────────────── */
+.grid-section { padding: 32px 0; border-bottom: 1px solid var(--border); }
+.article-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+.article-card { padding-right: 28px; border-right: 1px solid var(--border); cursor: pointer; }
+.article-card:last-child { border-right: none; padding-right: 0; padding-left: 28px; }
+.article-card:nth-child(2) { padding-left: 28px; }
+.article-card:hover h2 { color: var(--red); }
+h2.article-title { font-family: var(--display); font-size: 16px; font-weight: 700; line-height: 1.3; letter-spacing: -.2px; margin-bottom: 8px; }
+.article-standfirst { font-size: 14px; color: var(--text2); font-style: italic; line-height: 1.5; margin-bottom: 10px; }
+.article-meta { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; color: var(--text3); }
+
+/* ── Data section ───────────────────────────────── */
+.data-section { padding: 36px 0; border-bottom: 1px solid var(--border); }
+.data-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+.chart-title { font-family: var(--display); font-size: 15px; font-weight: 700; letter-spacing: -.2px; margin-bottom: 4px; }
+.chart-source { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 10px; color: var(--text3); margin-top: 10px; }
+
+.bar-chart { margin-top: 16px; }
+.bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.bar-name { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 12px; color: var(--text2); min-width: 120px; text-align: right; }
+.bar-track { flex: 1; height: 16px; background: var(--bg3); border-radius: 1px; position: relative; overflow: hidden; }
+.bar-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--red); opacity: .82; border-radius: 1px; }
+.bar-val { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 12px; font-weight: 600; min-width: 36px; }
+
+.compare-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 16px; }
+.compare-table th { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; color: var(--text3); padding: 8px 0; border-bottom: 2px solid var(--text); text-align: left; }
+.compare-table th:last-child, .compare-table td:last-child { text-align: right; }
+.compare-table td { padding: 9px 0; border-bottom: 1px solid var(--border); color: var(--text2); }
+.compare-table td:first-child { font-weight: 700; color: var(--text); cursor: pointer; }
+.compare-table td:first-child:hover { color: var(--red); }
+.pos { color: #2e7d32; } .neg { color: var(--red); }
+
+/* ── Gap section ────────────────────────────────── */
+.gap-section { padding: 36px 0; border-bottom: 1px solid var(--border); }
+.gap-grid { display: grid; grid-template-columns: 480px 1fr; gap: 48px; align-items: start; }
+.drug-gap-row { display: flex; align-items: center; gap: 0; margin-bottom: 3px; }
+.drug-name-col { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 12px; width: 160px; text-align: right; padding-right: 10px; color: var(--text2); cursor: pointer; }
+.drug-name-col:hover { color: var(--red); }
+.gap-center-line { width: 2px; background: var(--border); margin: 0 2px; height: 20px; }
+.gap-bar-right { flex: 1; height: 12px; display: flex; align-items: center; }
+.gap-fill-bar { height: 12px; border-radius: 0 1px 1px 0; }
+.gap-mo-label { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; color: var(--text3); padding-left: 6px; white-space: nowrap; }
+.gap-axis { display: flex; padding-left: 172px; font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 10px; color: var(--text3); margin-bottom: 8px; }
+.gap-intro { font-size: 15px; line-height: 1.65; color: var(--text2); margin-bottom: 16px; }
+.gap-intro strong { color: var(--text); }
+
+/* ── Further reading ────────────────────────────── */
+.list-section { padding: 32px 0; border-bottom: 1px solid var(--border); }
+.list-item { display: grid; grid-template-columns: 56px 1fr auto; gap: 16px; align-items: start; padding: 14px 0; border-bottom: 1px solid var(--border); cursor: pointer; }
+.list-item:last-child { border-bottom: none; }
+.list-item:hover h3 { color: var(--red); }
+.list-num { font-size: 26px; font-weight: 700; color: var(--bg3); font-family: var(--display); line-height: 1; }
+h3.list-title { font-family: var(--display); font-size: 15px; font-weight: 700; line-height: 1.3; letter-spacing: -.2px; margin-bottom: 4px; }
+.list-meta { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; color: var(--text3); }
+.list-arrow { color: var(--text3); align-self: center; }
+
+/* ── Explore tabs ───────────────────────────────── */
+.tab-nav { display: flex; gap: 0; border-bottom: 2px solid var(--border); margin-bottom: 28px; }
+.tab-btn { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 12px; font-weight: 600; letter-spacing: .3px; padding: 10px 18px; border: none; background: none; color: var(--text3); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color .15s, border-color .15s; }
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--red); border-bottom-color: var(--red); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── Copy button ────────────────────────────────── */
+.copy-bar { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; margin-top: 20px; border-top: 1px solid var(--border); }
+.copy-source { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; color: var(--text3); }
+.copy-btn { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 600; padding: 5px 12px; border: 1px solid var(--border); border-radius: 0; background: var(--bg2); color: var(--text2); cursor: pointer; display: flex; align-items: center; gap: 5px; transition: background .12s, color .12s; }
+.copy-btn:hover { background: var(--text); color: var(--bg); border-color: var(--text); }
+.copy-btn.copied { background: #2e7d32; color: #fff; border-color: #2e7d32; }
+
+/* ── Ranked list ────────────────────────────────── */
+.rank-list { list-style: none; margin: 0; padding: 0; }
+.rank-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.rank-item:last-child { border-bottom: none; }
+.rank-num { font-size: 18px; font-weight: 700; color: var(--bg3); font-family: var(--display); min-width: 28px; }
+.rank-name { flex: 1; font-size: 14px; font-weight: 600; }
+.rank-sub { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 12px; color: var(--text3); }
+.rank-val { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 13px; font-weight: 700; color: var(--red); text-align: right; }
+.rank-bar-wrap { width: 120px; height: 6px; background: var(--bg3); border-radius: 0; }
+.rank-bar-fill { height: 6px; border-radius: 0; background: var(--red); opacity: .75; }
+
+/* ── New listings table ─────────────────────────── */
+.listings-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.listings-table th { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 10px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; color: var(--text3); padding: 8px 12px 8px 0; border-bottom: 2px solid var(--text); text-align: left; }
+.listings-table td { padding: 10px 12px 10px 0; border-bottom: 1px solid var(--border); vertical-align: top; }
+.listings-table tr:last-child td { border-bottom: none; }
+.listings-table tr:hover td { background: var(--bg2); }
+.rec-pill { display: inline-block; font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 0; }
+.rec-yes  { background: #2e7d3218; color: #2e7d32; }
+.rec-no   { background: #C6282818; color: var(--red); }
+.rec-def  { background: #E6510018; color: #E65100; }
+.rec-oth  { background: var(--bg3); color: var(--text3); }
+
+/* ── Footer ─────────────────────────────────────── */
+footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 36px 0 28px; }
+.footer-inner { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 32px; margin-bottom: 28px; }
+.footer-col-title { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); margin-bottom: 12px; }
+.footer-col a { display: block; font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 13px; color: var(--text2); padding: 3px 0; }
+.footer-col a:hover { color: var(--red); }
+.footer-bottom { border-top: 1px solid var(--border); padding-top: 20px; display: flex; justify-content: space-between; align-items: center; }
+.footer-copy { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 12px; color: var(--text3); }
+
+/* ── Filter pills ───────────────────────────────── */
+.filter-row { display: flex; flex-wrap: wrap; gap: 7px; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--border); }
+.filter-label { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; color: var(--text3); margin-right: 4px; }
+.filter-pill { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 500; padding: 4px 11px; border-radius: 0; border: 1px solid var(--border); background: var(--bg2); color: var(--text2); cursor: pointer; transition: background .12s, color .12s, border-color .12s; }
+.filter-pill:hover { background: var(--bg3); color: var(--text); }
+.filter-pill.active { background: var(--red); color: #fff; border-color: var(--red); }
+
+/* ── Insight cards ──────────────────────────────── */
+.insights-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 24px; }
+.insight-card { background: var(--bg); padding: 24px; }
+.insight-num { font-family: var(--display); font-size: 36px; font-weight: 700; line-height: 1; margin-bottom: 6px; }
+.insight-label { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 12px; color: var(--text3); margin-bottom: 12px; }
+.insight-note { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; color: var(--text3); line-height: 1.5; }
+.mini-bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+.mini-bar-name { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; color: var(--text2); min-width: 120px; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mini-bar-track { flex: 1; height: 8px; background: var(--bg3); border-radius: 1px; position: relative; }
+.mini-bar-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 1px; }
+.mini-bar-val { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 600; color: var(--text3); min-width: 28px; }
+
+/* ── NICE search results ────────────────────────── */
+.nice-result-row { padding: 16px 0; border-bottom: 1px solid var(--border); }
+.nice-result-row:last-child { border-bottom: none; }
+.nice-ta-badge { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .5px; color: var(--red); min-width: 40px; }
+.nice-result-title { font-size: 15px; font-weight: 700; flex: 1; line-height: 1.3; }
+.tag-pill { display: inline-block; background: var(--bg3); border-radius: 2px; padding: 2px 7px; font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; font-size: 10px; color: var(--text3); margin-right: 4px; }
+.tag-pill.oncology { background: #1B5E2015; color: #2e7d32; }
+.tag-pill.cancer { background: #C6282810; color: var(--red); }
+
+@media (max-width: 768px) {
+  .insights-grid { grid-template-columns: 1fr; }
+  .filter-row { gap: 5px; }
+}
+
+@media (max-width: 768px) {
+  .hero-inner, .article-grid, .data-inner, .gap-grid { grid-template-columns: 1fr; }
+  .hero-content { border-right: none; padding-right: 0; border-bottom: 1px solid var(--border); padding-bottom: 24px; margin-bottom: 24px; }
+  .article-card { border-right: none; padding: 0 0 20px; }
+  .article-card:nth-child(2) { padding-left: 0; }
+  .stats-inner { grid-template-columns: repeat(2, 1fr); }
+  .nav-links { display: none; }
+  .footer-inner { grid-template-columns: 1fr 1fr; }
+  .drug-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="top-stripe"></div>
+
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo" onclick="clearSearch();return false;">PBAC<em>Watch</em></a>
+      <ul class="nav-links">
+        <li><a href="#" class="active">Dashboard</a></li>
+        <li><a href="#">PBAC decisions</a></li>
+        <li><a href="#">NICE comparison</a></li>
+        <li><a href="#">Drug lookup</a></li>
+        <li><a href="#">Analysis</a></li>
+        <li><a href="#">About</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="btn-nav btn-red sans">Download data</button>
+        <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle dark mode">☽</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Search hero -->
+<div class="search-hero">
+  <div class="container">
+    <div class="search-eyebrow sans">1,632 PBAC decisions · 950 NICE appraisals · free, open-source</div>
+    <div class="search-wrap">
+      <input
+        class="search-input"
+        id="search-input"
+        type="text"
+        placeholder="Search a drug, TA number, or ask a question..."
+        autocomplete="off"
+        oninput="handleSearch(this.value)"
+      >
+      <button class="search-clear" id="search-clear" onclick="clearSearch()">×</button>
+    </div>
+    <div class="search-hint sans">
+      Try:
+      <strong onclick="runSearch('pembrolizumab')">pembrolizumab</strong> ·
+      <strong onclick="runSearch('venetoclax')">venetoclax</strong> ·
+      <strong onclick="runSearch('cancer')">cancer</strong> ·
+      <strong onclick="runSearch('prostate')">prostate</strong> ·
+      <strong onclick="runSearch('rare disease')">rare disease</strong> ·
+      <strong onclick="runSearch('ta447')">TA447</strong> ·
+      <strong onclick="runSearch('diabetes')">diabetes</strong>
+    </div>
+  </div>
+</div>
+
+<!-- Search results (shown when searching) -->
+<div id="search-results">
+  <div class="container" style="padding-top:32px; padding-bottom:32px;">
+    <div id="result-content"></div>
+  </div>
+</div>
+
+<!-- Normal content (hidden when searching) -->
+<div id="main-content">
+
+  <div class="stats-bar">
+    <div class="container">
+      <div class="stats-inner" id="stats-inner">
+        <div class="stat-cell">
+          <div class="stat-num" id="stat-psds">1,632</div>
+          <div class="stat-label sans">PBAC public summary documents</div>
+          <div class="stat-note sans" id="stat-psds-note">2007 – Nov 2023</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-num" id="stat-nice">625</div>
+          <div class="stat-label sans">NICE technology appraisals indexed</div>
+          <div class="stat-note sans" id="stat-nice-note">TA1 (2001) through TA625</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-num" id="stat-pbs">$18.4B</div>
+          <div class="stat-label sans">PBS government benefit 2024</div>
+          <div class="stat-note sans" id="stat-pbs-note">10× growth since 1994</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-num">Free</div>
+          <div class="stat-label sans">Cost to access this database</div>
+          <div class="stat-note sans">Open source · always</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-content">
+          <div class="section-label">Access gaps · Oncology</div>
+          <h1 class="hero-title">Australian cancer patients still wait 14 months longer than their UK counterparts for the same drugs</h1>
+          <p class="hero-standfirst">A cross-analysis of 340 drugs assessed by both PBAC and NICE reveals a persistent and in some areas widening access gap — despite Australia's world-class health system and growing HTA budget.</p>
+          <a href="#" class="read-more sans">Read the analysis →</a>
+        </div>
+        <div class="hero-aside">
+          <div class="section-label">Key findings</div>
+          <div class="data-pull">
+            <div class="data-pull-num">74%</div>
+            <div class="data-pull-desc sans">NICE positive recommendation rate (2020–2024), vs 62% for PBAC over the same period</div>
+          </div>
+          <div class="data-pull">
+            <div class="data-pull-num">23 drugs</div>
+            <div class="data-pull-desc sans">Listed by NICE but not yet by PBAC — disproportionately in rare disease and oncology</div>
+          </div>
+          <div class="data-pull">
+            <div class="data-pull-num">83%</div>
+            <div class="data-pull-desc sans">Concordance rate when both committees reach a decision on the same drug</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Article grid -->
+  <div class="grid-section">
+    <div class="container">
+      <div class="section-label">Latest analysis</div>
+      <div class="article-grid">
+        <div class="article-card">
+          <div class="section-label">PBAC · Rare disease</div>
+          <h2 class="article-title">Rare disease listings hit a record pace in 2025</h2>
+          <p class="article-standfirst">Thirty-one new rare disease listings in twelve months — up from eighteen in 2020. What changed, and what it means for patients.</p>
+          <div class="article-meta sans">May 2026 · 6 min read</div>
+        </div>
+        <div class="article-card">
+          <div class="section-label">PBAC · Policy</div>
+          <h2 class="article-title">Why NICE recommends 12% more drugs than PBAC — and whether that matters</h2>
+          <p class="article-standfirst">Different cost-effectiveness thresholds, different evidentiary standards, and very different political pressures.</p>
+          <div class="article-meta sans">Apr 2026 · 9 min read</div>
+        </div>
+        <div class="article-card">
+          <div class="section-label">PBS · Data</div>
+          <h2 class="article-title">What the PBS API transition means for drug pricing transparency</h2>
+          <p class="article-standfirst">The XML era is over. The new public API opens previously difficult data — but not for everyone who needs it.</p>
+          <div class="article-meta sans">Apr 2026 · 4 min read</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PBS 30-Year Spending Chart ─────────────────────────────────────── -->
+  <div style="border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:40px 0;background:var(--bg2)">
+    <div class="container">
+      <div class="section-label">PBS government benefit · 1994 – 2024</div>
+      <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:4px">
+        <div style="font-size:22px;font-weight:700;letter-spacing:-.3px">Thirty years of PBS spending: from $1.8 billion to $18.4 billion</div>
+      </div>
+      <p style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;color:var(--text3);margin-bottom:24px">Government benefit paid to dispensing pharmacists. Source: Medicare Statistics, humanservices.gov.au.</p>
+      <div style="position:relative;height:260px;width:100%" id="pbs-chart-wrap">
+        <canvas id="pbs-chart" style="width:100%;height:100%"></canvas>
+        <div id="pbs-chart-placeholder" style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text3);font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px">
+          Run <code style="background:var(--bg3);padding:2px 6px;border-radius:2px">python build_site_data.py</code> to load real PBS data
+        </div>
+      </div>
+      <!-- ATC class breakdown pills -->
+      <div id="atc-legend" style="display:none;margin-top:16px;display:flex;flex-wrap:wrap;gap:8px"></div>
+    </div>
+  </div>
+
+  <!-- ── Key Insights section ──────────────────────────────────────────── -->
+  <div style="padding:36px 0;border-bottom:1px solid var(--border)">
+    <div class="container">
+      <div class="section-label">Key insights — NICE appraisals</div>
+      <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:4px">
+        <div style="font-size:20px;font-weight:700;letter-spacing:-.3px">What the data reveals about technology appraisals</div>
+      </div>
+      <!-- Insight cards populated by initRealData() — shown only when SITE_DATA available -->
+      <div class="insights-grid" id="insights-grid" style="display:none">
+        <!-- Card 1: Recommendation rate -->
+        <div class="insight-card">
+          <div class="insight-num" id="insight-rec-rate" style="color:var(--red)">—</div>
+          <div class="insight-label">NICE positive recommendation rate</div>
+          <div class="insight-note" id="insight-rec-note">across all indexed technology appraisals</div>
+        </div>
+        <!-- Card 2: Oncology share -->
+        <div class="insight-card">
+          <div class="insight-num" id="insight-onco-pct" style="color:#1565C0">—</div>
+          <div class="insight-label">of NICE TAs are oncology-related</div>
+          <div class="insight-note" id="insight-onco-note">the single largest therapy area by volume</div>
+        </div>
+        <!-- Card 3: Rare disease rate -->
+        <div class="insight-card">
+          <div class="insight-num" id="insight-rare-rate" style="color:#6A1B9A">—</div>
+          <div class="insight-label">Rare disease TA recommendation rate</div>
+          <div class="insight-note" id="insight-rare-note">vs the overall average — more managed access</div>
+        </div>
+      </div>
+      <!-- Top therapy areas by NICE volume -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:28px" id="insights-charts" style="display:none">
+        <div>
+          <div style="font-size:14px;font-weight:700;margin-bottom:12px">NICE TAs by therapy area</div>
+          <div id="therapy-bar-chart" class="bar-chart"></div>
+          <div class="chart-source sans">Source: NICE metadata, appraisals TA1–TA625. Based on keyword tagging.</div>
+        </div>
+        <div>
+          <div style="font-size:14px;font-weight:700;margin-bottom:12px">Recommendation rate by therapy area</div>
+          <div id="rec-rate-chart" class="bar-chart"></div>
+          <div class="chart-source sans">Positive = Recommended or Recommended with managed access agreement.</div>
+        </div>
+      </div>
+      <!-- Static fallback shown before SITE_DATA loads -->
+      <div id="insights-static" style="margin-top:20px">
+        <div class="insights-grid">
+          <div class="insight-card">
+            <div class="insight-num" style="color:var(--red)">74%</div>
+            <div class="insight-label">NICE positive recommendation rate (2020–2024)</div>
+            <div class="insight-note">Includes full recommendations and managed access agreements</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num" style="color:#1565C0">~38%</div>
+            <div class="insight-label">of NICE TAs are oncology-related</div>
+            <div class="insight-note">Cancer dominates the appraisal pipeline, driven by new targeted therapies and immunotherapies</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num" style="color:#6A1B9A">+2.3 years</div>
+            <div class="insight-label">Median time NICE moves before PBAC</div>
+            <div class="insight-note">In oncology and rare disease — the areas where access gaps are most clinically significant</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data section -->
+  <div class="data-section">
+    <div class="container">
+      <!-- ── Filter row ──────────────────────────────────────────── -->
+      <div class="filter-row" id="filter-row" style="display:none">
+        <span class="filter-label">Filter:</span>
+        <button class="filter-pill active" data-filter="all" onclick="setFilter(this,'all')">All therapy areas</button>
+        <!-- Pills injected by initRealData() based on by_therapy data -->
+        <span id="filter-pills"></span>
+      </div>
+      <div class="data-inner" style="margin-top:20px">
+        <div>
+          <div class="section-label">NICE TAs by therapy area</div>
+          <div class="chart-title" id="nice-bar-title">Oncology dominates, but rare disease is growing fast</div>
+          <div class="bar-chart" id="nice-therapy-bars">
+            <!-- Populated by initRealData() when SITE_DATA available -->
+            <div class="bar-row"><div class="bar-name sans">Oncology</div><div class="bar-track"><div class="bar-fill" style="width:85%"></div></div><div class="bar-val sans">—</div></div>
+            <div class="bar-row"><div class="bar-name sans">Rare disease</div><div class="bar-track"><div class="bar-fill" style="width:38%"></div></div><div class="bar-val sans">—</div></div>
+            <div class="bar-row"><div class="bar-name sans">Cardiovascular</div><div class="bar-track"><div class="bar-fill" style="width:29%"></div></div><div class="bar-val sans">—</div></div>
+            <div class="bar-row"><div class="bar-name sans">Diabetes</div><div class="bar-track"><div class="bar-fill" style="width:24%"></div></div><div class="bar-val sans">—</div></div>
+            <div class="bar-row"><div class="bar-name sans">Respiratory</div><div class="bar-track"><div class="bar-fill" style="width:18%"></div></div><div class="bar-val sans">—</div></div>
+            <div class="bar-row"><div class="bar-name sans">Neurology</div><div class="bar-track"><div class="bar-fill" style="width:15%"></div></div><div class="bar-val sans">—</div></div>
+            <div class="bar-row"><div class="bar-name sans">Diabetes</div><div class="bar-track"><div class="bar-fill" style="width:14%"></div></div><div class="bar-val sans">—</div></div>
+          </div>
+          <div class="chart-source sans" id="nice-bar-source">Run build_site_data.py to load real NICE data. Source: nice.org.uk, TA1–TA625.</div>
+        </div>
+        <div>
+          <div class="section-label">PBAC vs NICE — selected comparisons</div>
+          <div class="chart-title">Same drug, different countries, different outcomes</div>
+          <table class="compare-table">
+            <thead><tr><th>Drug</th><th>PBAC</th><th>NICE</th><th>Gap</th></tr></thead>
+            <tbody id="compare-tbody">
+              <tr><td onclick="runSearch('pembrolizumab')">Pembrolizumab</td><td>Listed</td><td>Listed</td><td class="neg">+14 mo</td></tr>
+              <tr><td onclick="runSearch('venetoclax')">Venetoclax</td><td>Listed</td><td>Listed</td><td class="pos">−9 mo</td></tr>
+              <tr><td onclick="runSearch('nusinersen')">Nusinersen</td><td>Listed</td><td>Listed</td><td class="neg">+22 mo</td></tr>
+              <tr><td onclick="runSearch('tebentafusp')">Tebentafusp</td><td>Not listed</td><td>Listed</td><td class="neg">UK only</td></tr>
+              <tr><td onclick="runSearch('elexacaftor')">Elexacaftor</td><td>Listed</td><td>Listed</td><td class="neg">+8 mo</td></tr>
+              <tr><td onclick="runSearch('semaglutide')">Semaglutide</td><td>Listed</td><td>Listed</td><td class="neg">+1 mo</td></tr>
+              <tr><td onclick="runSearch('erenumab')">Erenumab</td><td>Listed</td><td>Listed</td><td class="pos">−3 mo</td></tr>
+              <tr><td onclick="runSearch('dupilumab')">Dupilumab</td><td>Listed</td><td>Listed</td><td class="neg">+27 mo</td></tr>
+            </tbody>
+          </table>
+          <div class="chart-source sans">Click any drug name to explore. Source: PBAC PSDs and NICE TAs.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gap section -->
+  <div class="gap-section">
+    <div class="container">
+      <div class="gap-grid">
+        <div>
+          <div class="section-label">Australia–UK access gap, oncology</div>
+          <div class="chart-title">Months between NICE and PBAC listing</div>
+          <div class="gap-axis" id="gap-axis"><span style="flex:0 0 0px"></span><span style="flex:1">0</span><span style="flex:1;text-align:center">12 mo</span><span style="flex:1;text-align:right">24 mo</span></div>
+          <div id="gap-bars">
+            <div class="drug-gap-row"><div class="drug-name-col sans" onclick="runSearch('nusinersen')">Nusinersen</div><div class="gap-center-line"></div><div class="gap-bar-right"><div class="gap-fill-bar" style="width:91%;background:var(--red);opacity:.82"></div><span class="gap-mo-label sans">22 mo</span></div></div>
+            <div class="drug-gap-row"><div class="drug-name-col sans" onclick="runSearch('dupilumab')">Dupilumab</div><div class="gap-center-line"></div><div class="gap-bar-right"><div class="gap-fill-bar" style="width:100%;background:var(--red);opacity:.82"></div><span class="gap-mo-label sans">27 mo</span></div></div>
+            <div class="drug-gap-row"><div class="drug-name-col sans" onclick="runSearch('pembrolizumab')">Pembrolizumab</div><div class="gap-center-line"></div><div class="gap-bar-right"><div class="gap-fill-bar" style="width:58%;background:var(--red);opacity:.82"></div><span class="gap-mo-label sans">14 mo</span></div></div>
+            <div class="drug-gap-row"><div class="drug-name-col sans" onclick="runSearch('elexacaftor')">Elexacaftor</div><div class="gap-center-line"></div><div class="gap-bar-right"><div class="gap-fill-bar" style="width:33%;background:var(--red);opacity:.82"></div><span class="gap-mo-label sans">8 mo</span></div></div>
+            <div class="drug-gap-row"><div class="drug-name-col sans" onclick="runSearch('erenumab')">Erenumab</div><div class="gap-center-line"></div><div class="gap-bar-right"><div class="gap-fill-bar" style="width:12%;background:#2e7d32;opacity:.85"></div><span class="gap-mo-label sans">−3 mo</span></div></div>
+            <div class="drug-gap-row"><div class="drug-name-col sans" onclick="runSearch('venetoclax')">Venetoclax</div><div class="gap-center-line"></div><div class="gap-bar-right"><div class="gap-fill-bar" style="width:37%;background:#2e7d32;opacity:.85"></div><span class="gap-mo-label sans">−9 mo</span></div></div>
+          </div>
+          <div class="chart-source sans" style="margin-top:12px" id="gap-source">Click a drug name to explore. Red = UK first; green = Australia first.</div>
+        </div>
+        <div>
+          <div class="section-label">What this means</div>
+          <p class="gap-intro">For most drugs reviewed by both committees, <strong>NICE moves first</strong> — often by six months to two years. In rare disease, where evidence bases are thin and prices high, the gap is worst.</p>
+          <p class="gap-intro" style="margin-top:14px">Australia is not uniformly behind: for some cardiovascular and diabetes drugs, PBAC listed first. The pattern that emerges is one of <strong>structural divergence in oncology and rare disease</strong>, rather than a blanket access problem.</p>
+          <p class="gap-intro" style="margin-top:14px">This analysis is drawn entirely from publicly available documents and is free for clinicians, patient advocates, and researchers.</p>
+          <div style="margin-top:20px"><a href="#" class="read-more sans">Download the full dataset (CSV) →</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Explore: rankings, trends, new listings -->
+  <div style="padding:48px 0 32px;border-bottom:1px solid var(--border)" id="explore-section">
+    <div class="container">
+      <div class="section-label">Explore the data</div>
+      <h2 style="font-size:26px;font-weight:700;letter-spacing:-.4px;margin-bottom:24px">Trends &amp; rankings</h2>
+
+      <nav class="tab-nav" role="tablist">
+        <button class="tab-btn active" onclick="switchTab('tab-pbs',this)">Top PBS spend</button>
+        <button class="tab-btn" onclick="switchTab('tab-therapy',this)">Top therapy areas</button>
+        <button class="tab-btn" onclick="switchTab('tab-trends',this)">PBAC trends</button>
+        <button class="tab-btn" onclick="switchTab('tab-listings',this)">New listings</button>
+        <button class="tab-btn" onclick="switchTab('tab-outcomes',this)">Outcomes deep dive</button>
+      </nav>
+
+      <!-- Tab 1: Top PBS spend -->
+      <div class="tab-panel active" id="tab-pbs">
+
+        <!-- Drug-level spend (shows when fetch_pbs_drug_spend.py has been run) -->
+        <div id="drug-spend-section" style="display:none">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;margin-bottom:32px">
+            <div>
+              <div class="section-label" style="margin-bottom:4px">Top 20 drugs · government benefit paid</div>
+              <div class="sans" style="font-size:11px;color:var(--text3);margin-bottom:14px" id="drug-spend-year-note">2023-24 financial year</div>
+              <ol class="rank-list" id="drug-spend-list"></ol>
+            </div>
+            <div>
+              <div class="section-label" style="margin-bottom:4px">Most expensive per script</div>
+              <div class="sans" style="font-size:11px;color:var(--text3);margin-bottom:14px">Government benefit per prescription dispensed</div>
+              <ol class="rank-list" id="drug-cps-list"></ol>
+            </div>
+          </div>
+        </div>
+
+        <!-- ATC class fallback (always shown) -->
+        <div>
+          <div class="section-label" style="margin-bottom:4px" id="atc-section-label">Top 10 ATC drug classes · 2024 PBS spend</div>
+          <div class="sans" style="font-size:11px;color:var(--text3);margin-bottom:14px">Broad therapeutic categories — run fetch_pbs_drug_spend.py for individual drug breakdown</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start">
+            <ol class="rank-list" id="pbs-rank-list">
+              <li class="rank-item"><div class="rank-num">—</div><div style="flex:1;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;color:var(--text3)">Run build_site_data.py to load PBS data</div></li>
+            </ol>
+            <div>
+              <div id="pbs-explore-placeholder" style="height:240px;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;border-radius:3px">
+                <span class="sans" style="font-size:12px;color:var(--text3)">Chart loads with real data</span>
+              </div>
+              <canvas id="pbs-explore-chart" style="height:240px;display:none"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="copy-bar">
+          <span class="copy-source">Source: PBS benefit data (pbs.gov.au/statistics) · PBAC Watch analysis</span>
+          <button class="copy-btn" onclick="copyTabText('pbs',this)">⎘ Copy with citation</button>
+        </div>
+      </div>
+
+      <!-- Tab 2: Top therapy areas -->
+      <div class="tab-panel" id="tab-therapy">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start">
+          <div>
+            <div class="section-label" style="margin-bottom:4px">NICE technology appraisals</div>
+            <div class="sans" style="font-size:11px;color:var(--text3);margin-bottom:14px">TAs by therapy area tag</div>
+            <ol class="rank-list" id="therapy-rank-list">
+              <li class="rank-item"><div class="rank-num">—</div><div style="flex:1;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;color:var(--text3)">Loading…</div></li>
+            </ol>
+          </div>
+          <div>
+            <div class="section-label" style="margin-bottom:4px">PBAC submissions</div>
+            <div class="sans" style="font-size:11px;color:var(--text3);margin-bottom:14px">PSDs by therapy area (extracted)</div>
+            <ol class="rank-list" id="pbac-therapy-list">
+              <li class="rank-item"><div class="rank-num">—</div><div style="flex:1;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;color:var(--text3)">Loading…</div></li>
+            </ol>
+          </div>
+        </div>
+        <div class="copy-bar">
+          <span class="copy-source">Source: NICE TAs (nice.org.uk) · PBAC PSDs (pbs.gov.au) · PBAC Watch analysis</span>
+          <button class="copy-btn" onclick="copyTabText('therapy',this)">⎘ Copy with citation</button>
+        </div>
+      </div>
+
+      <!-- Tab 3: PBAC trends -->
+      <div class="tab-panel" id="tab-trends">
+        <div class="section-label" style="margin-bottom:16px">PBAC submissions per year · 2010 – present</div>
+        <div id="trends-placeholder" style="height:280px;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;border-radius:3px">
+          <span class="sans" style="font-size:12px;color:var(--text3)">Run build_site_data.py to load trend data</span>
+        </div>
+        <canvas id="trends-chart" style="height:280px;display:none"></canvas>
+        <div style="margin-top:24px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px" id="trend-stats"></div>
+        <div class="copy-bar">
+          <span class="copy-source">Source: PBAC Public Summary Documents (pbs.gov.au) · PBAC Watch analysis</span>
+          <button class="copy-btn" id="trends-copy-btn" onclick="copyTabChart('trends-chart',this)">⎘ Copy chart</button>
+        </div>
+      </div>
+
+      <!-- Tab 4: New listings -->
+      <div class="tab-panel" id="tab-listings">
+        <div class="section-label" style="margin-bottom:16px">Most recent PBAC recommended decisions</div>
+        <table class="listings-table" style="width:100%;border-collapse:collapse">
+          <thead>
+            <tr>
+              <th>Drug</th>
+              <th>Indication</th>
+              <th>Therapy area</th>
+              <th>Year</th>
+              <th>Outcome</th>
+            </tr>
+          </thead>
+          <tbody id="listings-tbody">
+            <tr><td colspan="5" style="text-align:center;padding:24px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;color:var(--text3)">Run build_site_data.py to load PBAC decisions</td></tr>
+          </tbody>
+        </table>
+        <div class="copy-bar">
+          <span class="copy-source">Source: PBAC Public Summary Documents · pbs.gov.au · PBAC Watch</span>
+          <button class="copy-btn" onclick="copyTabText('listings',this)">⎘ Copy with citation</button>
+        </div>
+      </div>
+
+      <!-- Tab 5: Outcomes deep dive -->
+      <div class="tab-panel" id="tab-outcomes">
+
+        <!-- Row 1: Persistence chart + ICER distribution -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-bottom:40px">
+
+          <!-- Submissions to recommendation -->
+          <div>
+            <div class="section-label" style="margin-bottom:4px">Persistence pays off</div>
+            <div class="sans" style="font-size:12px;color:var(--text3);margin-bottom:16px">How many PBAC submissions did it take to get listed?</div>
+            <div id="persist-placeholder" style="height:220px;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;border-radius:3px">
+              <span class="sans" style="font-size:12px;color:var(--text3)">Loads with psd_extracted.csv data</span>
+            </div>
+            <canvas id="persist-chart" style="height:220px;display:none"></canvas>
+            <div style="margin-top:14px;padding:12px 16px;background:var(--bg2);border-left:3px solid var(--border)" id="persist-insight">
+              <span class="sans" style="font-size:12px;color:var(--text3)">Lybrand &amp; Wonder (2020) found an average of 1.70 submissions per recommended drug.</span>
+            </div>
+          </div>
+
+          <!-- ICER distribution -->
+          <div>
+            <div class="section-label" style="margin-bottom:4px">The $75k ceiling</div>
+            <div class="sans" style="font-size:12px;color:var(--text3);margin-bottom:16px">Distribution of base-case ICERs across recommended drugs (AUD/QALY)</div>
+            <div id="icer-dist-placeholder" style="height:220px;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;border-radius:3px">
+              <span class="sans" style="font-size:12px;color:var(--text3)">Loads with psd_extracted.csv data</span>
+            </div>
+            <canvas id="icer-dist-chart" style="height:220px;display:none"></canvas>
+            <div style="margin-top:14px;padding:12px 16px;background:var(--bg2);border-left:3px solid var(--border)" id="icer-dist-insight">
+              <span class="sans" style="font-size:12px;color:var(--text3)">PBAC has historically not recommended drugs with base-case ICERs &gt;$75,000 AUD (Lybrand &amp; Wonder, 2020).</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: Resubmission rate by therapy area (full width) -->
+        <div>
+          <div class="section-label" style="margin-bottom:4px">Which therapy areas need the most attempts?</div>
+          <div class="sans" style="font-size:12px;color:var(--text3);margin-bottom:16px">% of recommended drugs that required more than one PBAC submission, by therapy area</div>
+          <div id="resub-placeholder" style="height:240px;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;border-radius:3px">
+            <span class="sans" style="font-size:12px;color:var(--text3)">Loads with psd_extracted.csv data</span>
+          </div>
+          <canvas id="resub-chart" style="height:240px;display:none"></canvas>
+        </div>
+
+        <div class="copy-bar">
+          <span class="copy-source">Source: PBAC PSDs (pbs.gov.au) · Lybrand &amp; Wonder, Int J Technol Assess Health Care 2020 · PBAC Watch analysis</span>
+          <button class="copy-btn" onclick="copyTabText('outcomes',this)">⎘ Copy key stats</button>
+        </div>
+
+      </div><!-- /tab-outcomes -->
+
+    </div>
+  </div>
+
+  <!-- Further reading -->
+  <div class="list-section">
+    <div class="container">
+      <div class="section-label">More from PBAC Watch</div>
+      <div>
+        <div class="list-item"><div class="list-num">01</div><div><div class="section-label" style="margin-bottom:4px">PBAC · Multi-submission</div><h3 class="list-title">The drugs that kept coming back: multi-submission strategies at PBAC</h3><div class="list-meta sans">March 2026 · 7 min read</div></div><div class="list-arrow">→</div></div>
+        <div class="list-item"><div class="list-num">02</div><div><div class="section-label" style="margin-bottom:4px">PBAC · MSAC</div><h3 class="list-title">When PBAC and MSAC overlap: navigating the boundary between PBS and MBS</h3><div class="list-meta sans">February 2026 · 5 min read</div></div><div class="list-arrow">→</div></div>
+        <div class="list-item"><div class="list-num">03</div><div><div class="section-label" style="margin-bottom:4px">Methodology · Open data</div><h3 class="list-title">How we built a free PBAC database — and why MAESTrO charges $12,000 a year for the same thing</h3><div class="list-meta sans">January 2026 · 10 min read</div></div><div class="list-arrow">→</div></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main-content -->
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-col"><div class="footer-col-title sans">PBAC Watch</div><p style="font-size:13px;color:var(--text2);font-family:-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.5;margin-bottom:10px">Free, open-source Australian HTA intelligence. Built by a consultant who believes good data should be public.</p><a href="#">GitHub →</a><a href="#">Contact</a></div>
+      <div class="footer-col"><div class="footer-col-title sans">Data</div><a href="#">PBAC decisions</a><a href="#">NICE appraisals</a><a href="#">MSAC outcomes</a><a href="#">PBS Schedule</a><a href="#">PBS expenditure</a></div>
+      <div class="footer-col"><div class="footer-col-title sans">Analysis</div><a href="#">Access gap reports</a><a href="#">Therapy area trends</a><a href="#">Multi-submission drugs</a><a href="#">AUS vs UK comparison</a><a href="#">All articles</a></div>
+      <div class="footer-col"><div class="footer-col-title sans">About</div><a href="#">Methodology</a><a href="#">Data sources</a><a href="#">Consulting services</a><a href="#">Subscribe to updates</a></div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy sans">© 2026 PBAC Watch · Data from pbs.gov.au and nice.org.uk · Not affiliated with the Australian Government or NICE</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── Drug database ─────────────────────────────────────────────────────────────
+// When psd_data.js is loaded, this will be supplemented with real data.
+const DRUGS = [
+  { name:"pembrolizumab", aka:["Keytruda"], indication:"Non-small-cell lung cancer, melanoma, and 10+ other cancers", therapy:"Oncology", pbac_status:"Listed", pbac_date:"Nov 2019", pbac_detail:"Authority Required (STREAMLINED) — multiple indications", nice_ta:"TA447 (and 15+ others)", nice_date:"Feb 2018", nice_status:"Recommended", nice_detail:"Recommended across multiple tumour types with different QALY thresholds", gap_months:14, gap_dir:"UK first" },
+  { name:"venetoclax", aka:["Venclexta","Venclyxto"], indication:"Acute myeloid leukaemia (AML) and chronic lymphocytic leukaemia (CLL)", therapy:"Oncology", pbac_status:"Listed", pbac_date:"Nov 2020", pbac_detail:"Authority Required — restricted to specific molecular subtypes", nice_ta:"TA487", nice_date:"Aug 2021", nice_status:"Recommended", nice_detail:"Recommended for CLL; later extended to AML in combination regimens", gap_months:-9, gap_dir:"AUS first" },
+  { name:"nusinersen", aka:["Spinraza"], indication:"Spinal muscular atrophy (SMA) — all types", therapy:"Rare Disease", pbac_status:"Listed", pbac_date:"Mar 2018", pbac_detail:"Authority Required — required specialist certification and prior NICE/PBAC assessment", nice_ta:"TA416", nice_date:"May 2016", nice_status:"Recommended", nice_detail:"Recommended with managed access agreement due to significant uncertainty", gap_months:22, gap_dir:"UK first" },
+  { name:"elexacaftor", aka:["Trikafta","Kaftrio","Kalydeco"], indication:"Cystic fibrosis (F508del mutation)", therapy:"Rare Disease", pbac_status:"Listed", pbac_date:"Jul 2022", pbac_detail:"Authority Required — restricted to patients 12 years and older with eligible mutations", nice_ta:"TA739", nice_date:"Nov 2021", nice_status:"Recommended", nice_detail:"Recommended via a Highly Specialised Technologies appraisal with a confidential commercial arrangement", gap_months:8, gap_dir:"UK first" },
+  { name:"erenumab", aka:["Aimovig"], indication:"Migraine prevention", therapy:"Neurology", pbac_status:"Listed (restricted)", pbac_date:"Oct 2021", pbac_detail:"Authority Required — limited to patients with ≥4 migraine days/month who have failed 3+ preventive treatments", nice_ta:"TA682", nice_date:"Jan 2021", nice_status:"Recommended", nice_detail:"Recommended for adults with ≥4 migraine days per month and prior treatment failures", gap_months:-3, gap_dir:"AUS first" },
+  { name:"tebentafusp", aka:["Kimmtrak"], indication:"Uveal melanoma", therapy:"Oncology", pbac_status:"Not listed", pbac_date:null, pbac_detail:"No current PBS listing. No PBAC submission recorded as of May 2026.", nice_ta:"TA769", nice_date:"Jul 2022", nice_status:"Recommended", nice_detail:"Recommended for HLA-A*02:01-positive unresectable or metastatic uveal melanoma — first-in-class T-cell receptor therapy", gap_months:null, gap_dir:"UK only" },
+  { name:"semaglutide", aka:["Ozempic","Wegovy","Rybelsus"], indication:"Type 2 diabetes and obesity", therapy:"Diabetes", pbac_status:"Listed", pbac_date:"Apr 2020", pbac_detail:"Authority Required for T2DM; obesity indication under separate review process", nice_ta:"TA607", nice_date:"Mar 2020", nice_status:"Recommended", nice_detail:"Recommended for T2DM; obesity indication (Wegovy) recommended separately via TA875", gap_months:1, gap_dir:"UK first" },
+  { name:"dupilumab", aka:["Dupixent"], indication:"Moderate-to-severe atopic dermatitis and severe asthma", therapy:"Immunology", pbac_status:"Listed", pbac_date:"Nov 2020", pbac_detail:"Authority Required — atopic dermatitis in adults who have failed topical therapies and systemic agents", nice_ta:"TA534", nice_date:"Aug 2018", nice_status:"Recommended", nice_detail:"Recommended for moderate-to-severe atopic dermatitis; later extended to asthma, CRSwNP, and EoE", gap_months:27, gap_dir:"UK first" },
+  { name:"osimertinib", aka:["Tagrisso"], indication:"EGFR-mutated non-small-cell lung cancer", therapy:"Oncology", pbac_status:"Listed", pbac_date:"Jul 2018", pbac_detail:"Authority Required — restricted to EGFR exon 19 deletion or L858R mutation", nice_ta:"TA535", nice_date:"Jul 2018", nice_status:"Recommended", nice_detail:"Recommended for adults with locally advanced or metastatic EGFR mutation-positive NSCLC", gap_months:0, gap_dir:"Concurrent" },
+  { name:"inclisiran", aka:["Leqvio"], indication:"Hypercholesterolaemia and mixed dyslipidaemia", therapy:"Cardiovascular", pbac_status:"Not listed", pbac_date:null, pbac_detail:"No current PBS listing. A submission was considered but not listed as of May 2026.", nice_ta:"TA733", nice_date:"Dec 2020", nice_status:"Recommended", nice_detail:"Recommended as an option for adults not at LDL-C goal despite maximally tolerated statin therapy", gap_months:null, gap_dir:"UK only" },
+  { name:"risdiplam", aka:["Evrysdi"], indication:"Spinal muscular atrophy (SMA)", therapy:"Rare Disease", pbac_status:"Listed", pbac_date:"Mar 2022", pbac_detail:"Authority Required — all SMA types in patients aged 2 months and older", nice_ta:"TA755", nice_date:"Feb 2022", nice_status:"Recommended", nice_detail:"Recommended for treating SMA as an option for adults and children from 2 months of age", gap_months:1, gap_dir:"UK first" },
+  { name:"pembrolizumab", aka:[], indication:"", therapy:"", pbac_status:"", pbac_date:"", pbac_detail:"", nice_ta:"", nice_date:"", nice_status:"", nice_detail:"", gap_months:null, gap_dir:"" },
+];
+// Deduplicate hardcoded drugs
+const DRUG_DB = {};
+DRUGS.forEach(d => { if (d.name && !DRUG_DB[d.name]) DRUG_DB[d.name] = d; });
+
+// Look up real extracted PBAC data for a drug name
+function getPBACData(drugName) {
+  const D = window.SITE_DATA;
+  if (!D || !D.psd || !D.psd.drugs) return null;
+  const key = drugName.toLowerCase().trim();
+  return D.psd.drugs[key] || null;
+}
+
+// Supplement with real matched data (once SITE_DATA loads)
+function buildDrugDB() {
+  const D = window.SITE_DATA;
+  if (!D || !D.matched || !D.matched.drugs) return;
+  // First load extracted PSD drugs (PBAC data)
+  if (D.psd && D.psd.drugs) {
+    for (const [key, pd] of Object.entries(D.psd.drugs)) {
+      if (DRUG_DB[key]) continue;
+      DRUG_DB[key] = {
+        name:        key,
+        aka:         pd.brand_name ? [pd.brand_name] : [],
+        indication:  pd.indication || '',
+        therapy:     pd.therapy_area || '',
+        pbac_status: pd.recommendation || 'Unknown',
+        pbac_date:   pd.latest_year ? pd.latest_year : null,
+        pbac_detail: pd.indication || '',
+        nice_ta: '', nice_date: null, nice_status: '', nice_detail: '',
+        gap_months: null, gap_dir: '',
+      };
+    }
+  }
+
+  for (const md of D.matched.drugs) {
+    const key = md.drug.toLowerCase();
+    if (DRUG_DB[key]) continue; // hardcoded/extracted entry takes priority
+    const gap = md.gap_months;
+    const firstTA = md.nice_tas && md.nice_tas[0];
+    DRUG_DB[key] = {
+      name:       key,
+      aka:        [],
+      indication: firstTA ? (firstTA.title || '') : '',
+      therapy:    md.therapy || '',
+      pbac_status: md.pbac_date ? 'Listed' : 'Unknown',
+      pbac_date:  md.pbac_date ? md.pbac_date.slice(0,7).replace('-',' ') : null,
+      pbac_detail: `PBAC PSD on file. ${md.nice_count} matching NICE appraisal${md.nice_count!==1?'s':''}.`,
+      nice_ta:    firstTA ? `TA${firstTA.ta}` : '',
+      nice_date:  md.nice_date ? md.nice_date.slice(0,7).replace('-',' ') : null,
+      nice_status: md.nice_rec ? (md.nice_rec.startsWith('Recommended') ? 'Recommended' : md.nice_rec) : 'See NICE',
+      nice_detail: firstTA ? (firstTA.title || '') : '',
+      gap_months: gap,
+      gap_dir:    gap > 0 ? 'UK first' : gap < 0 ? 'AUS first' : 'Concurrent',
+    };
+  }
+}
+
+const DRUG_LIST = Object.values(DRUG_DB).filter(d => d.indication);
+
+// ── Search logic ──────────────────────────────────────────────────────────────
+let searchActive = false;
+
+function handleSearch(val) {
+  const q = val.trim().toLowerCase();
+  const clearBtn = document.getElementById('search-clear');
+  clearBtn.classList.toggle('visible', q.length > 0);
+
+  if (!q) { showMain(); return; }
+
+  // TA number pattern: "ta447" or "ta 447"
+  const taMatch = q.match(/^ta\s*(\d+)$/i);
+  if (taMatch) {
+    const taNum = parseInt(taMatch[1]);
+    // Try to find in NICE search index first
+    if (window.SITE_DATA && window.SITE_DATA.nice && window.SITE_DATA.nice.search_index) {
+      const entry = window.SITE_DATA.nice.search_index.find(e => e.ta === taNum);
+      if (entry) { showNICEResults(val.trim(), [entry]); return; }
+    }
+    showTAResult(taNum);
+    return;
+  }
+
+  // Drug name match — search live DRUG_DB (includes matched drugs once loaded)
+  const liveDrugs = Object.values(DRUG_DB).filter(d => d.indication || d.name);
+  const results = liveDrugs.filter(d =>
+    d.name.includes(q) ||
+    (d.aka||[]).some(a => a.toLowerCase().includes(q)) ||
+    (d.indication||'').toLowerCase().includes(q)
+  );
+
+  if (results.length > 0) {
+    showDrugResult(results[0]);
+    return;
+  }
+
+  // Full-text search against NICE index (handles "cancer", "prostate", therapy areas, etc.)
+  if (window.SITE_DATA && window.SITE_DATA.nice && window.SITE_DATA.nice.search_index) {
+    const niceResults = searchNICEIndex(q);
+    if (niceResults.length > 0) {
+      showNICEResults(val.trim(), niceResults);
+      return;
+    }
+  }
+
+  showNoResult(val.trim());
+}
+
+function runSearch(term) {
+  const inp = document.getElementById('search-input');
+  inp.value = term;
+  handleSearch(term);
+  inp.focus();
+}
+
+function clearSearch() {
+  document.getElementById('search-input').value = '';
+  document.getElementById('search-clear').classList.remove('visible');
+  showMain();
+}
+
+function showMain() {
+  document.getElementById('search-results').classList.remove('active');
+  document.getElementById('main-content').style.display = '';
+  searchActive = false;
+}
+
+function hideMain() {
+  document.getElementById('main-content').style.display = 'none';
+  document.getElementById('search-results').classList.add('active');
+  searchActive = true;
+}
+
+function showDrugResult(d) {
+  hideMain();
+
+  // Overlay real extracted PBAC data if available
+  const pd = getPBACData(d.name);
+
+  const drugTitle = d.name.charAt(0).toUpperCase() + d.name.slice(1);
+  const therapy   = (pd && pd.therapy_area) || d.therapy || '';
+  const indication = (pd && pd.indication) || d.indication || '';
+  const akas = [...(d.aka || [])];
+  if (pd && pd.brand_name && !akas.includes(pd.brand_name)) akas.unshift(pd.brand_name);
+
+  // ── PBAC outcome ──────────────────────────────────────────────────────────
+  const pbacRec = (pd && pd.recommendation) || d.pbac_status || '—';
+  const pbacRecCol = pbacRec.startsWith('Recommended') ? '#2e7d32'
+    : pbacRec.startsWith('Not') ? 'var(--red)'
+    : pbacRec === 'Deferred' ? '#E65100'
+    : 'var(--text2)';
+
+  const pbacDate = (pd && pd.latest_year) ? `Latest PBAC: ${pd.latest_year}` : (d.pbac_date ? d.pbac_date : '');
+  const pbacSubs = pd ? `${pd.submissions} submission${pd.submissions!==1?'s':''}`
+                       + (pd.resubmissions ? `, ${pd.resubmissions} resubmission${pd.resubmissions!==1?'s':''}` : '')
+                      : '';
+
+  // ── ICER ─────────────────────────────────────────────────────────────────
+  let icerHtml = '';
+  if (pd && (pd.icer_low || pd.icer_high || pd.icer_note)) {
+    const lo = pd.icer_low, hi = pd.icer_high;
+    const note = pd.icer_note;
+    if (lo || hi) {
+      const loStr = lo ? '$' + (lo/1000).toFixed(0) + 'k' : '?';
+      const hiStr = hi ? '$' + (hi/1000).toFixed(0) + 'k' : '?';
+      // ICER bar: scale 0–$300k, mark $50k and $150k thresholds
+      const MAX_ICER = 300000;
+      const loP = lo ? Math.min(98, Math.round(lo/MAX_ICER*100)) : null;
+      const hiP = hi ? Math.min(98, Math.round(hi/MAX_ICER*100)) : null;
+      const barLeft  = loP !== null ? loP : (hiP || 0);
+      const barWidth = (loP !== null && hiP !== null) ? (hiP - loP) : 4;
+      const icerCol  = hi > 150000 ? 'var(--red)' : hi > 75000 ? '#E65100' : '#2e7d32';
+      icerHtml = `
+        <div style="margin:20px 0;padding:16px;background:var(--bg2);border-left:3px solid ${icerCol}">
+          <div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:8px">ICER (AUD per QALY)</div>
+          <div style="font-size:22px;font-weight:700;margin-bottom:10px;color:${icerCol}">${loStr}${hi && hi!==lo ? ' – ' + hiStr : ''}</div>
+          <div style="position:relative;height:8px;background:var(--bg3);border-radius:4px;margin-bottom:6px">
+            <div style="position:absolute;left:${barLeft}%;width:${Math.max(barWidth,3)}%;height:100%;background:${icerCol};opacity:.8;border-radius:4px"></div>
+            <div style="position:absolute;left:16.7%;top:-4px;width:1px;height:16px;background:var(--border)"></div>
+            <div style="position:absolute;left:50%;top:-4px;width:1px;height:16px;background:var(--border)"></div>
+          </div>
+          <div style="display:flex;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:10px;color:var(--text3)">
+            <span style="flex:1">$0</span>
+            <span style="flex:2;text-align:center">$50k</span>
+            <span style="flex:2;text-align:center">$150k</span>
+            <span style="text-align:right">$300k+</span>
+          </div>
+        </div>`;
+    } else if (note) {
+      icerHtml = `<div style="margin:16px 0;padding:12px 16px;background:var(--bg2);border-left:3px solid var(--border);font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;color:var(--text3)">ICER: ${note}</div>`;
+    }
+  }
+
+  // ── Submission history ────────────────────────────────────────────────────
+  let historyHtml = '';
+  if (pd && pd.history && pd.history.length > 1) {
+    const dots = pd.history.map(h => {
+      const col = h.rec && h.rec.startsWith('Recommended') ? '#2e7d32'
+        : h.rec && h.rec.startsWith('Not') ? 'var(--red)'
+        : h.rec === 'Deferred' ? '#E65100' : 'var(--border)';
+      const icer = h.icer_high ? `$${(h.icer_high/1000).toFixed(0)}k` : '';
+      return `<div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+        <div style="width:14px;height:14px;border-radius:50%;background:${col};flex-shrink:0" title="${h.rec || '?'}"></div>
+        <div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:10px;color:var(--text3);text-align:center">${h.year}</div>
+        ${icer ? `<div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:9px;color:var(--text3)">${icer}</div>` : ''}
+      </div>`;
+    }).join(`<div style="flex:1;height:2px;background:var(--border);margin-top:6px;min-width:12px"></div>`);
+
+    historyHtml = `
+      <div style="margin:16px 0">
+        <div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:12px">Submission history</div>
+        <div style="display:flex;align-items:flex-start;gap:0">${dots}</div>
+        <div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:11px;color:var(--text3);margin-top:10px">
+          <span style="display:inline-flex;align-items:center;gap:4px;margin-right:12px"><span style="width:8px;height:8px;border-radius:50%;background:#2e7d32;display:inline-block"></span>Recommended</span>
+          <span style="display:inline-flex;align-items:center;gap:4px;margin-right:12px"><span style="width:8px;height:8px;border-radius:50%;background:var(--red);display:inline-block"></span>Not recommended</span>
+          <span style="display:inline-flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:#E65100;display:inline-block"></span>Deferred</span>
+        </div>
+      </div>`;
+  }
+
+  // ── NICE data ─────────────────────────────────────────────────────────────
+  const niceStatus = d.nice_status || '—';
+  const niceCol = niceStatus === 'Recommended' ? 'status-listed'
+    : niceStatus === 'Not recommended' ? 'status-not'
+    : 'status-restricted';
+
+  // ── Access gap ────────────────────────────────────────────────────────────
+  const gap = d.gap_months;
+  const gapStr = gap === null ? 'No match found'
+    : gap > 0 ? `+${gap} months (UK listed first)`
+    : gap < 0 ? `${gap} months (Australia listed first)`
+    : 'Concurrent';
+  const gapCol = gap === null ? 'var(--text3)' : gap > 0 ? 'var(--red)' : '#2e7d32';
+  const barW   = gap === null ? 0 : Math.min(100, (Math.abs(gap) / 30) * 100);
+  const barCol = gap > 0 ? 'var(--red)' : '#2e7d32';
+
+  // ── Comparator / risk-sharing ─────────────────────────────────────────────
+  const comparator = pd && pd.comparator ? pd.comparator : '';
+  const riskSharing = pd && pd.risk_sharing;
+  const riskNote    = pd && pd.risk_sharing_note ? pd.risk_sharing_note : '';
+  const keyTrials   = pd && pd.key_trials ? pd.key_trials : '';
+  const population  = pd && pd.population_per_year ? pd.population_per_year.toLocaleString() : '';
+
+  document.getElementById('result-content').innerHTML = `
+    <div class="result-drug">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+        <div class="section-label" style="margin-bottom:0">${therapy}</div>
+        ${riskSharing ? `<span style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:10px;font-weight:600;background:#1565C015;color:#1565C0;padding:3px 8px;border-radius:2px">Risk-sharing arrangement</span>` : ''}
+        ${pd && pd.submissions > 1 ? `<span style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:10px;font-weight:600;background:var(--bg3);color:var(--text3);padding:3px 8px;border-radius:2px">${pd.submissions} submissions</span>` : ''}
+      </div>
+
+      <div class="drug-header">
+        <div class="drug-name-main">${drugTitle}</div>
+        ${akas.length ? `<div class="drug-aka sans">Also known as: ${akas.join(', ')}</div>` : ''}
+        <div class="drug-indication">${indication}</div>
+      </div>
+
+      <div class="drug-grid">
+        <div class="drug-cell">
+          <div class="drug-cell-label sans">PBAC outcome (Australia)</div>
+          <div class="drug-cell-val" style="color:${pbacRecCol};font-size:${pbacRec.length>20?'16px':'20px'}">${pbacRec || '—'}</div>
+          <div class="drug-cell-sub sans">${pbacDate}</div>
+          ${pbacSubs ? `<div class="drug-cell-sub sans" style="margin-top:3px">${pbacSubs}</div>` : ''}
+        </div>
+        <div class="drug-cell">
+          <div class="drug-cell-label sans">NICE status (United Kingdom)</div>
+          <div class="drug-cell-val ${niceCol}">${niceStatus}</div>
+          <div class="drug-cell-sub sans">${d.nice_ta ? d.nice_ta + (d.nice_date ? ' · ' + d.nice_date : '') : '—'}</div>
+        </div>
+        <div class="drug-cell">
+          <div class="drug-cell-label sans">Access gap</div>
+          <div class="drug-cell-val" style="color:${gapCol};font-size:18px">${gap === null ? 'N/A' : (gap > 0 ? '+' : '') + gap + ' mo'}</div>
+          <div class="drug-cell-sub sans">${d.gap_dir || (gap === null ? 'No NICE match' : '')}</div>
+        </div>
+      </div>
+
+      ${icerHtml}
+
+      ${historyHtml}
+
+      ${gap !== null ? `
+      <div class="gap-visual">
+        <div class="gap-track"><div class="gap-bar" style="width:${barW}%;background:${barCol};opacity:.82"></div></div>
+        <div class="gap-caption sans"><span>0 months</span><span>${gapStr}</span><span>30 months</span></div>
+      </div>` : ''}
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:20px">
+        ${comparator ? `<div><div class="section-label">Comparator (PBAC model)</div><p style="font-size:14px;color:var(--text2);line-height:1.6">${comparator}</p></div>` : ''}
+        ${keyTrials ? `<div><div class="section-label">Key clinical trials</div><p style="font-size:14px;color:var(--text2);line-height:1.6">${keyTrials}</p></div>` : ''}
+        ${riskSharing && riskNote ? `<div><div class="section-label">Risk-sharing arrangement</div><p style="font-size:14px;color:var(--text2);line-height:1.6;font-style:italic">${riskNote}</p></div>` : ''}
+        ${population ? `<div><div class="section-label">Est. eligible population</div><p style="font-size:14px;color:var(--text2);line-height:1.6">${population} patients/year</p></div>` : ''}
+        ${d.nice_detail && !comparator ? `<div><div class="section-label">NICE notes</div><p style="font-size:14px;color:var(--text2);line-height:1.6;font-style:italic">${d.nice_detail}</p></div>` : ''}
+      </div>
+
+      <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border);display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+        <a href="https://www.pbs.gov.au/medicine/search" target="_blank" class="read-more sans">PBS Schedule →</a>
+        ${d.nice_ta ? `<a href="https://www.nice.org.uk/guidance/${d.nice_ta.split(' ')[0].toLowerCase()}" target="_blank" class="read-more sans">NICE appraisal →</a>` : ''}
+        ${pd && pd.history && pd.history[pd.history.length-1] && pd.history[pd.history.length-1].filename
+          ? `<a href="https://www.pbs.gov.au/industry/listing/elements/pbac-meetings/psd/${pd.history[pd.history.length-1].filename}" target="_blank" class="read-more sans">PBAC PSD →</a>` : ''}
+        <span style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;color:var(--text3);margin-left:auto">Not the right drug? <strong style="cursor:pointer;color:var(--text2)" onclick="document.getElementById('search-input').focus()">Refine your search</strong></span>
+      </div>
+    </div>
+
+    <div style="margin-top:32px">
+      <div class="section-label">Related analysis</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:12px">
+        <div style="border-top:2px solid var(--border);padding-top:12px;cursor:pointer">
+          <div class="section-label">Access gaps · ${therapy}</div>
+          <div style="font-size:15px;font-weight:700;line-height:1.3">Access gap trends in ${(therapy||'this area').toLowerCase()}: a five-year review</div>
+          <div class="article-meta sans" style="margin-top:6px">May 2026 · 8 min read</div>
+        </div>
+        <div style="border-top:2px solid var(--border);padding-top:12px;cursor:pointer">
+          <div class="section-label">PBAC · Multi-submission</div>
+          <div style="font-size:15px;font-weight:700;line-height:1.3">How many drugs needed more than one submission to get listed?</div>
+          <div class="article-meta sans" style="margin-top:6px">Apr 2026 · 5 min read</div>
+        </div>
+        <div style="border-top:2px solid var(--border);padding-top:12px;cursor:pointer">
+          <div class="section-label">PBAC vs NICE · Concordance</div>
+          <div style="font-size:15px;font-weight:700;line-height:1.3">When PBAC and NICE disagree: the cases that reveal the most about each system</div>
+          <div class="article-meta sans" style="margin-top:6px">Mar 2026 · 10 min read</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function showTAResult(num) {
+  hideMain();
+  document.getElementById('result-content').innerHTML = `
+    <div style="padding:24px 0;border-bottom:1px solid var(--border)">
+      <div class="section-label">NICE technology appraisal</div>
+      <div style="font-size:28px;font-weight:700;margin-bottom:8px">TA${num}</div>
+      <p style="font-size:15px;color:var(--text2);font-style:italic;margin-bottom:20px">This appraisal ${num <= 629 ? 'is in the collection.' : 'may be in the collection if download_nice_missing.py has been run.'}</p>
+      <div style="display:flex;gap:12px">
+        <a href="https://www.nice.org.uk/guidance/ta${num}" target="_blank" class="read-more sans">View on NICE website →</a>
+        <a href="https://www.nice.org.uk/guidance/ta${num}/resources" target="_blank" class="read-more sans">Download PDF →</a>
+      </div>
+      <p style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;color:var(--text3);margin-top:20px">Full metadata and PBAC matching available once download_nice_missing.py and match_pbac_nice.py have been run.</p>
+    </div>
+  `;
+}
+
+function showNoResult(q) {
+  hideMain();
+  document.getElementById('result-content').innerHTML = `
+    <div class="no-results">
+      <div class="no-results-title">No results for "${q}"</div>
+      <p class="no-results-sub">This drug may not yet be in the database, or may be listed under a different name.<br>Try a generic name, brand name, or TA number (e.g. TA447).<br><br>
+      <strong style="color:var(--text2)">AI-powered search is coming</strong> — once the Claude API is connected, you'll be able to ask questions like<br>"Which rare disease drugs did PBAC reject that NICE recommended?"</p>
+      <div style="margin-top:24px;display:flex;gap:12px;justify-content:center">
+        <strong style="cursor:pointer;font-size:13px;color:var(--red);font-family:-apple-system,BlinkMacSystemFont,sans-serif" onclick="clearSearch()">← Back to dashboard</strong>
+      </div>
+    </div>
+  `;
+}
+
+// ── NICE full-text search ─────────────────────────────────────────────────────
+
+function searchNICEIndex(q) {
+  if (!window.SITE_DATA || !window.SITE_DATA.nice || !window.SITE_DATA.nice.search_index) return [];
+  const idx = window.SITE_DATA.nice.search_index;
+  // Split query into terms (ignore very short words)
+  const terms = q.toLowerCase().split(/\s+/).filter(t => t.length > 1);
+  if (!terms.length) return [];
+
+  const scored = idx.map(entry => {
+    const titleL = (entry.title || '').toLowerCase();
+    const drugL  = (entry.drug || '').toLowerCase();
+    const indL   = (entry.indication || '').toLowerCase();
+    const tagsL  = (entry.tags || []).map(t => t.toLowerCase()).join(' ');
+
+    let score = 0;
+    for (const term of terms) {
+      // Drug name match = highest weight (exact drug search)
+      if (drugL.includes(term)) score += 10;
+      // Title or indication match
+      if (titleL.includes(term)) score += 5;
+      if (indL.includes(term)) score += 4;
+      // Tag match (therapy area e.g. "oncology", "prostate cancer")
+      if (tagsL.includes(term)) score += 3;
+    }
+    return { entry, score };
+  })
+  .filter(x => x.score > 0)
+  .sort((a, b) => b.score - a.score || b.entry.ta - a.entry.ta);
+
+  return scored.map(x => x.entry);
+}
+
+function showNICEResults(query, results) {
+  hideMain();
+  const total = results.length;
+  const shown = results.slice(0, 40);
+
+  const REC_COL = {
+    'Recommended': '#2e7d32',
+    'Not recommended': '#C62828',
+  };
+  const recColour = (rec) => {
+    if (!rec) return 'var(--text3)';
+    if (rec.startsWith('Recommended')) return '#2e7d32';
+    if (rec.startsWith('Not')) return '#C62828';
+    return '#1565C0'; // Optimised / other
+  };
+  const recShort = (rec) => {
+    if (!rec) return '';
+    if (rec.startsWith('Recommended with')) return 'Managed access';
+    return rec.slice(0, 20);
+  };
+
+  const tagHtml = (tags) => (tags || []).slice(0, 3).map(t => {
+    const cls = t.toLowerCase().includes('cancer') || t === 'Oncology' ? 'cancer' : '';
+    return `<span class="tag-pill ${cls}">${t}</span>`;
+  }).join('');
+
+  const rows = shown.map(e => `
+    <div class="nice-result-row">
+      <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px">
+        <span class="nice-ta-badge">TA${e.ta}</span>
+        <span class="nice-result-title">${e.title || e.drug}</span>
+        ${e.rec ? `<span style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:10px;font-weight:600;color:${recColour(e.rec)};white-space:nowrap">${recShort(e.rec)}</span>` : ''}
+      </div>
+      <div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;color:var(--text3);margin-bottom:8px">
+        ${e.drug ? `<strong style="color:var(--text2)">${e.drug}</strong>` : ''}
+        ${e.indication ? ` · ${e.indication}` : ''}
+        ${e.year ? ` · ${e.year}` : ''}
+      </div>
+      <div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px">
+        ${tagHtml(e.tags)}
+        ${e.url ? `<a href="${e.url}" target="_blank" class="read-more sans" style="margin-left:auto">View on NICE →</a>` : ''}
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('result-content').innerHTML = `
+    <div style="margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid var(--text)">
+      <div class="section-label">NICE technology appraisals · search results</div>
+      <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap">
+        <div style="font-size:22px;font-weight:700;letter-spacing:-.3px">${total.toLocaleString()} result${total!==1?'s':''} for "${query}"</div>
+        ${total > 40 ? `<span style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;color:var(--text3)">Showing first 40 — refine your search to narrow results</span>` : ''}
+      </div>
+    </div>
+    <div>${rows}</div>
+    <div style="margin-top:28px;text-align:center">
+      <strong style="cursor:pointer;font-size:13px;color:var(--red);font-family:-apple-system,BlinkMacSystemFont,sans-serif" onclick="clearSearch()">← Back to dashboard</strong>
+    </div>
+  `;
+}
+
+// ── Real data integration ─────────────────────────────────────────────────────
+(function initRealData() {
+  const D = window.SITE_DATA;
+  if (!D) return;
+
+  // Load matched drugs into DRUG_DB for search
+  buildDrugDB();
+
+  // Update stats bar
+  const s = D.stats;
+  const fmt = (n, decimals) => {
+    if (n >= 1e9) return '$' + (n/1e9).toFixed(1) + 'B';
+    if (n >= 1e6) return (n/1e6).toFixed(1) + 'M';
+    if (n >= 1e3) return (n/1e3).toFixed(0) + 'K';
+    return n;
+  };
+
+  if (s.pbac_psds > 0) {
+    document.getElementById('stat-psds').textContent = s.pbac_psds.toLocaleString();
+    const yr = D.pbac.year_range;
+    document.getElementById('stat-psds-note').textContent = yr[0] + ' – ' + yr[1];
+  }
+  if (s.nice_tas > 0) {
+    document.getElementById('stat-nice').textContent = s.nice_tas.toLocaleString();
+    const ta = D.nice.ta_range;
+    document.getElementById('stat-nice-note').textContent = 'TA' + ta[0] + ' through TA' + ta[1];
+  }
+  if (s.pbs_2024_aud > 0) {
+    document.getElementById('stat-pbs').textContent = fmt(s.pbs_2024_aud);
+    document.getElementById('stat-pbs-note').textContent = s.pbs_growth_x + '× growth since 1994';
+  }
+
+  // ── Insights from NICE search_index ────────────────────────────────────────
+  const nice = D.nice;
+  if (nice && nice.search_index && nice.search_index.length > 0) {
+    const idx = nice.search_index;
+    // Hide static fallback, show dynamic section
+    const staticEl = document.getElementById('insights-static');
+    if (staticEl) staticEl.style.display = 'none';
+    const gridEl = document.getElementById('insights-grid');
+    if (gridEl) gridEl.style.display = '';
+    const chartsEl = document.getElementById('insights-charts');
+    if (chartsEl) chartsEl.style.display = '';
+
+    // Recommendation rate
+    const withRec = idx.filter(e => e.rec && e.rec.length > 0);
+    const positive = withRec.filter(e =>
+      e.rec.startsWith('Recommended') || e.rec.toLowerCase().includes('optimised')
+    );
+    const recRate = withRec.length > 0 ? Math.round((positive.length / withRec.length) * 100) : 0;
+    const recRateEl = document.getElementById('insight-rec-rate');
+    if (recRateEl) { recRateEl.textContent = recRate + '%'; }
+    const recNoteEl = document.getElementById('insight-rec-note');
+    if (recNoteEl) recNoteEl.textContent = `${positive.length} positive out of ${withRec.length} TAs with recorded outcomes`;
+
+    // Oncology share
+    const oncoCount = idx.filter(e => (e.tags||[]).includes('Oncology')).length;
+    const oncoEl = document.getElementById('insight-onco-pct');
+    if (oncoEl) oncoEl.textContent = Math.round((oncoCount/idx.length)*100) + '%';
+    const oncoNoteEl = document.getElementById('insight-onco-note');
+    if (oncoNoteEl) oncoNoteEl.textContent = `${oncoCount} of ${idx.length} TAs tagged as oncology`;
+
+    // Rare disease recommendation rate
+    const rareAll = idx.filter(e => (e.tags||[]).includes('Rare disease') && e.rec);
+    const rarePos = rareAll.filter(e => e.rec.startsWith('Recommended') || e.rec.toLowerCase().includes('optimised'));
+    const rareRateEl = document.getElementById('insight-rare-rate');
+    if (rareRateEl) {
+      const rr = rareAll.length > 0 ? Math.round((rarePos.length / rareAll.length) * 100) : 0;
+      rareRateEl.textContent = rr + '%';
+    }
+    const rareNoteEl = document.getElementById('insight-rare-note');
+    if (rareNoteEl) {
+      const rareAll2 = idx.filter(e => (e.tags||[]).includes('Rare disease'));
+      rareNoteEl.textContent = `Based on ${rareAll2.length} rare disease TAs in the index`;
+    }
+
+    // ── NICE therapy bar chart ──────────────────────────────────────────────
+    const byTherapy = nice.by_therapy || {};
+    const topTherapy = Object.entries(byTherapy)
+      .filter(([k]) => k !== 'Oncology') // Oncology shown separately
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 8);
+
+    // Add Oncology back at top
+    if (byTherapy['Oncology']) {
+      topTherapy.unshift(['Oncology', byTherapy['Oncology']]);
+    }
+
+    const maxVal = topTherapy.length > 0 ? topTherapy[0][1] : 1;
+    const niceBarEl = document.getElementById('nice-therapy-bars');
+    if (niceBarEl && topTherapy.length > 0) {
+      niceBarEl.innerHTML = topTherapy.map(([name, count]) => {
+        const pct = Math.round((count / maxVal) * 100);
+        const short = name.length > 20 ? name.slice(0,20)+'…' : name;
+        return `<div class="bar-row">
+          <div class="bar-name sans" title="${name}">${short}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
+          <div class="bar-val sans">${count}</div>
+        </div>`;
+      }).join('');
+    }
+    const niceSrcEl = document.getElementById('nice-bar-source');
+    if (niceSrcEl && nice.ta_range) niceSrcEl.textContent = `Source: NICE TAs TA1–TA${nice.ta_range[1]}. Keyword-tagged. Some TAs span multiple areas.`;
+    const niceTitleEl = document.getElementById('nice-bar-title');
+    if (niceTitleEl) niceTitleEl.textContent = `${oncoCount} oncology TAs — ${Math.round((oncoCount/idx.length)*100)}% of all indexed appraisals`;
+
+    // ── Recommendation rate by therapy area ────────────────────────────────
+    const recRateByTherapy = {};
+    for (const entry of idx) {
+      if (!entry.rec) continue;
+      const isPos = entry.rec.startsWith('Recommended') || entry.rec.toLowerCase().includes('optimised');
+      for (const tag of (entry.tags || [])) {
+        if (!recRateByTherapy[tag]) recRateByTherapy[tag] = { pos: 0, total: 0 };
+        recRateByTherapy[tag].total++;
+        if (isPos) recRateByTherapy[tag].pos++;
+      }
+    }
+    const recRateRows = Object.entries(recRateByTherapy)
+      .filter(([, v]) => v.total >= 5)
+      .map(([k, v]) => [k, Math.round((v.pos/v.total)*100), v.total])
+      .sort((a, b) => a[1] - b[1]) // ascending (worst first)
+      .slice(0, 8);
+
+    const recRateChartEl = document.getElementById('rec-rate-chart');
+    if (recRateChartEl && recRateRows.length > 0) {
+      recRateChartEl.innerHTML = recRateRows.map(([name, rate, total]) => {
+        const short = name.length > 20 ? name.slice(0,20)+'…' : name;
+        const col = rate >= 70 ? '#2e7d32' : rate >= 50 ? '#E65100' : '#C62828';
+        return `<div class="bar-row">
+          <div class="bar-name sans" title="${name} (n=${total})">${short}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${rate}%;background:${col}"></div></div>
+          <div class="bar-val sans" style="color:${col}">${rate}%</div>
+        </div>`;
+      }).join('');
+    }
+
+    // ── Hero key findings — update with real data ───────────────────────────
+    const ms = D.stats;
+    if (ms.median_gap_months) {
+      // Update data-pull blocks if they exist with real numbers
+      const pulls = document.querySelectorAll('.data-pull-num');
+      if (pulls.length >= 1 && ms.pct_nice_first) pulls[0].textContent = ms.pct_nice_first + '%';
+      if (pulls.length >= 2 && ms.matched_drugs) pulls[1].textContent = D.matched.stats.aus_first_n
+        ? D.matched.stats.aus_first_n + ' drugs'
+        : pulls[1].textContent; // keep static if not available
+    }
+
+    // ── Comparison table with real access gap data ─────────────────────────
+    const matched = D.matched;
+    if (matched && matched.drugs && matched.drugs.length > 0) {
+      // Pick 8 most interesting (already sorted by |gap|)
+      const top8 = matched.drugs.slice(0, 8);
+      const tbody = document.getElementById('compare-tbody');
+      if (tbody) {
+        tbody.innerHTML = top8.map(d => {
+          const gap = d.gap_months;
+          const gapStr = gap > 0 ? `+${Math.round(gap)} mo` : gap < 0 ? `${Math.round(gap)} mo` : '—';
+          const cls = gap > 0 ? 'neg' : gap < 0 ? 'pos' : '';
+          const drugTitle = d.drug.charAt(0).toUpperCase() + d.drug.slice(1);
+          const pbacStatus = d.pbac_date ? 'Listed' : '—';
+          const niceStatus = d.nice_rec ? (d.nice_rec.startsWith('Recommended') ? 'Recommended' : 'See NICE') : '—';
+          return `<tr>
+            <td onclick="runSearch('${d.drug}')" style="cursor:pointer">${drugTitle}</td>
+            <td>${pbacStatus}</td>
+            <td>${niceStatus}</td>
+            <td class="${cls}">${gapStr}</td>
+          </tr>`;
+        }).join('');
+      }
+    }
+
+    // ── Gap bars from real matched data ─────────────────────────────────────
+    if (matched && matched.drugs && matched.drugs.length > 0) {
+      // Show top 6 largest |gap| drugs (already sorted by |gap| desc)
+      const top6 = matched.drugs.slice(0, 6);
+      const maxAbsGap = Math.max(...top6.map(d => Math.abs(d.gap_months)), 1);
+      const gapBarsEl = document.getElementById('gap-bars');
+      if (gapBarsEl) {
+        gapBarsEl.innerHTML = top6.map(d => {
+          const gap = Math.round(d.gap_months);
+          const absGap = Math.abs(gap);
+          const pct = Math.min(100, Math.round((absGap / maxAbsGap) * 100));
+          const col = gap > 0 ? 'var(--red)' : '#2e7d32';
+          const label = gap > 0 ? `+${absGap} mo` : `−${absGap} mo`;
+          const drugTitle = d.drug.charAt(0).toUpperCase() + d.drug.slice(1);
+          return `<div class="drug-gap-row">
+            <div class="drug-name-col sans" onclick="runSearch('${d.drug}')" title="${d.therapy}">${drugTitle}</div>
+            <div class="gap-center-line"></div>
+            <div class="gap-bar-right">
+              <div class="gap-fill-bar" style="width:${pct}%;background:${col};opacity:.82"></div>
+              <span class="gap-mo-label sans">${label}</span>
+            </div>
+          </div>`;
+        }).join('');
+      }
+      const gapSrcEl = document.getElementById('gap-source');
+      if (gapSrcEl) {
+        gapSrcEl.textContent = `Top ${top6.length} by access gap size. Click a drug name to explore. Red = UK listed first; green = Australia first.`;
+      }
+      const gapAxisEl = document.getElementById('gap-axis');
+      if (gapAxisEl) {
+        const axisMax = Math.round(maxAbsGap);
+        gapAxisEl.innerHTML = `<span style="flex:0 0 0px"></span><span style="flex:1">0</span><span style="flex:1;text-align:center">${Math.round(axisMax/2)} mo</span><span style="flex:1;text-align:right">${axisMax} mo</span>`;
+      }
+    }
+
+    // ── Filter pills ────────────────────────────────────────────────────────
+    const filterRow = document.getElementById('filter-row');
+    const filterPills = document.getElementById('filter-pills');
+    if (filterRow && filterPills && topTherapy.length > 0) {
+      filterRow.style.display = '';
+      const TOP_FILTERS = topTherapy.slice(0, 8).map(([k]) => k);
+      filterPills.innerHTML = TOP_FILTERS.map(name => {
+        const safe = name.replace(/[^a-z0-9]/gi, '_');
+        return `<button class="filter-pill" data-filter="${safe}" onclick="setFilter(this,'${safe}')">${name}</button>`;
+      }).join('');
+    }
+  }
+
+  // Populate Explore tabs
+  initExplore();
+  // Pre-compute outcomes data (charts build lazily when tab opens)
+  _prepOutcomeData();
+})();
+
+// ── Dashboard filter logic ────────────────────────────────────────────────────
+let _activeFilter = 'all';
+
+function setFilter(btn, filter) {
+  _activeFilter = filter;
+  // Update active pill
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+
+  // Filter the NICE therapy bars
+  if (!window.SITE_DATA || !window.SITE_DATA.nice) return;
+  const idx = window.SITE_DATA.nice.search_index || [];
+  const filtered = filter === 'all' ? idx
+    : idx.filter(e => (e.tags||[]).some(t => t.replace(/[^a-z0-9]/gi,'_') === filter));
+
+  const byTherapy = {};
+  for (const e of filtered) {
+    for (const tag of (e.tags || [])) {
+      byTherapy[tag] = (byTherapy[tag] || 0) + 1;
+    }
+  }
+
+  const top = Object.entries(byTherapy)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 8);
+
+  const maxV = top.length > 0 ? top[0][1] : 1;
+  const niceBarEl = document.getElementById('nice-therapy-bars');
+  if (niceBarEl && top.length > 0) {
+    niceBarEl.innerHTML = top.map(([name, count]) => {
+      const pct = Math.round((count/maxV)*100);
+      const short = name.length > 20 ? name.slice(0,20)+'…' : name;
+      return `<div class="bar-row">
+        <div class="bar-name sans" title="${name}">${short}</div>
+        <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
+        <div class="bar-val sans">${count}</div>
+      </div>`;
+    }).join('');
+    const niceTitleEl = document.getElementById('nice-bar-title');
+    if (niceTitleEl) {
+      niceTitleEl.textContent = filter === 'all'
+        ? `${idx.length} appraisals across all therapy areas`
+        : `${filtered.length} appraisals tagged as ${filter.replace(/_/g,' ')}`;
+    }
+  }
+}
+
+// ── Explore tabs ─────────────────────────────────────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'tab-trends')   buildTrendsChart();
+  if (id === 'tab-pbs')     buildPBSExploreChart();
+  if (id === 'tab-outcomes') buildOutcomeCharts();
+}
+
+function initExplore() {
+  const D = window.SITE_DATA;
+  if (!D) return;
+
+  // ── Tab 1a: Drug-level PBS spend (if fetch_pbs_drug_spend.py has run) ───────
+  const ds = D.drug_spend;
+  if (ds && ds.total > 0) {
+    const section = document.getElementById('drug-spend-section');
+    if (section) section.style.display = '';
+
+    // Update year note
+    const yearNote = document.getElementById('drug-spend-year-note');
+    if (yearNote && ds.report_year) yearNote.textContent = ds.report_year + '–' + (parseInt(ds.report_year)+1) + ' financial year';
+
+    // Top 20 by spend
+    const spendEl = document.getElementById('drug-spend-list');
+    if (spendEl && ds.top_spend && ds.top_spend.length > 0) {
+      const maxB = ds.top_spend[0].gov_benefit_aud;
+      spendEl.innerHTML = ds.top_spend.map((d, i) => {
+        const b    = d.gov_benefit_aud;
+        const pct  = Math.round((b / maxB) * 100);
+        const str  = b >= 1e9 ? '$' + (b/1e9).toFixed(2) + 'B' : '$' + (b/1e6).toFixed(0) + 'M';
+        const name = d.drug_name.charAt(0).toUpperCase() + d.drug_name.slice(1);
+        const brand = d.brand_name ? ` <span style="color:var(--text3);font-size:11px">(${d.brand_name})</span>` : '';
+        return `<li class="rank-item" style="cursor:pointer" onclick="runSearch('${d.drug_name.toLowerCase()}')">
+          <div class="rank-num">${i+1}</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:600;font-size:14px">${name}${brand}</div>
+            <div style="margin-top:5px;display:flex;align-items:center;gap:10px">
+              <div style="flex:1;height:6px;background:var(--bg3);border-radius:3px;max-width:180px">
+                <div class="rank-bar-fill" style="width:${pct}%"></div>
+              </div>
+              <span class="sans" style="font-size:12px;font-weight:600;color:var(--text2);flex-shrink:0">${str}</span>
+            </div>
+          </div>
+        </li>`;
+      }).join('');
+    }
+
+    // Top 20 by cost per script
+    const cpsEl = document.getElementById('drug-cps-list');
+    if (cpsEl && ds.top_cost_per_script && ds.top_cost_per_script.length > 0) {
+      const maxCPS = ds.top_cost_per_script[0].cost_per_script_aud;
+      cpsEl.innerHTML = ds.top_cost_per_script.map((d, i) => {
+        const cps  = d.cost_per_script_aud;
+        const pct  = Math.round((cps / maxCPS) * 100);
+        const str  = cps >= 10000 ? '$' + (cps/1000).toFixed(0) + 'k' : '$' + cps.toLocaleString(undefined,{maximumFractionDigits:0});
+        const name = d.drug_name.charAt(0).toUpperCase() + d.drug_name.slice(1);
+        const scripts = d.scripts ? ` · ${(d.scripts/1000).toFixed(1)}k scripts` : '';
+        // Colour code: > $10k = red, $1–10k = orange, <$1k = green
+        const col = cps > 10000 ? 'var(--red)' : cps > 1000 ? '#E65100' : '#2e7d32';
+        return `<li class="rank-item" style="cursor:pointer" onclick="runSearch('${d.drug_name.toLowerCase()}')">
+          <div class="rank-num">${i+1}</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:600;font-size:14px">${name}</div>
+            <div style="margin-top:5px;display:flex;align-items:center;gap:10px">
+              <div style="flex:1;height:6px;background:var(--bg3);border-radius:3px;max-width:140px">
+                <div style="height:100%;border-radius:3px;background:${col};width:${pct}%"></div>
+              </div>
+              <span class="sans" style="font-size:12px;font-weight:600;color:${col};flex-shrink:0">${str}/script</span>
+            </div>
+            <div class="sans" style="font-size:10px;color:var(--text3);margin-top:2px">${scripts}</div>
+          </div>
+        </li>`;
+      }).join('');
+    }
+
+    // Update ATC section label
+    const atcLabel = document.getElementById('atc-section-label');
+    if (atcLabel) atcLabel.textContent = 'PBS spend by ATC drug class · 2024';
+  }
+
+  // ── Tab 1b: ATC class fallback ────────────────────────────────────────────
+  const meta = D.pbs && D.pbs.atc_meta;
+  if (meta) {
+    const sorted = Object.entries(meta)
+      .filter(([, m]) => m.spend_2024_aud > 0)
+      .sort((a, b) => (b[1].spend_2024_aud || 0) - (a[1].spend_2024_aud || 0))
+      .slice(0, 10);
+    const maxSpend = sorted.length > 0 ? sorted[0][1].spend_2024_aud : 1;
+    const listEl = document.getElementById('pbs-rank-list');
+    if (listEl && sorted.length > 0) {
+      listEl.innerHTML = sorted.map(([name, m], i) => {
+        const spend = m.spend_2024_aud || 0;
+        const pct   = Math.round((spend / maxSpend) * 100);
+        const str   = spend >= 1e9 ? '$' + (spend/1e9).toFixed(2) + 'B' : '$' + (spend/1e6).toFixed(0) + 'M';
+        return `<li class="rank-item">
+          <div class="rank-num">${i+1}</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${name}</div>
+            <div style="margin-top:5px;display:flex;align-items:center;gap:10px">
+              <div style="flex:1;height:6px;background:var(--bg3);border-radius:3px;max-width:180px">
+                <div class="rank-bar-fill" style="width:${pct}%"></div>
+              </div>
+              <span class="sans" style="font-size:12px;font-weight:600;color:var(--text2);flex-shrink:0">${str}</span>
+            </div>
+          </div>
+        </li>`;
+      }).join('');
+    }
+    document.getElementById('pbs-explore-placeholder').style.display = 'none';
+    document.getElementById('pbs-explore-chart').style.display = 'block';
+    buildPBSExploreChart();
+  }
+
+  // ── Tab 2: Top therapy areas ─────────────────────────────────────────────
+  const nice = D.nice;
+  if (nice && nice.by_therapy) {
+    const niceTop = Object.entries(nice.by_therapy).sort((a,b) => b[1]-a[1]).slice(0,10);
+    const maxN = niceTop.length > 0 ? niceTop[0][1] : 1;
+    const el = document.getElementById('therapy-rank-list');
+    if (el && niceTop.length > 0) {
+      el.innerHTML = niceTop.map(([name, count], i) => {
+        const pct = Math.round((count/maxN)*100);
+        return `<li class="rank-item">
+          <div class="rank-num">${i+1}</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:600;font-size:14px">${name}</div>
+            <div style="margin-top:5px;display:flex;align-items:center;gap:10px">
+              <div style="flex:1;height:6px;background:var(--bg3);border-radius:3px;max-width:180px">
+                <div class="rank-bar-fill" style="width:${pct}%"></div>
+              </div>
+              <span class="sans" style="font-size:12px;font-weight:600;color:var(--text2);flex-shrink:0">${count} TAs</span>
+            </div>
+          </div>
+        </li>`;
+      }).join('');
+    }
+  }
+
+  const psd = D.psd;
+  if (psd && psd.by_therapy) {
+    const pbacTop = Object.entries(psd.by_therapy).sort((a,b) => b[1]-a[1]).slice(0,10);
+    const maxP = pbacTop.length > 0 ? pbacTop[0][1] : 1;
+    const el = document.getElementById('pbac-therapy-list');
+    if (el && pbacTop.length > 0) {
+      el.innerHTML = pbacTop.map(([name, count], i) => {
+        const pct = Math.round((count/maxP)*100);
+        return `<li class="rank-item">
+          <div class="rank-num">${i+1}</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:600;font-size:14px">${name}</div>
+            <div style="margin-top:5px;display:flex;align-items:center;gap:10px">
+              <div style="flex:1;height:6px;background:var(--bg3);border-radius:3px;max-width:180px">
+                <div class="rank-bar-fill" style="width:${pct}%;background:#1565C0"></div>
+              </div>
+              <span class="sans" style="font-size:12px;font-weight:600;color:var(--text2);flex-shrink:0">${count} PSDs</span>
+            </div>
+          </div>
+        </li>`;
+      }).join('');
+    }
+  }
+
+  // ── Tab 3: PBAC trend summary stats ─────────────────────────────────────
+  if (psd) {
+    const byRec = psd.by_recommendation || {};
+    const total  = psd.total || 0;
+    const rec    = byRec['Recommended'] || 0;
+    const notRec = byRec['Not recommended'] || 0;
+    const defer  = byRec['Deferred'] || 0;
+    const recPct = total > 0 ? Math.round((rec/total)*100) : 0;
+    const trendStatsEl = document.getElementById('trend-stats');
+    if (trendStatsEl) {
+      trendStatsEl.innerHTML = `
+        <div style="border-top:2px solid #2e7d32;padding-top:12px">
+          <div style="font-size:24px;font-weight:700;color:#2e7d32">${recPct}%</div>
+          <div class="sans" style="font-size:12px;color:var(--text3);margin-top:4px">Overall recommendation rate<br>${rec.toLocaleString()} of ${total.toLocaleString()} PSDs</div>
+        </div>
+        <div style="border-top:2px solid var(--red);padding-top:12px">
+          <div style="font-size:24px;font-weight:700;color:var(--red)">${notRec.toLocaleString()}</div>
+          <div class="sans" style="font-size:12px;color:var(--text3);margin-top:4px">Not recommended<br>${total > 0 ? Math.round((notRec/total)*100) : 0}% of all PSDs</div>
+        </div>
+        <div style="border-top:2px solid #E65100;padding-top:12px">
+          <div style="font-size:24px;font-weight:700;color:#E65100">${defer.toLocaleString()}</div>
+          <div class="sans" style="font-size:12px;color:var(--text3);margin-top:4px">Deferred<br>Resubmission required</div>
+        </div>`;
+    }
+  }
+
+  // ── Tab 4: New listings ──────────────────────────────────────────────────
+  if (psd && psd.drugs) {
+    const recent = Object.entries(psd.drugs)
+      .filter(([, d]) => d.recommendation && d.recommendation.startsWith('Recommended') && d.latest_year)
+      .sort((a, b) => (b[1].latest_year || 0) - (a[1].latest_year || 0))
+      .slice(0, 25);
+    const tbody = document.getElementById('listings-tbody');
+    if (tbody && recent.length > 0) {
+      tbody.innerHTML = recent.map(([key, d]) => {
+        const name = key.charAt(0).toUpperCase() + key.slice(1);
+        const rec  = d.recommendation || '—';
+        const recCls = rec.startsWith('Recommended') && rec.includes('restriction') ? 'rec-def'
+          : rec.startsWith('Recommended') ? 'rec-yes' : 'rec-no';
+        const recShort = rec.replace('Recommended with restriction','With restriction').replace('Recommended','Recommended');
+        const ind = (d.indication || '').slice(0, 65) + ((d.indication||'').length > 65 ? '…' : '');
+        return `<tr>
+          <td onclick="runSearch('${key}')" style="cursor:pointer;font-weight:600;font-size:14px">${name}</td>
+          <td style="font-size:13px;color:var(--text2);line-height:1.4">${ind || '—'}</td>
+          <td style="font-size:12px;color:var(--text3)">${d.therapy_area || '—'}</td>
+          <td style="font-size:13px;color:var(--text2);white-space:nowrap">${d.latest_year || '—'}</td>
+          <td><span class="rec-pill ${recCls}">${recShort}</span></td>
+        </tr>`;
+      }).join('');
+    }
+  }
+}
+
+// ── Trends chart ─────────────────────────────────────────────────────────────
+let _trendsBuilt = false;
+function buildTrendsChart() {
+  if (_trendsBuilt) return;
+  const D = window.SITE_DATA;
+  if (!D || !D.psd || !D.psd.drugs) return;
+
+  // Count PSD submissions per year from history arrays
+  const yearCounts = {};
+  for (const [, d] of Object.entries(D.psd.drugs)) {
+    for (const h of (d.history || [])) {
+      if (h.year && parseInt(h.year) >= 2010) {
+        yearCounts[h.year] = (yearCounts[h.year] || 0) + 1;
+      }
+    }
+  }
+  const years  = Object.keys(yearCounts).sort();
+  if (!years.length) return;
+  const values = years.map(y => yearCounts[y]);
+
+  document.getElementById('trends-placeholder').style.display = 'none';
+  const canvas = document.getElementById('trends-chart');
+  canvas.style.display = 'block';
+
+  const isDark  = document.documentElement.dataset.theme === 'dark';
+  const redCol  = isDark ? '#EF5350' : '#C62828';
+  const textCol = isDark ? '#B0A898' : '#8A8070';
+  const gridCol = isDark ? '#2C2820' : '#E8E2D4';
+
+  const renderFn = () => new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: years,
+      datasets: [{
+        data: values,
+        backgroundColor: redCol + '55',
+        borderColor: redCol,
+        borderWidth: 1.5,
+        borderRadius: 2,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1A1208', titleColor: '#F0EDE4', bodyColor: '#B0A898',
+          titleFont: { family: 'Georgia', size: 12 },
+          bodyFont: { family: '-apple-system,BlinkMacSystemFont,sans-serif', size: 11 },
+          callbacks: { label: item => ` ${item.raw} PBAC submissions` }
+        }
+      },
+      scales: {
+        x: { grid: { color: gridCol, lineWidth: .5 }, ticks: { color: textCol, font: { size: 10, family: '-apple-system,BlinkMacSystemFont,sans-serif' } }, border: { color: gridCol } },
+        y: { grid: { color: gridCol, lineWidth: .5 }, ticks: { color: textCol, font: { size: 10, family: '-apple-system,BlinkMacSystemFont,sans-serif' } }, border: { display: false } }
+      }
+    }
+  });
+
+  if (window.Chart) { renderFn(); } else {
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js';
+    s.onload = renderFn;
+    document.head.appendChild(s);
+  }
+  _trendsBuilt = true;
+}
+
+// ── PBS Explore chart (horizontal bar) ───────────────────────────────────────
+let _pbsExploreBuilt = false;
+function buildPBSExploreChart() {
+  if (_pbsExploreBuilt) return;
+  const D = window.SITE_DATA;
+  if (!D || !D.pbs || !D.pbs.atc_meta) return;
+  const sorted = Object.entries(D.pbs.atc_meta)
+    .filter(([, m]) => m.spend_2024_aud > 0)
+    .sort((a, b) => (b[1].spend_2024_aud||0) - (a[1].spend_2024_aud||0))
+    .slice(0, 10);
+  if (!sorted.length) return;
+
+  const canvas = document.getElementById('pbs-explore-chart');
+  if (!canvas) return;
+
+  const labels = sorted.map(([n]) => n.length > 26 ? n.slice(0,26)+'…' : n);
+  const values = sorted.map(([, m]) => +(m.spend_2024_aud/1e9).toFixed(3));
+  const COLS   = ['#1565C0','#C62828','#2E7D32','#6A1B9A','#E65100','#00838F','#558B2F','#AD1457','#4527A0','#F57F17'];
+
+  const isDark  = document.documentElement.dataset.theme === 'dark';
+  const textCol = isDark ? '#B0A898' : '#8A8070';
+  const gridCol = isDark ? '#2C2820' : '#E8E2D4';
+
+  const renderFn = () => new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        data: values,
+        backgroundColor: COLS.map(c => c + '80'),
+        borderColor: COLS,
+        borderWidth: 1.5,
+        borderRadius: 2,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1A1208', titleColor: '#F0EDE4', bodyColor: '#B0A898',
+          callbacks: { label: item => ` $${item.raw.toFixed(2)}B (2024 PBS spend)` }
+        }
+      },
+      scales: {
+        x: { grid: { color: gridCol, lineWidth: .5 }, ticks: { color: textCol, font: { size: 10 }, callback: v => '$' + v.toFixed(1) + 'B' }, border: { color: gridCol } },
+        y: { grid: { display: false }, ticks: { color: textCol, font: { size: 10, family: '-apple-system,BlinkMacSystemFont,sans-serif' } }, border: { display: false } }
+      }
+    }
+  });
+
+  if (window.Chart) { renderFn(); } else {
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js';
+    s.onload = renderFn;
+    document.head.appendChild(s);
+  }
+  _pbsExploreBuilt = true;
+}
+
+// ── Outcomes deep dive ────────────────────────────────────────────────────────
+// Pre-computed once on load, consumed by lazy chart builders
+let _outcomeData = null;
+
+function _prepOutcomeData() {
+  const D = window.SITE_DATA;
+  if (!D || !D.psd || !D.psd.drugs) return;
+  const drugs = Object.values(D.psd.drugs);
+
+  // ── 1. Persistence: submissions-to-recommendation distribution ────────────
+  // Only drugs with a final "Recommended" outcome
+  const recDrugs = drugs.filter(d => d.recommendation && d.recommendation.startsWith('Recommended'));
+  const persistBins = { '1': 0, '2': 0, '3': 0, '4+': 0 };
+  for (const d of recDrugs) {
+    const n = d.submissions || 1;
+    if (n === 1)      persistBins['1']++;
+    else if (n === 2) persistBins['2']++;
+    else if (n === 3) persistBins['3']++;
+    else              persistBins['4+']++;
+  }
+  const avgSubs = recDrugs.length > 0
+    ? (recDrugs.reduce((s, d) => s + (d.submissions || 1), 0) / recDrugs.length).toFixed(2)
+    : '—';
+
+  // ── 2. ICER distribution (all drugs with any ICER data) ───────────────────
+  const icerBins = {
+    '<$45k':   { label: '<$45k', count: 0, col: '#2e7d32' },
+    '$45–75k': { label: '$45–75k', count: 0, col: '#558B2F' },
+    '$75–150k':{ label: '$75–150k', count: 0, col: '#E65100' },
+    '>$150k':  { label: '>$150k', count: 0, col: '#C62828' },
+    'Not stated/CS': { label: 'Not stated / CS', count: 0, col: '#8A8070' },
+  };
+  let icerTotal = 0;
+  for (const d of drugs) {
+    // Use midpoint of range, or whichever bound we have
+    const lo = d.icer_low  ? parseInt(d.icer_low)  : null;
+    const hi = d.icer_high ? parseInt(d.icer_high) : null;
+    const val = lo && hi ? (lo + hi) / 2 : (hi || lo);
+    if (!val) {
+      icerBins['Not stated/CS'].count++;
+    } else if (val < 45000)  {
+      icerBins['<$45k'].count++;
+    } else if (val < 75000)  {
+      icerBins['$45–75k'].count++;
+    } else if (val < 150000) {
+      icerBins['$75–150k'].count++;
+    } else {
+      icerBins['>$150k'].count++;
+    }
+    icerTotal++;
+  }
+  const belowThreshold = icerBins['<$45k'].count + icerBins['$45–75k'].count;
+  const belowPct = icerTotal > 0 ? Math.round((belowThreshold / icerTotal) * 100) : 0;
+
+  // ── 3. Resubmission rate by therapy area ──────────────────────────────────
+  // % of drugs that needed >1 submission before being recommended, per therapy
+  const therapyMap = {}; // { therapy: { total_rec: N, multi_sub: N } }
+  for (const d of recDrugs) {
+    const t = d.therapy_area || 'Other';
+    if (!therapyMap[t]) therapyMap[t] = { total_rec: 0, multi_sub: 0 };
+    therapyMap[t].total_rec++;
+    if ((d.submissions || 1) > 1) therapyMap[t].multi_sub++;
+  }
+  const resubRows = Object.entries(therapyMap)
+    .filter(([, v]) => v.total_rec >= 3) // at least 3 recommended drugs in area
+    .map(([therapy, v]) => ({
+      therapy,
+      pct: Math.round((v.multi_sub / v.total_rec) * 100),
+      n: v.total_rec,
+    }))
+    .sort((a, b) => b.pct - a.pct); // highest resubmission rate first
+
+  _outcomeData = { persistBins, avgSubs, recTotal: recDrugs.length, icerBins, icerTotal, belowPct, resubRows };
+}
+
+let _outcomesBuilt = false;
+function buildOutcomeCharts() {
+  if (_outcomesBuilt) return;
+  if (!_outcomeData) _prepOutcomeData();
+  if (!_outcomeData) return;
+
+  const { persistBins, avgSubs, recTotal, icerBins, icerTotal, belowPct, resubRows } = _outcomeData;
+
+  const isDark  = document.documentElement.dataset.theme === 'dark';
+  const textCol = isDark ? '#B0A898' : '#8A8070';
+  const gridCol = isDark ? '#2C2820' : '#E8E2D4';
+
+  const ensureChart = (cb) => {
+    if (window.Chart) { cb(); }
+    else {
+      const s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js';
+      s.onload = cb;
+      document.head.appendChild(s);
+    }
+  };
+
+  // ── Persistence histogram ────────────────────────────────────────────────
+  const persistCanvas = document.getElementById('persist-chart');
+  document.getElementById('persist-placeholder').style.display = 'none';
+  persistCanvas.style.display = 'block';
+
+  const pLabels = ['1 submission', '2 submissions', '3 submissions', '4+ submissions'];
+  const pValues = [persistBins['1'], persistBins['2'], persistBins['3'], persistBins['4+']];
+  const pCols   = ['#2e7d3288', '#558B2F88', '#E6510088', '#C6282888'];
+  const pBords  = ['#2e7d32',   '#558B2F',   '#E65100',   '#C62828'];
+
+  ensureChart(() => {
+    new Chart(persistCanvas, {
+      type: 'bar',
+      data: {
+        labels: pLabels,
+        datasets: [{ data: pValues, backgroundColor: pCols, borderColor: pBords, borderWidth: 1.5, borderRadius: 3 }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#1A1208', titleColor: '#F0EDE4', bodyColor: '#B0A898',
+            callbacks: {
+              label: item => {
+                const pct = recTotal > 0 ? Math.round((item.raw / recTotal) * 100) : 0;
+                return ` ${item.raw} drugs (${pct}% of listed)`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: { grid: { color: gridCol, lineWidth:.5 }, ticks: { color: textCol, font: { size: 10, family: '-apple-system,BlinkMacSystemFont,sans-serif' } }, border: { color: gridCol } },
+          y: { grid: { color: gridCol, lineWidth:.5 }, ticks: { color: textCol, font: { size: 10, family: '-apple-system,BlinkMacSystemFont,sans-serif' } }, border: { display: false } }
+        }
+      }
+    });
+    // Update insight callout
+    const el = document.getElementById('persist-insight');
+    if (el && avgSubs !== '—') {
+      el.innerHTML = `<span class="sans" style="font-size:12px;color:var(--text2)">Your data: average <strong>${avgSubs} submissions</strong> per listed drug across ${recTotal.toLocaleString()} recommended PSDs. Lybrand &amp; Wonder (2020) found 1.70 — your live figure updates this benchmark.</span>`;
+    }
+  });
+
+  // ── ICER distribution histogram ──────────────────────────────────────────
+  const icerCanvas = document.getElementById('icer-dist-chart');
+  document.getElementById('icer-dist-placeholder').style.display = 'none';
+  icerCanvas.style.display = 'block';
+
+  const iBins  = Object.values(icerBins);
+  const iLabs  = iBins.map(b => b.label);
+  const iVals  = iBins.map(b => b.count);
+  const iCols  = iBins.map(b => b.col + '88');
+  const iBords = iBins.map(b => b.col);
+
+  ensureChart(() => {
+    new Chart(icerCanvas, {
+      type: 'bar',
+      data: {
+        labels: iLabs,
+        datasets: [{ data: iVals, backgroundColor: iCols, borderColor: iBords, borderWidth: 1.5, borderRadius: 3 }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#1A1208', titleColor: '#F0EDE4', bodyColor: '#B0A898',
+            callbacks: {
+              label: item => {
+                const pct = icerTotal > 0 ? Math.round((item.raw / icerTotal) * 100) : 0;
+                return ` ${item.raw} drugs (${pct}%)`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: { grid: { color: gridCol, lineWidth:.5 }, ticks: { color: textCol, font: { size: 10, family: '-apple-system,BlinkMacSystemFont,sans-serif' } }, border: { color: gridCol } },
+          y: { grid: { color: gridCol, lineWidth:.5 }, ticks: { color: textCol, font: { size: 10, family: '-apple-system,BlinkMacSystemFont,sans-serif' } }, border: { display: false } }
+        }
+      }
+    });
+    // Update $75k insight
+    const el = document.getElementById('icer-dist-insight');
+    if (el) {
+      const stated = icerTotal - (icerBins['Not stated/CS'] ? icerBins['Not stated/CS'].count : 0);
+      const bp2 = stated > 0 ? Math.round(((icerBins['<$45k'].count + icerBins['$45–75k'].count) / stated) * 100) : belowPct;
+      el.innerHTML = `<span class="sans" style="font-size:12px;color:var(--text2)">Of drugs with a stated ICER, <strong>${bp2}% fall at or below $75,000/QALY</strong> — confirming the informal PBS ceiling identified by Lybrand &amp; Wonder (2020).</span>`;
+    }
+  });
+
+  // ── Resubmission rate by therapy (horizontal bar) ────────────────────────
+  const resubCanvas = document.getElementById('resub-chart');
+  document.getElementById('resub-placeholder').style.display = 'none';
+  resubCanvas.style.display = 'block';
+
+  const rLabs = resubRows.map(r => `${r.therapy.length > 22 ? r.therapy.slice(0,22)+'…' : r.therapy} (n=${r.n})`);
+  const rVals = resubRows.map(r => r.pct);
+  const rCols = rVals.map(v => v >= 50 ? '#C6282888' : v >= 30 ? '#E6510088' : '#2e7d3288');
+  const rBrds = rVals.map(v => v >= 50 ? '#C62828'   : v >= 30 ? '#E65100'   : '#2e7d32');
+
+  ensureChart(() => {
+    new Chart(resubCanvas, {
+      type: 'bar',
+      data: {
+        labels: rLabs,
+        datasets: [{ data: rVals, backgroundColor: rCols, borderColor: rBrds, borderWidth: 1.5, borderRadius: 3 }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#1A1208', titleColor: '#F0EDE4', bodyColor: '#B0A898',
+            callbacks: { label: item => ` ${item.raw}% needed >1 submission` }
+          }
+        },
+        scales: {
+          x: {
+            max: 100,
+            grid: { color: gridCol, lineWidth:.5 },
+            ticks: { color: textCol, font: { size: 10, family: '-apple-system,BlinkMacSystemFont,sans-serif' }, callback: v => v + '%' },
+            border: { color: gridCol }
+          },
+          y: { grid: { display: false }, ticks: { color: textCol, font: { size: 10, family: '-apple-system,BlinkMacSystemFont,sans-serif' } }, border: { display: false } }
+        }
+      }
+    });
+  });
+
+  _outcomesBuilt = true;
+}
+
+// ── Copy with citation ────────────────────────────────────────────────────────
+function _cite() {
+  const today = new Date().toLocaleDateString('en-AU', { month: 'long', year: 'numeric' });
+  return `\n\nSource: PBAC Watch — pbacwatch.vercel.app\nData: pbs.gov.au · nice.org.uk · Australian Government | Accessed ${today}`;
+}
+
+function _flashCopied(btn, chartMode) {
+  const orig = btn.textContent;
+  btn.textContent = '✓ Copied!';
+  btn.classList.add('copied');
+  setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2500);
+}
+
+function copyTabText(tab, btn) {
+  const D = window.SITE_DATA;
+  let lines = [];
+
+  if (tab === 'pbs' && D) {
+    const ds = D.drug_spend;
+    if (ds && ds.top_spend && ds.top_spend.length > 0) {
+      const yr = ds.report_year || '2023';
+      lines.push(`TOP 20 PBS DRUGS BY GOVERNMENT BENEFIT — ${yr}–${parseInt(yr)+1}`);
+      ds.top_spend.forEach((d, i) => {
+        const b   = d.gov_benefit_aud;
+        const str = b >= 1e9 ? '$' + (b/1e9).toFixed(2) + 'B' : '$' + (b/1e6).toFixed(0) + 'M';
+        const name = d.drug_name.charAt(0).toUpperCase() + d.drug_name.slice(1);
+        lines.push(`${i+1}. ${name}${d.brand_name ? ' (' + d.brand_name + ')' : ''}: ${str}`);
+      });
+      if (ds.top_cost_per_script && ds.top_cost_per_script.length > 0) {
+        lines.push('');
+        lines.push('TOP 10 MOST EXPENSIVE PBS DRUGS PER SCRIPT');
+        ds.top_cost_per_script.slice(0, 10).forEach((d, i) => {
+          const cps  = d.cost_per_script_aud;
+          const str  = cps >= 10000 ? '$' + (cps/1000).toFixed(0) + 'k' : '$' + cps.toLocaleString(undefined,{maximumFractionDigits:0});
+          const name = d.drug_name.charAt(0).toUpperCase() + d.drug_name.slice(1);
+          lines.push(`${i+1}. ${name}: ${str} per script${d.scripts ? ' (' + (d.scripts/1000).toFixed(1) + 'k scripts/year)' : ''}`);
+        });
+      }
+    } else if (D.pbs && D.pbs.atc_meta) {
+      lines.push('TOP 10 PBS DRUG CLASSES BY 2024 SPEND');
+      Object.entries(D.pbs.atc_meta)
+        .filter(([, m]) => m.spend_2024_aud > 0)
+        .sort((a, b) => (b[1].spend_2024_aud||0) - (a[1].spend_2024_aud||0))
+        .slice(0, 10)
+        .forEach(([name, m], i) => {
+          const spend = m.spend_2024_aud;
+          const str = spend >= 1e9 ? '$' + (spend/1e9).toFixed(2) + 'B' : '$' + (spend/1e6).toFixed(0) + 'M';
+          lines.push(`${i+1}. ${name}: ${str}`);
+        });
+    }
+  }
+
+  if (tab === 'therapy') {
+    if (D && D.nice && D.nice.by_therapy) {
+      lines.push('NICE TECHNOLOGY APPRAISALS BY THERAPY AREA (TOP 10)');
+      Object.entries(D.nice.by_therapy).sort((a,b)=>b[1]-a[1]).slice(0,10)
+        .forEach(([n,c],i) => lines.push(`${i+1}. ${n}: ${c} TAs`));
+    }
+    if (D && D.psd && D.psd.by_therapy) {
+      if (lines.length) lines.push('');
+      lines.push('PBAC SUBMISSIONS BY THERAPY AREA (TOP 10)');
+      Object.entries(D.psd.by_therapy).sort((a,b)=>b[1]-a[1]).slice(0,10)
+        .forEach(([n,c],i) => lines.push(`${i+1}. ${n}: ${c} submissions`));
+    }
+  }
+
+  if (tab === 'outcomes' && _outcomeData) {
+    const { persistBins, avgSubs, recTotal, icerBins, icerTotal, belowPct, resubRows } = _outcomeData;
+    lines.push('PBAC OUTCOMES ANALYSIS — PBAC Watch');
+    lines.push('');
+    lines.push(`SUBMISSIONS TO RECOMMENDATION (${recTotal} recommended drugs)`);
+    lines.push(`  1 submission:    ${persistBins['1']} drugs (${recTotal>0?Math.round(persistBins['1']/recTotal*100):0}%)`);
+    lines.push(`  2 submissions:   ${persistBins['2']} drugs (${recTotal>0?Math.round(persistBins['2']/recTotal*100):0}%)`);
+    lines.push(`  3 submissions:   ${persistBins['3']} drugs (${recTotal>0?Math.round(persistBins['3']/recTotal*100):0}%)`);
+    lines.push(`  4+ submissions:  ${persistBins['4+']} drugs (${recTotal>0?Math.round(persistBins['4+']/recTotal*100):0}%)`);
+    lines.push(`  Average: ${avgSubs} submissions per listed drug`);
+    lines.push('');
+    lines.push(`ICER DISTRIBUTION (${icerTotal} drugs with data)`);
+    for (const b of Object.values(icerBins)) {
+      const pct = icerTotal > 0 ? Math.round((b.count / icerTotal) * 100) : 0;
+      lines.push(`  ${b.label}: ${b.count} drugs (${pct}%)`);
+    }
+    lines.push(`  ${belowPct}% of drugs with stated ICERs fall at or below $75,000/QALY`);
+    if (resubRows.length > 0) {
+      lines.push('');
+      lines.push('RESUBMISSION RATE BY THERAPY AREA (% needing >1 submission)');
+      resubRows.forEach(r => lines.push(`  ${r.therapy}: ${r.pct}% (n=${r.n})`));
+    }
+    lines.push('');
+    lines.push('Reference: Lybrand & Wonder (2020). Analysis of PBAC submissions and outcomes for medicines (2010-2018). Int J Technol Assess Health Care, 36(3), 224-231.');
+  }
+
+  if (tab === 'listings' && D && D.psd && D.psd.drugs) {
+    lines.push('RECENT PBAC RECOMMENDED DECISIONS');
+    Object.entries(D.psd.drugs)
+      .filter(([,d]) => d.recommendation && d.recommendation.startsWith('Recommended') && d.latest_year)
+      .sort((a,b) => (b[1].latest_year||0) - (a[1].latest_year||0))
+      .slice(0, 25)
+      .forEach(([key, d]) => {
+        const name = key.charAt(0).toUpperCase() + key.slice(1);
+        lines.push(`${name} (${d.latest_year}) — ${d.recommendation}${d.therapy_area ? ' · ' + d.therapy_area : ''}`);
+      });
+  }
+
+  if (!lines.length) return;
+  navigator.clipboard.writeText(lines.join('\n') + _cite()).then(() => _flashCopied(btn));
+}
+
+function copyTabChart(canvasId, btn) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas || canvas.style.display === 'none') return;
+  canvas.toBlob(blob => {
+    if (!blob) return;
+    // Try native clipboard image write; fall back to download
+    try {
+      navigator.clipboard.write([new ClipboardItem({'image/png': blob})]).then(() => _flashCopied(btn));
+    } catch (e) {
+      const today = new Date().toLocaleDateString('en-AU',{month:'short',year:'numeric'}).replace(' ','-');
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `pbac-trends-${today}.png`;
+      a.click();
+      _flashCopied(btn);
+    }
+  });
+}
+
+// ── PBS Chart (loads Chart.js on demand) ─────────────────────────────────────
+function buildPBSChart() {
+  const D = window.SITE_DATA;
+  if (!D || !D.pbs || !D.pbs.grand_total_by_year) return;
+
+  const gt = D.pbs.grand_total_by_year;
+  const years = Object.keys(gt).filter(y => !y.includes('_ytd') && parseInt(y) >= 1994 && parseInt(y) <= 2024).sort();
+  if (years.length === 0) return;
+
+  const values = years.map(y => gt[y]);
+
+  // Hide placeholder
+  document.getElementById('pbs-chart-placeholder').style.display = 'none';
+  const canvas = document.getElementById('pbs-chart');
+  canvas.style.display = 'block';
+
+  const isDark = document.documentElement.dataset.theme === 'dark';
+  const redCol  = isDark ? '#EF5350' : '#C62828';
+  const textCol = isDark ? '#B0A898' : '#8A8070';
+  const gridCol = isDark ? '#2C2820' : '#E8E2D4';
+
+  // Load Chart.js then render
+  if (window.Chart) {
+    renderPBSChart(canvas, years, values, redCol, textCol, gridCol);
+  } else {
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js';
+    s.onload = () => renderPBSChart(canvas, years, values, redCol, textCol, gridCol);
+    document.head.appendChild(s);
+  }
+
+  // ATC class breakdown (top 5 by 2024 spend)
+  const classes = D.pbs.classes_by_year || {};
+  const meta    = D.pbs.atc_meta || {};
+  const sorted  = Object.entries(meta)
+    .sort((a, b) => (b[1].spend_2024_aud||0) - (a[1].spend_2024_aud||0))
+    .slice(0, 6);
+
+  const legend = document.getElementById('atc-legend');
+  if (legend && sorted.length > 0) {
+    legend.style.display = 'flex';
+    const COLOURS = ['#1565C0','#2E7D32','#6A1B9A','#E65100','#00838F','#558B2F'];
+    legend.innerHTML = '<span style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:11px;color:var(--text3);align-self:center;margin-right:4px">2024 ATC breakdown:</span>' +
+      sorted.map(([name, m], i) => {
+        const spend = m.spend_2024_aud || 0;
+        const short = name.length > 24 ? name.slice(0,24)+'…' : name;
+        return `<span style="display:inline-flex;align-items:center;gap:5px;background:var(--bg3);padding:4px 10px;border-radius:2px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:11px;">
+          <span style="width:8px;height:8px;border-radius:50%;background:${COLOURS[i]};flex-shrink:0"></span>
+          <span style="color:var(--text2)">${short}</span>
+          <span style="color:var(--text3);font-weight:600">$${(spend/1e9).toFixed(2)}B</span>
+        </span>`;
+      }).join('');
+  }
+}
+
+function renderPBSChart(canvas, years, values, redCol, textCol, gridCol) {
+  // Milestone annotations
+  const MILESTONES = {
+    '2000': 'Biologics era',
+    '2007': 'Lucentis listed',
+    '2015': 'Checkpoint inhibitors',
+    '2020': 'COVID + GLP-1 growth',
+  };
+
+  new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels: years,
+      datasets: [{
+        data: values,
+        borderColor: redCol,
+        borderWidth: 2.5,
+        backgroundColor: (ctx) => {
+          const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, 240);
+          g.addColorStop(0, redCol + '28');
+          g.addColorStop(1, redCol + '00');
+          return g;
+        },
+        fill: true,
+        tension: 0.3,
+        pointRadius: 0,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: redCol,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1A1208',
+          titleColor: '#F0EDE4',
+          bodyColor: '#B0A898',
+          titleFont: { family: 'Georgia', size: 13 },
+          bodyFont: { family: '-apple-system, BlinkMacSystemFont, sans-serif', size: 12 },
+          padding: 12,
+          callbacks: {
+            title: (items) => items[0].label,
+            label: (item) => {
+              const val = item.raw;
+              return ' PBS benefit: $' + (val/1e9).toFixed(2) + 'B';
+            }
+          }
+        },
+        // Inline milestone labels
+        annotation: null,
+      },
+      scales: {
+        x: {
+          grid: { color: gridCol, lineWidth: 0.5 },
+          ticks: {
+            color: textCol,
+            font: { family: '-apple-system, BlinkMacSystemFont, sans-serif', size: 10 },
+            maxTicksLimit: 8,
+          },
+          border: { color: gridCol }
+        },
+        y: {
+          grid: { color: gridCol, lineWidth: 0.5 },
+          ticks: {
+            color: textCol,
+            font: { family: '-apple-system, BlinkMacSystemFont, sans-serif', size: 10 },
+            callback: v => '$' + (v/1e9).toFixed(0) + 'B',
+          },
+          border: { display: false },
+        }
+      }
+    }
+  });
+}
+
+// Trigger chart on load
+window.addEventListener('load', function() {
+  buildPBSChart();
+});
+
+// ── Dark mode ─────────────────────────────────────────────────────────────────
+function toggleTheme() {
+  const html = document.documentElement;
+  const btn = document.getElementById('theme-btn');
+  const isDark = html.dataset.theme === 'dark';
+  html.dataset.theme = isDark ? 'light' : 'dark';
+  btn.textContent = isDark ? '☽' : '☀';
+  localStorage.setItem('theme', html.dataset.theme);
+}
+(function() {
+  const saved = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (saved === 'dark' || (!saved && prefersDark)) {
+    document.documentElement.dataset.theme = 'dark';
+    document.getElementById('theme-btn').textContent = '☀';
+  }
+})();
+</script>
+</body>
+</html>

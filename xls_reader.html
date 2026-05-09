@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head><title>XLS Reader</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+<input type="file" id="fileInput" multiple accept=".xls,.xlsx" />
+<pre id="output" style="font-size:11px;white-space:pre-wrap;"></pre>
+<script>
+window.xlsResults = {};
+document.getElementById('fileInput').addEventListener('change', function(e) {
+  var out = '';
+  Array.from(e.target.files).forEach(function(file) {
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      try {
+        var data = new Uint8Array(ev.target.result);
+        var wb = XLSX.read(data, {type:'array'});
+        var result = {fileName: file.name, sheets: {}};
+        wb.SheetNames.forEach(function(sname) {
+          var ws = wb.Sheets[sname];
+          var json = XLSX.utils.sheet_to_json(ws, {header:1, defval:''});
+          result.sheets[sname] = json.slice(0, 50);
+        });
+        window.xlsResults[file.name] = result;
+        out += '=== ' + file.name + ' ===\n';
+        wb.SheetNames.forEach(function(sname) {
+          out += 'Sheet: ' + sname + '\n';
+          var rows = result.sheets[sname];
+          rows.forEach(function(row, i) {
+            out += '[' + String(i).padStart(2,'0') + '] ' + row.join(' | ') + '\n';
+          });
+          out += '\n';
+        });
+        document.getElementById('output').textContent = out;
+      } catch(err) {
+        document.getElementById('output').textContent += 'ERROR: ' + err + '\n';
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  });
+});
+</script>
+</body>
+</html>

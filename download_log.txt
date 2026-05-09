@@ -1,0 +1,629 @@
+08:05:19  INFO     =================================================================
+08:05:19  INFO     PBAC PSD Downloader  —  polite archiving script
+08:05:19  INFO     Output: C:\Users\PC USER\Random Files and Folders\pbs_search_bot\PBSPDF\PDF\PSD_database
+08:05:19  INFO     =================================================================
+08:05:19  INFO     
+08:05:19  INFO     ━━━  March 2024 PBAC Meeting  (2024-03)  ━━━
+08:05:19  INFO       Fetching listing page: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2024-03
+08:05:20  ERROR    GET failed: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2024-03  →  404 Client Error: Not Found for url: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2024-03
+08:05:20  WARNING    No PSD pages found for 2024-03. The listing page structure may have changed. Check manually: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2024-03
+08:05:20  INFO     
+08:05:20  INFO     ━━━  July 2024 PBAC Meeting  (2024-07)  ━━━
+08:05:20  INFO       Fetching listing page: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2024-07
+08:05:22  ERROR    GET failed: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2024-07  →  404 Client Error: Not Found for url: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2024-07
+08:05:22  WARNING    No PSD pages found for 2024-07. The listing page structure may have changed. Check manually: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2024-07
+08:05:22  INFO     
+08:05:22  INFO     ━━━  November 2024 PBAC Meeting  (2024-11)  ━━━
+08:05:22  INFO       Fetching listing page: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2024-11
+08:05:23  ERROR    GET failed: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2024-11  →  404 Client Error: Not Found for url: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2024-11
+08:05:23  WARNING    No PSD pages found for 2024-11. The listing page structure may have changed. Check manually: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2024-11
+08:05:23  INFO     
+08:05:23  INFO     ━━━  March 2025 PBAC Meeting  (2025-03)  ━━━
+08:05:24  INFO       Fetching listing page: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2025-03
+08:05:25  ERROR    GET failed: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2025-03  →  404 Client Error: Not Found for url: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2025-03
+08:05:25  WARNING    No PSD pages found for 2025-03. The listing page structure may have changed. Check manually: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2025-03
+08:05:25  INFO     
+08:05:25  INFO     ━━━  July 2025 PBAC Meeting  (2025-07)  ━━━
+08:05:25  INFO       Fetching listing page: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2025-07
+08:05:27  ERROR    GET failed: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2025-07  →  404 Client Error: Not Found for url: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2025-07
+08:05:27  WARNING    No PSD pages found for 2025-07. The listing page structure may have changed. Check manually: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2025-07
+08:05:27  INFO     
+08:05:27  INFO     ━━━  November 2025 PBAC Meeting  (2025-11)  ━━━
+08:05:27  INFO       Fetching listing page: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2025-11
+08:05:28  ERROR    GET failed: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2025-11  →  404 Client Error: Not Found for url: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2025-11
+08:05:28  WARNING    No PSD pages found for 2025-11. The listing page structure may have changed. Check manually: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/2025-11
+08:05:28  INFO     
+08:05:28  INFO     =================================================================
+08:05:28  INFO     FINISHED
+08:05:28  INFO       Downloaded : 0
+08:05:28  INFO       Skipped    : 0  (already in collection)
+08:05:28  INFO       Failed     : 6
+08:05:28  INFO       Log saved  : C:\Users\PC USER\Random Files and Folders\pbs_search_bot\PBSPDF\PDF\PSD_database\download_log.txt
+08:05:28  INFO     =================================================================
+08:05:28  INFO     
+08:05:28  INFO     Tip: re-run the script to retry failures. Persistent failures may mean pbs.gov.au changed its URL structure — check download_log.txt and visit the links manually.
+08:10:18  INFO     =================================================================
+08:10:18  INFO     PBAC PSD Downloader  —  polite archiving script
+08:10:18  INFO     Output: C:\Users\PC USER\Random Files and Folders\pbs_search_bot\PBSPDF\PDF\PSD_database
+08:10:18  INFO     =================================================================
+08:10:18  INFO     
+08:10:18  INFO     Step 1: Discovering PSD links from PBS master index...
+08:10:18  INFO       Crawling: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/public-summary-documents-by-product
+08:10:20  INFO       → Found 273 target PSD links across all meetings
+08:10:20  INFO       Crawling: https://www.pbs.gov.au/pbs/industry/listing/elements/pbac-meetings/psd/public-summary-documents-by-product
+08:10:22  INFO       → Found 273 target PSD links across all meetings
+08:10:22  INFO       Crawling: https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd
+08:10:24  INFO       → Found 0 target PSD links across all meetings
+08:10:24  INFO       Crawling: https://www.pbs.gov.au/pbs/industry/listing/elements/pbac-meetings/psd
+08:10:25  INFO       → Found 0 target PSD links across all meetings
+08:10:25  INFO       Total PSD pages discovered: 273
+08:10:25  INFO     
+08:10:25  INFO     Step 2: Downloading PDFs...
+08:10:25  INFO     
+08:10:25  INFO     ━━━  March 2024 PBAC Meeting  (2024-03)  —  59 PSDs  ━━━
+08:10:27  INFO         ↓     adalimumab-psd-march-2024-psd-july-2025.pdf
+08:10:29  INFO         ✓     adalimumab-psd-march-2024-psd-july-2025.pdf  (1856 KB)
+08:10:31  INFO         ↓     adalimumab-uveitis-psd-march-2024.pdf
+08:10:33  INFO         ✓     adalimumab-uveitis-psd-march-2024.pdf  (1512 KB)
+08:10:34  INFO         ↓     adalimumab-yuflyma-psd-march-2024.pdf
+08:10:36  INFO         ✓     adalimumab-yuflyma-psd-march-2024.pdf  (341 KB)
+08:10:38  INFO         ↓     amino-acid-formula-neocate-syneo-psd-march-2024.pdf
+08:10:39  INFO         ✓     amino-acid-formula-neocate-syneo-psd-march-2024.pdf  (367 KB)
+08:10:41  INFO         ↓     amino-acid-formula-pku-lophlex-select-psd-march-2024.pdf
+08:10:43  INFO         ✓     amino-acid-formula-pku-lophlex-select-psd-march-2024.pdf  (303 KB)
+08:10:44  INFO         ↓     amino-acid-formula-pku-start-psd-march-2024.pdf
+08:10:46  INFO         ✓     amino-acid-formula-pku-start-psd-march-2024.pdf  (324 KB)
+08:10:47  INFO         ↓     anifrolumab-psd-march-2024.pdf
+08:10:50  INFO         ✓     anifrolumab-psd-march-2024.pdf  (1951 KB)
+08:10:51  INFO         ↓     atezolizumab-psd-march-2024.pdf
+08:10:53  INFO         ✓     atezolizumab-psd-march-2024.pdf  (754 KB)
+08:10:55  INFO         ↓     avacopan-psd-march-2024.pdf
+08:10:57  INFO         ✓     avacopan-psd-march-2024.pdf  (1135 KB)
+08:10:59  INFO         ↓     beclometasone-with-formoterol-psd-march-2024.pdf
+08:11:00  INFO         ✓     beclometasone-with-formoterol-psd-march-2024.pdf  (765 KB)
+08:11:02  INFO         ↓     bevacizumab-psd-march-2024.pdf
+08:11:16  INFO         ✓     bevacizumab-psd-march-2024.pdf  (468 KB)
+08:11:17  INFO         ↓     bimekizumab-psa-psd-march-2024.pdf
+08:11:19  INFO         ✓     bimekizumab-psa-psd-march-2024.pdf  (972 KB)
+08:11:21  INFO         ↓     bimekizumab-as-psd-march-2024.pdf
+08:11:23  INFO         ✓     bimekizumab-as-psd-march-2024.pdf  (790 KB)
+08:11:24  INFO         ↓     bimekizumab-nr-axspa-psd-march-2024.pdf
+08:11:26  INFO         ✓     bimekizumab-nr-axspa-psd-march-2024.pdf  (646 KB)
+08:11:28  INFO         ↓     brentuximab-vedotin-psd-march-2024.pdf
+08:11:30  INFO         ✓     brentuximab-vedotin-psd-march-2024.pdf  (848 KB)
+08:11:31  INFO         ↓     budesonide-psd-march-2024.pdf
+08:11:33  INFO         ✓     budesonide-psd-march-2024.pdf  (480 KB)
+08:11:35  INFO         ↓     bulevirtide psd-march-2024.pdf
+08:11:37  INFO         ✓     bulevirtide psd-march-2024.pdf  (1050 KB)
+08:11:38  INFO         ↓     cabozantinib-rcc-march-2024.pdf
+08:11:40  INFO         ✓     cabozantinib-rcc-march-2024.pdf  (1047 KB)
+08:11:42  INFO         ↓     cabozantinib-nccrcc-march-2024.pdf
+08:11:44  INFO         ✓     cabozantinib-nccrcc-march-2024.pdf  (808 KB)
+08:11:45  INFO         ↓     cabozantinib-dtc-psd-march-2024.pdf
+08:11:47  INFO         ✓     cabozantinib-dtc-psd-march-2024.pdf  (429 KB)
+08:11:49  INFO         ↓     cetuximab-psd-march-2024.pdf
+08:11:50  INFO         ✓     cetuximab-psd-march-2024.pdf  (359 KB)
+08:11:52  INFO         ↓     dabrafenib-trametinib-psd-12-2024.pdf
+08:11:54  INFO         ✓     dabrafenib-trametinib-psd-12-2024.pdf  (1767 KB)
+08:11:56  INFO         ↓     dapagliflozin-with-sitagliptin-psd-march-2024.pdf
+08:11:58  INFO         ✓     dapagliflozin-with-sitagliptin-psd-march-2024.pdf  (698 KB)
+08:11:59  INFO         ↓     dupilumab-psd-march-2024.pdf
+08:12:02  INFO         ✓     dupilumab-psd-march-2024.pdf  (1068 KB)
+08:12:03  INFO         ↓     edaravone-psd-march-2024.pdf
+08:12:05  INFO         ✓     edaravone-psd-march-2024.pdf  (553 KB)
+08:12:06  INFO         ↓     elexacaftor-tezacaftor-ivacaftor-psd-march-2024.pdf
+08:12:08  INFO         ✓     elexacaftor-tezacaftor-ivacaftor-psd-march-2024.pdf  (888 KB)
+08:12:10  INFO         ↓     empagliflozin-psd-march-2024.pdf
+08:12:12  INFO         ✓     empagliflozin-psd-march-2024.pdf  (459 KB)
+08:12:13  INFO         ↓     etrasimod-psd-march-2024.pdf
+08:12:15  INFO         ✓     etrasimod-psd-march-2024.pdf  (882 KB)
+08:12:17  INFO         ↓     evolocumab-psd-march-2024.pdf
+08:12:19  INFO         ✓     evolocumab-psd-march-2024.pdf  (541 KB)
+08:12:20  INFO         ↓     ibrutinib-psd-march-2024.pdf
+08:12:22  INFO         ✓     ibrutinib-psd-march-2024.pdf  (1178 KB)
+08:12:24  INFO         ↓     icosapent-ethyl-psd-march-2024.pdf
+08:12:26  INFO         ✓     icosapent-ethyl-psd-march-2024.pdf  (561 KB)
+08:12:27  INFO         ↓     influenza-vaccine-flucelvax-psd-march-2024.pdf
+08:12:29  INFO         ✓     influenza-vaccine-flucelvax-psd-march-2024.pdf  (537 KB)
+08:12:31  INFO         ↓     influenza-vaccine-flublok-psd-march-2024.pdf
+08:12:33  INFO         ✓     influenza-vaccine-flublok-psd-march-2024.pdf  (714 KB)
+08:12:34  INFO         ↓     irinotecan-nanoliposomal-psd-march-2024.pdf
+08:12:36  INFO         ✓     irinotecan-nanoliposomal-psd-march-2024.pdf  (1213 KB)
+08:12:38  INFO         ↓     larotrectinib-psd-march-2024.pdf
+08:12:40  INFO         ✓     larotrectinib-psd-march-2024.pdf  (1675 KB)
+08:12:42  INFO         ↓     lebrikizumab-psd-march-2024.pdf
+08:12:44  INFO         ✓     lebrikizumab-psd-march-2024.pdf  (1039 KB)
+08:12:45  INFO         ↓     levodopa-with-carbidopa-and-entacapone-psd-march-2024.pdf
+08:12:47  INFO         ✓     levodopa-with-carbidopa-and-entacapone-psd-march-2024.pdf  (833 KB)
+08:12:49  INFO         ↓     mepolizumab-psd-march-2024.pdf
+08:12:51  INFO         ✓     mepolizumab-psd-march-2024.pdf  (604 KB)
+08:12:52  INFO         ↓     migalastat-psd-march-2024-with-addendum-may-2024.pdf
+08:12:54  INFO         ✓     migalastat-psd-march-2024-with-addendum-may-2024.pdf  (918 KB)
+08:12:56  INFO         ↓     nivolumab-psd-march-2024.pdf
+08:12:58  INFO         ✓     nivolumab-psd-march-2024.pdf  (740 KB)
+08:12:59  INFO         ↓     ofatumumab-psd-march-2024.pdf
+08:13:01  INFO         ✓     ofatumumab-psd-march-2024.pdf  (1144 KB)
+08:13:03  INFO         ↓     osilodrostat-psd-march-2024.pdf
+08:13:05  INFO         ✓     osilodrostat-psd-march-2024.pdf  (1105 KB)
+08:13:06  INFO         ↓     prasugrel-psd-march-2024.pdf
+08:13:08  INFO         ✓     prasugrel-psd-march-2024.pdf  (634 KB)
+08:13:10  INFO         ↓     relugolix-with-estradiol-and-with-norethisterone-acetate-psd-march-2024-corrigendum.pdf
+08:13:12  INFO         ✓     relugolix-with-estradiol-and-with-norethisterone-acetate-psd-march-2024-corrigendum.pdf  (1335 KB)
+08:13:14  INFO         ↓     respiratory-syncytial-virus-psd-march-2024-with-addendum-may-2024.pdf
+08:13:16  INFO         ✓     respiratory-syncytial-virus-psd-march-2024-with-addendum-may-2024.pdf  (958 KB)
+08:13:17  INFO         ↓     rimegepant-psd-march-2024.pdf
+08:13:19  INFO         ✓     rimegepant-psd-march-2024.pdf  (519 KB)
+08:13:20  INFO         ↓     risperidone-psd-march-2024.pdf
+08:13:22  INFO         ✓     risperidone-psd-march-2024.pdf  (800 KB)
+08:13:24  INFO         ↓     romosozumab-psd-march-2024.pdf
+08:13:26  INFO         ✓     romosozumab-psd-march-2024.pdf  (610 KB)
+08:13:27  INFO         ↓     selumetinib-psd-march-2024.pdf
+08:13:29  INFO         ✓     selumetinib-psd-march-2024.pdf  (899 KB)
+08:13:31  INFO         ↓     siponimod-psd-march-2024.pdf
+08:13:33  INFO         ✓     siponimod-psd-march-2024.pdf  (333 KB)
+08:13:34  INFO         ↓     sodium-zirconium-cyclosilicate-psd-march-2024.pdf
+08:13:36  INFO         ✓     sodium-zirconium-cyclosilicate-psd-march-2024.pdf  (669 KB)
+08:13:38  INFO         ↓     tadalafil-psd-march-2024.pdf
+08:13:39  INFO         ✓     tadalafil-psd-march-2024.pdf  (405 KB)
+08:13:41  INFO         ↓     talazoparib -psd-march-2024.pdf
+08:13:43  INFO         ✓     talazoparib -psd-march-2024.pdf  (1974 KB)
+08:13:45  INFO         ↓     tiotropium-psd-march-2024.pdf
+08:13:47  INFO         ✓     tiotropium-psd-march-2024.pdf  (382 KB)
+08:13:48  INFO         ↓     tofacitinib-psd-march-2024.pdf
+08:13:50  INFO         ✓     tofacitinib-psd-march-2024.pdf  (502 KB)
+08:13:52  INFO         ↓     trastuzumab-deruxtecan-psd-march-2024.pdf
+08:13:54  INFO         ✓     trastuzumab-deruxtecan-psd-march-2024.pdf  (761 KB)
+08:13:55  INFO         ↓     ustekinumab-stelara-psd-march-2024.pdf
+08:13:57  INFO         ✓     ustekinumab-stelara-psd-march-2024.pdf  (578 KB)
+08:13:59  INFO         ↓     ustekinumab-wezlana-psd-march-2024.pdf
+08:14:00  INFO         ✓     ustekinumab-wezlana-psd-march-2024.pdf  (569 KB)
+08:14:02  INFO         ↓     vedolizumab-psd-march-2024.pdf
+08:14:04  INFO         ✓     vedolizumab-psd-march-2024.pdf  (949 KB)
+08:14:04  INFO     
+08:14:04  INFO     ━━━  July 2024 PBAC Meeting  (2024-07)  —  36 PSDs  ━━━
+08:14:05  INFO         ↓     adalimumab-psd-july-2024.pdf
+08:14:07  INFO         ✓     adalimumab-psd-july-2024.pdf  (395 KB)
+08:14:09  INFO         ↓     adrenaline-psd-july-2024.pdf
+08:14:11  INFO         ✓     adrenaline-psd-july-2024.pdf  (439 KB)
+08:14:12  INFO         ↓     apalutamide-psd-july-2024.pdf
+08:14:14  INFO         ✓     apalutamide-psd-july-2024.pdf  (407 KB)
+08:14:15  INFO         ↓     belzutifan-psd-july-2024-with-corrigendum.pdf
+08:14:18  INFO         ✓     belzutifan-psd-july-2024-with-corrigendum.pdf  (2232 KB)
+08:14:20  INFO         ↓     blinatumomab-psd-july-2024-nov-2024.pdf
+08:14:22  INFO         ✓     blinatumomab-psd-july-2024-nov-2024.pdf  (1288 KB)
+08:14:23  INFO         ↓     daunorubicin-with-cytarabine-psd-oos-april-2024.pdf
+08:14:25  INFO         ✓     daunorubicin-with-cytarabine-psd-oos-april-2024.pdf  (419 KB)
+08:14:27  INFO         ↓     dienogest-psd-july-2024.pdf
+08:14:29  INFO         ✓     dienogest-psd-july-2024.pdf  (894 KB)
+08:14:30  INFO         ↓     drospirenone-with-ethinylestradiol-psd-july 2024-nov-2024.pdf
+08:14:32  INFO         ✓     drospirenone-with-ethinylestradiol-psd-july 2024-nov-2024.pdf  (1133 KB)
+08:14:34  INFO         ↓     dupilumab-psd-july-2024.pdf
+08:14:36  INFO         ✓     dupilumab-psd-july-2024.pdf  (421 KB)
+08:14:37  INFO         ↓     elranatamab-psd-july-2024.pdf
+08:14:39  INFO         ✓     elranatamab-psd-july-2024.pdf  (1297 KB)
+08:14:41  INFO         ↓     esketamine-psd-12-2024.pdf
+08:14:43  INFO         ✓     esketamine-psd-12-2024.pdf  (1268 KB)
+08:14:45  INFO         ↓     estradiol-psd-july-2024.pdf
+08:14:47  INFO         ✓     estradiol-psd-july-2024.pdf  (398 KB)
+08:14:48  INFO         ↓     faricimab-psd-july-2024.pdf
+08:14:50  INFO         ✓     faricimab-psd-july-2024.pdf  (711 KB)
+08:14:52  INFO         ↓     iptacopan-psd-july-2024.pdf
+08:14:54  INFO         ✓     iptacopan-psd-july-2024.pdf  (839 KB)
+08:14:55  INFO         ↓     ivosidenib-psd-july-2024.pdf
+08:14:57  INFO         ✓     ivosidenib-psd-july-2024.pdf  (1536 KB)
+08:14:59  INFO         ↓     lanreotide-psd-july-2024.pdf
+08:15:01  INFO         ✓     lanreotide-psd-july-2024.pdf  (572 KB)
+08:15:02  INFO         ↓     levodopa-with-carbidopa-and-entacapone-psd-july-2024.pdf
+08:15:04  INFO         ✓     levodopa-with-carbidopa-and-entacapone-psd-july-2024.pdf  (520 KB)
+08:15:06  INFO         ↓     linzagolix-psd-july-2024.pdf
+08:15:08  INFO         ✓     linzagolix-psd-july-2024.pdf  (2046 KB)
+08:15:10  INFO         ↓     methotrexate-psd-july-2024.pdf
+08:15:12  INFO         ✓     methotrexate-psd-july-2024.pdf  (394 KB)
+08:15:13  INFO         ↓     milk-powder-synthetic-psd-july-2024.pdf
+08:15:15  INFO         ✓     milk-powder-synthetic-psd-july-2024.pdf  (360 KB)
+08:15:16  INFO         ↓     morphine-psd-july-2024.pdf
+08:15:18  INFO         ✓     morphine-psd-july-2024.pdf  (542 KB)
+08:15:20  INFO         ↓     nirsevimab-psd-july-2024.pdf
+08:15:22  INFO         ✓     nirsevimab-psd-july-2024.pdf  (1332 KB)
+08:15:23  INFO         ↓     nivolumab-plus-ipilumab-psd-july-2024.pdf
+08:15:25  INFO         ✓     nivolumab-plus-ipilumab-psd-july-2024.pdf  (393 KB)
+08:15:27  INFO         ↓     odevixibat-psd-july-2024.pdf
+08:15:29  INFO         ✓     odevixibat-psd-july-2024.pdf  (1308 KB)
+08:15:31  INFO         ↓     olaparib-psd-july-2024.pdf
+08:15:33  INFO         ✓     olaparib-psd-july-2024.pdf  (1170 KB)
+08:15:34  INFO         ↓     prasugrel-psd-july-2024.pdf
+08:15:36  INFO         ✓     prasugrel-psd-july-2024.pdf  (455 KB)
+08:15:38  INFO         ↓     progesterone-psd-july-2024.pdf
+08:15:39  INFO         ✓     progesterone-psd-july-2024.pdf  (551 KB)
+08:15:41  INFO         ↓     propylene-glycol-psd-july-2024.pdf
+08:15:43  INFO         ✓     propylene-glycol-psd-july-2024.pdf  (442 KB)
+08:15:44  INFO         ↓     ravulizumab-psd-july-2024.pdf
+08:15:46  INFO         ✓     ravulizumab-psd-july-2024.pdf  (916 KB)
+08:15:48  INFO         ↓     rsvpref3-arexvy-psd-july-2024.pdf
+08:15:50  INFO         ✓     rsvpref3-arexvy-psd-july-2024.pdf  (1407 KB)
+08:15:52  INFO         ↓     risdiplam-psd-july-2024.pdf
+08:15:54  INFO         ✓     risdiplam-psd-july-2024.pdf  (831 KB)
+08:15:55  INFO         ↓     selpercatinib-psd-july-2024.pdf
+08:15:57  INFO         ✓     selpercatinib-psd-july-2024.pdf  (1185 KB)
+08:15:59  INFO         ↓     talazoparib-psd-july-2024.pdf
+08:16:01  INFO         ✓     talazoparib-psd-july-2024.pdf  (603 KB)
+08:16:02  INFO         ↓     vedolizumab-psd-july-2024.pdf
+08:16:04  INFO         ✓     vedolizumab-psd-july-2024.pdf  (1080 KB)
+08:16:06  INFO         ↓     zanubrutinib-psd-july-2024.pdf
+08:16:08  INFO         ✓     zanubrutinib-psd-july-2024.pdf  (582 KB)
+08:16:09  INFO         ↓     zilucoplan-psd-july-2024.pdf
+08:16:11  INFO         ✓     zilucoplan-psd-july-2024.pdf  (1131 KB)
+08:16:11  INFO     
+08:16:11  INFO     ━━━  November 2024 PBAC Meeting  (2024-11)  —  53 PSDs  ━━━
+08:16:13  INFO         ↓     abrocitinib-psd-nov-2024.pdf
+08:16:15  INFO         ✓     abrocitinib-psd-nov-2024.pdf  (1062 KB)
+08:16:16  INFO         ↓     aflibercept-dmo-psd-nov-2024.pdf
+08:16:18  INFO         ✓     aflibercept-dmo-psd-nov-2024.pdf  (689 KB)
+08:16:20  INFO         ↓     aflibercept-namd-psd-nov-2024.pdf
+08:16:22  INFO         ✓     aflibercept-namd-psd-nov-2024.pdf  (626 KB)
+08:16:23  INFO         ↓     amino-acid-formula-pku-easy-microtabs-plus-psd-nov-2024.pdf
+08:16:25  INFO         ✓     amino-acid-formula-pku-easy-microtabs-plus-psd-nov-2024.pdf  (422 KB)
+08:16:27  INFO         ↓     amino-acid-formula-essential-care-jr-psd-nov-2024.pdf
+08:16:28  INFO         ✓     amino-acid-formula-essential-care-jr-psd-nov-2024.pdf  (511 KB)
+08:16:30  INFO         ↓     amino-acid-formula-ga-explore5-psd-nov-2024.pdf
+08:16:32  INFO         ✓     amino-acid-formula-ga-explore5-psd-nov-2024.pdf  (408 KB)
+08:16:33  INFO         ↓     amino-acid-formula-mma-pa-explore5-psd-nov-2024.pdf
+08:16:35  INFO         ✓     amino-acid-formula-mma-pa-explore5-psd-nov-2024.pdf  (398 KB)
+08:16:36  INFO         ↓     amivantamab-psd-nov-2024.pdf
+08:16:39  INFO         ✓     amivantamab-psd-nov-2024.pdf  (947 KB)
+08:16:40  INFO         ↓     budesonide-psd-nov-2024.pdf
+08:16:42  INFO         ✓     budesonide-psd-nov-2024.pdf  (573 KB)
+08:16:43  INFO         ↓     capivasertib PSD-november-2024-with-addendum-march-2025.pdf
+08:16:46  INFO         ✓     capivasertib PSD-november-2024-with-addendum-march-2025.pdf  (2138 KB)
+08:16:48  INFO         ↓     clobetasol-psd-nov-2024.pdf
+08:16:49  INFO         ✓     clobetasol-psd-nov-2024.pdf  (678 KB)
+08:16:51  INFO         ↓     denosumab-psd-nov-2024.pdf
+08:16:53  INFO         ✓     denosumab-psd-nov-2024.pdf  (451 KB)
+08:16:54  INFO         ↓     drospirenone-psd-nov-2024.pdf
+08:16:56  INFO         ✓     drospirenone-psd-nov-2024.pdf  (600 KB)
+08:16:58  INFO         ↓     durvalumab-and-olaparib-psd-nov-2024.pdf
+08:17:00  INFO         ✓     durvalumab-and-olaparib-psd-nov-2024.pdf  (1175 KB)
+08:17:01  INFO         ↓     enfortumab-vedotin-psd-nov-2024.pdf
+08:17:04  INFO         ✓     enfortumab-vedotin-psd-nov-2024.pdf  (1204 KB)
+08:17:05  INFO         ↓     enzalutamide-psd-nov-2024.pdf
+08:17:08  INFO         ✓     enzalutamide-psd-nov-2024.pdf  (1856 KB)
+08:17:09  INFO         ↓     epcoritamab-psd-nov-2024.pdf
+08:17:11  INFO         ✓     epcoritamab-psd-nov-2024.pdf  (1002 KB)
+08:17:13  INFO         ↓     erenumab-psd-nov-2024.pdf
+08:17:15  INFO         ✓     erenumab-psd-nov-2024.pdf  (982 KB)
+08:17:16  INFO         ↓     estradiol-progesterone-estradiol-and-progesterone-psd-nov-2024.pdf
+08:17:18  INFO         ✓     estradiol-progesterone-estradiol-and-progesterone-psd-nov-2024.pdf  (1074 KB)
+08:17:20  INFO         ↓     fenfluramine-psd-november-2024.pdf
+08:17:22  INFO         ✓     fenfluramine-psd-november-2024.pdf  (1173 KB)
+08:17:23  INFO         ↓     fingolimod-ofatumumab-siponimod-psd-nov-2024.pdf
+08:17:25  INFO         ✓     fingolimod-ofatumumab-siponimod-psd-nov-2024.pdf  (398 KB)
+08:17:27  INFO         ↓     follitropin-alfa-and-lutropin-alfa-psd-nov-2024.pdf
+08:17:29  INFO         ✓     follitropin-alfa-and-lutropin-alfa-psd-nov-2024.pdf  (468 KB)
+08:17:30  INFO         ↓     foslevodopa-foscarbidopa-psd-nov-2024.pdf
+08:17:32  INFO         ✓     foslevodopa-foscarbidopa-psd-nov-2024.pdf  (558 KB)
+08:17:33  INFO         ↓     garadacimab-psd-nov-2024.pdf
+08:17:35  INFO         ✓     garadacimab-psd-nov-2024.pdf  (759 KB)
+08:17:37  INFO         ↓     glycomacropeptide-pku-build-10-psd-nov-2024.pdf
+08:17:39  INFO         ✓     glycomacropeptide-pku-build-10-psd-nov-2024.pdf  (329 KB)
+08:17:40  INFO         ↓     incobotulinumtoxina-psd-nov-2024-may-2025.pdf
+08:17:42  INFO         ✓     incobotulinumtoxina-psd-nov-2024-may-2025.pdf  (1150 KB)
+08:17:44  INFO         ↓     inclisiran-restriction-level-psd-nov-2024.pdf
+08:17:46  INFO         ✓     inclisiran-restriction-level-psd-nov-2024.pdf  (580 KB)
+08:17:47  INFO         ↓     inclisiran-np-prescribing-psd-nov-2024.pdf
+08:17:49  INFO         ✓     inclisiran-np-prescribing-psd-nov-2024.pdf  (458 KB)
+08:17:51  INFO         ↓     irinotecan-psd-nov-2024.pdf
+08:17:53  INFO         ✓     irinotecan-psd-nov-2024.pdf  (1417 KB)
+08:17:54  INFO         ↓     ivosidenib-psd-nov-2024.pdf
+08:17:56  INFO         ✓     ivosidenib-psd-nov-2024.pdf  (577 KB)
+08:17:58  INFO         ↓     lanadelumab-psd-nov-2024.pdf
+08:18:00  INFO         ✓     lanadelumab-psd-nov-2024.pdf  (741 KB)
+08:18:01  INFO         ↓     leuprorelin-psd-nov-2024.pdf
+08:18:03  INFO         ✓     leuprorelin-psd-nov-2024.pdf  (348 KB)
+08:18:04  INFO         ↓     macitentan-with-tadalafil-psd-nov-2024.pdf
+08:18:06  INFO         ✓     macitentan-with-tadalafil-psd-nov-2024.pdf  (603 KB)
+08:18:08  INFO         ↓     maribavir-psd-nov-2024.pdf
+08:18:10  INFO         ✓     maribavir-psd-nov-2024.pdf  (811 KB)
+08:18:11  INFO         ↓     momelotinib-psd-nov-2024.pdf
+08:18:13  INFO         ✓     momelotinib-psd-nov-2024.pdf  (844 KB)
+08:18:15  INFO         ↓     nintedanib-psd-nov-2024.pdf
+08:18:17  INFO         ✓     nintedanib-psd-nov-2024.pdf  (563 KB)
+08:18:18  INFO         ↓     nivolumab-psd-nov-2024.pdf
+08:18:20  INFO         ✓     nivolumab-psd-nov-2024.pdf  (1297 KB)
+08:18:22  INFO         ↓     palovarotene-psd-nov-2024.pdf
+08:18:24  INFO         ✓     palovarotene-psd-nov-2024.pdf  (840 KB)
+08:18:25  INFO         ↓     pembrolizumab-psd-nov-2024.pdf
+08:18:28  INFO         ✓     pembrolizumab-psd-nov-2024.pdf  (1290 KB)
+08:18:29  INFO         ↓     ravulizumab-psd-nov-2024.pdf
+08:18:31  INFO         ✓     ravulizumab-psd-nov-2024.pdf  (962 KB)
+08:18:33  INFO         ↓     relugolix-with-estradiol-and-with-norethisterone-acetate-psd-nov-2024.pdf
+08:18:34  INFO         ✓     relugolix-with-estradiol-and-with-norethisterone-acetate-psd-nov-2024.pdf  (498 KB)
+08:18:36  INFO         ↓     RSVpreF-psd-november-2024-july-2025.pdf
+08:18:38  INFO         ✓     RSVpreF-psd-november-2024-july-2025.pdf  (1184 KB)
+08:18:40  INFO         ↓     ribociclib-psd-nov-2024.pdf
+08:18:42  INFO         ✓     ribociclib-psd-nov-2024.pdf  (940 KB)
+08:18:43  INFO         ↓     rivaroxaban-psd-nov-2024.pdf
+08:18:45  INFO         ✓     rivaroxaban-psd-nov-2024.pdf  (529 KB)
+08:18:46  INFO         ↓     sacubitril-with-valsartan-psd-nov-2024.pdf
+08:18:48  INFO         ✓     sacubitril-with-valsartan-psd-nov-2024.pdf  (369 KB)
+08:18:50  INFO         ↓     semaglutide-psd-nov-2024.pdf
+08:18:52  INFO         ✓     semaglutide-psd-nov-2024.pdf  (436 KB)
+08:18:53  INFO         ↓     tiotropium-with-olodaterol-psd-nov-2024.pdf
+08:18:55  INFO         ✓     tiotropium-with-olodaterol-psd-nov-2024.pdf  (407 KB)
+08:18:56  INFO         ↓     tiotropium-psd-nov-2024.pdf
+08:18:58  INFO         ✓     tiotropium-psd-nov-2024.pdf  (453 KB)
+08:19:00  INFO         ↓     tirzepatide-psd-nov-2024.pdf
+08:19:02  INFO         ✓     tirzepatide-psd-nov-2024.pdf  (1172 KB)
+08:19:03  INFO         ↓     tislelizumab-psd-nov-2024.pdf
+08:19:05  INFO         ✓     tislelizumab-psd-nov-2024.pdf  (894 KB)
+08:19:07  INFO         ↓     triglycerides-prozero-psd-nov-2024.pdf
+08:19:09  INFO         ✓     triglycerides-prozero-psd-nov-2024.pdf  (419 KB)
+08:19:10  INFO         ↓     ustekinumab-psd-nov-2024.pdf
+08:19:12  INFO         ✓     ustekinumab-psd-nov-2024.pdf  (597 KB)
+08:19:14  INFO         ↓     vutrisiran-psd-nov-2024.pdf
+08:19:16  INFO         ✓     vutrisiran-psd-nov-2024.pdf  (828 KB)
+08:19:16  INFO     
+08:19:16  INFO     ━━━  March 2025 PBAC Meeting  (2025-03)  —  44 PSDs  ━━━
+08:19:17  INFO         ↓     amivantamab-and-lazertinib-psd-march-2025.pdf
+08:19:19  INFO         ✓     amivantamab-and-lazertinib-psd-march-2025.pdf  (1320 KB)
+08:19:21  INFO         ↓     bulevirtide-psd-march-2025-july-2025.pdf
+08:19:23  INFO         ✓     bulevirtide-psd-march-2025-july-2025.pdf  (1019 KB)
+08:19:24  INFO         ↓     cipaglucosidase-and-miglustat-psd-march-2025.pdf
+08:19:26  INFO         ✓     cipaglucosidase-and-miglustat-psd-march-2025.pdf  (719 KB)
+08:19:28  INFO         ↓     dabrafenib-and-trametinib-psd-march-2025.pdf
+08:19:30  INFO         ✓     dabrafenib-and-trametinib-psd-march-2025.pdf  (1175 KB)
+08:19:32  INFO         ↓     dapsone-psd-march-2025.pdf
+08:19:34  INFO         ✓     dapsone-psd-march-2025.pdf  (889 KB)
+08:19:35  INFO         ↓     daratumumab-psd-march-2025.pdf
+08:19:38  INFO         ✓     daratumumab-psd-march-2025.pdf  (1745 KB)
+08:19:39  INFO         ↓     denosumab-psd-march-2025.pdf
+08:19:41  INFO         ✓     denosumab-psd-march-2025.pdf  (980 KB)
+08:19:43  INFO         ↓     dupilumab-psd-march-2025.pdf
+08:19:45  INFO         ✓     dupilumab-psd-march-2025.pdf  (1104 KB)
+08:19:47  INFO         ↓     efgartigimod-alfa-psd-march-2025.pdf
+08:19:49  INFO         ✓     efgartigimod-alfa-psd-march-2025.pdf  (1390 KB)
+08:19:50  INFO         ↓     eflornithine-psd-march-2025.pdf
+08:19:53  INFO         ✓     eflornithine-psd-march-2025.pdf  (1452 KB)
+08:19:54  INFO         ↓     elacestrant-psd-march-2025.pdf
+08:19:56  INFO         ✓     elacestrant-psd-march-2025.pdf  (1617 KB)
+08:19:58  INFO         ↓     elafibranor-psd-march-2025.pdf
+08:20:00  INFO         ✓     elafibranor-psd-march-2025.pdf  (1022 KB)
+08:20:02  INFO         ↓     elexacaftor-tezacaftor-ivacaftor-psd-march-2025.pdf
+08:20:04  INFO         ✓     elexacaftor-tezacaftor-ivacaftor-psd-march-2025.pdf  (700 KB)
+08:20:05  INFO         ↓     elranatamab-psd-march-2025-with-addendum-december-2025.pdf
+08:20:07  INFO         ✓     elranatamab-psd-march-2025-with-addendum-december-2025.pdf  (915 KB)
+08:20:09  INFO         ↓     estetrol-with-drospirenone-psd-march-2025.pdf
+08:20:11  INFO         ✓     estetrol-with-drospirenone-psd-march-2025.pdf  (1036 KB)
+08:20:12  INFO         ↓     faricimab-vabysmo-psd-march-2025.pdf
+08:20:14  INFO         ✓     faricimab-vabysmo-psd-march-2025.pdf  (1107 KB)
+08:20:16  INFO         ↓     fezolinetant-psd-march-2025.pdf
+08:20:18  INFO         ✓     fezolinetant-psd-march-2025.pdf  (1704 KB)
+08:20:20  INFO         ↓     futibatinib-psd-march-2025.pdf
+08:20:22  INFO         ✓     futibatinib-psd-march-2025.pdf  (1043 KB)
+08:20:23  INFO         ↓     gemcitabine-psd-march-2025.pdf
+08:20:25  INFO         ✓     gemcitabine-psd-march-2025.pdf  (940 KB)
+08:20:27  INFO         ↓     infliximab-remsima-psd-march-2025.pdf
+08:20:29  INFO         ✓     infliximab-remsima-psd-march-2025.pdf  (649 KB)
+08:20:30  INFO         ↓     infliximab-Ixifi-psd-march-2025.pdf
+08:20:32  INFO         ✓     infliximab-Ixifi-psd-march-2025.pdf  (327 KB)
+08:20:33  INFO         ↓     ivacaftor-psd-march-2025.pdf
+08:20:35  INFO         ✓     ivacaftor-psd-march-2025.pdf  (588 KB)
+08:20:37  INFO         ↓     lumasiran-psd-march-2025.pdf
+08:20:39  INFO         ✓     lumasiran-psd-march-2025.pdf  (1132 KB)
+08:20:40  INFO         ↓     midostaurin-psd-march-2025.pdf
+08:20:43  INFO         ✓     midostaurin-psd-march-2025.pdf  (1470 KB)
+08:20:44  INFO         ↓     mogamulizumab-psd-march-2025-september-2025.pdf
+08:20:46  INFO         ✓     mogamulizumab-psd-march-2025-september-2025.pdf  (772 KB)
+08:20:48  INFO         ↓     natalizumab-psd-march-2025.pdf
+08:20:50  INFO         ✓     natalizumab-psd-march-2025.pdf  (961 KB)
+08:20:51  INFO         ↓     odevixibat-psd-march-2025-july-2025.pdf
+08:20:53  INFO         ✓     odevixibat-psd-march-2025-july-2025.pdf  (1331 KB)
+08:20:55  INFO         ↓     omalizumab-omlyclo-psd-march-2025.pdf
+08:20:57  INFO         ✓     omalizumab-omlyclo-psd-march-2025.pdf  (524 KB)
+08:20:58  INFO         ↓     omalizumab-xolair-psd-march-2025.pdf
+08:21:00  INFO         ✓     omalizumab-xolair-psd-march-2025.pdf  (972 KB)
+08:21:02  INFO         ↓     omaveloxolone-psd-march-2025.pdf
+08:21:04  INFO         ✓     omaveloxolone-psd-march-2025.pdf  (1158 KB)
+08:21:06  INFO         ↓     palopegteriparatide-psd-march-2025.pdf
+08:21:08  INFO         ✓     palopegteriparatide-psd-march-2025.pdf  (972 KB)
+08:21:09  INFO         ↓     pembrolizumab-psd-march-2025.pdf
+08:21:12  INFO         ✓     pembrolizumab-psd-march-2025.pdf  (1415 KB)
+08:21:13  INFO         ↓     pertuzumab-psd-march-2025.pdf
+08:21:15  INFO         ✓     pertuzumab-psd-march-2025.pdf  (1133 KB)
+08:21:17  INFO         ↓     polatuzumab vedotin-psd-march-2025.pdf
+08:21:19  INFO         ✓     polatuzumab vedotin-psd-march-2025.pdf  (1637 KB)
+08:21:21  INFO         ↓     ravulizumab-psd-march-2025.pdf
+08:21:23  INFO         ✓     ravulizumab-psd-march-2025.pdf  (1057 KB)
+08:21:24  INFO         ↓     rozanolixizumab-psd-march-2025-november-2025.pdf
+08:21:27  INFO         ✓     rozanolixizumab-psd-march-2025-november-2025.pdf  (1186 KB)
+08:21:28  INFO         ↓     ruxolitinib-psd-march-2025.pdf
+08:21:30  INFO         ✓     ruxolitinib-psd-march-2025.pdf  (1197 KB)
+08:21:32  INFO         ↓     sacituzumab govitecan-psd-march-2025.pdf
+08:21:34  INFO         ✓     sacituzumab govitecan-psd-march-2025.pdf  (393 KB)
+08:21:35  INFO         ↓     sotatercept-psd-march-2025.pdf
+08:21:38  INFO         ✓     sotatercept-psd-march-2025.pdf  (2159 KB)
+08:21:39  INFO         ↓     teprotumumab-psd-march-2025-may-2025.pdf
+08:21:42  INFO         ✓     teprotumumab-psd-march-2025-may-2025.pdf  (1629 KB)
+08:21:43  INFO         ↓     toripalimab-psd-march-2025-with-july-2025.pdf
+08:21:45  INFO         ✓     toripalimab-psd-march-2025-with-july-2025.pdf  (942 KB)
+08:21:47  INFO         ↓     ustekinumab-psd-march-2025.pdf
+08:21:49  INFO         ✓     ustekinumab-psd-march-2025.pdf  (1074 KB)
+08:21:51  INFO         ↓     zilucoplan-psd-march-2025.pdf
+08:21:53  INFO         ✓     zilucoplan-psd-march-2025.pdf  (1014 KB)
+08:21:54  INFO         ↓     zolbetuximab-psd-march-2025-september-2025.pdf
+08:21:56  INFO         ✓     zolbetuximab-psd-march-2025-september-2025.pdf  (1419 KB)
+08:21:56  INFO     
+08:21:56  INFO     ━━━  July 2025 PBAC Meeting  (2025-07)  —  45 PSDs  ━━━
+08:21:58  INFO         ↓     abaloparatide-psd-july-2025.pdf
+08:22:00  INFO         ✓     abaloparatide-psd-july-2025.pdf  (1033 KB)
+08:22:02  INFO         ↓     abiraterone-acetate-and-prednisolone-psd-july-2025.pdf
+08:22:03  INFO         ✓     abiraterone-acetate-and-prednisolone-psd-july-2025.pdf  (489 KB)
+08:22:05  INFO         ↓     acalabrutinib-psd-july-2025.pdf
+08:22:07  INFO         ✓     acalabrutinib-psd-july-2025.pdf  (1240 KB)
+08:22:09  INFO         ↓     aflibercept-psd-july-2025.pdf
+08:22:11  INFO         ✓     aflibercept-psd-july-2025.pdf  (435 KB)
+08:22:12  INFO         ↓     apomorphine-psd-july-2025.pdf
+08:22:14  INFO         ✓     apomorphine-psd-july-2025.pdf  (456 KB)
+08:22:15  INFO         ↓     aripiprazole-psd-july-2025.pdf
+08:22:17  INFO         ✓     aripiprazole-psd-july-2025.pdf  (384 KB)
+08:22:19  INFO         ↓     brentuximab vedotin-psd-july-2025.pdf
+08:22:21  INFO         ✓     brentuximab vedotin-psd-july-2025.pdf  (1099 KB)
+08:22:22  INFO         ↓     brexpiprazole-psd-july-2025.pdf
+08:22:24  INFO         ✓     brexpiprazole-psd-july-2025.pdf  (358 KB)
+08:22:26  INFO         ↓     cabozantinib-psd-july-2025.pdf
+08:22:28  INFO         ✓     cabozantinib-psd-july-2025.pdf  (1862 KB)
+08:22:30  INFO         ↓     calcipotriol-with-betamethasone-dipropionate-psd-july-2025.pdf
+08:22:31  INFO         ✓     calcipotriol-with-betamethasone-dipropionate-psd-july-2025.pdf  (769 KB)
+08:22:33  INFO         ↓     cannabidiol-epidyolex-psd-july-2025.pdf
+08:22:35  INFO         ✓     cannabidiol-epidyolex-psd-july-2025.pdf  (505 KB)
+08:22:36  INFO         ↓     donanemab-psd-july-2025.pdf
+08:22:39  INFO         ✓     donanemab-psd-july-2025.pdf  (2294 KB)
+08:22:41  INFO         ↓     durvalumab-psd-july-2025.pdf
+08:22:43  INFO         ✓     durvalumab-psd-july-2025.pdf  (1155 KB)
+08:22:44  INFO         ↓     enoxaparin-psd-july-2025.pdf
+08:22:46  INFO         ✓     enoxaparin-psd-july-2025.pdf  (419 KB)
+08:22:48  INFO         ↓     eplerenone-psd-july-2025-with-addendum-december-2025.pdf
+08:22:50  INFO         ✓     eplerenone-psd-july-2025-with-addendum-december-2025.pdf  (772 KB)
+08:22:51  INFO         ↓     etanercept-psd-july-2025.pdf
+08:22:53  INFO         ✓     etanercept-psd-july-2025.pdf  (353 KB)
+08:22:54  INFO         ↓     futibatinib-psd-july-2025-november-2025.pdf
+08:22:56  INFO         ✓     futibatinib-psd-july-2025-november-2025.pdf  (734 KB)
+08:22:58  INFO         ↓     givosiran-psd-july-2025-november-2025.pdf
+08:23:00  INFO         ✓     givosiran-psd-july-2025-november-2025.pdf  (1360 KB)
+08:23:01  INFO         ↓     glofitamab-psd-july-2025.pdf
+08:23:04  INFO         ✓     glofitamab-psd-july-2025.pdf  (1677 KB)
+08:23:05  INFO         ↓     guselkumab-psd-july-2025.pdf
+08:23:08  INFO         ✓     guselkumab-psd-july-2025.pdf  (1597 KB)
+08:23:09  INFO         ↓     incobotulinumtoxinA-psd-july-2025.pdf
+08:23:11  INFO         ✓     incobotulinumtoxinA-psd-july-2025.pdf  (741 KB)
+08:23:13  INFO         ↓     infliximab-psd-july-2025.pdf
+08:23:14  INFO         ✓     infliximab-psd-july-2025.pdf  (353 KB)
+08:23:16  INFO         ↓     insulin degludec-psd-july-2025.pdf
+08:23:18  INFO         ✓     insulin degludec-psd-july-2025.pdf  (681 KB)
+08:23:19  INFO         ↓     leniolisib-psd-july-2025.pdf
+08:23:22  INFO         ✓     leniolisib-psd-july-2025.pdf  (1288 KB)
+08:23:23  INFO         ↓     methadone-psd-july-2025.pdf
+08:23:25  INFO         ✓     methadone-psd-july-2025.pdf  (485 KB)
+08:23:26  INFO         ↓     mirvetuximab-soravtansine-psd-july-2025-november-2025.pdf
+08:23:29  INFO         ✓     mirvetuximab-soravtansine-psd-july-2025-november-2025.pdf  (1448 KB)
+08:23:30  INFO         ↓     nemolizumab-psd-july-2025.pdf
+08:23:32  INFO         ✓     nemolizumab-psd-july-2025.pdf  (826 KB)
+08:23:34  INFO         ↓     nivolumab-plus-ipilimumab-crc-psd-july-2025.pdf
+08:23:36  INFO         ✓     nivolumab-plus-ipilimumab-crc-psd-july-2025.pdf  (2072 KB)
+08:23:38  INFO         ↓     nivolumab-plus-ipilimumab-hcc-psd-july-2025.pdf
+08:23:40  INFO         ✓     nivolumab-plus-ipilimumab-hcc-psd-july-2025.pdf  (929 KB)
+08:23:41  INFO         ↓     nivolumab-plus-ipilimumab-psd-july-2025.pdf
+08:23:43  INFO         ✓     nivolumab-plus-ipilimumab-psd-july-2025.pdf  (778 KB)
+08:23:45  INFO         ↓     ocrelizumab-psd-july-2025.pdf
+08:23:47  INFO         ✓     ocrelizumab-psd-july-2025.pdf  (535 KB)
+08:23:48  INFO         ↓     osimertinib-psd-july-2025.pdf
+08:23:51  INFO         ✓     osimertinib-psd-july-2025.pdf  (1652 KB)
+08:23:52  INFO         ↓     paliperidone-psd-july-2025.pdf
+08:23:54  INFO         ✓     paliperidone-psd-july-2025.pdf  (445 KB)
+08:23:55  INFO         ↓     palopegteriparatide-psd-july-2025.pdf
+08:23:57  INFO         ✓     palopegteriparatide-psd-july-2025.pdf  (517 KB)
+08:23:59  INFO         ↓     pegunigalsidase alfa-psd-july-2025.pdf
+08:24:01  INFO         ✓     pegunigalsidase alfa-psd-july-2025.pdf  (1015 KB)
+08:24:02  INFO         ↓     pembrolizumab-psd-july-2025.pdf
+08:24:04  INFO         ✓     pembrolizumab-psd-july-2025.pdf  (1305 KB)
+08:24:06  INFO         ↓     pembrolizumab-mc-psd-july-2025.pdf
+08:24:08  INFO         ✓     pembrolizumab-mc-psd-july-2025.pdf  (801 KB)
+08:24:09  INFO         ↓     ribociclib-psd-july-2025.pdf
+08:24:12  INFO         ✓     ribociclib-psd-july-2025.pdf  (1247 KB)
+08:24:13  INFO         ↓     seladelpar-psd-july-2025-with addendum-december-2025.pdf
+08:24:16  INFO         ✓     seladelpar-psd-july-2025-with addendum-december-2025.pdf  (1278 KB)
+08:24:17  INFO         ↓     tacrolimus-psd-july-2025.pdf
+08:24:19  INFO         ✓     tacrolimus-psd-july-2025.pdf  (1154 KB)
+08:24:21  INFO         ↓     teriparatide-psd-july-2025.pdf
+08:24:22  INFO         ✓     teriparatide-psd-july-2025.pdf  (415 KB)
+08:24:24  INFO         ↓     tirzepatide-psd-july-2025.pdf
+08:24:26  INFO         ✓     tirzepatide-psd-july-2025.pdf  (920 KB)
+08:24:28  INFO         ↓     vanzacaftor-tezacaftor-deutivacaftor-psd-july-2025-september-2025.pdf
+08:24:30  INFO         ✓     vanzacaftor-tezacaftor-deutivacaftor-psd-july-2025-september-2025.pdf  (771 KB)
+08:24:31  INFO         ↓     velmanase alfa-psd-july-2025- with-corrigenda-and-addendum-december-2025.pdf
+08:24:33  INFO         ✓     velmanase alfa-psd-july-2025- with-corrigenda-and-addendum-december-2025.pdf  (1571 KB)
+08:24:35  INFO         ↓     vorasidenib-psd-july-2025.pdf
+08:24:37  INFO         ✓     vorasidenib-psd-july-2025.pdf  (957 KB)
+08:24:37  INFO     
+08:24:37  INFO     ━━━  November 2025 PBAC Meeting  (2025-11)  —  36 PSDs  ━━━
+08:24:38  INFO         ↓     acalabrutinib-psd-november-2025.pdf
+08:24:41  INFO         ✓     acalabrutinib-psd-november-2025.pdf  (968 KB)
+08:24:42  INFO         ↓     aflibercept-psd-november-2025.pdf
+08:24:44  INFO         ✓     aflibercept-psd-november-2025.pdf  (422 KB)
+08:24:45  INFO         ↓     belantamab-mafodotin-psd-november-2025.pdf
+08:24:47  INFO         ✓     belantamab-mafodotin-psd-november-2025.pdf  (929 KB)
+08:24:49  INFO         ↓     bimekizumab-psd-november-2025.pdf
+08:24:51  INFO         ✓     bimekizumab-psd-november-2025.pdf  (468 KB)
+08:24:52  INFO         ↓     calcipotriol-with-betamethasone-psd-november-2025.pdf
+08:24:54  INFO         ✓     calcipotriol-with-betamethasone-psd-november-2025.pdf  (454 KB)
+08:24:56  INFO         ↓     cetrorelix-psd-november-2025.pdf
+08:24:57  INFO         ✓     cetrorelix-psd-november-2025.pdf  (555 KB)
+08:24:59  INFO         ↓     delgocitinib-psd-november-2025.pdf
+08:25:01  INFO         ✓     delgocitinib-psd-november-2025.pdf  (1205 KB)
+08:25:03  INFO         ↓     denosumab-psd-november-2025.pdf
+08:25:04  INFO         ✓     denosumab-psd-november-2025.pdf  (403 KB)
+08:25:06  INFO         ↓     desmopressin-psd-november-2025.pdf
+08:25:08  INFO         ✓     desmopressin-psd-november-2025.pdf  (437 KB)
+08:25:09  INFO         ↓     durvalumab-psd-november-2025.pdf
+08:25:12  INFO         ✓     durvalumab-psd-november-2025.pdf  (1784 KB)
+08:25:13  INFO         ↓     efgartigimod-alfa-psd-november-2025.pdf
+08:25:15  INFO         ✓     efgartigimod-alfa-psd-november-2025.pdf  (572 KB)
+08:25:17  INFO         ↓     encorafenib-and-binimetinib-psd-november-2025.pdf
+08:25:19  INFO         ✓     encorafenib-and-binimetinib-psd-november-2025.pdf  (1339 KB)
+08:25:20  INFO         ↓     estradiol-with-progesterone-psd-november-2025.pdf
+08:25:22  INFO         ✓     estradiol-with-progesterone-psd-november-2025.pdf  (755 KB)
+08:25:24  INFO         ↓     fedratinib-psd-november-2025.pdf
+08:25:26  INFO         ✓     fedratinib-psd-november-2025.pdf  (941 KB)
+08:25:27  INFO         ↓     fezolinetant-psd-november-2025.pdf
+08:25:30  INFO         ✓     fezolinetant-psd-november-2025.pdf  (1410 KB)
+08:25:31  INFO         ↓     glycopyrronium-psd-november-2025.pdf
+08:25:33  INFO         ✓     glycopyrronium-psd-november-2025.pdf  (778 KB)
+08:25:35  INFO         ↓     iptacopan-psd-november-2025.pdf
+08:25:37  INFO         ✓     iptacopan-psd-november-2025.pdf  (1373 KB)
+08:25:38  INFO         ↓     lurbinectedin-psd-november-2025.pdf
+08:25:40  INFO         ✓     lurbinectedin-psd-november-2025.pdf  (901 KB)
+08:25:42  INFO         ↓     omaveloxolone-psd-november-2025.pdf
+08:25:44  INFO         ✓     omaveloxolone-psd-november-2025.pdf  (1172 KB)
+08:25:46  INFO         ↓     pegcetacoplan-psd-november-2025.pdf
+08:25:48  INFO         ✓     pegcetacoplan-psd-november-2025.pdf  (989 KB)
+08:25:49  INFO         ↓     pembrolizumab-psd-november-2025.pdf
+08:25:52  INFO         ✓     pembrolizumab-psd-november-2025.pdf  (1291 KB)
+08:25:53  INFO         ↓     pneumococcal-conjugate-vaccine-psd-november-2025.pdf
+08:25:55  INFO         ✓     pneumococcal-conjugate-vaccine-psd-november-2025.pdf  (1211 KB)
+08:25:57  INFO         ↓     polyethylene-glycol-400-with-propylene-glycol-psd-november-2025.pdf
+08:25:59  INFO         ✓     polyethylene-glycol-400-with-propylene-glycol-psd-november-2025.pdf  (478 KB)
+08:26:00  INFO         ↓     respiratory-syncytial-virus-vaccine-psd-november-2025.pdf
+08:26:02  INFO         ✓     respiratory-syncytial-virus-vaccine-psd-november-2025.pdf  (1080 KB)
+08:26:04  INFO         ↓     retifanlimab-(MCC)-psd-november-2025.pdf
+08:26:06  INFO         ✓     retifanlimab-(MCC)-psd-november-2025.pdf  (938 KB)
+08:26:07  INFO         ↓     retifanlimab-(SCAC)-psd-november-2025.pdf
+08:26:09  INFO         ✓     retifanlimab-(SCAC)-psd-november-2025.pdf  (975 KB)
+08:26:11  INFO         ↓     risdiplam-psd-november-2025.pdf
+08:26:13  INFO         ✓     risdiplam-psd-november-2025.pdf  (801 KB)
+08:26:14  INFO         ↓     semaglutide-psd-november-2025.pdf
+08:26:17  INFO         ✓     semaglutide-psd-november-2025.pdf  (1174 KB)
+08:26:18  INFO         ↓     tafasitamab-psd-november-2025.pdf
+08:26:20  INFO         ✓     tafasitamab-psd-november-2025.pdf  (1416 KB)
+08:26:22  INFO         ↓     testosterone-psd-november-2025.pdf
+08:26:24  INFO         ✓     testosterone-psd-november-2025.pdf  (1421 KB)
+08:26:26  INFO         ↓     tezepelumab-psd-november-2025.pdf
+08:26:28  INFO         ✓     tezepelumab-psd-november-2025.pdf  (1473 KB)
+08:26:30  INFO         ↓     tocilizumab-psd-november-2025.pdf
+08:26:32  INFO         ✓     tocilizumab-psd-november-2025.pdf  (838 KB)
+08:26:33  INFO         ↓     tofersen-psd-november-2025.pdf
+08:26:35  INFO         ✓     tofersen-psd-november-2025.pdf  (1490 KB)
+08:26:37  INFO         ↓     tucatinib-psd-november-2025.pdf
+08:26:39  INFO         ✓     tucatinib-psd-november-2025.pdf  (1204 KB)
+08:26:41  INFO         ↓     vedolizumab-psd-november-2025.pdf
+08:26:42  INFO         ✓     vedolizumab-psd-november-2025.pdf  (657 KB)
+08:26:44  INFO         ↓     zanubrutinib-psd-november-2025.pdf
+08:26:46  INFO         ✓     zanubrutinib-psd-november-2025.pdf  (513 KB)
+08:26:46  INFO     
+08:26:46  INFO     =================================================================
+08:26:46  INFO     FINISHED
+08:26:46  INFO       Downloaded : 273
+08:26:46  INFO       Skipped    : 0  (already in collection)
+08:26:46  INFO       Failed     : 0
+08:26:46  INFO       Log        : C:\Users\PC USER\Random Files and Folders\pbs_search_bot\PBSPDF\PDF\PSD_database\download_log.txt
+08:26:46  INFO     =================================================================
+08:26:46  INFO     
+08:26:46  INFO       Next: run generate_psd_data.py → reload psd_dashboard.html
