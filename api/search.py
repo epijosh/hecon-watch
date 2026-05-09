@@ -45,27 +45,46 @@ _CLIENT  = None
 
 
 def _ensure_loaded():
+    """Load vectors and the Voyage client. Idempotent and independent — if either
+    fails the function will retry it on the next request, instead of half-caching."""
     global _VECTORS, _META, _CLIENT
-    if _VECTORS is not None:
-        return
-    import numpy as np
-    import voyageai
 
-    if not EMB_META.exists() or not EMB_BIN.exists():
-        raise RuntimeError("Embedding files missing. Run embed_psds.py and redeploy.")
+    # ── Vectors / metadata ───────────────────────────────────────────────────
+    if _VECTORS is None or _META is None:
+        import numpy as np
+        if not EMB_META.exists() or not EMB_BIN.exists():
+            raise RuntimeError(
+                "Embedding files missing on the server. Expected "
+                f"{EMB_META.name} and {EMB_BIN.name} under data/. "
+                "Run embed_psds.py locally then redeploy."
+            )
+        _META = json.loads(EMB_META.read_text(encoding="utf-8"))
+        n, d = int(_META["count"]), int(_META["dim"])
+        raw = np.fromfile(EMB_BIN, dtype=np.float32).reshape(n, d)
+        norms = np.linalg.norm(raw, axis=1, keepdims=True)
+        norms[norms == 0] = 1
+        _VECTORS = (raw / norms).astype(np.float32)   # pre-normalise once
 
-    _META = json.loads(EMB_META.read_text(encoding="utf-8"))
-    n, d = int(_META["count"]), int(_META["dim"])
-    raw = np.fromfile(EMB_BIN, dtype=np.float32).reshape(n, d)
-
-    norms = np.linalg.norm(raw, axis=1, keepdims=True)
-    norms[norms == 0] = 1
-    _VECTORS = (raw / norms).astype(np.float32)   # pre-normalise once
-
-    api_key = (os.environ.get("VOYAGE_API_KEY") or "").strip()
-    if not api_key:
-        raise RuntimeError("VOYAGE_API_KEY not set in Vercel environment")
-    _CLIENT = voyageai.Client(api_key=api_key)
+    # ── Voyage client (independent of vectors so failures don't poison cache) ─
+    if _CLIENT is None:
+        import voyageai
+        api_key = (os.environ.get("VOYAGE_API_KEY") or "").strip()
+        if not api_key:
+            raise RuntimeError("VOYAGE_API_KEY is not set in Vercel environment variables")
+        try:
+            client = voyageai.Client(api_key=api_key)
+        except Exception as e:
+            raise RuntimeError(
+                f"voyageai.Client() raised {type(e).__name__}: {e}. "
+                f"SDK version: {getattr(voyageai, '__version__', '?')}"
+            ) from e
+        if client is None or not hasattr(client, "embed"):
+            ver = getattr(voyageai, "__version__", "?")
+            raise RuntimeError(
+                f"voyageai.Client() returned an object without an .embed() method "
+                f"(SDK version: {ver}). Pin voyageai>=0.3.0 in api/requirements.txt."
+            )
+        _CLIENT = client
 
 
 def _normalise_outcome(outcome: str) -> str:
@@ -83,12 +102,16 @@ def _search(query: str, limit: int, filter_outcome: str | None, filter_therapy: 
     import numpy as np
     _ensure_loaded()
 
-    # Embed the query (input_type='query' for asymmetric retrieval)
+    if _CLIENT is None or _VECTORS is None or _META is None:
+        raise RuntimeError("Search backend failed to initialise — check server logs")
+
+    # Embed the query (input_type='query' for asymmetric retrieval).
+    # truncation defaults to True; omitting the kwarg keeps us compatible with
+    # older voyageai SDK versions that don't accept it.
     r = _CLIENT.embed(
         texts=[query],
         model=_META["model"],
         input_type="query",
-        truncation=True,
     )
     qv = np.asarray(r.embeddings[0], dtype=np.float32)
     qn = np.linalg.norm(qv) or 1.0
