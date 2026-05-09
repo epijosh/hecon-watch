@@ -699,7 +699,7 @@ def load_drug_spend() -> dict:
             benefit = _int(row.get("gov_benefit_aud"))
             scripts = _int(row.get("scripts"))
             raw_name = re.sub(r'[\^*#]+$', '', (row.get("drug_name") or "").strip()).strip()
-        drug    = _title(raw_name)
+            drug    = _title(raw_name)
             if not drug or benefit is None:
                 continue
             raw_rows.append({

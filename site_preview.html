@@ -753,44 +753,49 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 36p
             </div>
           </div>
 
-          <!-- Charts row -->
-          <div style="display:grid;grid-template-columns:3fr 2fr;gap:32px;align-items:start;margin-bottom:32px">
+          <!-- Main dashboard: charts left, ranked list sidebar right -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 300px;gap:24px;align-items:start;margin-bottom:28px">
+
+            <!-- Bar chart -->
             <div>
-              <div class="section-label" style="margin-bottom:12px">Top 10 drugs by government benefit</div>
-              <div style="position:relative;height:300px">
+              <div class="section-label" style="margin-bottom:10px">Top 10 by government benefit</div>
+              <div style="position:relative;height:280px">
                 <div id="spend-bar-placeholder" style="height:100%;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center">
                   <span class="sans" style="font-size:12px;color:var(--text3)">Loading chart…</span>
                 </div>
-                <canvas id="spend-bar-chart" style="display:none;height:300px"></canvas>
+                <canvas id="spend-bar-chart" style="display:none;height:280px"></canvas>
               </div>
             </div>
+
+            <!-- Donut chart -->
             <div>
-              <div class="section-label" style="margin-bottom:12px">Spend by therapy area</div>
-              <div style="position:relative;height:300px">
+              <div class="section-label" style="margin-bottom:10px">Spend by therapy area</div>
+              <div style="position:relative;height:280px">
                 <div id="spend-donut-placeholder" style="height:100%;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center">
                   <span class="sans" style="font-size:12px;color:var(--text3)">Loads with PBAC data</span>
                 </div>
-                <canvas id="spend-donut-chart" style="display:none;height:300px"></canvas>
+                <canvas id="spend-donut-chart" style="display:none;height:280px"></canvas>
+              </div>
+            </div>
+
+            <!-- Top 20 list sidebar -->
+            <div style="background:var(--bg2);border:1px solid var(--border);padding:14px 16px">
+              <div class="section-label" style="margin-bottom:2px">Top 20 by spend</div>
+              <div class="sans" id="drug-spend-year-note" style="font-size:10px;color:var(--text3);margin-bottom:10px">2023-24 financial year</div>
+              <div style="max-height:280px;overflow-y:auto">
+                <ol class="rank-list" id="drug-spend-list" style="gap:6px"></ol>
               </div>
             </div>
           </div>
 
-          <hr class="rule" style="margin-bottom:28px">
-
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;margin-bottom:32px">
-            <div>
-              <div class="section-label" style="margin-bottom:4px">Top 20 drugs · government benefit paid</div>
-              <div class="sans" style="font-size:11px;color:var(--text3);margin-bottom:14px" id="drug-spend-year-note">2023-24 financial year</div>
-              <div style="max-height:520px;overflow-y:auto;padding-right:4px">
-                <ol class="rank-list" id="drug-spend-list"></ol>
-              </div>
+          <!-- Most expensive per script — compact horizontal strip -->
+          <div style="border-top:1px solid var(--border);padding-top:20px;margin-bottom:4px">
+            <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px">
+              <div class="section-label">Most expensive per script</div>
+              <div class="sans" style="font-size:11px;color:var(--text3)">Government benefit per prescription dispensed · click any drug to view PBAC profile</div>
             </div>
-            <div>
-              <div class="section-label" style="margin-bottom:4px">Most expensive per script</div>
-              <div class="sans" style="font-size:11px;color:var(--text3);margin-bottom:14px">Government benefit per prescription dispensed</div>
-              <div style="max-height:520px;overflow-y:auto;padding-right:4px">
-                <ol class="rank-list" id="drug-cps-list"></ol>
-              </div>
+            <div style="max-height:200px;overflow-y:auto">
+              <ol class="rank-list" id="drug-cps-list" style="gap:6px"></ol>
             </div>
           </div>
         </div>
@@ -2147,17 +2152,16 @@ function initExplore() {
         const pct  = Math.round((b / maxB) * 100);
         const str  = b >= 1e9 ? '$' + (b/1e9).toFixed(2) + 'B' : '$' + (b/1e6).toFixed(0) + 'M';
         const _raw = d.drug_name || ''; const name = (_raw === _raw.toUpperCase() ? _raw.charAt(0).toUpperCase() + _raw.slice(1).toLowerCase() : _raw.charAt(0).toUpperCase() + _raw.slice(1));
-        const brand = d.brand_name ? ` <span style="color:var(--text3);font-size:11px">(${d.brand_name})</span>` : '';
         const badge = _pbacBadge(d.drug_name);
-        return `<li class="rank-item" style="cursor:pointer" onclick="runSearch('${d.drug_name.toLowerCase().replace(/'/g,"\\'")}')">
-          <div class="rank-num">${i+1}</div>
+        return `<li style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--bg3);cursor:pointer" onclick="runSearch('${d.drug_name.toLowerCase().replace(/'/g,"\\'")}')">
+          <span class="sans" style="font-size:10px;color:var(--text3);width:16px;text-align:right;flex-shrink:0">${i+1}</span>
           <div style="flex:1;min-width:0">
-            <div style="font-weight:600;font-size:14px">${name}${brand}</div>
-            <div style="margin-top:5px;display:flex;align-items:center;gap:10px">
-              <div style="flex:1;height:6px;background:var(--bg3);border-radius:3px;max-width:180px">
-                <div class="rank-bar-fill" style="width:${pct}%"></div>
+            <div style="font-weight:600;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${name}</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:2px">
+              <div style="flex:1;height:3px;background:var(--bg3);border-radius:2px;max-width:80px">
+                <div style="height:100%;border-radius:2px;background:var(--red);opacity:.7;width:${pct}%"></div>
               </div>
-              <span class="sans" style="font-size:12px;font-weight:600;color:var(--text2);flex-shrink:0">${str}</span>
+              <span class="sans" style="font-size:11px;font-weight:600;color:var(--text2)">${str}</span>
             </div>
             ${badge}
           </div>
@@ -2174,21 +2178,18 @@ function initExplore() {
         const pct  = Math.round((cps / maxCPS) * 100);
         const str  = cps >= 10000 ? '$' + (cps/1000).toFixed(0) + 'k' : '$' + cps.toLocaleString(undefined,{maximumFractionDigits:0});
         const _raw = d.drug_name || ''; const name = (_raw === _raw.toUpperCase() ? _raw.charAt(0).toUpperCase() + _raw.slice(1).toLowerCase() : _raw.charAt(0).toUpperCase() + _raw.slice(1));
-        const scripts = d.scripts ? ` · ${(d.scripts/1000).toFixed(1)}k scripts` : '';
+        const scripts = d.scripts ? `${(d.scripts/1000).toFixed(1)}k scripts/yr` : '';
         // Colour code: > $10k = red, $1–10k = orange, <$1k = green
         const col  = cps > 10000 ? 'var(--red)' : cps > 1000 ? '#E65100' : '#2e7d32';
         const badge = _pbacBadge(d.drug_name);
-        return `<li class="rank-item" style="cursor:pointer" onclick="runSearch('${d.drug_name.toLowerCase().replace(/'/g,"\\'")}')">
-          <div class="rank-num">${i+1}</div>
+        return `<li style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--bg3);cursor:pointer" onclick="runSearch('${d.drug_name.toLowerCase().replace(/'/g,"\\'")}')">
+          <span class="sans" style="font-size:10px;color:var(--text3);width:16px;text-align:right;flex-shrink:0">${i+1}</span>
           <div style="flex:1;min-width:0">
-            <div style="font-weight:600;font-size:14px">${name}</div>
-            <div style="margin-top:5px;display:flex;align-items:center;gap:10px">
-              <div style="flex:1;height:6px;background:var(--bg3);border-radius:3px;max-width:140px">
-                <div style="height:100%;border-radius:3px;background:${col};width:${pct}%"></div>
-              </div>
-              <span class="sans" style="font-size:12px;font-weight:600;color:${col};flex-shrink:0">${str}/script</span>
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+              <span style="font-weight:600;font-size:13px">${name}</span>
+              <span class="sans" style="font-size:12px;font-weight:700;color:${col}">${str}/script</span>
+              <span class="sans" style="font-size:10px;color:var(--text3)">${scripts}</span>
             </div>
-            <div class="sans" style="font-size:10px;color:var(--text3);margin-top:2px">${scripts}</div>
             ${badge}
           </div>
         </li>`;
