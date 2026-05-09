@@ -1,0 +1,42 @@
+# ─── .vercelignore ──────────────────────────────────────────────────
+# Keep the Vercel deployment lean. Vercel includes every file at the
+# project root by default; we exclude the heavy source-of-truth files
+# that the static site and the search function don't actually need at
+# runtime. Patterns follow gitignore semantics — last match wins.
+
+# 3,000+ source PSD PDFs (we link out to pbs.gov.au directly)
+data/psds/
+
+# All other PDFs in the project (PBS schedules, cycle timeframes, etc.)
+*.pdf
+
+# Local-only Python tooling — none of it runs on Vercel except api/*.py
+*.py
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+
+# Raw CSVs — the dashboard reads site_data.js, not the source CSVs
+*.csv
+
+# Office docs / spreadsheets / logs
+*.docx
+*.pptx
+*.xlsx
+*.xls
+*.log
+
+# Secrets and local config
+.env
+.env.*
+
+# Editor / OS noise
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# ── Re-include things that we DO want shipped ───────────────────────
+# Override *.py so the Vercel serverless function still ships
+!api/
+!api/**

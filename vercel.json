@@ -5,8 +5,7 @@
   "functions": {
     "api/search.py": {
       "memory": 512,
-      "maxDuration": 10,
-      "includeFiles": "data/psd_embeddings.bin"
+      "maxDuration": 10
     }
   },
   "headers": [
