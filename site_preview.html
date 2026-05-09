@@ -2077,7 +2077,7 @@ function initExplore() {
     // Build a PBAC lookup by drug name (normalised) for enrichment
     const _pbacByDrug = {};
     if (D.psd && D.psd.drugs) {
-      D.psd.drugs.forEach(drug => {
+      Object.values(D.psd.drugs).forEach(drug => {
         const key = (drug.drug || '').toLowerCase().trim();
         if (!key) return;
         if (!_pbacByDrug[key]) {
