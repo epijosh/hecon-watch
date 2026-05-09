@@ -2146,7 +2146,7 @@ function initExplore() {
         const b    = d.gov_benefit_aud;
         const pct  = Math.round((b / maxB) * 100);
         const str  = b >= 1e9 ? '$' + (b/1e9).toFixed(2) + 'B' : '$' + (b/1e6).toFixed(0) + 'M';
-        const name = d.drug_name.charAt(0).toUpperCase() + d.drug_name.slice(1);
+        const _raw = d.drug_name || ''; const name = (_raw === _raw.toUpperCase() ? _raw.charAt(0).toUpperCase() + _raw.slice(1).toLowerCase() : _raw.charAt(0).toUpperCase() + _raw.slice(1));
         const brand = d.brand_name ? ` <span style="color:var(--text3);font-size:11px">(${d.brand_name})</span>` : '';
         const badge = _pbacBadge(d.drug_name);
         return `<li class="rank-item" style="cursor:pointer" onclick="runSearch('${d.drug_name.toLowerCase().replace(/'/g,"\\'")}')">
@@ -2173,7 +2173,7 @@ function initExplore() {
         const cps  = d.cost_per_script_aud;
         const pct  = Math.round((cps / maxCPS) * 100);
         const str  = cps >= 10000 ? '$' + (cps/1000).toFixed(0) + 'k' : '$' + cps.toLocaleString(undefined,{maximumFractionDigits:0});
-        const name = d.drug_name.charAt(0).toUpperCase() + d.drug_name.slice(1);
+        const _raw = d.drug_name || ''; const name = (_raw === _raw.toUpperCase() ? _raw.charAt(0).toUpperCase() + _raw.slice(1).toLowerCase() : _raw.charAt(0).toUpperCase() + _raw.slice(1));
         const scripts = d.scripts ? ` · ${(d.scripts/1000).toFixed(1)}k scripts` : '';
         // Colour code: > $10k = red, $1–10k = orange, <$1k = green
         const col  = cps > 10000 ? 'var(--red)' : cps > 1000 ? '#E65100' : '#2e7d32';
@@ -2415,7 +2415,11 @@ function buildSpendBarChart(drugs) {
   const gridCol = isDark ? '#2C2820' : '#E8E2D4';
 
   const labels = drugs.map(d => {
-    const n = d.drug_name.charAt(0).toUpperCase() + d.drug_name.slice(1);
+    // Convert ALL CAPS names to Title Case defensively
+    const raw = d.drug_name || '';
+    const n = raw === raw.toUpperCase()
+      ? raw.charAt(0).toUpperCase() + raw.slice(1).toLowerCase()
+      : raw.charAt(0).toUpperCase() + raw.slice(1);
     return n.length > 22 ? n.slice(0,22)+'…' : n;
   });
   const values = drugs.map(d => +(d.gov_benefit_aud/1e6).toFixed(1));
@@ -2850,7 +2854,7 @@ function copyTabText(tab, btn) {
       ds.top_spend.forEach((d, i) => {
         const b   = d.gov_benefit_aud;
         const str = b >= 1e9 ? '$' + (b/1e9).toFixed(2) + 'B' : '$' + (b/1e6).toFixed(0) + 'M';
-        const name = d.drug_name.charAt(0).toUpperCase() + d.drug_name.slice(1);
+        const _raw = d.drug_name || ''; const name = (_raw === _raw.toUpperCase() ? _raw.charAt(0).toUpperCase() + _raw.slice(1).toLowerCase() : _raw.charAt(0).toUpperCase() + _raw.slice(1));
         lines.push(`${i+1}. ${name}${d.brand_name ? ' (' + d.brand_name + ')' : ''}: ${str}`);
       });
       if (ds.top_cost_per_script && ds.top_cost_per_script.length > 0) {
@@ -2859,7 +2863,7 @@ function copyTabText(tab, btn) {
         ds.top_cost_per_script.slice(0, 10).forEach((d, i) => {
           const cps  = d.cost_per_script_aud;
           const str  = cps >= 10000 ? '$' + (cps/1000).toFixed(0) + 'k' : '$' + cps.toLocaleString(undefined,{maximumFractionDigits:0});
-          const name = d.drug_name.charAt(0).toUpperCase() + d.drug_name.slice(1);
+          const _raw = d.drug_name || ''; const name = (_raw === _raw.toUpperCase() ? _raw.charAt(0).toUpperCase() + _raw.slice(1).toLowerCase() : _raw.charAt(0).toUpperCase() + _raw.slice(1));
           lines.push(`${i+1}. ${name}: ${str} per script${d.scripts ? ' (' + (d.scripts/1000).toFixed(1) + 'k scripts/year)' : ''}`);
         });
       }

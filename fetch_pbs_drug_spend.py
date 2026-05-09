@@ -164,6 +164,8 @@ def extract_drug_rows(sheet) -> list[dict]:
             return row[idx] if idx is not None and idx < len(row) else None
 
         drug = str(get("drug_name") or "").strip()
+        # Strip PBS formulation markers: ^, ^^, *, # at end of name
+        drug = re.sub(r'[\^*#]+$', '', drug).strip()
         if not drug or drug.lower() in ("total", "grand total", "subtotal", "drug name",
                                          "all drugs", "all medicines", ""):
             continue

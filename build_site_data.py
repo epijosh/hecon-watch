@@ -698,7 +698,8 @@ def load_drug_spend() -> dict:
         for row in csv.DictReader(f):
             benefit = _int(row.get("gov_benefit_aud"))
             scripts = _int(row.get("scripts"))
-            drug    = _title((row.get("drug_name") or "").strip())
+            raw_name = re.sub(r'[\^*#]+$', '', (row.get("drug_name") or "").strip()).strip()
+        drug    = _title(raw_name)
             if not drug or benefit is None:
                 continue
             raw_rows.append({
