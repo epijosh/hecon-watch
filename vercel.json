@@ -2,6 +2,13 @@
   "rewrites": [
     { "source": "/", "destination": "/site_preview.html" }
   ],
+  "functions": {
+    "api/search.py": {
+      "memory": 512,
+      "maxDuration": 10,
+      "includeFiles": "data/psd_embeddings.bin"
+    }
+  },
   "headers": [
     {
       "source": "/(.*)",
@@ -9,6 +16,14 @@
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin",  "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
       ]
     },
     {
