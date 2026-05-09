@@ -540,9 +540,9 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 36p
   <!-- ── PBS 30-Year Spending Chart ─────────────────────────────────────── -->
   <div style="border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:40px 0;background:var(--bg2)">
     <div class="container">
-      <div class="section-label">PBS government benefit · 1994 – 2024</div>
+      <div class="section-label" id="pbs-chart-label">PBS government benefit</div>
       <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:4px">
-        <div style="font-size:22px;font-weight:700;letter-spacing:-.3px">Thirty years of PBS spending: from $1.8 billion to $18.4 billion</div>
+        <div style="font-size:22px;font-weight:700;letter-spacing:-.3px" id="pbs-chart-heading">PBS spending over time</div>
       </div>
       <p style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;color:var(--text3);margin-bottom:24px">Government benefit paid to dispensing pharmacists. Source: Medicare Statistics, humanservices.gov.au.</p>
       <div style="position:relative;height:260px;width:100%;overflow:hidden" id="pbs-chart-wrap">
@@ -2967,6 +2967,15 @@ function buildPBSChart() {
   if (years.length === 0) return;
 
   const values = years.map(y => gt[y]);
+
+  // Update heading dynamically from actual data range
+  const firstYear = years[0], lastYear = years[years.length - 1];
+  const firstVal  = gt[firstYear] || 0, lastVal = gt[lastYear] || 0;
+  const fmtB = v => v >= 1e9 ? '$' + (v/1e9).toFixed(1) + ' billion' : '$' + (v/1e6).toFixed(0) + ' million';
+  const heading = document.getElementById('pbs-chart-heading');
+  const label   = document.getElementById('pbs-chart-label');
+  if (heading) heading.textContent = `PBS spending ${firstYear}–${lastYear}: from ${fmtB(firstVal)} to ${fmtB(lastVal)}`;
+  if (label)   label.textContent   = `PBS government benefit · ${firstYear} – ${lastYear}`;
 
   // Hide placeholder
   document.getElementById('pbs-chart-placeholder').style.display = 'none';

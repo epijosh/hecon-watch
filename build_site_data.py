@@ -782,8 +782,9 @@ def write_site_data(pbs: dict, pbac: dict, psd: dict, nice: dict, matched: dict,
 
     # Compute key stats for the stats bar
     pbs_2024   = pbs["grand_total_by_year"].get("2024", 0)
-    pbs_1994   = pbs["grand_total_by_year"].get("1994", 1)
-    pbs_growth = round(pbs_2024 / pbs_1994, 1) if pbs_1994 else 0
+    _pbs_sorted = sorted(pbs["grand_total_by_year"].keys())
+    _earliest_val = pbs["grand_total_by_year"].get(_pbs_sorted[0], 1) if _pbs_sorted else 1
+    pbs_growth = round(pbs_2024 / _earliest_val, 1) if _earliest_val else 0
 
     scripts_2024 = pbs["services_by_year"].get("2024", 0)
 
@@ -856,9 +857,14 @@ def main():
     print("\n" + "=" * 60)
     print("KEY STATS")
     print("=" * 60)
-    print(f"  PBS total 1994     : ${pbs['grand_total_by_year'].get('1994',0)/1e9:.2f}B")
-    print(f"  PBS total 2024     : ${pbs['grand_total_by_year'].get('2024',0)/1e9:.2f}B")
-    print(f"  Growth             : {pbs['grand_total_by_year'].get('2024',0)/max(pbs['grand_total_by_year'].get('1994',1),1):.1f}x")
+    _pbs_years = sorted(pbs['grand_total_by_year'].keys())
+    _pbs_first = _pbs_years[0] if _pbs_years else 'n/a'
+    _pbs_last  = _pbs_years[-1] if _pbs_years else 'n/a'
+    _v_first   = pbs['grand_total_by_year'].get(_pbs_first, 1) or 1
+    _v_last    = pbs['grand_total_by_year'].get(_pbs_last, 0)
+    print(f"  PBS total {_pbs_first}  : ${_v_first/1e9:.2f}B")
+    print(f"  PBS total {_pbs_last}  : ${_v_last/1e9:.2f}B")
+    print(f"  Growth             : {_v_last/_v_first:.1f}x")
     print(f"  Scripts 2024       : {pbs['services_by_year'].get('2024',0)/1e6:.1f}M")
     print(f"  PBAC PSDs          : {pbac['total']}")
     print(f"  Extracted drugs    : {psd['total']}")
