@@ -202,6 +202,7 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 .bar-chart { margin-top: 4px; }
 .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; }
 .bar-name { font-family: var(--ui); font-size: 12px; color: var(--text2); min-width: 130px; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bar-name-hint { color: var(--text3); font-size: 10.5px; font-style: italic; font-weight: 400; }
 .bar-track { flex: 1; height: 14px; background: var(--bg3); position: relative; overflow: hidden; }
 .bar-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--red); opacity: .82; }
 .bar-val { font-family: var(--ui); font-size: 12px; font-weight: 600; min-width: 42px; text-align: right; color: var(--text2); }
@@ -359,7 +360,7 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 
 /* ── Footer ──────────────────────────────────────────────────── */
 footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32px 0 24px; }
-.footer-inner { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 28px; margin-bottom: 22px; }
+.footer-inner { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 28px; margin-bottom: 22px; }
 .footer-col-title { font-family: var(--ui); font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; }
 .footer-col p { font-family: var(--body); font-size: 13px; color: var(--text2); line-height: 1.55; margin-bottom: 8px; }
 .footer-col a, .footer-col .footer-link { display: block; font-family: var(--ui); font-size: 12.5px; color: var(--text2); padding: 3px 0; cursor: pointer; }
@@ -833,6 +834,11 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
         <button class="footer-link" onclick="navTo('decisions')">All decisions</button>
         <button class="footer-link" onclick="navTo('spend')">PBS spend</button>
         <button class="footer-link" onclick="navTo('trends')">Trends</button>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Contact</div>
+        <a href="mailto:joshciardi@icloud.com">joshciardi@icloud.com</a>
+        <p style="font-size:12px;margin-top:4px">Found a bug, a missing PSD, or want a feature? Drop me a line.</p>
       </div>
     </div>
     <div class="footer-bottom">
@@ -1497,6 +1503,14 @@ function buildATCList() {
 // ╔═══════════════════════════════════════════════════════════════════╗
 // ║  CHART 6 · Therapy area volume                                       ║
 // ╚═══════════════════════════════════════════════════════════════════╝
+// What the "Other" therapy bucket actually contains — derived from a sample
+// review of the ~189 drugs Haiku categorised as Other (the prompt's enum is
+// narrow and these don't fit any existing bucket). Surfaced in brackets so
+// the dashboard doesn't pretend "Other" is meaningless. Short list inline,
+// fuller list on hover.
+const OTHER_THERAPY_HINT_SHORT = 'Pain, GI, Derm, Endo, …';
+const OTHER_THERAPY_HINT_FULL  = 'Pain · GI / Hepatology · Endocrinology · Dermatology · Women’s health · Metabolic';
+
 function buildTherapyBars() {
   const D = window.SITE_DATA; if (!D || !D.psd || !D.psd.by_therapy) return;
   const entries = Object.entries(D.psd.by_therapy).sort((a,b) => b[1]-a[1]).slice(0, 10);
@@ -1505,8 +1519,13 @@ function buildTherapyBars() {
 
   document.getElementById('therapy-bar-chart').innerHTML = entries.map(([n, v]) => {
     const pct = (v / max) * 100;
-    return `<div class="bar-row" role="button" tabindex="0" style="cursor:pointer" onclick="runSearch('${jsAttr(n)}')">
-      <div class="bar-name">${escapeHtml(n)}</div>
+    const isOther = n.toLowerCase() === 'other';
+    const titleAttr = isOther ? ` title="${escapeHtml(OTHER_THERAPY_HINT_FULL)}"` : '';
+    const nameHtml = isOther
+      ? `${escapeHtml(n)} <span class="bar-name-hint">(${escapeHtml(OTHER_THERAPY_HINT_SHORT)})</span>`
+      : escapeHtml(n);
+    return `<div class="bar-row" role="button" tabindex="0" style="cursor:pointer" onclick="runSearch('${jsAttr(n)}')"${titleAttr}>
+      <div class="bar-name">${nameHtml}</div>
       <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
       <div class="bar-val">${v}</div>
     </div>`;
