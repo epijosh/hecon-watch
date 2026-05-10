@@ -126,12 +126,6 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "adrenaline (epinephrine)",
-      "year": "2020",
-      "indication": "Emergency treatment for acute allergic reactions with anaphylaxis. Treatment of patients assessed to be at significant risk of anaphylaxis, ",
-      "outcome": "Recommended with restriction"
-    },
-    {
       "name": "afatinib",
       "year": "2013",
       "indication": "Second/third-line treatment of locally advanced or metastatic non-small cell lung cancer (NSCLC) in patients with EGFR mutations.",
@@ -198,12 +192,6 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "alogliptin with metformin",
-      "year": "",
-      "indication": "Type 2 diabetes in patients with HbA1c greater than 7% despite treatment with metformin, where combination with sulfonylurea is contraindica",
-      "outcome": "Recommended with restriction"
-    },
-    {
       "name": "alogliptin",
       "year": "2013",
       "indication": "Type 2 diabetes mellitus in combination with metformin or a sulfonylurea in patients whose HbA1c is greater than 7% despite monotherapy with",
@@ -228,22 +216,10 @@
       "outcome": "Recommended"
     },
     {
-      "name": "amino acid formula with vitamins and minerals without phenylalanine",
-      "year": "2024",
-      "indication": "Dietary management of phenylketonuria (PKU), particularly for those requiring a lower-calorie option. Intended for adults and adolescents bu",
-      "outcome": "Noted"
-    },
-    {
       "name": "amino acid formula with vitamins and minerals (without valine, leucine and isoleucine; without phenylalanine; without phenylalanine and tyrosine)",
       "year": "2015",
       "indication": "Nutritional management of maple syrup urine disease (MSUD), phenylketonuria (PKU), and tyrosinaemia in pediatric patients. Formulation chang",
       "outcome": "Recommended"
-    },
-    {
-      "name": "amino acid formula with fat, carbohydrate, vitamins, minerals, trace elements and medium chain triglycerides",
-      "year": "2024",
-      "indication": "Cows' milk protein enteropathy, severe cows' milk protein enteropathy with failure to thrive, combined intolerance to cows' milk protein/soy",
-      "outcome": "Recommended with restriction"
     },
     {
       "name": "amino acid formula with vitamins and minerals without lysine and low in tryptophan",
@@ -297,7 +273,7 @@
       "name": "amino acid formula supplemented with prebiotics, probiotics and long chain polyunsaturated fatty acids",
       "year": "2024",
       "indication": "Treatment of cows' milk protein enteropathy, severe cows' milk protein enteropathy with failure to thrive, combined intolerance to cows' mil",
-      "outcome": "Recommended with restriction"
+      "outcome": "Recommended"
     },
     {
       "name": "amino acid formula with vitamins and minerals, low phenylalanine and supplemented with docosahexaenoic acid and arachidonic acid",
@@ -318,10 +294,10 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "amino acid formula with vitamins and minerals, without phenylalanine",
-      "year": "2017",
-      "indication": "Dietary management of phenylketonuria in patients aged 4 years and above (liquid formulation) and 8 years and above (powder formulation).",
-      "outcome": "Recommended"
+      "name": "amino acid formula with vitamins and minerals without phenylalanine",
+      "year": "2024",
+      "indication": "Dietary management of phenylketonuria (PKU), particularly for those requiring a lower-calorie option. Intended for adults and adolescents bu",
+      "outcome": "Noted"
     },
     {
       "name": "amino acid formula with vitamins, minerals and long chain polyunsaturated fatty acids without phenylalanine",
@@ -336,27 +312,9 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "amino acid formula with carbohydrate, vitamins, minerals and trace elements without phenylalanine, supplemented with docosahexaenoic acid",
-      "year": "2020",
-      "indication": "Dietary management of Phenylketonuria (PKU) or hyperphenylalaninaemia in children from 10 years of age or adults.",
-      "outcome": "Not recommended"
-    },
-    {
-      "name": "amino acid formula with fat, carbohydrate without phenylalanine and tyrosine",
-      "year": "2019",
-      "indication": "Dietary management of tyrosinaemia (TYR).",
-      "outcome": "Recommended with restriction"
-    },
-    {
       "name": "amino acid formula with vitamins and minerals without phenylalanine and tyrosine",
       "year": "2020",
       "indication": "Dietary management of tyrosinaemia. Low volume, concentrated, phenylalanine and tyrosine-free protein substitute for patients with tyrosinae",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "amino acid formula with vitamins and minerals, without phenylalanine and tyrosine and supplemented with arachidonic acid and docosahexaenoic acid",
-      "year": "2023",
-      "indication": "Dietary management of tyrosinaemia (TYR) in infants and young children aged 6 months to 5 years.",
       "outcome": "Recommended with restriction"
     },
     {
@@ -367,45 +325,9 @@
     },
     {
       "name": "amino acid formula without phenylalanine",
-      "year": "2015",
-      "indication": "Phenylketonuria (PKU) \u2014 a rare inherited metabolic disorder requiring amino acid supplementation without phenylalanine.",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "amino acid synthetic formula supplemented with long chain polyunsaturated fatty acids, medium chain triglycerides, 2'-fucosyllactose and lacto-n-neotetraose",
-      "year": "2022",
-      "indication": "Treatment of cows' milk protein enteropathy, severe cows' milk protein enteropathy with failure to thrive, combined intolerance to cows' mil",
-      "outcome": ""
-    },
-    {
-      "name": "amino acid synthetic formula supplemented with long chain polyunsaturated fatty acids",
-      "year": "2023",
-      "indication": "Treatment of cows' milk anaphylaxis, severe cows' milk protein enteropathy with failure to thrive, combined intolerance to cows' milk protei",
+      "year": "2016",
+      "indication": "Treatment of phenylketonuria (PKU) in adults. The submission requested an increase in maximum quantities to meet monthly protein requirement",
       "outcome": "Recommended"
-    },
-    {
-      "name": "amino acid synthetic formula",
-      "year": "2015",
-      "indication": "Treatment of cows' milk protein enteropathy, severe cows' milk protein enteropathy with failure to thrive, combined intolerance to cows' mil",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "amino acid synthetic formula supplemented with long chain polyunsaturated fatty acids; amino acid formula supplemented with prebiotics, probiotics and long chain polyunsaturated fatty acids",
-      "year": "2020",
-      "indication": "Cow's milk allergy, multiple food intolerance and other medical conditions where an amino acid-based formula is recommended in infants and c",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "amino acid synthetic formula supplemented with long chain polyunsaturated fatty acids and medium chain triglycerides",
-      "year": "2015",
-      "indication": "Eosinophilic oesophagitis and severe intestinal malabsorption including short bowel syndrome. Alfamino\u00ae Junior is indicated for eosinophilic",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "amino acids \u2013 synthetic, formula",
-      "year": "2018",
-      "indication": "Nutritional supplement for patients requiring a highly restricted therapeutic elimination diet, with the new formulation providing prebiotic",
-      "outcome": "Recommended with restriction"
     },
     {
       "name": "amivantamab and lazertinib",
@@ -482,7 +404,7 @@
     {
       "name": "apremilast",
       "year": "2023",
-      "indication": "Severe chronic plaque psoriasis in patients who have failed treatment with, or who are contraindicated or intolerant to, methotrexate",
+      "indication": "Severe chronic plaque psoriasis in patients who have failed treatment with, or who are contraindicated or intolerant to, methotrexate.",
       "outcome": "Recommended with restriction"
     },
     {
@@ -496,12 +418,6 @@
       "year": "2017",
       "indication": "Dietary management of urea cycle disorders (UCD)",
       "outcome": "Deferred"
-    },
-    {
-      "name": "aripiprazole",
-      "year": "2025",
-      "indication": "Treatment of schizophrenia in adults; maintenance treatment to prevent recurrence of manic or mixed episodes of bipolar I disorder in adult ",
-      "outcome": "Recommended with restriction"
     },
     {
       "name": "modafinil; armodafinil",
@@ -624,12 +540,6 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "balsalazide",
-      "year": "2017",
-      "indication": "Treatment of mild-to-moderate active ulcerative colitis and maintenance of remission in patients intolerant to sulfasalazine.",
-      "outcome": "Deferred"
-    },
-    {
       "name": "baricitinib",
       "year": "2021",
       "indication": "Initial and continuing treatment of adults with severe atopic dermatitis who have failed to achieve adequate response to topical therapies.",
@@ -687,12 +597,6 @@
       "name": "benzathine benzylpenicillin",
       "year": "2019",
       "indication": "Treatment of infections due to penicillin-sensitive micro-organisms susceptible to low and very prolonged serum levels. New strength (0.6 mi",
-      "outcome": "Recommended"
-    },
-    {
-      "name": "benztropine mesylate",
-      "year": "2015",
-      "indication": "Emergency treatment of acute dystonic reactions.",
       "outcome": "Recommended"
     },
     {
@@ -840,30 +744,6 @@
       "outcome": "Deferred"
     },
     {
-      "name": "buprenorphine",
-      "year": "2021",
-      "indication": "Maintenance treatment of opioid use disorder (opiate dependence) with or without prior stabilisation on sublingual buprenorphine or buprenor",
-      "outcome": "Noted"
-    },
-    {
-      "name": "buprenorphine with naloxone",
-      "year": "2020",
-      "indication": "Treatment of patients with opioid dependence, within a framework of medical, social and psychological treatment.",
-      "outcome": "Not recommended"
-    },
-    {
-      "name": "buprenorphine/naloxone",
-      "year": "2019",
-      "indication": "Treatment of patients with opioid dependence, within a framework of medical, social and psychological treatment.",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "buprenorphine + naloxone",
-      "year": "2014",
-      "indication": "Treatment of opiate dependence within a framework of medical, social and psychological treatment.",
-      "outcome": "Recommended"
-    },
-    {
       "name": "burosumab",
       "year": "2022",
       "indication": "Treatment of X-linked hypophosphataemia (XLH) in paediatric and adult patients (\u22651 year of age). Burosumab is a monoclonal antibody against ",
@@ -894,24 +774,6 @@
       "outcome": ""
     },
     {
-      "name": "calcipotriol + betamethasone dipropionate",
-      "year": "2015",
-      "indication": "Chronic stable plaque type psoriasis vulgaris in patients not adequately controlled with vitamin D analogue or potent topical corticosteroid",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "calcipotriol with betamethasone dipropionate",
-      "year": "2025",
-      "indication": "Topical treatment of scalp psoriasis and mild to moderate plaque psoriasis on the body in adults, when the condition is inadequately control",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "calcium carbonate",
-      "year": "2019",
-      "indication": "Hyperphosphataemia associated with chronic renal failure.",
-      "outcome": "Recommended"
-    },
-    {
       "name": "canagliflozin",
       "year": "2013",
       "indication": "Type 2 diabetes mellitus as dual oral combination therapy with metformin or a sulfonylurea in patients whose HbA1c is greater than 7% despit",
@@ -933,12 +795,6 @@
       "name": "caplacizumab",
       "year": "2020",
       "indication": "Treatment of adults experiencing an episode of acquired thrombotic thrombocytopenic purpura (aTTP) in conjunction with plasma exchange and i",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "carbohydrate, fat, vitamins, minerals and trace elements formula",
-      "year": "2020",
-      "indication": "Proven inborn errors of protein metabolism.",
       "outcome": "Recommended with restriction"
     },
     {
@@ -964,12 +820,6 @@
       "year": "2015",
       "indication": "Treatment of acute hyperammonaemia due to organic acidaemias (isovaleric acidaemia, methylmalonic acidaemia, and propionic acidaemia).",
       "outcome": "Not recommended"
-    },
-    {
-      "name": "cariprazine",
-      "year": "2020",
-      "indication": "Treatment of schizophrenia in adult patients for both acute and maintenance therapy.",
-      "outcome": "Recommended with restriction"
     },
     {
       "name": "carmellose sodium; hypromellose",
@@ -1032,12 +882,6 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "cetrorelix",
-      "year": "2025",
-      "indication": "Prevention of premature luteinisation and ovulation in patients undergoing controlled ovarian stimulation followed by oocyte pick-up and ass",
-      "outcome": "Recommended with restriction"
-    },
-    {
       "name": "cetuximab",
       "year": "2024",
       "indication": "Treatment of metastatic colorectal cancer (mCRC) with an alternative dosing regimen of 500 mg per m\u00b2 body surface area once every two weeks,",
@@ -1050,21 +894,9 @@
       "outcome": "Deferred"
     },
     {
-      "name": "chorionic gonadotrophin",
-      "year": "2017",
-      "indication": "Treatment of anovulatory infertility, infertility (hypogonadotrophic hypogonadism or isolated luteinising hormone deficiency in males), comb",
-      "outcome": "Recommended"
-    },
-    {
       "name": "ciclosporin",
       "year": "2022",
       "indication": "Chronic severe dry eye disease with keratitis in patients inadequately controlled by preservative-free artificial tears monotherapy, defined",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "cinacalcet",
-      "year": "2019",
-      "indication": "Management of sustained secondary hyperparathyroidism not responding to conventional therapy in patients with chronic kidney disease receivi",
       "outcome": "Recommended with restriction"
     },
     {
@@ -1110,12 +942,6 @@
       "outcome": "Recommended"
     },
     {
-      "name": "coal tar prepared",
-      "year": "2014",
-      "indication": "Relief of symptoms of psoriasis. Scytera\u00ae foam is a topical preparation designed for treatment of plaque-type psoriasis in various body area",
-      "outcome": "Recommended"
-    },
-    {
       "name": "cobicistat+elvitegravir+emtricitabine+tenofovir",
       "year": "2013",
       "indication": "Treatment of HIV infection in patients with a CD4 count of less than 500 per cubic millimetre or symptomatic HIV disease. Single tablet regi",
@@ -1131,18 +957,6 @@
       "name": "vemurafenib + cobimetinib",
       "year": "2016",
       "indication": "Treatment of BRAF V600 mutation positive unresectable or metastatic melanoma (Stage III or IV). Positioned as first-line therapy alongside d",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "collagenase clostridium histolyticum",
-      "year": "2014",
-      "indication": "Treatment of Dupuytren's contracture in patients with \u22642 affected rays (fingers) who are unable to simultaneously place the affected finger ",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "corifollitropin alfa",
-      "year": "2013",
-      "indication": "Controlled ovarian stimulation for the development of multiple follicles in women undergoing in-vitro fertilisation techniques, specifically",
       "outcome": "Recommended with restriction"
     },
     {
@@ -1208,7 +1022,7 @@
     {
       "name": "dapagliflozin",
       "year": "2025",
-      "indication": "To reduce the risk of progressive decline in kidney function in adults with chronic kidney disease (CKD Stage 2, 3 or 4).",
+      "indication": "To reduce the risk of progressive decline in kidney function in adults with chronic kidney disease (CKD Stage 2, 3 or 4). Expanded PBS restr",
       "outcome": "Recommended with restriction"
     },
     {
@@ -1218,28 +1032,10 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "dapagliflozin with metformin",
-      "year": "2017",
-      "indication": "Type 2 diabetes mellitus as third-line triple oral therapy in combination with a dipeptidyl peptidase-4 (DPP4) inhibitor and metformin when ",
-      "outcome": "Deferred"
-    },
-    {
       "name": "dapagliflozin/saxagliptin",
       "year": "2017",
       "indication": "Type 2 diabetes mellitus in adults who do not achieve glycaemic control on dual therapy with metformin and a DPP4 inhibitor, as a fixed dose",
       "outcome": "Noted"
-    },
-    {
-      "name": "dapagliflozin with sitagliptin",
-      "year": "2024",
-      "indication": "Type 2 diabetes mellitus in patients with inadequate glycaemic control on dual therapy with metformin and either a DPP4 inhibitor or SGLT2 i",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "dapsone",
-      "year": "2025",
-      "indication": "Dermatitis herpetiformis, leprosy, and actinomycotic mycetoma.",
-      "outcome": "Recommended"
     },
     {
       "name": "daratumumab",
@@ -1338,18 +1134,6 @@
       "outcome": "Recommended"
     },
     {
-      "name": "desmopressin acetate",
-      "year": "2025",
-      "indication": "Treatment of cranial diabetes insipidus and primary nocturnal enuresis",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "deucravacitinib",
-      "year": "",
-      "indication": "Severe chronic plaque psoriasis in patients who have not responded to or have a contraindication or demonstrated intolerance to methotrexate",
-      "outcome": ""
-    },
-    {
       "name": "deutetrabenazine",
       "year": "2021",
       "indication": "Treatment of chorea associated with Huntington's disease in patients who have failed prior tetrabenazine treatment due to intolerance or ina",
@@ -1359,18 +1143,6 @@
       "name": "dexamethasone",
       "year": "2018",
       "indication": "Macular oedema secondary to central or branch retinal vein occlusion in patients contraindicated to, unsuitable for, or who have failed prio",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "dienogest",
-      "year": "2024",
-      "indication": "Treatment of endometriosis. Dienogest 2 mg daily oral tablets for patients with endometriosis to reduce endometriosis-associated pelvic pain",
-      "outcome": "Noted"
-    },
-    {
-      "name": "difelikefalin",
-      "year": "2023",
-      "indication": "Treatment of moderate to severe pruritus associated with chronic kidney disease in adult patients on haemodialysis with inadequate response ",
       "outcome": "Recommended with restriction"
     },
     {
@@ -1438,18 +1210,6 @@
       "year": "2025",
       "indication": "Primary advanced or first recurrent mismatch repair proficient (pMMR) endometrial cancer in combination with carboplatin and paclitaxel, fol",
       "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "drospirenone",
-      "year": "2024",
-      "indication": "Contraception in women. Oral progestogen-only pill (POP) indicated for contraceptive use.",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "drospirenone with ethinylestradiol",
-      "year": "",
-      "indication": "Oral contraception. Yaz is also TGA-registered for treatment of moderate acne vulgaris and premenstrual dysphoric disorder (PMDD) in women u",
-      "outcome": "Noted"
     },
     {
       "name": "direct-acting antiviral (daa) regimens",
@@ -1536,12 +1296,6 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "elafibranor",
-      "year": "2025",
-      "indication": "Primary biliary cholangitis (PBC) in patients with inadequate response to ursodeoxycholic acid (UDCA) or intolerance to UDCA, as combination",
-      "outcome": "Recommended with restriction"
-    },
-    {
       "name": "elexacaftor/tezacaftor/ivacaftor",
       "year": "2021",
       "indication": "Treatment of cystic fibrosis in patients aged 12 years and older who have at least one F508del mutation in the cystic fibrosis transmembrane",
@@ -1598,20 +1352,8 @@
     {
       "name": "empagliflozin",
       "year": "2025",
-      "indication": "Extension of listing to include incremental population of chronic kidney disease (CKD) patients with eGFR 20 to 90 mL/min/1.73 m\u00b2 (with UACR",
+      "indication": "Extension of listing for chronic kidney disease (CKD) in incremental populations with eGFR 20 to <25 mL/min/1.73 m\u00b2, eGFR 25 to <45 mL/min/1",
       "outcome": ""
-    },
-    {
-      "name": "empagliflozin/metformin",
-      "year": "2015",
-      "indication": "Treatment of Type 2 diabetes mellitus as dual therapy (empagliflozin/metformin combination) in patients with inadequate glycaemic control on",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "empagliflozin, linagliptin, empagliflozin with metformin, linagliptin with metformin",
-      "year": "2017",
-      "indication": "Type 2 Diabetes Mellitus in patients uncontrolled on dual oral therapy, for use in triple oral therapy (DPP4 + SGLT2 + metformin) in patient",
-      "outcome": "Recommended with restriction"
     },
     {
       "name": "empagliflozin with linagliptin",
@@ -1680,12 +1422,6 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "epoetin lambda",
-      "year": "2017",
-      "indication": "Treatment of anaemia associated with intrinsic renal disease (chronic renal failure) during correction and maintenance therapy phases.",
-      "outcome": "Recommended with restriction"
-    },
-    {
       "name": "epoprostenol",
       "year": "2016",
       "indication": "Long-term continuous intravenous infusion treatment for WHO functional Class III or IV patients with idiopathic pulmonary arterial hypertens",
@@ -1749,36 +1485,6 @@
       "name": "eslicarbazepine acetate",
       "year": "2021",
       "indication": "Adjunctive therapy for intractable partial onset seizures with or without secondary generalisation in patients aged 16 years and older who h",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "essential amino acids formula with vitamins and minerals",
-      "year": "2021",
-      "indication": "Urea cycle disorders (UCDs) and gyrate atrophy (GA) of the choroid and retina.",
-      "outcome": "Noted"
-    },
-    {
-      "name": "estetrol with drospirenone",
-      "year": "2025",
-      "indication": "Combined oral contraceptive for women of reproductive age to prevent pregnancy.",
-      "outcome": "Recommended"
-    },
-    {
-      "name": "estradiol; progesterone; estradiol and progesterone combination",
-      "year": "2024",
-      "indication": "Treatment of troublesome menopausal vasomotor symptoms (hot flushes) in women; endometrial protection in women with intact uterus receiving ",
-      "outcome": ""
-    },
-    {
-      "name": "estradiol",
-      "year": "2024",
-      "indication": "Short-term treatment of climacteric symptoms after natural or surgical menopause. The listing requested is for the 500 microgram strength to",
-      "outcome": "Recommended"
-    },
-    {
-      "name": "estradiol with progesterone",
-      "year": "2025",
-      "indication": "Treatment of moderate to severe vasomotor symptoms in postmenopausal women with an intact uterus.",
       "outcome": "Recommended with restriction"
     },
     {
@@ -1850,7 +1556,7 @@
     {
       "name": "febuxostat",
       "year": "2017",
-      "indication": "Treatment of chronic gout (symptomatic hyperuricaemia in conditions where urate deposition has already occurred, including gouty arthritis a",
+      "indication": "Treatment of chronic gout in patients with contraindication to or intolerance of allopurinol.",
       "outcome": "Not recommended"
     },
     {
@@ -1868,7 +1574,7 @@
     {
       "name": "fentanyl citrate",
       "year": "2017",
-      "indication": "Management of breakthrough pain in adults with cancer who are already receiving maintenance opioid therapy for chronic pain.",
+      "indication": "Initial treatment for dose titration of cancer patients with breakthrough pain (BTP) who are already receiving maintenance opioid therapy fo",
       "outcome": "Recommended with restriction"
     },
     {
@@ -1876,30 +1582,6 @@
       "year": "2014",
       "indication": "Management of breakthrough pain in patients with cancer who are already receiving maintenance opioid therapy for chronic pain and are unable",
       "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "ferric carboxymaltose",
-      "year": "2018",
-      "indication": "Treatment of iron deficiency anaemia (IDA)",
-      "outcome": "Recommended"
-    },
-    {
-      "name": "ferric derisomaltose",
-      "year": "2019",
-      "indication": "Treatment of iron deficiency in adults when oral iron preparations are ineffective or cannot be used, or where there is clinical need to del",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "fezolinetant",
-      "year": "2025",
-      "indication": "Treatment of moderate to severe vasomotor symptoms (VMS) associated with menopause in patients unsuitable for menopausal hormone therapy (MH",
-      "outcome": "Not recommended"
-    },
-    {
-      "name": "filgrastim",
-      "year": "2018",
-      "indication": "Chemotherapy-induced neutropenia, mobilisation of peripheral blood progenitor cells, bone marrow transplantation support, severe congenital ",
-      "outcome": "Deferred"
     },
     {
       "name": "finerenone",
@@ -1992,36 +1674,6 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "follitropin alfa",
-      "year": "2021",
-      "indication": "Treatment of women undergoing assisted reproductive technology (ART) requiring controlled ovarian stimulation, and treatment of anovulatory ",
-      "outcome": "Not recommended"
-    },
-    {
-      "name": "follitropin alfa with lutropin alfa",
-      "year": "2024",
-      "indication": "Stimulation of follicular development in patients with severe LH deficiency undergoing assisted reproductive technology treatment.",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "follitropin alfa + lutropin alfa; lutropin alfa",
-      "year": "2016",
-      "indication": "Stimulation of follicular development in women undergoing assisted reproductive technology (ART) procedures under the PBS Section 100 IVF pr",
-      "outcome": "Recommended"
-    },
-    {
-      "name": "follitropin alfa and lutropin alfa",
-      "year": "2015",
-      "indication": "Stimulation of follicular development in women with severe LH and FSH deficiency (endogenous serum LH <1.2 IU/L) undergoing assisted reprodu",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "follitropin delta",
-      "year": "2017",
-      "indication": "Controlled ovarian stimulation (COS) for the development of multiple follicles in women undergoing assisted reproductive technologies (ART) ",
-      "outcome": "Noted"
-    },
-    {
       "name": "fosaprepitant",
       "year": "2016",
       "indication": "Prevention of acute and delayed nausea and vomiting associated with initial and repeat courses of highly or moderately emetogenic cancer che",
@@ -2031,12 +1683,6 @@
       "name": "foslevodopa with foscarbidopa",
       "year": "2024",
       "indication": "Treatment of advanced idiopathic Parkinson's disease with severe disabling motor fluctuations not adequately controlled by oral therapy.",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "fosnetupitant/palonosetron",
-      "year": "2023",
-      "indication": "Prevention of acute and delayed nausea and vomiting associated with highly or moderately emetogenic cancer chemotherapy in adult patients re",
       "outcome": "Recommended with restriction"
     },
     {
@@ -2125,8 +1771,8 @@
     },
     {
       "name": "glucose indicator blood strip",
-      "year": "2016",
-      "indication": "Self-test quantitative measurement of capillary blood glucose level for blood glucose monitoring in patients receiving treatment under a GP ",
+      "year": "2015",
+      "indication": "Blood glucose monitoring in patients with diabetes on insulin therapy, or patients not on insulin therapy with gestational diabetes, intercu",
       "outcome": "Recommended"
     },
     {
@@ -2138,13 +1784,7 @@
     {
       "name": "glycomacropeptide and essential amino acids with vitamins and minerals",
       "year": "2024",
-      "indication": "Dietary management of phenylketonuria (PKU)",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "glycomacropeptide formula with docosahexaenoic acid and low phenylalanine",
-      "year": "2019",
-      "indication": "Dietary management of phenylketonuria (PKU)",
+      "indication": "Dietary management of phenylketonuria (PKU).",
       "outcome": "Recommended with restriction"
     },
     {
@@ -2166,12 +1806,6 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "glycomacropeptide formula with amino acids and low phenylalanine",
-      "year": "2022",
-      "indication": "Treatment of phenylketonuria (PKU) in children from 3 years of age and adults.",
-      "outcome": "Recommended with restriction"
-    },
-    {
       "name": "glycomacropeptide formula with amino acids, vitamins, minerals, trace elements, carbohydrate, fat and low phenylalanine",
       "year": "2022",
       "indication": "Treatment of phenylketonuria (PKU) in children and adults",
@@ -2186,7 +1820,7 @@
     {
       "name": "glycopyrronium bromide",
       "year": "2025",
-      "indication": "Treatment of severe primary axillary hyperhidrosis (PAHH) in patients aged 18 years and older who have previously failed or are intolerant t",
+      "indication": "Treatment of severe primary axillary hyperhidrosis (PAHH) in patients aged 18 years and older who have failed or are intolerant to topical a",
       "outcome": "Recommended with restriction"
     },
     {
@@ -2200,18 +1834,6 @@
       "year": "2014",
       "indication": "Amendment to continuing treatment authorities for all PBS-reimbursed indications (including severe chronic plaque psoriasis and moderate to ",
       "outcome": "Deferred"
-    },
-    {
-      "name": "human menopausal gonadotrophin (hp-hmg)",
-      "year": "2016",
-      "indication": "Treatment of anovulatory infertility in women who have failed to ovulate or conceive on clomiphene citrate and/or gonadorelin.",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "human menopausal gonadotrophin, highly purified",
-      "year": "2016",
-      "indication": "Anovulatory infertility in women who have failed adequate treatment with clomiphene citrate and/or gonadorelin.",
-      "outcome": "Not recommended"
     },
     {
       "name": "goserelin",
@@ -2251,27 +1873,15 @@
     },
     {
       "name": "high fat formula with vitamins, minerals and trace elements and low in protein and carbohydrate",
-      "year": "2023",
-      "indication": "Nutritional support for patients requiring a ketogenic diet, formulated as a food for special medical purposes.",
-      "outcome": "Noted"
+      "year": "2021",
+      "indication": "Ketogenic diet for eligible patients, suitable as a sole source of nutrition for infants and children with seizure disorders or other condit",
+      "outcome": "Recommended with restriction"
     },
     {
       "name": "high dose inactivated trivalent influenza vaccine (split virion)",
       "year": "2019",
       "indication": "Active immunisation against influenza disease caused by influenza virus types A and B for use in persons aged \u226565 years.",
       "outcome": "Noted"
-    },
-    {
-      "name": "high fat formula with vitamins, minerals and trace elements and low in protein and carbohydrate (4:1 ratio)",
-      "year": "2021",
-      "indication": "Ketogenic diet for patients with intractable seizures, glucose transport protein defect, or pyruvate dehydrogenase deficiency who have sever",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "high fat formula with vitamins, minerals and trace elements and low in protein carbohydrate",
-      "year": "2016",
-      "indication": "Ketogenic diet for patients with intractable seizures, glucose transport protein defect, or pyruvate dehydrogenase deficiency",
-      "outcome": "Recommended with restriction"
     },
     {
       "name": "insect allergen extract - honey bee venom, yellow jacket venom, paper wasp venom",
@@ -2298,28 +1908,10 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "human menopausal gonadotrophin",
-      "year": "2022",
-      "indication": "Assisted reproductive technology (ART) including in vitro fertilisation/embryo transfer (IVF/ET), gamete intra-fallopian transfer (GIFT), in",
-      "outcome": "Recommended"
-    },
-    {
       "name": "hyaluronic acid with polyethylene glycol 400 with propylene glycol with hydroxypropyl guar",
       "year": "",
       "indication": "Treatment of severe dry eye syndrome in patients who are sensitive to preservatives in multi-dose eye drops.",
       "outcome": ""
-    },
-    {
-      "name": "hydrocortisone",
-      "year": "2021",
-      "indication": "Replacement therapy of adrenal insufficiency in patients aged 6 years or younger, or older patients with swallowing difficulties or tablet p",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "hydromorphone hydrochloride",
-      "year": "2018",
-      "indication": "Chronic severe disabling pain unresponsive to non-opioid analgesics. The 200 mL oral liquid presentation replaces the currently listed 473 m",
-      "outcome": "Recommended with restriction"
     },
     {
       "name": "hypromellose",
@@ -2466,18 +2058,6 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "insulin degludec",
-      "year": "2025",
-      "indication": "Treatment of type 1 diabetes mellitus in patients aged 1 year or older, administered once daily by subcutaneous injection.",
-      "outcome": "Noted"
-    },
-    {
-      "name": "insulin aspart",
-      "year": "2021",
-      "indication": "Treatment of diabetes mellitus. Truvelog is a biosimilar to the reference biologic NovoRapid for use under the same circumstances.",
-      "outcome": "Recommended with restriction"
-    },
-    {
       "name": "insulin degludec with insulin aspart",
       "year": "2018",
       "indication": "Treatment of adult patients with diabetes mellitus (type 1 and type 2) where insulin treatment is necessary, for improvement of glycaemic co",
@@ -2524,24 +2104,6 @@
       "year": "2024",
       "indication": "First-line treatment of metastatic pancreatic adenocarcinoma (mPAC) in combination with oxaliplatin, 5-fluorouracil, and folinic acid/Leucov",
       "outcome": "Not recommended"
-    },
-    {
-      "name": "deferasirox, deferiprone, desferrioxamine",
-      "year": "2014",
-      "indication": "Iron chelation therapy for patients with transfusional iron overload, including thalassaemia, sickle cell disease, and myelodysplastic syndr",
-      "outcome": "Noted"
-    },
-    {
-      "name": "iron sucrose",
-      "year": "2014",
-      "indication": "Iron deficiency anaemia in patients undergoing chronic haemodialysis and receiving supplemental erythropoietin therapy, specifically in thos",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "isotretinoin",
-      "year": "2019",
-      "indication": "Treatment of severe cystic acne unresponsive to other therapy, including systemic antibiotics.",
-      "outcome": "Recommended with restriction"
     },
     {
       "name": "itraconazole",
@@ -2604,12 +2166,6 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "lanreotide acetate",
-      "year": "2017",
-      "indication": "Acromegaly and functional carcinoid tumour. Extension of current listing to Section 100 Highly Specialised Drugs Program Community Access wi",
-      "outcome": "Noted"
-    },
-    {
       "name": "larotrectinib",
       "year": "2024",
       "indication": "Treatment of adults with locally advanced or metastatic non-small cell lung cancer (NSCLC) or soft tissue sarcoma (STS) harbouring neurotrop",
@@ -2658,12 +2214,6 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "leuprorelin",
-      "year": "2024",
-      "indication": "Locally advanced (stage C) or metastatic (stage D) carcinoma of the prostate; central precocious puberty",
-      "outcome": "Recommended with restriction"
-    },
-    {
       "name": "leuprorelin acetate",
       "year": "2022",
       "indication": "Treatment of central precocious puberty (CPP) in girls aged 10 years or younger or boys aged 11 years or younger with onset before 8 years (",
@@ -2673,6 +2223,12 @@
       "name": "leuprorelin and bicalutamide",
       "year": "2016",
       "indication": "Treatment of metastatic (Stage D) carcinoma of the prostate in patients requiring combination antiandrogen and GnRH agonist therapy.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "leuprorelin",
+      "year": "2024",
+      "indication": "Locally advanced (stage C) or metastatic (stage D) carcinoma of the prostate; central precocious puberty",
       "outcome": "Recommended with restriction"
     },
     {
@@ -2700,18 +2256,6 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "levonorgestrel",
-      "year": "2019",
-      "indication": "Contraception for up to 5 years in women requesting contraception.",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "levonorgestrel intrauterine system",
-      "year": "2013",
-      "indication": "Contraception for up to 3 years. An intrauterine levonorgestrel contraceptive system releasing approximately 12 micrograms per 24 hours for ",
-      "outcome": "Deferred"
-    },
-    {
       "name": "lignocaine",
       "year": "2015",
       "indication": "Symptomatic relief of post-herpetic neuralgia (PHN), for patients with the condition refractory to treatment with other drugs or unsuitable ",
@@ -2734,12 +2278,6 @@
       "year": "2013",
       "indication": "Treatment of microbiologically proven, multi-resistant methicillin-resistant Staphylococcus species (MRSS) infection in patients where no ot",
       "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "linzagolix",
-      "year": "2024",
-      "indication": "Management of heavy menstrual bleeding associated with uterine fibroids in premenopausal women unsuitable for or with inadequate response to",
-      "outcome": ""
     },
     {
       "name": "lipegfilgrastim",
@@ -2802,28 +2340,10 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "lurasidone hydrochloride",
-      "year": "2014",
-      "indication": "Treatment of adults with schizophrenia as a first- and second-line alternative to current oral atypical/second generation antipsychotics.",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "lurasidone",
-      "year": "2015",
-      "indication": "Treatment of schizophrenia in patients not controlled satisfactorily or intolerant to atypical antipsychotic agents such as olanzapine, quet",
-      "outcome": "Not recommended"
-    },
-    {
       "name": "lurbinectedin",
       "year": "2025",
       "indication": "Extensive-stage small cell lung cancer (ES-SCLC) maintenance treatment in combination with atezolizumab for patients who have not progressed",
       "outcome": "Noted"
-    },
-    {
-      "name": "lutropin alfa",
-      "year": "2015",
-      "indication": "Stimulation of follicular development in women with severe luteinising hormone (LH) deficiency as supplementation to recombinant FSH during ",
-      "outcome": "Recommended with restriction"
     },
     {
       "name": "macitentan",
@@ -2858,26 +2378,8 @@
     {
       "name": "mecasermin",
       "year": "2022",
-      "indication": "Long-term treatment of growth failure in children and adolescents from 2 to 18 years with severe primary insulin-like growth factor 1 defici",
+      "indication": "Long-term treatment of growth failure in children and adolescents aged 2 to 18 years with severe primary insulin-like growth factor 1 defici",
       "outcome": "Noted"
-    },
-    {
-      "name": "triglycerides, long chain; triglycerides, medium chain",
-      "year": "2017",
-      "indication": "Ketogenic diet for intractable seizures, glucose transport protein defect, or pyruvate dehydrogenase deficiency; dietary management of condi",
-      "outcome": "Recommended"
-    },
-    {
-      "name": "triglycerides, medium chain; triglycerides, long chain",
-      "year": "2017",
-      "indication": "Dietary management of conditions requiring a source of medium chain triglycerides (chylous ascites, chylothorax, hyperlipoproteinaemia type ",
-      "outcome": "Not recommended"
-    },
-    {
-      "name": "medroxyprogesterone acetate",
-      "year": "2023",
-      "indication": "Contraception and other indications for which medroxyprogesterone acetate 150 mg/mL injection is indicated. Pre-filled syringe formulation f",
-      "outcome": "Recommended"
     },
     {
       "name": "melatonin prolonged release",
@@ -2946,12 +2448,6 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "methadone hydrochloride",
-      "year": "2025",
-      "indication": "Chronic severe disabling pain where alternative pain management therapies have failed. Also approved for severe disabling pain and opioid de",
-      "outcome": "Recommended with restriction"
-    },
-    {
       "name": "methotrexate",
       "year": "2018",
       "indication": "Severe active rheumatoid arthritis or severe psoriasis (when oral methotrexate is unsuitable; for psoriasis, topical treatment must have fai",
@@ -2994,45 +2490,9 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "mifepristone and misoprostol",
-      "year": "2023",
-      "indication": "Medical termination of an intrauterine pregnancy of up to 63 days of gestation in females of childbearing age.",
-      "outcome": "Noted"
-    },
-    {
-      "name": "mifepristone",
-      "year": "2013",
-      "indication": "Medical termination of intra-uterine pregnancy up to 49 days gestation in women of childbearing age, used in sequential combination with mis",
-      "outcome": "Recommended with restriction"
-    },
-    {
       "name": "migalastat",
       "year": "2022",
       "indication": "Treatment of Fabry disease in patients 16 years of age and older with an amenable GLA gene mutation.",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "milk powder lactose intolerance formula",
-      "year": "2016",
-      "indication": "Acute lactose intolerance in infants up to 12 months of age. This is a specialised infant formula for infants with acute lactose intolerance",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "milk powder synthetic low calcium",
-      "year": "2020",
-      "indication": "Dietary management of hypercalcaemia in patients under the age of four years (inclusive).",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "milk powder synthetic, low calcium oral powder",
-      "year": "2024",
-      "indication": "Dietary management of hypercalcaemia in patients under 4 years of age.",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "milk protein and fat formula with vitamins and minerals \u2013 carbohydrate free",
-      "year": "2020",
-      "indication": "For infants and children with multiple monosaccharide intolerance or requiring a ketogenic diet.",
       "outcome": "Recommended with restriction"
     },
     {
@@ -3090,18 +2550,6 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "morphine sulfate pentahydrate",
-      "year": "2024",
-      "indication": "Treatment of severe pain and cancer pain; palliative care for severe disabling pain",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "morphine hydrochloride",
-      "year": "2016",
-      "indication": "Relief of moderate to severe pain not responsive to non-opioid analgesics, symptomatic relief of severe and intractable pains in terminal ca",
-      "outcome": "Recommended"
-    },
-    {
       "name": "brigatinib, olaparib, ibrutinib, idelalisib, venetoclax",
       "year": "2019",
       "indication": "Brigatinib: monotherapy treatment of locally advanced or metastatic ALK-positive NSCLC. Olaparib: first-line maintenance treatment of ovaria",
@@ -3130,24 +2578,6 @@
       "year": "2020",
       "indication": "Adjunctive treatment of moderate to severe spasticity in patients with multiple sclerosis who have not adequately responded to oral anti-spa",
       "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "nadroparin calcium",
-      "year": "2016",
-      "indication": "Prophylaxis against deep vein thrombosis (DVT) associated with general or orthopaedic surgery, treatment of DVT, and prevention of clotting ",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "nalmefene",
-      "year": "2015",
-      "indication": "Reduction of alcohol consumption in adult patients with alcohol use disorder who have failed to achieve an adequate response to psychosocial",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "naloxone",
-      "year": "2019",
-      "indication": "Emergency treatment for known or suspected opioid overdose as manifested by respiratory and/or central nervous system depression in home, no",
-      "outcome": "Recommended"
     },
     {
       "name": "nandrolone decanoate",
@@ -3202,12 +2632,6 @@
       "year": "2023",
       "indication": "Prophylaxis of nausea and vomiting associated with highly emetogenic chemotherapy (HEC) and moderately emetogenic chemotherapy (MEC). The su",
       "outcome": "Noted"
-    },
-    {
-      "name": "nicotine",
-      "year": "2018",
-      "indication": "Treatment of nicotine dependence in cigarette smokers who wish to quit and enter into a behavioural support program.",
-      "outcome": "Recommended with restriction"
     },
     {
       "name": "nintedanib",
@@ -3273,12 +2697,6 @@
       "name": "nusinersen",
       "year": "2023",
       "indication": "Initial treatment of pre-symptomatic spinal muscular atrophy (SMA) with 3 copies of the SMN2 gene in individuals aged less than 18 years",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "obeticholic acid",
-      "year": "2021",
-      "indication": "Primary biliary cholangitis in combination with ursodeoxycholic acid (UDCA) in UDCA inadequate responders and as monotherapy in patients int",
       "outcome": "Recommended with restriction"
     },
     {
@@ -3390,39 +2808,9 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "oxybutynin",
-      "year": "2023",
-      "indication": "Detrusor overactivity in patients unable to tolerate or swallow oral oxybutynin.",
-      "outcome": "Noted"
-    },
-    {
-      "name": "oxycodone hydrochloride + naloxone hydrochloride",
-      "year": "2015",
-      "indication": "Chronic severe disabling pain unresponsive to non-narcotic analgesics. Three additional modified-release tablet strengths (2.5 mg/1.25 mg, 1",
-      "outcome": "Recommended"
-    },
-    {
-      "name": "oxycodone hydrochloride",
-      "year": "2019",
-      "indication": "Chronic severe disabling pain unresponsive to non-opioid analgesics. For Oxycodone Sandoz specifically: limited to patients who cannot toler",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "oxycodone",
-      "year": "2019",
-      "indication": "Severe disabling pain unresponsive to non-opioid analgesics. New 10-capsule pack size listing for improved Quality Use of Medicines.",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "oxycodone with naloxone",
-      "year": "2016",
-      "indication": "Treatment of moderate to severe chronic pain unresponsive to non-opioid analgesia. Specifically for chronic severe disabling pain in patient",
-      "outcome": "Recommended"
-    },
-    {
       "name": "ozanimod",
       "year": "2022",
-      "indication": "Treatment of moderate to severe ulcerative colitis in adult patients who have had an inadequate response, lost response, or were intolerant ",
+      "indication": "Treatment of moderate to severe ulcerative colitis (MSUC) in adult patients who have had an inadequate response, lost response, or were into",
       "outcome": "Recommended with restriction"
     },
     {
@@ -3450,12 +2838,6 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "paliperidone palmitate",
-      "year": "2025",
-      "indication": "Maintenance treatment of schizophrenia in adults. Patients must be initiated with another long-acting antipsychotic injection prior to maint",
-      "outcome": "Noted"
-    },
-    {
       "name": "palopegteriparatide",
       "year": "2025",
       "indication": "Treatment of adult patients with chronic hypoparathyroidism who are inadequately controlled on conventional therapy (active vitamin D and ca",
@@ -3466,12 +2848,6 @@
       "year": "2024",
       "indication": "Chronic treatment and flare-up treatment of fibrodysplasia ossificans progressiva (FOP) in patients aged \u22658 years (females) and \u226510 years (m",
       "outcome": ""
-    },
-    {
-      "name": "pancreatic extract",
-      "year": "2020",
-      "indication": "Pancreatic enzyme replacement in paediatric and adult patients with Pancreatic Exocrine Insufficiency (PEI), including cystic fibrosis, chro",
-      "outcome": "Recommended"
     },
     {
       "name": "panitumumab",
@@ -3495,12 +2871,6 @@
       "name": "paritaprevir/ritonavir/ombitasvir/dasabuvir",
       "year": "2015",
       "indication": "Treatment of genotype 1 chronic hepatitis C infection with compensated liver disease, irrespective of previous treatment history, in patient",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "pasireotide",
-      "year": "2015",
-      "indication": "Treatment of acromegaly in patients inadequately controlled with either octreotide LAR 30mg or lanreotide autogel 120mg.",
       "outcome": "Recommended with restriction"
     },
     {
@@ -3534,22 +2904,10 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "desvenlafaxine succinate",
-      "year": "",
-      "indication": "Treatment of major depressive disorder (MDD) including prevention of relapse",
-      "outcome": "Recommended with restriction"
-    },
-    {
       "name": "duloxetine hydrochloride",
       "year": "",
       "indication": "Treatment of major depressive disorder (MDD). Duloxetine provides an alternative serotonin-noradrenaline reuptake inhibitor (SNRI) for patie",
       "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "efalizumab",
-      "year": "2005",
-      "indication": "Treatment of adults with severe chronic plaque psoriasis who have failed to achieve an adequate response to, or are contraindicated to, at l",
-      "outcome": "Not recommended"
     },
     {
       "name": "fludarabine phosphate",
@@ -3567,12 +2925,6 @@
       "name": "imatinib mesylate",
       "year": "",
       "indication": "Extension of listing for treatment of four rare diseases: dermatofibrosarcoma protuberans (DFSP), hypereosinophilic syndrome/chronic eosinop",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "lanthanum carbonate hydrate",
-      "year": "",
-      "indication": "Management and maintenance of hyperphosphataemia in patients with chronic kidney disease on dialysis whose serum phosphate is not controlled",
       "outcome": "Recommended with restriction"
     },
     {
@@ -3606,12 +2958,6 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "methyl 5-aminolevulinate hydrochloride",
-      "year": "",
-      "indication": "Treatment of superficial basal cell carcinoma (sBCC) in patients who cannot have surgical excision, cryotherapy, or curettage with diathermy",
-      "outcome": "Recommended with restriction"
-    },
-    {
       "name": "miglustat",
       "year": "",
       "indication": "Type 1 Gaucher disease in patients who cannot be or have not been treated successfully with enzyme replacement therapy (ERT), or for whom ER",
@@ -3640,12 +2986,6 @@
       "year": "",
       "indication": "Advanced breast cancer after failure of prior therapy which includes an anthracycline. Nanoparticle albumin-bound (nab) paclitaxel formulati",
       "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "paricalcitol",
-      "year": "",
-      "indication": "Treatment of patients with end-stage chronic renal disease receiving dialysis who have secondary hyperparathyroidism (iPTH > 300 pg/mL with ",
-      "outcome": "Not recommended"
     },
     {
       "name": "pegfilgrastim",
@@ -3684,24 +3024,6 @@
       "outcome": "Noted"
     },
     {
-      "name": "sibutramine hydrochloride",
-      "year": "",
-      "indication": "Management of type 2 diabetes with obesity (BMI \u226530 kg/m\u00b2) and abnormalities in HDL and triglycerides in adults aged 18\u201365 years who have no",
-      "outcome": "Not recommended"
-    },
-    {
-      "name": "sitagliptin phosphate",
-      "year": "",
-      "indication": "Type 2 diabetes mellitus in combination with metformin or sulfonylurea when a combination of metformin and sulfonylurea is contraindicated o",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "somatropin",
-      "year": "2023",
-      "indication": "Treatment of severe late onset growth hormone deficiency (GHD) in adults",
-      "outcome": "Recommended with restriction"
-    },
-    {
       "name": "sorafenib tosylate",
       "year": "",
       "indication": "Initial and continuing treatment of advanced (unresectable or metastatic) renal cell carcinoma in patients with WHO performance status 2 or ",
@@ -3712,18 +3034,6 @@
       "year": "",
       "indication": "Treatment of advanced (unresectable or metastatic) renal cell carcinoma (RCC) in patients with Eastern Cooperative Oncology Group (ECOG) per",
       "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "tacrolimus",
-      "year": "2025",
-      "indication": "Moderate to severe atopic dermatitis in patients aged 16 years and older who have failed to achieve satisfactory disease control with topica",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "tamsulosin hydrochloride",
-      "year": "",
-      "indication": "Lower urinary tract symptoms due to benign prostatic hyperplasia (BPH), including hesitancy, dribbling, nocturia, frequency and urgency.",
-      "outcome": "Not recommended"
     },
     {
       "name": "telbivudine",
@@ -3800,7 +3110,7 @@
     {
       "name": "pegvisomant",
       "year": "2019",
-      "indication": "Second-line treatment of acromegaly in patients who have not achieved biochemical control with maximum indicated doses of octreotide LAR or ",
+      "indication": "Second-line treatment of acromegaly in patients who have failed to achieve biochemical control with somatostatin analogues (octreotide LAR o",
       "outcome": "Recommended with restriction"
     },
     {
@@ -3850,18 +3160,6 @@
       "year": "2016",
       "indication": "Phenylketonuria (PKU) in infants. Oral liquid nutritional supplement for infants with phenylketonuria requiring a phenylalanine-free amino a",
       "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "amino acid formula with carbohydrate, vitamins, minerals and trace elements without phenylalanine",
-      "year": "2016",
-      "indication": "Phenylketonuria (PKU). A medical food for special dietary management in patients with PKU, suitable for use across the age range of 6 months",
-      "outcome": "Recommended"
-    },
-    {
-      "name": "amino acid formula with fat, carbohydrate, vitamins, minerals and trace elements without phenylalanine; amino acid formula with fat, carbohydrate without phenylalanine; protein formula with amino acids, carbohydrates, vitamins and minerals without phenylalanine supplemented with docosahexaenoic acid",
-      "year": "2016",
-      "indication": "Phenylketonuria (PKU) \u2014 increase in maximum quantity for adult patients to meet monthly protein requirements.",
-      "outcome": "Recommended"
     },
     {
       "name": "plerixafor",
@@ -3954,52 +3252,10 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "progesterone",
-      "year": "2024",
-      "indication": "Luteal phase support (LPS) as part of assisted reproductive technology (ART) treatment cycles for infertile women",
-      "outcome": "Noted"
-    },
-    {
-      "name": "propranolol",
-      "year": "2017",
-      "indication": "Treatment of proliferating infantile hemangioma requiring systemic therapy, including life-threatening hemangioma, ulcerated hemangioma with",
-      "outcome": "Recommended with restriction"
-    },
-    {
       "name": "propylene glycol",
       "year": "2024",
       "indication": "Treatment of severe dry eye syndrome. Provides temporary relief of burning and irritation due to dryness of the eye.",
       "outcome": "Noted"
-    },
-    {
-      "name": "casein protein formula supplemented with amino acids, docosahexaenoic acid, vitamins and minerals, and low in calcium, phosphate, potassium, chloride and vitamin a",
-      "year": "2020",
-      "indication": "Treatment of chronic renal failure (CRF) in children aged 3 to 18 years requiring low modified protein, low phosphorus, and low potassium di",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "protein formula with carbohydrate, fat, vitamins, minerals and transforming growth factor beta-2",
-      "year": "2020",
-      "indication": "Dietary management of Crohn disease in the active or remission phases in adults and children over 5 years of age.",
-      "outcome": "Noted"
-    },
-    {
-      "name": "protein formula with carbohydrate, fat, fibre, vitamins and minerals",
-      "year": "2015",
-      "indication": "Dietary management of conditions requiring a low energy enteral tube feed in children with cerebral palsy aged 1\u201312 years who have low energ",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "protein formula with vitamins and minerals, low in potassium, phosphorus, calcium, chloride and vitamin a",
-      "year": "",
-      "indication": "Dietary management of chronic kidney disease (renal failure) in children aged 3 to 18 years, providing modified protein and low phosphorus i",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "protein hydrolysate formula with medium chain triglycerides",
-      "year": "2018",
-      "indication": "Medical nutritional product for infants and children requiring protein hydrolysate formula with medium chain triglycerides. No changes to ex",
-      "outcome": "Recommended with restriction"
     },
     {
       "name": "quadrivalent influenza vaccine (split virion, inactivated)",
@@ -4018,12 +3274,6 @@
       "year": "2018",
       "indication": "Maintenance therapy for acute mania, bipolar I disorder, and schizophrenia. Request to change 25 mg tablet listing to allow up to 5 repeats ",
       "outcome": "Recommended"
-    },
-    {
-      "name": "rabeprazole",
-      "year": "2022",
-      "indication": "Gastro-oesophageal reflux disease (GORD), prevention of relapse of GORD, symptomatic treatment of GORD, and treatment of active duodenal or ",
-      "outcome": "Recommended with restriction"
     },
     {
       "name": "radium (223ra) dichloride",
@@ -4074,12 +3324,6 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "relugolix with estradiol and norethisterone acetate",
-      "year": "2024",
-      "indication": "Treatment of moderate to severe pain associated with endometriosis in women who have failed to gain adequate pain relief from hormonal treat",
-      "outcome": "Recommended with restriction"
-    },
-    {
       "name": "recombinant respiratory syncytial virus pre-fusion f protein vaccine",
       "year": "",
       "indication": "Prevention of lower respiratory tract illness caused by respiratory syncytial virus (RSV) in infants aged 0\u20136 months through active immunisa",
@@ -4120,12 +3364,6 @@
       "year": "2020",
       "indication": "Treatment of Mycobacterium ulcerans infections (Buruli ulcer). Rifampicin is used in combination with another antibiotic.",
       "outcome": "Recommended"
-    },
-    {
-      "name": "rifaximin",
-      "year": "2019",
-      "indication": "Prevention of hepatic encephalopathy recurrence in patients with prior episodes, in combination with lactulose where tolerated.",
-      "outcome": "Recommended with restriction"
     },
     {
       "name": "riluzole",
@@ -4178,7 +3416,7 @@
     {
       "name": "risperidone",
       "year": "2024",
-      "indication": "Treatment of schizophrenia in adults in whom tolerability and effectiveness have been established with oral risperidone.",
+      "indication": "Treatment of schizophrenia in adults for whom tolerability and effectiveness have been established with oral risperidone.",
       "outcome": "Not recommended"
     },
     {
@@ -4290,12 +3528,6 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "saxagliptin with metformin",
-      "year": "2013",
-      "indication": "Type 2 diabetes mellitus in patients with HbA1c greater than 7% despite treatment with metformin alone, where combination with sulfonylurea ",
-      "outcome": "Recommended with restriction"
-    },
-    {
       "name": "saxagliptin",
       "year": "2015",
       "indication": "Type 2 diabetes mellitus in combination with metformin and a sulfonylurea in patients with inadequate glycaemic control despite treatment wi",
@@ -4311,12 +3543,6 @@
       "name": "secukinumab",
       "year": "2023",
       "indication": "Treatment of moderate to severe hidradenitis suppurativa (acne inversa) in adult patients with inadequate response to conventional systemic ",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "seladelpar",
-      "year": "",
-      "indication": "Primary biliary cholangitis (PBC) in patients with inadequate response to ursodeoxycholic acid (UDCA) or intolerant to UDCA.",
       "outcome": "Recommended with restriction"
     },
     {
@@ -4350,12 +3576,6 @@
       "outcome": "Not recommended"
     },
     {
-      "name": "sevelamer carbonate",
-      "year": "2019",
-      "indication": "Management of hyperphosphataemia in patients with chronic kidney disease that require dialysis.",
-      "outcome": "Recommended"
-    },
-    {
       "name": "siltuximab",
       "year": "2021",
       "indication": "Treatment of idiopathic multicentric Castleman disease (iMCD) in patients who are HIV-negative and HHV-8 negative.",
@@ -4386,12 +3606,6 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "sodium zirconium cyclosilicate",
-      "year": "2024",
-      "indication": "Treatment of chronic hyperkalaemia in adult patients with chronic kidney disease Stage 3-4 who are receiving or indicated for renin angioten",
-      "outcome": "Recommended with restriction"
-    },
-    {
       "name": "sofosbuvir with velpatasvir",
       "year": "2017",
       "indication": "Treatment of chronic hepatitis C virus infection of all genotypes (1, 2, 3, 4, 5, 6).",
@@ -4410,15 +3624,9 @@
       "outcome": ""
     },
     {
-      "name": "somapacitan",
+      "name": "somatropin",
       "year": "2023",
-      "indication": "Treatment of paediatric patients with growth hormone deficiency (GHD), including short stature associated with biochemical GHD (SSABGHD) and",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "somatrogon",
-      "year": "2022",
-      "indication": "Treatment of growth hormone deficiency in paediatric patients, including short stature associated with biochemical growth hormone deficiency",
+      "indication": "Treatment of severe late onset growth hormone deficiency (GHD) in adults",
       "outcome": "Recommended with restriction"
     },
     {
@@ -4458,16 +3666,16 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "sucroferric oxyhydroxide",
-      "year": "2015",
-      "indication": "Treatment of hyperphosphataemia in patients undergoing dialysis for chronic kidney disease.",
-      "outcome": "Noted"
-    },
-    {
       "name": "sunitinib",
       "year": "2013",
       "indication": "Initial and continuing treatment of metastatic, unresectable, well-differentiated malignant pancreatic neuroendocrine tumour (pNET) in patie",
       "outcome": "Recommended"
+    },
+    {
+      "name": "tacrolimus",
+      "year": "2025",
+      "indication": "Moderate to severe atopic dermatitis in patients aged 16 years and older who have failed to achieve satisfactory disease control with topica",
+      "outcome": "Noted"
     },
     {
       "name": "tadalafil",
@@ -4518,12 +3726,6 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "tapentadol",
-      "year": "2013",
-      "indication": "Chronic severe disabling pain not responding to non-narcotic analgesics",
-      "outcome": "Recommended with restriction"
-    },
-    {
       "name": "tenofovir disoproxil with emtricitabine",
       "year": "2020",
       "indication": "HIV Pre-Exposure Prophylaxis (PrEP) in individuals at risk of HIV transmission. Updated criteria to include any situation where there is ide",
@@ -4533,12 +3735,6 @@
       "name": "tebentafusp",
       "year": "",
       "indication": "Treatment of HLA-A*02:01-positive adult patients with advanced (unresectable or metastatic) uveal melanoma.",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "teduglutide",
-      "year": "2021",
-      "indication": "Treatment of paediatric patients with Type III (chronic) short bowel syndrome with intestinal failure (SBS-IF) who are dependent on parenter",
       "outcome": "Recommended with restriction"
     },
     {
@@ -4662,22 +3858,10 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "oxycodone; tramadol; tramadol/paracetamol; paracetamol/codeine; codeine; hydromorphone; morphine; tapentadol; buprenorphine; fentanyl; methadone; dihydrocodeine; pethidine",
-      "year": "2019",
-      "indication": "Short-term management of severe acute pain unresponsive to non-opioid analgesics; management of severe chronic pain in opioid-tolerant patie",
-      "outcome": "Noted"
-    },
-    {
       "name": "thiazolidinediones, glucagon-like peptide-1, sodium-glucose co-transporter 2 inhibitors",
       "year": "2014",
       "indication": "Type 2 diabetes mellitus as third-line treatment options after first and second-line treatments have been exhausted.",
       "outcome": "Deferred"
-    },
-    {
-      "name": "thyroxine sodium",
-      "year": "2016",
-      "indication": "Management of demonstrated thyroid hormone deficiency and suppression of TSH for management of TSH-responsive tumours of the thyroid. Specif",
-      "outcome": "Not recommended"
     },
     {
       "name": "ticagrelor",
@@ -4788,12 +3972,6 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "tramadol hydrochloride with paracetamol",
-      "year": "2018",
-      "indication": "Treatment of acute pain (restricted from proposed acute and chronic pain) in patients where aspirin and/or paracetamol alone are inappropria",
-      "outcome": "Recommended with restriction"
-    },
-    {
       "name": "trametinib",
       "year": "2016",
       "indication": "Treatment of unresectable stage III or metastatic (stage IV) melanoma in patients with BRAF V600 mutation, in combination with dabrafenib or",
@@ -4830,70 +4008,10 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "triglycerides medium chain formula",
-      "year": "2020",
-      "indication": "Dietary management of conditions requiring a source of medium chain triglycerides. Reformulation to comply with new European compositional s",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "triglycerides long chain with glucose polymer",
-      "year": "2014",
-      "indication": "Inborn errors of protein metabolism in patients unable to meet energy requirements with permitted food and formulae.",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "long chain triglycerides with glucose polymer",
-      "year": "2018",
-      "indication": "Nutritional support for patients with proven inborn errors of metabolism who are unable to meet their energy requirements with permitted foo",
-      "outcome": "Noted"
-    },
-    {
-      "name": "triglycerides medium chain and long chain with glucose polymer",
-      "year": "2020",
-      "indication": "Dietary management of proven inborn errors of protein metabolism",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "triglycerides medium chain formula; protein formula with carbohydrate, fat, vitamins and minerals",
-      "year": "2019",
-      "indication": "Nutritional supplementation via oral liquid formulation. Pack size and maximum quantity change from pouches to bottles.",
-      "outcome": "Recommended"
-    },
-    {
-      "name": "triglycerides medium chain (mct)",
-      "year": "2018",
-      "indication": "Nutritional support for patients requiring medium chain triglycerides, including those with liver failure. Medical food product for special ",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "medium chain triglycerides formula",
-      "year": "2016",
-      "indication": "Dietary management of conditions requiring a source of medium chain triglycerides in patients aged 1-10 years with fat malabsorption due to ",
-      "outcome": "Recommended with restriction"
-    },
-    {
       "name": "triglycerides, long chain with glucose polymer",
       "year": "2024",
       "indication": "Treatment of proven inborn errors of protein metabolism in patients unable to meet energy requirements with permitted food and formulae, req",
       "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "triglycerides, medium chain",
-      "year": "2022",
-      "indication": "Ketogenic diet for intractable seizures, glucose transport protein defect, pyruvate dehydrogenase deficiency; and dietary management of cond",
-      "outcome": "Recommended"
-    },
-    {
-      "name": "triptorelin",
-      "year": "2021",
-      "indication": "Treatment of central precocious puberty (CPP) in children 2 years and older with symptom onset before 8 years in girls and 10 years in boys.",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "triptorelin acetate",
-      "year": "2016",
-      "indication": "Down-regulation and prevention of premature luteinising hormone (LH) surges in women undergoing controlled ovarian hyperstimulation as part ",
-      "outcome": "Noted"
     },
     {
       "name": "high-dose inactivated trivalent influenza vaccine (split virion)",
@@ -4911,18 +4029,6 @@
       "name": "tucatinib",
       "year": "2025",
       "indication": "Treatment of metastatic (Stage IV) HER2-positive breast cancer in combination with trastuzumab plus capecitabine in patients who have receiv",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "tyrosine with carbohydrate",
-      "year": "2019",
-      "indication": "Dietary management of phenylketonuria (PKU) in patients aged 3 years and over.",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "ulipristal acetate",
-      "year": "2017",
-      "indication": "Acute management of moderate to severe symptomatic uterine fibroids prior to planned surgery.",
       "outcome": "Recommended with restriction"
     },
     {
@@ -4950,12 +4056,6 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "ursodeoxycholic acid",
-      "year": "2023",
-      "indication": "Treatment of primary biliary cholangitis (PBC), an autoimmune disease of the liver marked by gradual destruction of epithelial cells lining ",
-      "outcome": "Recommended with restriction"
-    },
-    {
       "name": "ustekinumab",
       "year": "2025",
       "indication": "Biosimilar listing for severe chronic plaque psoriasis, severe psoriatic arthritis, severe Crohn disease, complex refractory fistulising Cro",
@@ -4965,12 +4065,6 @@
       "name": "vanzacaftor/tezacaftor/deutivacaftor",
       "year": "",
       "indication": "Treatment of cystic fibrosis in patients aged 6 years and older who have at least one mutation in the CFTR gene that is responsive to vanzac",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "varenicline",
-      "year": "2017",
-      "indication": "Aid to achieving abstinence from smoking in patients undergoing concurrent counselling for smoking cessation.",
       "outcome": "Recommended with restriction"
     },
     {
@@ -5040,18 +4134,6 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "vitamins, minerals and trace elements with carbohydrate",
-      "year": "2020",
-      "indication": "Dietary management of conditions requiring a highly restrictive therapeutic diet in infants and young children.",
-      "outcome": "Recommended with restriction"
-    },
-    {
-      "name": "vitamins, minerals and trace elements formula",
-      "year": "2017",
-      "indication": "Dietary management of conditions requiring a highly restrictive therapeutic diet, particularly for patients on a ketogenic diet for refracto",
-      "outcome": "Recommended with restriction"
-    },
-    {
       "name": "vorasidenib",
       "year": "2025",
       "indication": "Treatment of WHO Grade 2 IDH-mutant astrocytoma or oligodendroglioma with residual or recurrent disease after at least one prior surgery in ",
@@ -5094,18 +4176,6 @@
       "outcome": "Recommended"
     },
     {
-      "name": "whey protein formula with medium chain triglycerides, carbohydrate, vitamins and minerals",
-      "year": "2016",
-      "indication": "Dietary management of conditions requiring a source of medium chain triglycerides in infants with fat malabsorption due to liver disease, sh",
-      "outcome": "Deferred"
-    },
-    {
-      "name": "whey protein formula supplemented with amino acids, vitamins and minerals, and low in protein, phosphate, potassium and lactose",
-      "year": "2020",
-      "indication": "Dietary management of chronic renal failure in infants and young children.",
-      "outcome": "Recommended with restriction"
-    },
-    {
       "name": "zanubrutinib",
       "year": "2025",
       "indication": "Treatment of relapsed or refractory mantle cell lymphoma (MCL), Waldenstr\u00f6m macroglobulinaemia (WM), relapsed or refractory and treatment na",
@@ -5142,6 +4212,12 @@
       "outcome": "Recommended with restriction"
     },
     {
+      "name": "aripiprazole",
+      "year": "2025",
+      "indication": "Treatment of schizophrenia in adults. The submission also noted TGA registration for maintenance treatment to prevent recurrence of manic or",
+      "outcome": "Recommended"
+    },
+    {
       "name": "biologics (etanercept, infliximab, adalimumab, ustekinumab, secukinumab, ixekizumab, guselkumab, tildrakizumab)",
       "year": "2020",
       "indication": "Treatment of severe chronic plaque psoriasis in patients who have failed to achieve adequate response to at least two conventional systemic ",
@@ -5154,9 +4230,9 @@
       "outcome": "Recommended with restriction"
     },
     {
-      "name": "etonogestrel with ethinylestradiol",
-      "year": "2025",
-      "indication": "Contraception for women requiring a non-oral preparation due to difficulty swallowing tablets, gastrointestinal disturbances, or undesirable",
+      "name": "efalizumab",
+      "year": "2005",
+      "indication": "Treatment of adults with severe chronic plaque psoriasis who have failed to achieve an adequate response to, or are contraindicated to, at l",
       "outcome": "Not recommended"
     },
     {
@@ -5184,16 +4260,16 @@
       "outcome": "Deferred"
     },
     {
+      "name": "lanreotide acetate",
+      "year": "2017",
+      "indication": "Acromegaly in patients with persistent elevation of mean growth hormone levels greater than 2.5 micrograms per litre after failure of other ",
+      "outcome": "Recommended with restriction"
+    },
+    {
       "name": "latanoprost with timolol maleate",
       "year": "2005",
       "indication": "Reduction of elevated intraocular pressure in patients with open-angle glaucoma and ocular hypertension who are not adequately controlled wi",
       "outcome": "Deferred"
-    },
-    {
-      "name": "buprenorphine, buprenorphine with naloxone, methadone",
-      "year": "",
-      "indication": "Treatment of opioid dependence in adults. Medicines are used in opioid dependence treatment (ODT) programs to reduce illicit opioid use and ",
-      "outcome": "Noted"
     },
     {
       "name": "pioglitazone",
@@ -5223,6 +4299,930 @@
       "name": "verteporfin",
       "year": "2005",
       "indication": "Treatment of subfoveal choroidal neovascularisation (CNV) secondary to age-related macular degeneration (AMD) and other macular diseases, in",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "adrenaline (epinephrine)",
+      "year": "2020",
+      "indication": "Emergency treatment for acute allergic reactions with anaphylaxis. Treatment of patients assessed at significant risk of anaphylaxis or disc",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "alogliptin with metformin",
+      "year": "",
+      "indication": "Type 2 diabetes in patients with HbA1c greater than 7% despite treatment with metformin, where a combination of metformin and sulfonylurea i",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "amino acid formula with fat, carbohydrate, vitamins, minerals, trace elements and medium chain triglycerides",
+      "year": "2024",
+      "indication": "Cows' milk protein enteropathy, severe cows' milk protein enteropathy with failure to thrive, combined intolerance to cows' milk protein/soy",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "amino acid formula with vitamins and minerals, without phenylalanine",
+      "year": "2017",
+      "indication": "Dietary management of phenylketonuria (PKU) in patients aged 4 years and older (liquid formulation) and 8 years and older (powder formulatio",
+      "outcome": "Recommended"
+    },
+    {
+      "name": "amino acid formula with carbohydrate, vitamins, minerals and trace elements without phenylalanine, supplemented with docosahexaenoic acid",
+      "year": "2020",
+      "indication": "Dietary management of phenylketonuria (PKU) or hyperphenylalaninaemia in children from 10 years of age or adults.",
+      "outcome": "Not recommended"
+    },
+    {
+      "name": "amino acid formula with fat, carbohydrate without phenylalanine and tyrosine",
+      "year": "2019",
+      "indication": "Dietary management of tyrosinaemia (TYR).",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "amino acid formula with vitamins and minerals, without phenylalanine and tyrosine and supplemented with arachidonic acid and docosahexaenoic acid",
+      "year": "2023",
+      "indication": "Dietary management of tyrosinaemia (TYR), particularly in infants and young children from 6 months to 5 years of age.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "amino acid synthetic formula supplemented with long chain polyunsaturated fatty acids, medium chain triglycerides, 2'-fucosyllactose and lacto-n-neotetraose",
+      "year": "2022",
+      "indication": "Treatment of cows' milk protein enteropathy, severe cows' milk protein enteropathy with failure to thrive, combined intolerance to cows' mil",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "amino acid synthetic formula supplemented with long chain polyunsaturated fatty acids",
+      "year": "2023",
+      "indication": "Treatment of cows' milk anaphylaxis, severe cows' milk protein enteropathy with failure to thrive, combined intolerance to cows' milk protei",
+      "outcome": "Recommended"
+    },
+    {
+      "name": "amino acid synthetic formula",
+      "year": "2015",
+      "indication": "Cows' milk protein enteropathy, severe cows' milk protein enteropathy with failure to thrive, combined intolerance to cows' milk protein/soy",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "amino acid synthetic formula supplemented with long chain polyunsaturated fatty acids; amino acid formula supplemented with prebiotics, probiotics and long chain polyunsaturated fatty acids",
+      "year": "2020",
+      "indication": "Nutritional support for infants and children with cow's milk allergy, multiple food intolerance, and other medical conditions where an amino",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "amino acid synthetic formula supplemented with long chain polyunsaturated fatty acids and medium chain triglycerides",
+      "year": "2015",
+      "indication": "Eosinophilic oesophagitis and severe intestinal malabsorption including short bowel syndrome in patients requiring amino acid-based formula ",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "amino acids \u2013 synthetic, formula",
+      "year": "2018",
+      "indication": "Nutritional supplement for patients requiring a highly restricted therapeutic elimination diet; formulation change to existing product with ",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "antipsychotics (various)",
+      "year": "2013",
+      "indication": "Utilisation review of PBS-listed antipsychotics, examining patterns of prescribing and inappropriate use across different age groups and ind",
+      "outcome": "Noted"
+    },
+    {
+      "name": "balsalazide",
+      "year": "2017",
+      "indication": "Treatment of mild-to-moderate active ulcerative colitis and maintenance of remission in patients intolerant to sulfasalazine.",
+      "outcome": "Deferred"
+    },
+    {
+      "name": "benztropine mesylate",
+      "year": "2015",
+      "indication": "Emergency treatment of acute dystonic reactions.",
+      "outcome": "Recommended"
+    },
+    {
+      "name": "buprenorphine",
+      "year": "2021",
+      "indication": "Maintenance treatment of opioid use disorder in patients stabilised on buprenorphine or requiring initiation with prolonged release formulat",
+      "outcome": "Noted"
+    },
+    {
+      "name": "buprenorphine with naloxone",
+      "year": "2020",
+      "indication": "Treatment of patients with opioid dependence, within a framework of medical, social and psychological treatment.",
+      "outcome": "Not recommended"
+    },
+    {
+      "name": "buprenorphine/naloxone",
+      "year": "2019",
+      "indication": "Treatment of opioid dependence within a framework of medical, social and psychological treatment, including initial and maintenance phases a",
+      "outcome": "Recommended"
+    },
+    {
+      "name": "buprenorphine + naloxone",
+      "year": "2014",
+      "indication": "Treatment of opiate dependence within a framework of medical, social and psychological treatment.",
+      "outcome": "Recommended"
+    },
+    {
+      "name": "calcipotriol + betamethasone dipropionate",
+      "year": "2015",
+      "indication": "Chronic stable plaque type psoriasis vulgaris in patients not adequately controlled with either a vitamin D analogue or potent topical corti",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "calcipotriol with betamethasone dipropionate",
+      "year": "2025",
+      "indication": "Topical treatment of scalp psoriasis and mild to moderate plaque psoriasis on the body in adults with chronic stable plaque type psoriasis v",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "calcium carbonate",
+      "year": "2019",
+      "indication": "Treatment of hyperphosphataemia associated with chronic renal failure.",
+      "outcome": "Recommended"
+    },
+    {
+      "name": "carbohydrate, fat, vitamins, minerals and trace elements formula",
+      "year": "2020",
+      "indication": "Proven inborn errors of protein metabolism.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "cariprazine",
+      "year": "2020",
+      "indication": "Treatment of schizophrenia in adult patients for acute and maintenance therapy.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "cetrorelix",
+      "year": "2025",
+      "indication": "Prevention of premature luteinisation and ovulation in patients undergoing controlled ovarian stimulation followed by oocyte pick-up and ass",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "chorionic gonadotrophin",
+      "year": "2017",
+      "indication": "Treatment of anovulatory infertility, infertility due to hypogonadotrophic hypogonadism or isolated luteinising hormone deficiency, combined",
+      "outcome": "Recommended"
+    },
+    {
+      "name": "cinacalcet",
+      "year": "2019",
+      "indication": "Management of sustained secondary hyperparathyroidism in patients with chronic kidney disease receiving dialysis who have not responded to c",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "coal tar prepared",
+      "year": "2014",
+      "indication": "Relief of symptoms of psoriasis. Scytera\u00ae foam is indicated for treatment of plaque-type psoriasis affecting various body areas including el",
+      "outcome": "Recommended"
+    },
+    {
+      "name": "collagenase clostridium histolyticum",
+      "year": "2014",
+      "indication": "Treatment of Dupuytren's contracture in patients with \u22642 affected rays (fingers) who are unable to simultaneously place the affected finger ",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "corifollitropin alfa",
+      "year": "2013",
+      "indication": "Controlled ovarian stimulation for assisted reproductive technologies (IVF/GIFT) in women with antral follicle count \u226420 undergoing gonadotr",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "dapagliflozin with metformin",
+      "year": "2017",
+      "indication": "Type 2 diabetes mellitus in combination with a dipeptidyl peptidase 4 (DPP4) inhibitor as third-line treatment when metformin and a DPP4 inh",
+      "outcome": "Deferred"
+    },
+    {
+      "name": "dapagliflozin with sitagliptin",
+      "year": "2024",
+      "indication": "Treatment of Type 2 diabetes mellitus in patients with inadequate glycaemic control despite dual oral combination therapy with metformin and",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "dapsone",
+      "year": "2025",
+      "indication": "Treatment of dermatitis herpetiformis, leprosy, and actinomycotic mycetoma.",
+      "outcome": "Recommended"
+    },
+    {
+      "name": "desmopressin acetate",
+      "year": "2025",
+      "indication": "Treatment of cranial diabetes insipidus and primary nocturnal enuresis. Also approved as a diagnostic test to establish renal concentrating ",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "deucravacitinib",
+      "year": "",
+      "indication": "Treatment of severe chronic plaque psoriasis in patients who have not responded to or have a contraindication or demonstrated intolerance to",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "dienogest",
+      "year": "2024",
+      "indication": "Treatment of endometriosis. Dienogest 2 mg daily oral tablets for patients with endometriosis seeking pharmaceutical management of the condi",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "difelikefalin",
+      "year": "2023",
+      "indication": "Treatment of moderate to severe pruritus associated with chronic kidney disease in adult patients on haemodialysis who have inadequate respo",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "drospirenone",
+      "year": "2024",
+      "indication": "Contraception in women. Oral progestogen-only pill (POP) for prevention of pregnancy.",
+      "outcome": "Noted"
+    },
+    {
+      "name": "drospirenone with ethinylestradiol",
+      "year": "",
+      "indication": "Oral contraception. Yaz is also TGA-registered for treatment of moderate acne vulgaris and premenstrual dysphoric disorder (PMDD) in women u",
+      "outcome": ""
+    },
+    {
+      "name": "elafibranor",
+      "year": "2025",
+      "indication": "Primary biliary cholangitis (PBC) in adults with inadequate response to ursodeoxycholic acid (UDCA) despite at least 52 weeks of treatment, ",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "empagliflozin/metformin",
+      "year": "2015",
+      "indication": "Type 2 diabetes mellitus as dual therapy (empagliflozin/metformin) in patients with inadequate glycaemic control on metformin alone, and as ",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "empagliflozin, linagliptin",
+      "year": "2017",
+      "indication": "Type 2 Diabetes Mellitus in patients uncontrolled on dual oral therapy, for use in triple oral therapy (DPP4 + SGLT2 + metformin).",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "epoetin lambda",
+      "year": "2017",
+      "indication": "Treatment of anaemia associated with intrinsic renal disease (chronic renal failure) during correction and maintenance therapy phases; remov",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "essential amino acids formula with vitamins and minerals",
+      "year": "2021",
+      "indication": "Urea cycle disorders (UCDs) and gyrate atrophy of the choroid and retina.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "estetrol with drospirenone",
+      "year": "2025",
+      "indication": "Combined oral contraceptive for women of reproductive age to prevent pregnancy. Non-inferior to other combined oral contraceptives in terms ",
+      "outcome": "Recommended"
+    },
+    {
+      "name": "estradiol; progesterone; estradiol and progesterone",
+      "year": "2024",
+      "indication": "Estrogel: treatment of troublesome menopausal vasomotor symptoms and prevention of osteoporosis in postmenopausal women. Prometrium: endomet",
+      "outcome": ""
+    },
+    {
+      "name": "estradiol",
+      "year": "2024",
+      "indication": "Short-term treatment of climacteric symptoms after natural or surgical menopause. The new 500 microgram strength allows for more precise dos",
+      "outcome": "Recommended"
+    },
+    {
+      "name": "estradiol with progesterone",
+      "year": "2025",
+      "indication": "Treatment of moderate to severe vasomotor symptoms in postmenopausal women with an intact uterus.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "etonogestrel with ethinylestradiol",
+      "year": "2025",
+      "indication": "Contraception in women with difficulty swallowing pills, gastrointestinal disturbances/malabsorption, or undesirable side effects with oral ",
+      "outcome": "Not recommended"
+    },
+    {
+      "name": "ferric carboxymaltose",
+      "year": "2018",
+      "indication": "Treatment of iron deficiency anaemia (IDA).",
+      "outcome": "Recommended"
+    },
+    {
+      "name": "ferric derisomaltose",
+      "year": "2019",
+      "indication": "Treatment of iron deficiency in adults when oral iron preparations are ineffective or cannot be used, or where there is a clinical need to d",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "fezolinetant",
+      "year": "2025",
+      "indication": "Treatment of moderate to severe vasomotor symptoms (VMS) associated with menopause in post-menopausal women unsuitable for menopausal hormon",
+      "outcome": "Not recommended"
+    },
+    {
+      "name": "filgrastim",
+      "year": "2018",
+      "indication": "Chemotherapy-induced neutropenia, mobilisation of peripheral blood progenitor cells, bone marrow transplantation support, severe congenital ",
+      "outcome": "Deferred"
+    },
+    {
+      "name": "follitropin alfa",
+      "year": "2021",
+      "indication": "Treatment of women undergoing assisted reproductive technology (ART) requiring controlled ovarian stimulation, and treatment of anovulatory ",
+      "outcome": "Not recommended"
+    },
+    {
+      "name": "follitropin alfa with lutropin alfa",
+      "year": "2024",
+      "indication": "Stimulation of follicular development in patients with severe LH deficiency undergoing assisted reproductive technology treatment.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "follitropin alfa + lutropin alfa; lutropin alfa",
+      "year": "2016",
+      "indication": "Stimulation of follicular development in assisted reproductive technology (Section 100 IVF program).",
+      "outcome": "Recommended"
+    },
+    {
+      "name": "follitropin alfa and lutropin alfa",
+      "year": "2015",
+      "indication": "Stimulation of follicular development in women with severe LH and FSH deficiency for assisted reproductive technology (IVF/GIFT).",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "follitropin delta",
+      "year": "2017",
+      "indication": "Controlled ovarian stimulation for the development of multiple follicles in women undergoing assisted reproductive technologies (ART) such a",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "fosnetupitant/palonosetron",
+      "year": "2023",
+      "indication": "Prevention of acute and delayed nausea and vomiting associated with initial and repeat courses of highly emetogenic cancer chemotherapy and ",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "glucose indicator blood strips",
+      "year": "2016",
+      "indication": "Blood glucose monitoring in patients receiving treatment under a GP Management Plan or Team Care Arrangements.",
+      "outcome": "Recommended"
+    },
+    {
+      "name": "glycomacropeptide formula with docosahexaenoic acid and low phenylalanine",
+      "year": "2019",
+      "indication": "Dietary management of phenylketonuria (PKU).",
+      "outcome": "Recommended"
+    },
+    {
+      "name": "glycomacropeptide formula with amino acids and low phenylalanine",
+      "year": "2022",
+      "indication": "Treatment of phenylketonuria (PKU) in children from 3 years of age and adults.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "human menopausal gonadotrophin (hp-hmg)",
+      "year": "2016",
+      "indication": "Anovulatory infertility in women who have failed to ovulate or conceive on clomiphene citrate and/or gonadorelin.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "gonadotrophin-menopausal human",
+      "year": "2016",
+      "indication": "Anovulatory infertility in women who have failed to conceive with clomiphene citrate and/or gonadorelin, as a second-line ovulation inductio",
+      "outcome": "Not recommended"
+    },
+    {
+      "name": "high fat formula with vitamins, minerals and trace elements and low in protein and carbohydrate (4:1 ratio)",
+      "year": "2021",
+      "indication": "Ketogenic diet for patients with intractable seizures, glucose transport protein defect, or pyruvate dehydrogenase deficiency who have sever",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "high fat formula with vitamins, minerals and trace elements, low in protein and carbohydrate",
+      "year": "2023",
+      "indication": "Nutritional support for patients requiring a ketogenic diet formulation, as a food for special medical purposes.",
+      "outcome": "Noted"
+    },
+    {
+      "name": "high fat formula with vitamins, minerals and trace elements, low in protein carbohydrate",
+      "year": "2016",
+      "indication": "Ketogenic diet for patients with intractable seizures, glucose transport protein defect, or pyruvate dehydrogenase deficiency.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "human menopausal gonadotrophin",
+      "year": "2022",
+      "indication": "Treatment of infertility in women with anovulatory infertility (including PCOD) unresponsive to clomiphene citrate, and controlled ovarian h",
+      "outcome": "Recommended"
+    },
+    {
+      "name": "hydrocortisone",
+      "year": "2021",
+      "indication": "Replacement therapy of adrenal insufficiency in patients aged 6 years or younger, or patients older than 6 years with swallowing difficultie",
+      "outcome": "Noted"
+    },
+    {
+      "name": "hydromorphone hydrochloride",
+      "year": "2018",
+      "indication": "Relief of severe disabling pain in patients unresponsive to non-opioid analgesics. The 200 mL oral liquid formulation provides an option for",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "insulin degludec",
+      "year": "2025",
+      "indication": "Treatment of type 1 diabetes mellitus in patients aged 1 year or older. Insulin degludec 100 IU/mL is a long-acting basal insulin analogue a",
+      "outcome": "Noted"
+    },
+    {
+      "name": "insulin aspart",
+      "year": "2021",
+      "indication": "Treatment of diabetes mellitus. Biosimilar formulation to NovoRapid, available as 100 IU/mL cartridge and 100 IU/mL pre-filled pen.",
+      "outcome": "Recommended"
+    },
+    {
+      "name": "deferasirox, deferiprone, desferrioxamine",
+      "year": "2014",
+      "indication": "Iron chelation therapy for patients with transfusional iron overload, including those with beta-thalassaemia, sickle cell disease, and myelo",
+      "outcome": "Noted"
+    },
+    {
+      "name": "iron (as sucrose)",
+      "year": "2014",
+      "indication": "Iron deficiency anaemia in patients undergoing chronic haemodialysis and receiving supplemental erythropoietin therapy.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "isotretinoin",
+      "year": "2019",
+      "indication": "Treatment of severe cystic acne unresponsive to conventional therapy, including systemic antibiotics.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "levonorgestrel",
+      "year": "2019",
+      "indication": "Contraception for up to 5 years in women requesting contraception.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "levonorgestrel, intrauterine system",
+      "year": "2013",
+      "indication": "Contraception for up to three years. A progesterone-only, long-acting reversible contraceptive (LARC) device for women requiring this form o",
+      "outcome": "Deferred"
+    },
+    {
+      "name": "linzagolix",
+      "year": "2024",
+      "indication": "Management of heavy menstrual bleeding associated with uterine fibroids in adult premenopausal women who are unsuitable for, or have had an ",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "lurasidone hydrochloride",
+      "year": "2014",
+      "indication": "Treatment of schizophrenia in adults as a first- or second-line oral atypical antipsychotic alternative.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "lurasidone",
+      "year": "2015",
+      "indication": "Treatment of schizophrenia in patients not controlled satisfactorily or intolerant to atypical antipsychotic agents such as olanzapine, quet",
+      "outcome": "Not recommended"
+    },
+    {
+      "name": "lutropin alfa",
+      "year": "2015",
+      "indication": "Stimulation of follicular development in women with severe luteinising hormone (LH) deficiency undergoing assisted reproductive technology (",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "triglycerides, long chain; triglycerides, medium chain",
+      "year": "2017",
+      "indication": "Ketogenic diet for intractable seizures, glucose transport protein defect, or pyruvate dehydrogenase deficiency; dietary management of condi",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "triglycerides, medium chain; triglycerides, long chain",
+      "year": "2017",
+      "indication": "Dietary management of conditions requiring medium chain triglycerides (chylous ascites, chylothorax, hyperlipoproteinaemia type 1, long chai",
+      "outcome": "Not recommended"
+    },
+    {
+      "name": "medroxyprogesterone acetate",
+      "year": "2023",
+      "indication": "Contraception in women, with particular relevance in remote communities where medroxyprogesterone acetate is a preferred form among Aborigin",
+      "outcome": "Recommended"
+    },
+    {
+      "name": "methadone hydrochloride",
+      "year": "2025",
+      "indication": "Chronic severe disabling pain where alternative pain management therapies have failed. Also approved for opioid dependence and severe disabl",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "mifepristone and misoprostol",
+      "year": "2023",
+      "indication": "Medical termination of an intrauterine pregnancy of up to 63 days of gestation in females of childbearing age.",
+      "outcome": "Noted"
+    },
+    {
+      "name": "milk powder - lactose intolerance formula",
+      "year": "2016",
+      "indication": "Acute lactose intolerance in infants up to 12 months of age.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "milk powder synthetic low calcium",
+      "year": "2020",
+      "indication": "Dietary management of hypercalcaemia in patients under the age of four years (inclusive).",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "milk powder synthetic, low calcium oral powder",
+      "year": "2024",
+      "indication": "Dietary management of hypercalcaemia in patients under 4 years of age.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "milk protein and fat formula with vitamins and minerals \u2013 carbohydrate free",
+      "year": "2020",
+      "indication": "Infants and children with multiple monosaccharide intolerance or requiring a ketogenic diet.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "morphine sulfate pentahydrate",
+      "year": "2024",
+      "indication": "Treatment of severe pain and cancer pain. Also for severe disabling pain under Palliative Care Authority Required listing.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "morphine hydrochloride",
+      "year": "2016",
+      "indication": "Relief of moderate to severe pain not responsive to non-opioid analgesics; symptomatic relief of severe and intractable pains in terminal ca",
+      "outcome": "Recommended"
+    },
+    {
+      "name": "nadroparin calcium",
+      "year": "2016",
+      "indication": "Prophylaxis against deep vein thrombosis (DVT) associated with general or orthopaedic surgery, treatment of DVT, and prevention of clotting ",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "nalmefene",
+      "year": "2015",
+      "indication": "Reduction of alcohol consumption in adult patients with alcohol use disorder who have failed to achieve adequate response following psychoso",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "naloxone",
+      "year": "2019",
+      "indication": "Emergency treatment for known or suspected opioid overdose manifested by respiratory and/or central nervous system depression in home, non-m",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "nicotine",
+      "year": "2018",
+      "indication": "Nicotine dependence in cigarette smokers who wish to quit and enter into a behavioural support program.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "obeticholic acid",
+      "year": "2021",
+      "indication": "Primary biliary cholangitis (PBC) in combination with ursodeoxycholic acid (UDCA) in UDCA inadequate responders, and as monotherapy in patie",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "buprenorphine, buprenorphine with naloxone, methadone",
+      "year": "",
+      "indication": "Treatment of opioid dependence. The review addresses the post-market review of medicines for opioid dependence treatment programs, with cons",
+      "outcome": "Noted"
+    },
+    {
+      "name": "oxybutynin",
+      "year": "2023",
+      "indication": "Detrusor overactivity (overactive bladder with symptoms of urinary frequency, urgency or incontinence) in patients unable to tolerate or swa",
+      "outcome": "Noted"
+    },
+    {
+      "name": "oxycodone hydrochloride + naloxone hydrochloride",
+      "year": "2015",
+      "indication": "Chronic severe disabling pain unresponsive to non-narcotic analgesics. Three additional modified release tablet strengths (2.5 mg/1.25 mg, 1",
+      "outcome": "Recommended"
+    },
+    {
+      "name": "oxycodone",
+      "year": "2019",
+      "indication": "Severe disabling pain unresponsive to non-opioid analgesics in patients requiring opioid treatment.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "oxycodone with naloxone",
+      "year": "2016",
+      "indication": "Chronic severe disabling pain unresponsive to non-opioid analgesia. Two additional strengths (60 mg/30 mg and 80 mg/40 mg) requested to enab",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "oxycodone hydrochloride",
+      "year": "2015",
+      "indication": "Chronic pain management in patients unresponsive to non-opioid analgesics. The 5 mg modified release strength was being sought to provide pr",
+      "outcome": "Not recommended"
+    },
+    {
+      "name": "paliperidone",
+      "year": "2025",
+      "indication": "Maintenance treatment of schizophrenia in adults following initial treatment with another long-acting antipsychotic injection.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "paliperidone palmitate",
+      "year": "2022",
+      "indication": "Maintenance treatment of schizophrenia in adult patients who have been adequately treated with 1-month paliperidone palmitate for at least 4",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "pancreatic extract",
+      "year": "2020",
+      "indication": "Pancreatic enzyme replacement in paediatric and adult patients with Pancreatic Exocrine Insufficiency (PEI), including cystic fibrosis, chro",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "pasireotide",
+      "year": "2015",
+      "indication": "Treatment of acromegaly in patients inadequately controlled with either octreotide LAR 30mg or lanreotide autogel 120mg.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "desvenlafaxine succinate",
+      "year": "",
+      "indication": "Treatment of major depressive disorder (MDD) including prevention of relapse.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "lanthanum carbonate hydrate",
+      "year": "",
+      "indication": "Management and maintenance of hyperphosphataemia in patients with chronic kidney disease on dialysis whose serum phosphate is not controlled",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "methyl 5-aminolevulinate hydrochloride",
+      "year": "",
+      "indication": "Treatment of superficial basal cell carcinoma (sBCC) in patients who cannot have surgical excision, cryotherapy, or curettage with diathermy",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "paricalcitol",
+      "year": "",
+      "indication": "Treatment of patients with end-stage chronic renal disease receiving dialysis who have secondary hyperparathyroidism (iPTH >300 pg/mL with e",
+      "outcome": "Not recommended"
+    },
+    {
+      "name": "sibutramine hydrochloride",
+      "year": "",
+      "indication": "Management of type 2 diabetes with obesity (BMI \u226530 kg/m\u00b2) and abnormalities in high density lipoproteins or triglycerides in adults aged 18",
+      "outcome": "Not recommended"
+    },
+    {
+      "name": "sitagliptin phosphate",
+      "year": "",
+      "indication": "Type 2 diabetes mellitus in dual combination therapy with metformin or sulfonylurea when a combination of metformin and sulfonylurea is cont",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "tamsulosin hydrochloride",
+      "year": "",
+      "indication": "Relief of lower urinary tract symptoms (LUTS) due to benign prostatic hyperplasia (BPH), including symptoms such as hesitancy, dribbling, no",
+      "outcome": "Not recommended"
+    },
+    {
+      "name": "amino acid formula with carbohydrate, vitamins, minerals and trace elements without phenylalanine",
+      "year": "2016",
+      "indication": "Phenylketonuria (PKU) management in children aged 6 months to 10 years.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "progesterone",
+      "year": "2024",
+      "indication": "Luteal phase support as part of an assisted reproductive technology (ART) treatment cycle for infertile women.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "propranolol",
+      "year": "2017",
+      "indication": "Treatment of proliferating infantile hemangioma requiring systemic therapy, including life-threatening hemangioma, ulcerated hemangioma with",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "protein formula with vitamins and minerals, low in potassium, phosphorus, calcium, chloride and vitamin a",
+      "year": "2020",
+      "indication": "Treatment of chronic renal failure in children aged 3 to 18 years requiring low modified protein, low phosphorus, and/or low potassium diet.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "protein formula with carbohydrate, fat, vitamins, minerals and transforming growth factor beta-2",
+      "year": "2020",
+      "indication": "Dietary management of Crohn disease in adults and children over 5 years of age, for use in active or remission phases as enteral nutrition.",
+      "outcome": "Noted"
+    },
+    {
+      "name": "protein formula with carbohydrate, fat, fibre, vitamins and minerals",
+      "year": "2015",
+      "indication": "Dietary management of conditions requiring a low energy enteral tube feed in children with cerebral palsy aged 1-12 years who have low energ",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "casein protein formula with vitamins and minerals, low in potassium, phosphorus, calcium, chloride and vitamin a",
+      "year": "",
+      "indication": "Dietary management of chronic kidney disease in patients aged 3 to 18 years. The formulation provides higher protein concentration and doubl",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "protein hydrolysate formula with medium chain triglycerides",
+      "year": "2018",
+      "indication": "Nutritional support for patients requiring protein hydrolysate formula with medium chain triglycerides as a food for special medical purpose",
+      "outcome": "Recommended"
+    },
+    {
+      "name": "rabeprazole",
+      "year": "2022",
+      "indication": "Treatment of gastro-oesophageal reflux disease (GORD), prevention of relapse of GORD, symptomatic treatment of GORD, and treatment of active",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "relugolix with estradiol and norethisterone acetate",
+      "year": "2024",
+      "indication": "Treatment of moderate to severe pain associated with endometriosis in women who have failed to gain adequate pain relief from hormonal treat",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "rifaximin",
+      "year": "2019",
+      "indication": "Prevention of recurrence of hepatic encephalopathy in patients with prior episodes, to be used in combination with lactulose if tolerated.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "saxagliptin with metformin",
+      "year": "2013",
+      "indication": "Type 2 diabetes mellitus in patients with HbA1c greater than 7% despite metformin monotherapy, where metformin and sulfonylurea combination ",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "seladelpar",
+      "year": "",
+      "indication": "Treatment of primary biliary cholangitis in patients with inadequate response to ursodeoxycholic acid (UDCA) or intolerance to UDCA.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "sevelamer carbonate",
+      "year": "2019",
+      "indication": "Management of hyperphosphataemia in patients with chronic kidney disease that require dialysis.",
+      "outcome": "Recommended"
+    },
+    {
+      "name": "sodium zirconium cyclosilicate",
+      "year": "2024",
+      "indication": "Treatment of chronic hyperkalaemia in adult patients with chronic kidney disease Stage 3-4 who are receiving or indicated for renin-angioten",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "somapacitan",
+      "year": "2023",
+      "indication": "Treatment of paediatric patients with growth hormone deficiency (GHD), including short stature associated with biochemical GHD (SSABGHD) and",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "somatrogon",
+      "year": "2022",
+      "indication": "Treatment of growth hormone deficiency in the paediatric population, including short stature associated with biochemical growth hormone defi",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "sucroferric oxyhydroxide",
+      "year": "2015",
+      "indication": "Treatment of hyperphosphataemia in patients undergoing dialysis for chronic kidney disease.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "tapentadol",
+      "year": "2013",
+      "indication": "Chronic severe disabling pain not responding to non-narcotic analgesics.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "teduglutide",
+      "year": "2021",
+      "indication": "Treatment of paediatric patients with Type III (chronic) short bowel syndrome with intestinal failure (SBS-IF) who are dependent on parenter",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "oxycodone, tramadol, codeine, hydromorphone, morphine, tapentadol, buprenorphine, fentanyl, dihydrocodeine, methadone, pethidine",
+      "year": "2019",
+      "indication": "Management of acute severe pain unresponsive to non-opioid analgesics, and management of severe chronic pain, cancer pain, and palliative ca",
+      "outcome": "Noted"
+    },
+    {
+      "name": "thyroxine sodium",
+      "year": "2016",
+      "indication": "Management of demonstrated thyroid hormone deficiency and suppression of TSH for management of TSH-responsive tumours of the thyroid. The 25",
+      "outcome": "Not recommended"
+    },
+    {
+      "name": "tramadol hydrochloride with paracetamol",
+      "year": "2018",
+      "indication": "Treatment of acute and chronic pain, specifically for patients in whom aspirin and/or paracetamol alone are inappropriate or have failed. Th",
+      "outcome": "Not recommended"
+    },
+    {
+      "name": "triglycerides medium chain formula",
+      "year": "2020",
+      "indication": "Dietary management of patients with fat malabsorption due to liver disease, short gut syndrome, cystic fibrosis or gastrointestinal disorder",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "triglycerides long chain with glucose polymer",
+      "year": "2014",
+      "indication": "Inborn errors of protein metabolism in patients unable to meet their energy requirements with permitted food and formulae.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "triglycerides medium chain and long chain with glucose polymer",
+      "year": "2020",
+      "indication": "Dietary management of proven inborn errors of protein metabolism.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "medium chain triglycerides formula",
+      "year": "2020",
+      "indication": "Dietary management of conditions requiring a source of medium chain triglycerides.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "triglycerides medium chain formula; protein formula with carbohydrate, fat, vitamins and minerals",
+      "year": "2019",
+      "indication": "Nutritional supplementation for patients requiring specialized medical nutrition (medium chain triglycerides and protein formulas for malabs",
+      "outcome": "Recommended"
+    },
+    {
+      "name": "triglycerides, medium chain",
+      "year": "2022",
+      "indication": "Ketogenic diet for intractable seizures, glucose transport protein defect, or pyruvate dehydrogenase deficiency; dietary management of chylo",
+      "outcome": "Recommended"
+    },
+    {
+      "name": "triptorelin",
+      "year": "2021",
+      "indication": "Treatment of central precocious puberty (CPP) in children 2 years and older with onset before 8 years in girls and 10 years in boys.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "triptorelin acetate",
+      "year": "2016",
+      "indication": "Down-regulation and prevention of premature luteinising hormone (LH) surges in women undergoing controlled ovarian hyperstimulation (COH) as",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "tyrosine with carbohydrate",
+      "year": "2019",
+      "indication": "Dietary management of phenylketonuria (PKU). The submission sought to amend the listing to include an age restriction to patients aged 3 yea",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "ulipristal acetate",
+      "year": "2017",
+      "indication": "Acute management of moderate to severe symptomatic uterine fibroids prior to planned surgery.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "ursodeoxycholic acid",
+      "year": "2023",
+      "indication": "Treatment of primary biliary cholangitis (previously known as primary biliary cirrhosis). An autoimmune disease of the liver marked by gradu",
+      "outcome": "Noted"
+    },
+    {
+      "name": "varenicline",
+      "year": "2017",
+      "indication": "Nicotine dependence \u2014 aid to achieving abstinence from smoking. This submission requested a change to enable continuing PBS-subsidised treat",
+      "outcome": "Recommended"
+    },
+    {
+      "name": "vitamins, minerals and trace elements with carbohydrate",
+      "year": "2020",
+      "indication": "Dietary management of conditions requiring a highly restrictive therapeutic diet in infants and young children.",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "vitamins, minerals and trace elements formula",
+      "year": "2017",
+      "indication": "Dietary management of conditions requiring a highly restrictive therapeutic diet, including ketogenic diet for refractory epilepsy and inbor",
+      "outcome": "Recommended with restriction"
+    },
+    {
+      "name": "whey protein formula with medium chain triglycerides, carbohydrate, vitamins and minerals",
+      "year": "2016",
+      "indication": "Dietary management of conditions requiring a source of medium chain triglycerides in infants with fat malabsorption due to liver disease, sh",
+      "outcome": "Deferred"
+    },
+    {
+      "name": "whey protein formula supplemented with amino acids, vitamins and minerals, and low in protein, phosphate, potassium and lactose",
+      "year": "2020",
+      "indication": "Dietary management of chronic renal failure in infants and young children.",
       "outcome": "Recommended with restriction"
     }
   ]
