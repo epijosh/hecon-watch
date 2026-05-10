@@ -142,6 +142,11 @@ only does new work.
 - Similar Drugs panel (precomputed nearest-neighbours from Voyage).
 - Semantic precedent search at `/api/search` — UI mode toggle in the search
   bar, sentence-style suggestions, loading + error states, in-session cache.
+  Filter chips for outcome (server-side), year (client-side), and therapy area
+  (client-side, top six therapy areas built from `SITE_DATA.psd.drugs`).
+- About / methodology page at `#/about` — data sources, extraction approach,
+  precedent-search explanation, limitations, contact. Linked from the header
+  nav and the footer "Sections" column.
 - Homepage analytical panels:
   - Recently-published feed (top-left, 2/3 width)
   - "Coming up at PBAC" agenda panel (top-right, 1/3 width) — upcoming
@@ -162,10 +167,10 @@ only does new work.
 - Deployed to script.report.
 
 **Not yet built:**
-- About / Methodology page.
-- Contact page.
-- Filters on semantic search results (the API already supports
-  `&filter_outcome=`; no UI for it yet).
+- Standalone Contact page (footer / About-page mailto is the contact channel
+  for now).
+- ATC-class filter on semantic search (would need ATC code in the embeddings
+  meta — currently outcome / year / therapy only).
 
 ---
 

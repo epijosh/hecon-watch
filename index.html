@@ -165,6 +165,22 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 .semantic-callout { padding: 12px 16px; background: var(--bg2); border-left: 3px solid var(--blue); margin: 12px 0 18px; font-family: var(--ui); font-size: 12px; color: var(--text2); line-height: 1.5; }
 .semantic-callout strong { color: var(--text); font-weight: 600; }
 
+/* ── About page ────────────────────────────────────────────── */
+.about-article { max-width: 720px; margin: 0 auto; padding: 32px 20px 56px; }
+.about-header { padding-bottom: 22px; border-bottom: 2px solid var(--text); margin-bottom: 26px; }
+.about-header .eyebrow { font-family: var(--ui); font-size: 10px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: var(--text3); }
+.about-title { font-family: var(--display); font-size: 52px; font-weight: 700; line-height: 1; margin: 8px 0 14px; color: var(--text); }
+.about-title em { color: var(--red); font-style: normal; }
+.about-lede { font-family: var(--body); font-size: 18px; line-height: 1.5; color: var(--text2); margin: 0; }
+.about-section { margin: 24px 0; }
+.about-section h2 { font-family: var(--display); font-size: 22px; font-weight: 700; color: var(--text); margin: 0 0 10px; }
+.about-section p { font-family: var(--body); font-size: 15px; line-height: 1.65; color: var(--text2); margin: 0 0 10px; }
+.about-section ul { font-family: var(--body); font-size: 15px; line-height: 1.65; color: var(--text2); padding-left: 20px; margin: 4px 0 10px; }
+.about-section li { margin-bottom: 6px; }
+.about-section code { background: var(--bg3); padding: 1px 6px; border-radius: 3px; font-size: 13px; }
+.about-section a { color: var(--red); text-decoration: none; border-bottom: 1px solid var(--red); }
+.about-back { margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--border); font-family: var(--ui); font-size: 12px; }
+
 /* ── KPI Strip ───────────────────────────────────────────────── */
 /* ── Recently-published feed ──────────────────────────────── */
 .recent-strip { padding: 26px 0; border-bottom: 1px solid var(--border); background: var(--bg); }
@@ -581,6 +597,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
         <li><a id="nav-decisions" onclick="navTo('decisions');return false;">All decisions</a></li>
         <li><a id="nav-spend" onclick="navTo('spend');return false;">PBS spend</a></li>
         <li><a id="nav-trends" onclick="navTo('trends');return false;">Trends</a></li>
+        <li><a id="nav-about" onclick="navTo('about');return false;">About</a></li>
       </ul>
       <div class="nav-actions">
         <button class="theme-btn sans" onclick="toggleTheme()" title="Toggle between light and dark mode" aria-label="Toggle theme">
@@ -652,9 +669,15 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
       <div class="filter-group">
         <span class="filter-label">Year</span>
         <button class="chip active" data-filter="yearmin" data-value="" onclick="setSemanticFilter('yearmin','',this)">All time</button>
+        <button class="chip" data-filter="yearmin" data-value="2025" onclick="setSemanticFilter('yearmin','2025',this)">2025+</button>
         <button class="chip" data-filter="yearmin" data-value="2024" onclick="setSemanticFilter('yearmin','2024',this)">2024+</button>
         <button class="chip" data-filter="yearmin" data-value="2022" onclick="setSemanticFilter('yearmin','2022',this)">2022+</button>
         <button class="chip" data-filter="yearmin" data-value="2020" onclick="setSemanticFilter('yearmin','2020',this)">2020+</button>
+      </div>
+      <div class="filter-group" id="filter-group-therapy">
+        <span class="filter-label">Therapy</span>
+        <button class="chip active" data-filter="therapy" data-value="" onclick="setSemanticFilter('therapy','',this)">Any</button>
+        <!-- top therapy chips injected at init time -->
       </div>
       <span class="filter-clear" id="filter-clear" onclick="clearSemanticFilters()" style="display:none">Clear filters</span>
     </div>
@@ -1056,6 +1079,64 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
 
 </div><!-- /main-content -->
 
+<!-- ─── ABOUT ───────────────────────────────────────────────────────── -->
+<div id="about-content" style="display:none">
+  <div class="container">
+    <article class="about-article">
+      <header class="about-header">
+        <div class="eyebrow">About</div>
+        <h1 class="about-title">script.<em>report</em></h1>
+        <p class="about-lede">An independent dashboard of every PBAC Public Summary Document and the PBS expenditure that follows. Built from public data on pbs.gov.au.</p>
+      </header>
+
+      <section class="about-section">
+        <h2>What you're looking at</h2>
+        <p>The Pharmaceutical Benefits Advisory Committee (PBAC) decides which medicines the Australian Government subsidises through the PBS. After every meeting it publishes a Public Summary Document (PSD) for each application — what the sponsor submitted, what evidence was provided, and whether it was recommended for listing. script.report aggregates every PSD published since the public summary regime began, alongside the actual PBS expenditure once a medicine is listed.</p>
+      </section>
+
+      <section class="about-section">
+        <h2>Where the data comes from</h2>
+        <ul>
+          <li><strong>Decisions</strong> — PBAC PSDs (PDF + HTML) scraped from pbs.gov.au.</li>
+          <li><strong>Expenditure</strong> — monthly PBS expenditure stats from Services Australia.</li>
+          <li><strong>Drug schedule + ATC codes</strong> — the monthly PBS Schedule API.</li>
+          <li><strong>Upcoming meetings</strong> — PBAC cycle calendar PDFs and meeting agendas.</li>
+        </ul>
+        <p>Every figure on the site can be traced back to a public pbs.gov.au URL. Source links sit on each drug page.</p>
+      </section>
+
+      <section class="about-section">
+        <h2>How extraction works</h2>
+        <p>PSDs are 4–80+ page documents written in dense PBAC prose. Anthropic's Claude Haiku model extracts a fixed schema of around 25 fields from each one — indication, comparator, evidence type, ICER, recommendation, rejection reasons — into a structured CSV. Drug pages then surface those fields with a backlink to the original PSD.</p>
+      </section>
+
+      <section class="about-section">
+        <h2>How precedent search works</h2>
+        <p>Each drug's extracted profile is converted into an embedding vector with Voyage AI's <code>voyage-3</code> model. Your query is embedded the same way and results are ranked by cosine similarity. The Match score on each card is that similarity (0–1). The outcome / year / therapy chips narrow the candidate pool.</p>
+      </section>
+
+      <section class="about-section">
+        <h2>Limitations</h2>
+        <ul>
+          <li><strong>Extraction errors.</strong> Claude Haiku is good but not perfect; some fields will be wrong, especially in older or unusually-formatted PSDs. Always trust the source PSD over the extracted field.</li>
+          <li><strong>Pricing is redacted</strong> in public PSDs. Published ICERs are nominal "submitted" values, not the final price negotiated through any managed-entry agreement.</li>
+          <li><strong>Coverage</strong> is the PBAC PSD record only — non-PBAC subsidy programs (LSDP, etc.) are not included.</li>
+          <li><strong>Not advice.</strong> This is a research and journalism aid, not legal, clinical, or commercial advice.</li>
+        </ul>
+      </section>
+
+      <section class="about-section">
+        <h2>Who built it</h2>
+        <p>script.report is built and maintained by Josh Ciardi (<a href="mailto:joshciardi@icloud.com">joshciardi@icloud.com</a>). Found a bug, a missing PSD, or want a feature — get in touch.</p>
+      </section>
+
+      <div class="about-back">
+        <span class="sans" style="cursor:pointer;color:var(--text3)" onclick="navTo('dashboard')">← Back to dashboard</span>
+      </div>
+    </article>
+  </div>
+</div>
+
 <!-- ─── FOOTER ──────────────────────────────────────────────────────── -->
 <footer>
   <div class="container">
@@ -1076,6 +1157,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
         <button class="footer-link" onclick="navTo('decisions')">All decisions</button>
         <button class="footer-link" onclick="navTo('spend')">PBS spend</button>
         <button class="footer-link" onclick="navTo('trends')">Trends</button>
+        <button class="footer-link" onclick="navTo('about')">About</button>
       </div>
       <div class="footer-col">
         <div class="footer-col-title">Contact</div>
@@ -1098,7 +1180,7 @@ let _browseRows = [];
 let _browseFiltered = [];
 let _browseSort = { field: 'year', asc: false };
 let _browseFilters = { outcome: 'all', therapy: 'all' };
-let _currentMode = 'browse'; // 'browse' | 'results' | 'detail'
+let _currentMode = 'browse'; // 'browse' | 'results' | 'detail' | 'about'
 
 const COLOURS = {
   primary: '#C62828',
@@ -2601,15 +2683,15 @@ function setSearchMode(mode, btn) {
   }
 }
 
-// ── Semantic filters (outcome → server, year → client) ──────────────────────
-let _semanticFilters = { outcome: '', yearmin: '' };
+// ── Semantic filters (outcome → server, year + therapy → client) ────────────
+let _semanticFilters = { outcome: '', yearmin: '', therapy: '' };
 
 function setSemanticFilter(kind, value, btn) {
   _semanticFilters[kind] = value || '';
   document.querySelectorAll(`.search-filters .chip[data-filter="${kind}"]`).forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
 
-  const anyActive = !!(_semanticFilters.outcome || _semanticFilters.yearmin);
+  const anyActive = !!(_semanticFilters.outcome || _semanticFilters.yearmin || _semanticFilters.therapy);
   const cl = document.getElementById('filter-clear');
   if (cl) cl.style.display = anyActive ? 'inline' : 'none';
 
@@ -2619,7 +2701,7 @@ function setSemanticFilter(kind, value, btn) {
 }
 
 function clearSemanticFilters() {
-  _semanticFilters = { outcome: '', yearmin: '' };
+  _semanticFilters = { outcome: '', yearmin: '', therapy: '' };
   document.querySelectorAll('.search-filters .chip').forEach(b => {
     b.classList.toggle('active', !b.dataset.value);
   });
@@ -2629,6 +2711,33 @@ function clearSemanticFilters() {
   const inp = document.getElementById('search-input');
   const q = (inp && inp.value || '').trim();
   if (q && _searchMode === 'semantic') performSemanticSearch(q);
+}
+
+// Build therapy-area chips from the top N most-common therapy areas in the
+// site dataset. Called from initAll once SITE_DATA is in window.
+function buildTherapyFilterChips() {
+  const group = document.getElementById('filter-group-therapy');
+  if (!group || !window.SITE_DATA || !SITE_DATA.psd || !SITE_DATA.psd.drugs) return;
+  const counts = {};
+  for (const k in SITE_DATA.psd.drugs) {
+    const t = (SITE_DATA.psd.drugs[k].therapy_area || '').trim();
+    if (!t) continue;
+    counts[t] = (counts[t] || 0) + 1;
+  }
+  const top = Object.entries(counts).sort((a,b) => b[1]-a[1]).slice(0, 6);
+  // Avoid double-injecting on re-init
+  group.querySelectorAll('.chip[data-injected="1"]').forEach(b => b.remove());
+  for (const [name] of top) {
+    const value = name.toLowerCase();
+    const btn = document.createElement('button');
+    btn.className = 'chip';
+    btn.dataset.filter = 'therapy';
+    btn.dataset.value = value;
+    btn.dataset.injected = '1';
+    btn.textContent = name;
+    btn.addEventListener('click', () => setSemanticFilter('therapy', value, btn));
+    group.appendChild(btn);
+  }
 }
 
 function handleSearchKey(e) {
@@ -2739,15 +2848,24 @@ function renderSemanticResults(query, data) {
   const allResults = (data && data.results) || [];
   const model = (data && data.model) || 'voyage';
 
-  // Apply client-side year filter (server already applied outcome).
-  const yearMin = parseInt(_semanticFilters.yearmin || '0', 10) || 0;
-  const results = yearMin
-    ? allResults.filter(r => parseInt(r.year || '0', 10) >= yearMin)
-    : allResults;
+  // Apply client-side year + therapy filters (server already applied outcome).
+  const yearMin   = parseInt(_semanticFilters.yearmin || '0', 10) || 0;
+  const therapyF  = (_semanticFilters.therapy || '').toLowerCase();
+  const drugsLkup = (window.SITE_DATA && SITE_DATA.psd && SITE_DATA.psd.drugs) || {};
+
+  let results = allResults;
+  if (yearMin) results = results.filter(r => parseInt(r.year || '0', 10) >= yearMin);
+  if (therapyF) {
+    results = results.filter(r => {
+      const od = drugsLkup[(r.drug || '').toLowerCase()];
+      return ((od && od.therapy_area) || '').toLowerCase() === therapyF;
+    });
+  }
 
   const filteredOut = allResults.length - results.length;
+  const hiddenLabel = [yearMin && 'year', therapyF && 'therapy'].filter(Boolean).join(' + ');
   const filterNote = filteredOut > 0
-    ? ` <span class="filter-note">(${filteredOut} hidden by year filter)</span>`
+    ? ` <span class="filter-note">(${filteredOut} hidden by ${hiddenLabel} filter)</span>`
     : '';
 
   if (!results.length) {
@@ -2764,7 +2882,7 @@ function renderSemanticResults(query, data) {
       </div>
       <div style="padding:24px 0;color:var(--text3);font-family:var(--ui);font-size:14px">
         ${allResults.length
-          ? 'Try widening the year filter or clearing the outcome filter.'
+          ? 'Try widening the year, therapy, or outcome filter.'
           : 'Try rephrasing — describe the indication, the type of evidence, the comparator, or the rejection reason.'}
       </div>
       <div style="margin-top:14px"><span class="sans" style="cursor:pointer;color:var(--text3)" onclick="clearSearch()">← Back to dashboard</span></div>`;
@@ -2957,8 +3075,8 @@ function clearSearch() {
   document.getElementById('search-input').value = '';
   document.getElementById('search-clear').classList.remove('visible');
   showMain();
-  // Drop a #/drug/<name> hash if present, so the URL reflects "back to dashboard".
-  if (location.hash.startsWith('#/drug/')) {
+  // Drop a #/drug/<name> or #/about hash if present, so the URL reflects "back to dashboard".
+  if (location.hash.startsWith('#/drug/') || location.hash === '#/about') {
     history.pushState(null, '', location.pathname + location.search);
     document.title = _DEFAULT_TITLE;
   }
@@ -2966,6 +3084,7 @@ function clearSearch() {
 
 function showResults() {
   document.getElementById('main-content').style.display = 'none';
+  const ab = document.getElementById('about-content'); if (ab) ab.style.display = 'none';
   document.getElementById('search-results').classList.add('active');
   _currentMode = 'results';
 }
@@ -2973,13 +3092,28 @@ function showResults() {
 function showMain() {
   document.getElementById('search-results').classList.remove('active');
   document.getElementById('main-content').style.display = '';
+  const ab = document.getElementById('about-content'); if (ab) ab.style.display = 'none';
   _currentMode = 'browse';
   applyBrowseFilters();
 }
 
 function hideMain() {
   document.getElementById('main-content').style.display = 'none';
+  const ab = document.getElementById('about-content'); if (ab) ab.style.display = 'none';
   document.getElementById('search-results').classList.add('active');
+}
+
+function showAbout() {
+  document.getElementById('search-results').classList.remove('active');
+  document.getElementById('main-content').style.display = 'none';
+  const ab = document.getElementById('about-content');
+  if (ab) ab.style.display = '';
+  _currentMode = 'about';
+  document.title = 'About — script.report';
+  document.querySelectorAll('#nav-links a').forEach(a => a.classList.remove('active'));
+  const link = document.getElementById('nav-about');
+  if (link) link.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'auto' });
 }
 
 // ╔═══════════════════════════════════════════════════════════════════╗
@@ -3362,6 +3496,10 @@ const _DEFAULT_TITLE = 'script.report — which medicines Australia funds';
 // Resolve a drug from a URL hash like "#/drug/aspirin" and open its detail
 // page if the data is loaded. Called on initial load and on popstate.
 function routeFromHash() {
+  if (location.hash === '#/about') {
+    showAbout();
+    return;
+  }
   const m = (location.hash || '').match(/^#\/drug\/(.+)$/);
   if (m) {
     const name = decodeURIComponent(m[1]).toLowerCase();
@@ -3375,10 +3513,8 @@ function routeFromHash() {
     }
   }
   // Hash empty or no match — make sure we're on the dashboard view
-  if (_currentMode === 'detail') {
-    document.getElementById('search-results').classList.remove('active');
-    document.getElementById('main-content').style.display = '';
-    _currentMode = 'browse';
+  if (_currentMode === 'detail' || _currentMode === 'about') {
+    showMain();
     document.title = _DEFAULT_TITLE;
   }
 }
@@ -3392,6 +3528,13 @@ function navTo(section) {
   document.querySelectorAll('#nav-links a').forEach(a => a.classList.remove('active'));
   const el = document.getElementById('nav-' + section);
   if (el) el.classList.add('active');
+
+  if (section === 'about') {
+    if (location.hash !== '#/about') history.pushState(null, '', '#/about');
+    showAbout();
+    return;
+  }
+
   if (_currentMode !== 'browse') clearSearch();
 
   const map = { dashboard: null, decisions: 'browse-section', spend: 'spend-section', trends: 'sec-pbs-spend' };
@@ -3462,7 +3605,8 @@ function initAll() {
   buildICERDist();
   buildPersistChart();
   buildTherapyOutcomes();
-  // If the page was opened with a #/drug/<name> deep-link, route to it.
+  buildTherapyFilterChips();
+  // If the page was opened with a #/drug/<name> or #/about deep-link, route to it.
   routeFromHash();
 }
 
