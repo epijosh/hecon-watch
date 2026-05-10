@@ -5,6 +5,7 @@ Usage:
     python -m script_report refresh       # full pipeline (download → extract → build → deploy)
     python -m script_report download      # download new PBAC PSDs
     python -m script_report extract       # Haiku field extraction
+    python -m script_report sponsor       # backfill sponsor column on existing rows
     python -m script_report spend         # fetch PBS drug spend Excel
     python -m script_report schedule      # backfill ATC codes from PBS Schedule
     python -m script_report atc           # parse ATC class data
@@ -26,6 +27,7 @@ _COMMANDS = {
     "refresh":  ("script_report.refresh",               "main"),
     "download": ("script_report.scrapers.psd_downloader",   "main"),
     "extract":  ("script_report.extractors.psd_extractor",  "main"),
+    "sponsor":  ("script_report.extractors.sponsor_backfill","main"),
     "spend":    ("script_report.scrapers.pbs_spend",        "main"),
     "schedule": ("script_report.scrapers.pbs_schedule",     "main"),
     "atc":      ("script_report.parsers.atc_parser",        "main"),

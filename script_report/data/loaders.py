@@ -289,6 +289,163 @@ def _outcome_bucket(rec: str) -> str:
     return "unknown"
 
 
+# ── Sponsor name normalisation ──────────────────────────────────────────────
+# PBAC PSDs vary in how they print sponsor names ("Pfizer Australia", "Pfizer
+# Australia Pty Ltd", "Pfizer Pty Limited"). Strip a conservative set of
+# trailing legal / territorial tokens to collapse those variants into one
+# group, while displaying the most common verbatim form back to the user.
+_SPONSOR_LEGAL_RE = re.compile(
+    r"\s+(?:pty\s+ltd|pty\.?\s+limited|pty\.?|ltd\.?|limited|"
+    r"inc\.?|incorporated|llc|"
+    r"australia|australasia|oceania|aus\.?|au|"
+    # Generic corporate suffixes that don't denote a distinct entity.
+    # Deliberately excludes "healthcare" — e.g. Merck Healthcare (German)
+    # is a different company from Merck Sharp & Dohme.
+    r"pharmaceuticals|pharmaceutical|pharma|products)\b\.?$",
+    re.I,
+)
+
+# Trailing parentheticals like "Merck Sharp & Dohme (Australia)" or "BeiGene (AU)"
+_SPONSOR_PAREN_RE = re.compile(r"\s*\([^()]+\)\s*$")
+
+
+def _sponsor_key(s: str) -> str:
+    """Lowercased, suffix-stripped grouping key for a sponsor string.
+
+    Also normalises common formatting variants so 'Janssen-Cilag' and
+    'Janssen Cilag', or 'Bristol-Myers Squibb' and 'Bristol Myers Squibb',
+    collapse into the same group.
+    """
+    if not s:
+        return ""
+    out = s.strip()
+    # Repeat parenthetical + legal-suffix stripping until stable (some sponsors
+    # have both, e.g. "Merck Sharp & Dohme (Australia) Pty Ltd").
+    for _ in range(5):
+        new = _SPONSOR_PAREN_RE.sub("", out)
+        new = _SPONSOR_LEGAL_RE.sub("", new).strip().rstrip(",.")
+        if new == out:
+            break
+        out = new
+    out = out.lower()
+    # Hyphens/en-dashes/em-dashes/slashes → space; "&" → "and"; collapse spaces
+    out = re.sub(r"[–—‐\-/]+", " ", out)
+    out = re.sub(r"\s+&\s+", " and ", out)
+    out = re.sub(r"[.,()]+", " ", out)
+    out = re.sub(r"\s+", " ", out).strip()
+    return out
+
+
+def _compute_sponsor_stats(rows: list[dict], drug_summaries: dict[str, dict]) -> dict:
+    """Aggregate per-sponsor counts from raw extracted rows.
+
+    Each row = one PSD submission. Win rate is computed at the submission
+    level (rec bucket / total bucketable). Per-drug counts come from
+    drug_summaries' latest-decision view.
+
+    Drug ownership for spend attribution: a drug's PBS spend is credited
+    to a single sponsor — the one with the most recent Recommended
+    submission for that drug, falling back to the most recent submission
+    overall. This avoids double-counting biosimilars where several
+    sponsors have submitted the same molecule.
+
+    Returns a dict keyed by sponsor_key with:
+        display           most-common verbatim form
+        n_submissions     total submissions tagged to this sponsor
+        n_recommended     submissions whose outcome bucketed to 'rec'
+        n_deferred        submissions whose outcome bucketed to 'deferred'
+        n_not             submissions whose outcome bucketed to 'not'
+        drug_keys         all drugs this sponsor has submitted
+        owned_drug_keys   drugs this sponsor "owns" for spend (see above)
+        therapy_areas     {area: count}
+        last_year         most recent year on file
+    """
+    out: dict[str, dict] = {}
+    drug_latest_bucket: dict[str, str] = {
+        k: _outcome_bucket(s.get("recommendation"))
+        for k, s in drug_summaries.items()
+    }
+    # Per-drug submission log used for ownership assignment (drug → list of
+    # (sponsor_key, bucket, year, month)). Built in the same pass so we
+    # don't iterate rows twice.
+    drug_subs: dict[str, list[tuple[str, str, int, int]]] = {}
+
+    for row in rows:
+        sponsor = (row.get("sponsor") or "").strip()
+        if not sponsor:
+            continue
+        key = _sponsor_key(sponsor)
+        if not key:
+            continue
+
+        drug = (row.get("drug") or "").strip().lower()
+        if not drug:
+            m = re.match(r'^(.+?)-psd-', (row.get("filename") or "").lower())
+            drug = m.group(1).replace("-", " ") if m else ""
+        if not drug:
+            continue
+
+        bucket = _outcome_bucket(row.get("recommendation"))
+        therapy = (row.get("therapy_area") or "").strip()
+        yr = _safe_int(row.get("pbac_year")) or 0
+        mo = _safe_int(row.get("pbac_month")) or 0
+
+        entry = out.setdefault(key, {
+            "display":          sponsor,
+            "_display_counts":  {},
+            "n_submissions":    0,
+            "n_recommended":    0,
+            "n_deferred":       0,
+            "n_not":            0,
+            "drug_keys":        set(),
+            "owned_drug_keys":  set(),
+            "therapy_areas":    {},
+            "last_year":        0,
+        })
+        entry["_display_counts"][sponsor] = entry["_display_counts"].get(sponsor, 0) + 1
+        entry["n_submissions"] += 1
+        if bucket == "rec":      entry["n_recommended"] += 1
+        elif bucket == "not":    entry["n_not"] += 1
+        elif bucket == "deferred": entry["n_deferred"] += 1
+        entry["drug_keys"].add(drug)
+        if therapy:
+            entry["therapy_areas"][therapy] = entry["therapy_areas"].get(therapy, 0) + 1
+        if yr > entry["last_year"]:
+            entry["last_year"] = yr
+
+        drug_subs.setdefault(drug, []).append((key, bucket, yr, mo))
+
+    # Assign each drug to one owning sponsor: most-recent 'rec' wins; if no
+    # 'rec' on file, fall back to the most-recent submission of any kind.
+    for drug, subs in drug_subs.items():
+        subs.sort(key=lambda r: (r[2], r[3]), reverse=True)
+        owner = next((r[0] for r in subs if r[1] == "rec"), None)
+        if owner is None:
+            owner = subs[0][0]
+        if owner in out:
+            out[owner]["owned_drug_keys"].add(drug)
+
+    # Pick the most-common display form, and fill in drug-level counts (drugs
+    # currently listed = drugs whose latest decision bucketed to 'rec').
+    for key, entry in out.items():
+        entry["display"] = max(entry["_display_counts"].items(), key=lambda kv: kv[1])[0]
+        del entry["_display_counts"]
+        drug_keys = entry["drug_keys"]
+        entry["n_drugs"] = len(drug_keys)
+        entry["n_drugs_listed"] = sum(
+            1 for d in drug_keys if drug_latest_bucket.get(d) == "rec"
+        )
+        # Top therapy area by submission count
+        if entry["therapy_areas"]:
+            entry["top_therapy_area"] = max(
+                entry["therapy_areas"].items(), key=lambda kv: kv[1]
+            )[0]
+        else:
+            entry["top_therapy_area"] = ""
+
+    return out
+
+
 def _compute_deltas(history: list[dict]) -> list[dict]:
     """Given a chronologically sorted history, compute per-pair deltas.
 
@@ -655,6 +812,12 @@ def load_psd_extracted() -> dict:
           f"resubmission median {time_to_listing['median_months_multi']:.0f} mo "
           f"({len(multi_delays)} drugs)")
 
+    # ── Sponsor stats (raw — spend joined later by attach_sponsor_spend) ─────
+    sponsors_raw = _compute_sponsor_stats(good, drug_summaries)
+    n_with_sponsor = sum(s["n_submissions"] for s in sponsors_raw.values())
+    print(f"  Sponsors      : {len(sponsors_raw)} unique sponsors across "
+          f"{n_with_sponsor:,} submissions")
+
     return {
         "total":             len(drug_summaries),
         "drugs":             drug_summaries,
@@ -666,6 +829,7 @@ def load_psd_extracted() -> dict:
         "comparator_index":  comparator_index,
         "trial_index":       trial_index,
         "time_to_listing":   time_to_listing,
+        "sponsors_raw":      sponsors_raw,
     }
 
 
@@ -726,6 +890,76 @@ def attach_nearest_to_psd(psd: dict, nearest: dict) -> None:
         matched += 1
     if matched:
         print(f"  Attached nearest-neighbour lists to {matched} drugs")
+
+
+def attach_sponsor_spend(psd: dict, drug_spend: dict | None) -> None:
+    """Join sponsor stats with PBS drug spend and finalise psd['sponsors'].
+
+    Reads psd['sponsors_raw'] (built by load_psd_extracted) and produces a
+    sorted list of leaderboard entries — one per sponsor — keyed by total
+    PBS govt benefit captured. Spend is the sum of FY-latest govt benefit
+    across each sponsor's drugs as found in drug_spend['by_drug'] (newer
+    drugs without spend yet contribute 0).
+
+    No-ops cleanly if the sponsor column is empty (e.g. before backfill).
+    """
+    if not psd:
+        return
+    raw = psd.get("sponsors_raw") or {}
+    if not raw:
+        psd["sponsors"] = []
+        return
+
+    by_drug = (drug_spend or {}).get("by_drug") or {}
+
+    leaderboard: list[dict] = []
+    for key, entry in raw.items():
+        # Spend is attributed to the owning sponsor only (see _compute_sponsor_stats)
+        # so biosimilars don't get their spend double-counted across sponsors.
+        owned = entry.get("owned_drug_keys") or set()
+        per_drug_spend: list[tuple[str, int]] = []
+        total_spend = 0
+        for d in owned:
+            sp = by_drug.get(d.lower())
+            if sp and sp.get("gov_benefit_aud"):
+                amt = int(sp["gov_benefit_aud"])
+                total_spend += amt
+                per_drug_spend.append((d, amt))
+        per_drug_spend.sort(key=lambda kv: kv[1], reverse=True)
+
+        n_subs = entry["n_submissions"]
+        n_rec  = entry["n_recommended"]
+        bucketable = n_rec + entry["n_not"] + entry["n_deferred"]
+        pct_rec = round(n_rec * 100 / bucketable) if bucketable else None
+
+        leaderboard.append({
+            "sponsor":           entry["display"],
+            "key":               key,
+            "n_submissions":     n_subs,
+            "n_drugs":           entry["n_drugs"],
+            "n_drugs_listed":    entry["n_drugs_listed"],
+            "n_recommended":     n_rec,
+            "n_not":             entry["n_not"],
+            "n_deferred":        entry["n_deferred"],
+            "pct_recommended":   pct_rec,            # null when no bucketable submissions
+            "top_therapy_area":  entry["top_therapy_area"],
+            "last_year":         entry["last_year"],
+            "total_spend_aud":   total_spend,
+            "top_drugs":         [
+                {"drug": d, "spend_aud": v} for d, v in per_drug_spend[:3]
+            ],
+        })
+
+    # Sort by total spend desc; tiebreak by submission count desc
+    leaderboard.sort(key=lambda r: (r["total_spend_aud"], r["n_submissions"]), reverse=True)
+    psd["sponsors"] = leaderboard
+    # sponsors_raw was internal to the build — drop it so it doesn't bloat site_data.js
+    psd.pop("sponsors_raw", None)
+
+    n_with_spend = sum(1 for r in leaderboard if r["total_spend_aud"] > 0)
+    total_spend = sum(r["total_spend_aud"] for r in leaderboard)
+    print(f"  Sponsor leaderboard: {len(leaderboard)} entries, {n_with_spend} with linked spend, "
+          f"total ${total_spend/1e9:.2f}B captured")
 
 
 # ── 5. Drug-level PBS spend ──────────────────────────────────────────────────

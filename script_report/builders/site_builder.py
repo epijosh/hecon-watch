@@ -24,6 +24,7 @@ from script_report.data.loaders import (
     load_psd_nearest,
     attach_nearest_to_psd,
     attach_agenda_drug_slugs,
+    attach_sponsor_spend,
 )
 
 
@@ -129,6 +130,9 @@ def main() -> None:
     print("\n[7/7] Loading upcoming PBAC + Intracycle agendas...")
     agendas = load_pbac_agendas()
     attach_agenda_drug_slugs(agendas, psd)
+
+    print("\nJoining sponsor stats with PBS drug spend...")
+    attach_sponsor_spend(psd, drug_spend)
 
     print("\nWriting output...")
     write_site_data(pbs, pbac, psd, drug_spend, calendar, agendas)

@@ -100,6 +100,7 @@ FIELDS = [
     "trial_size",
     "primary_endpoint",
     "economic_model",
+    "sponsor",
     # ─────────────────────────────────────────────────────────────────────────
     "pbac_year",
     "pbac_month",
@@ -138,7 +139,8 @@ Return ONLY a JSON object with these fields (use null for anything not found):
   "line_of_therapy": "one of: First-line | Second-line | Later-line | Any | Not applicable | null",
   "trial_size": <integer — number of patients in the pivotal trial(s), null if not stated>,
   "primary_endpoint": "one of: OS | PFS | DFS | ORR | QoL | Surrogate | Cost-minimisation | Other | null",
-  "economic_model": "one of: CUA | CEA | Cost-minimisation | BIA only | Not modelled | null"
+  "economic_model": "one of: CUA | CEA | Cost-minimisation | BIA only | Not modelled | null",
+  "sponsor": "the company that lodged the submission to PBAC (the 'Sponsor' field on the PSD title page) — return the company name as printed, lightly normalised (drop trailing 'Pty Ltd', 'Limited', 'Australia', 'Pharmaceuticals' suffixes only when they appear at the very end). Examples: 'Roche Products', 'Merck Sharp & Dohme', 'Novartis Pharmaceuticals'. Use null if not stated."
 }}
 
 Return ONLY the JSON object. No markdown fences, no explanation, no extra text.

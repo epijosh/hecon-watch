@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Lora:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
 <script>window.SITE_DATA = window.SITE_DATA || null;</script>
-<script src="site_data.js?v=691f9298"></script>
+<script src="site_data.js?v=bfeaa273"></script>
 
 <!-- Vercel Web Analytics — static-site script injection.
      Cookie-less, no PII collected. Vercel serves /_vercel/insights/script.js
@@ -292,6 +292,30 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 .ttl-chart-title { font-family: var(--ui); font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; }
 .ttl-foot { font-family: var(--body); font-size: 12px; color: var(--text3); font-style: italic; margin-top: 10px; }
 @media (max-width: 800px) { .ttl-stats { grid-template-columns: 1fr; } }
+
+/* ── Sponsor leaderboard ───────────────────────────────────── */
+.lb-strip { padding: 26px 0; border-bottom: 1px solid var(--border); background: var(--bg2); }
+.lb-table-head { display: grid; grid-template-columns: 36px 1.7fr 1fr 1fr 1.1fr; gap: 14px; padding: 10px 4px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); font-family: var(--ui); font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text3); }
+.lb-list { }
+.lb-row { display: grid; grid-template-columns: 36px 1.7fr 1fr 1fr 1.1fr; gap: 14px; padding: 14px 4px; border-bottom: 1px solid var(--border); align-items: start; transition: background .12s, padding-left .12s; }
+.lb-row:hover { background: var(--bg); padding-left: 12px; }
+.lb-rank { font-family: var(--display); font-size: 17px; font-weight: 700; color: var(--text3); padding-top: 1px; }
+.lb-name { font-family: var(--display); font-size: 15px; font-weight: 700; letter-spacing: -.2px; line-height: 1.25; }
+.lb-sub  { font-family: var(--ui); font-size: 11px; color: var(--text3); margin-top: 3px; line-height: 1.4; }
+.lb-num  { font-family: var(--display); font-size: 17px; font-weight: 700; color: var(--text); line-height: 1; }
+.lb-pct  { font-family: var(--ui); font-size: 11px; color: var(--text2); margin-top: 3px; line-height: 1.35; }
+.lb-pct.muted { color: var(--text3); font-style: italic; }
+.lb-spend { font-family: var(--display); font-size: 17px; font-weight: 700; color: var(--red); line-height: 1; text-align: right; }
+.lb-spend.zero { color: var(--text3); font-weight: 400; font-size: 14px; }
+.lb-spend-foot { font-family: var(--ui); font-size: 10.5px; color: var(--text3); text-align: right; margin-top: 4px; line-height: 1.35; }
+.lb-foot { font-family: var(--ui); font-size: 10.5px; color: var(--text3); margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--border); font-style: italic; line-height: 1.55; }
+@media (max-width: 800px) {
+  .lb-table-head { display: none; }
+  .lb-row { grid-template-columns: 30px 1fr 1fr; gap: 10px; padding: 12px 4px; }
+  .lb-col-drugs { display: none; }
+  .lb-spend { text-align: left; }
+  .lb-spend-foot { text-align: left; }
+}
 
 /* ── PBAC cycle calendar panel ─────────────────────────────── */
 .cal-strip { padding: 26px 0; border-bottom: 1px solid var(--border); background: var(--bg2); }
@@ -784,6 +808,37 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
         <div class="ttl-chart-title">Median months (resubmission journeys only) by year of recommendation</div>
         <div class="ttl-chart-canvas-wrap"><canvas id="ttl-chart"></canvas></div>
         <div class="ttl-foot" id="ttl-foot"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SPONSOR LEADERBOARD ──────────────────────────────────────── -->
+  <div class="lb-strip" id="lb-strip" style="display:none">
+    <div class="container">
+      <div class="recent-head">
+        <div>
+          <div class="eyebrow">Sponsors</div>
+          <h3>Pharma leaderboard</h3>
+        </div>
+        <div class="recent-sub" id="lb-sub">—</div>
+      </div>
+      <div class="lb-table-head">
+        <div>#</div>
+        <div>Sponsor</div>
+        <div>Submissions</div>
+        <div class="lb-col-drugs">Drugs</div>
+        <div style="text-align:right">PBS spend captured</div>
+      </div>
+      <div id="lb-list" class="lb-list"></div>
+      <div class="lb-foot">
+        Sponsors with at least 5 submissions on file. PBS spend = FY-latest
+        government benefit; each drug's spend is credited to a single sponsor —
+        the one with the most recent Recommended PBAC decision for that drug —
+        so biosimilars and originator brands aren't double-counted. Originator
+        sponsors superseded by a more recent biosimilar approval will therefore
+        show $0 here even though they still earn revenue. Newer drugs may have
+        no PBS expenditure linked yet. Win rate counts Recommended (incl. with
+        restriction) out of bucketable decisions.
       </div>
     </div>
   </div>
@@ -1970,6 +2025,72 @@ async function buildTimeToListing() {
       `Hover for cohort size — most years have only 4–9 drugs, so the trend is suggestive rather than statistically tight. ` +
       `The 2019–20 peak (40–50 mo) is real but reflects a small cohort.`;
   }
+  strip.style.display = '';
+}
+
+// ╔═══════════════════════════════════════════════════════════════════╗
+// ║  SPONSOR LEADERBOARD                                                  ║
+// ╚═══════════════════════════════════════════════════════════════════╝
+function buildSponsorLeaderboard() {
+  const D = window.SITE_DATA;
+  const strip = document.getElementById('lb-strip');
+  const list  = document.getElementById('lb-list');
+  if (!strip || !list || !D || !D.psd || !Array.isArray(D.psd.sponsors) || !D.psd.sponsors.length) return;
+
+  // Require ≥5 submissions so a single biosimilar approval doesn't put
+  // an otherwise-unknown sponsor on the leaderboard. Matches the threshold
+  // the win-rate column uses for displaying confident figures.
+  const MIN_SUBS = 5;
+  const qualified = D.psd.sponsors.filter(s => s.n_submissions >= MIN_SUBS);
+  const visible = qualified.slice(0, 15);
+
+  const sub = document.getElementById('lb-sub');
+  if (sub) {
+    const withSpend = qualified.filter(s => s.total_spend_aud > 0).length;
+    sub.textContent = `${qualified.length} sponsors with ${MIN_SUBS}+ submissions · ranked by PBS spend captured · ${withSpend} linked to current PBS expenditure`;
+  }
+
+  list.innerHTML = visible.map((s, i) => {
+    const bucketable = s.n_recommended + s.n_not + s.n_deferred;
+    const winLine = (s.pct_recommended != null && bucketable > 0)
+      ? `<div class="lb-pct">${s.pct_recommended}% recommended · ${s.n_recommended}/${bucketable}</div>`
+      : '<div class="lb-pct muted">no decisive outcomes</div>';
+
+    const drugsLine = s.n_drugs_listed
+      ? `<div class="lb-pct">${s.n_drugs_listed} currently listed</div>`
+      : '<div class="lb-pct muted">none currently listed</div>';
+
+    const spendCell = s.total_spend_aud > 0
+      ? `<div class="lb-spend">${fmtAUD(s.total_spend_aud)}</div>` +
+        ((s.top_drugs && s.top_drugs.length)
+          ? `<div class="lb-spend-foot">top: ${s.top_drugs.slice(0, 2).map(d => escapeHtml(titleCase(d.drug))).join(', ')}</div>`
+          : '')
+      : `<div class="lb-spend zero">—</div>
+         <div class="lb-spend-foot">no PBS expenditure linked</div>`;
+
+    const subParts = [];
+    if (s.top_therapy_area) subParts.push(escapeHtml(s.top_therapy_area));
+    if (s.last_year)        subParts.push(`last decision ${s.last_year}`);
+    const subtitle = subParts.length ? subParts.join(' · ') : '';
+
+    return `<div class="lb-row">
+      <div class="lb-rank">${i + 1}</div>
+      <div>
+        <div class="lb-name">${escapeHtml(s.sponsor)}</div>
+        ${subtitle ? `<div class="lb-sub">${subtitle}</div>` : ''}
+      </div>
+      <div>
+        <div class="lb-num">${s.n_submissions}</div>
+        ${winLine}
+      </div>
+      <div class="lb-col-drugs">
+        <div class="lb-num">${s.n_drugs}</div>
+        ${drugsLine}
+      </div>
+      <div>${spendCell}</div>
+    </div>`;
+  }).join('');
+
   strip.style.display = '';
 }
 
@@ -3596,6 +3717,7 @@ function initAll() {
   buildComingUp();
   buildFlipsSection();
   buildTimeToListing();
+  buildSponsorLeaderboard();
   buildPBSChart();
   buildOutcomesDonut();
   buildSubmissionsChart();
