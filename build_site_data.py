@@ -421,20 +421,14 @@ def load_drug_spend() -> dict:
         except (ValueError, TypeError):
             return None
 
-    _KEEP_UPPER = {"IV", "PBS", "ATC", "DNA", "RNA", "PEG", "HPV", "BCG", "MMR"}
-
-    def _title(name: str) -> str:
-        if not name or not name.isupper():
-            return name
-        return " ".join(w if w in _KEEP_UPPER else w.capitalize() for w in name.split())
-
+    # Drug names are already title-cased upstream (fetch_pbs_drug_spend.py).
+    # We only strip trailing PBS markers (^^/^/*/#) here.
     raw_rows = []
     with open(path, encoding="utf-8") as f:
         for row in csv.DictReader(f):
             benefit = _int(row.get("gov_benefit_aud"))
             scripts = _int(row.get("scripts"))
-            raw_name = re.sub(r'[\^*#]+$', '', (row.get("drug_name") or "").strip()).strip()
-            drug    = _title(raw_name)
+            drug = re.sub(r'[\^*#]+$', '', (row.get("drug_name") or "").strip()).strip()
             if not drug or benefit is None:
                 continue
             raw_rows.append({

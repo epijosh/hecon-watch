@@ -905,6 +905,25 @@ const escapeHtml = s => String(s ?? '').replace(/[&<>"']/g, c => ({
 // Escape for inline onclick="...'${...}'..." contexts: HTML-escape, then escape JS quote/backslash.
 const jsAttr = s => escapeHtml(String(s ?? '').replace(/\\/g, '\\\\').replace(/'/g, "\\'"));
 
+// PBAC recommendation bucket — handles both "Recommended"/"Not recommended"/"Deferred"/etc.
+// "Recommended with restriction" buckets to 'rec'; "Not recommended" buckets to 'not'.
+const recBucket = s => {
+  const v = (s || '').toLowerCase();
+  if (v.startsWith('recommended') && !v.startsWith('not')) return 'rec';
+  if (v.startsWith('not')) return 'not';
+  if (v === 'deferred') return 'deferred';
+  return 'unknown';
+};
+const recColor    = s => ({ rec: 'var(--green)', not: 'var(--red)', deferred: 'var(--orange)', unknown: 'var(--text2)' })[recBucket(s)];
+const recCssClass = s => ({ rec: 'drec-y',       not: 'drec-n',     deferred: 'drec-d',         unknown: 'drec-u'      })[recBucket(s)];
+const recLabelListed = s => {
+  const b = recBucket(s);
+  if (b === 'rec') return 'Listed';
+  if (b === 'not') return 'Not listed';
+  if (b === 'deferred') return 'Deferred';
+  return s || '—';
+};
+
 function isThemeDark() { return document.documentElement.dataset.theme === 'dark'; }
 function colors() {
   const dark = isThemeDark();
@@ -1182,7 +1201,7 @@ async function buildOutcomesDonut() {
   if (canvas._chart) canvas._chart.destroy();
   canvas._chart = new Chart(canvas, {
     type: 'doughnut',
-    data: { labels, datasets: [{ data, backgroundColor: cols, borderColor: 'var(--bg)', borderWidth: 2 }] },
+    data: { labels, datasets: [{ data, backgroundColor: cols, borderColor: colors().bg, borderWidth: 2 }] },
     options: {
       responsive: true, maintainAspectRatio: false,
       cutout: '62%',
@@ -1584,13 +1603,13 @@ function renderBrowseTable(rows) {
 }
 
 function rowHtml(r) {
-  const recCls = (() => { const v = (r.outcome||'').toLowerCase(); return v.startsWith('recommended') && !v.startsWith('not') ? 'drec-y' : v.startsWith('not') ? 'drec-n' : v === 'deferred' ? 'drec-d' : 'drec-u'; })();
-  const recLabel = (() => { const v = (r.outcome||'').toLowerCase(); if (v.startsWith('recommended') && !v.startsWith('not')) return 'Recommended'; if (v.startsWith('not')) return 'Not rec.'; return r.outcome || '—'; })();
+  const b = recBucket(r.outcome);
+  const recLabel = b === 'rec' ? 'Recommended' : b === 'not' ? 'Not rec.' : (r.outcome || '—');
   return `<tr onclick="selectBrowseRow('${jsAttr(r.name)}')">
     <td><div class="dname">${escapeHtml(titleCase(r.name))}</div>${r.brand ? `<div class="dbrand">${escapeHtml(r.brand)}</div>` : ''}</td>
     <td><span class="sans" style="font-size:12px;color:var(--text2)">${escapeHtml(r.therapy || '—')}</span></td>
     <td><div class="dind" title="${escapeHtml(r.indication||'')}">${escapeHtml(r.indication || '—')}</div></td>
-    <td><span class="drec ${recCls}">${escapeHtml(recLabel)}</span></td>
+    <td><span class="drec ${recCssClass(r.outcome)}">${escapeHtml(recLabel)}</span></td>
     <td><span class="sans" style="font-size:12px">${escapeHtml(r.year || '—')}</span></td>
     <td><span class="sans" style="font-size:12px;font-weight:${(r.subs||0)>1?'700':'400'};color:${(r.subs||0)>1?'var(--red)':'var(--text2)'}">${r.subs || '—'}</span></td>
     <td><span class="dicer" style="color:${icerColor(r.icer)}">${fmtICER(r.icer)}</span></td>
@@ -1781,11 +1800,8 @@ function renderSemanticResults(query, data) {
     const brand = (od && od.brand_name) || '';
     const indication = (od && od.indication) || r.indication || '';
     const outcome = r.outcome || (od && od.recommendation) || '';
-    const oLower = outcome.toLowerCase();
-    const recCol = oLower.startsWith('recommended') && !oLower.startsWith('not')
-      ? 'var(--green)' : oLower.startsWith('not') ? 'var(--red)' : oLower === 'deferred' ? 'var(--orange)' : 'var(--text2)';
-    const recLabel = oLower.startsWith('recommended') && !oLower.startsWith('not')
-      ? 'Listed' : oLower.startsWith('not') ? 'Not listed' : (outcome || '—');
+    const recCol = recColor(outcome);
+    const recLabel = recLabelListed(outcome);
     const score = typeof r.score === 'number' ? r.score : 0;
     const pct = Math.max(2, Math.min(100, Math.round(score * 100)));
     return `<div class="mcard" onclick="selectFromResults('${jsAttr(key)}')">
@@ -1895,8 +1911,6 @@ function handleSearch(val) {
 }
 
 function showMultiResults(drugs, query) {
-  const recColour = rec => { const v=(rec||'').toLowerCase(); if(v.startsWith('recommended')&&!v.startsWith('not'))return 'var(--green)'; if(v.startsWith('not'))return 'var(--red)'; return 'var(--orange)'; };
-  const recLabel = rec => { const v=(rec||'').toLowerCase(); if(v.startsWith('recommended')&&!v.startsWith('not'))return 'Listed'; if(v.startsWith('not'))return 'Not listed'; return rec || '—'; };
   const cards = drugs.map(d => {
     const subsBadge = (d.submissions||1) > 1 ? `<div><div class="mcard-stat-label">Submissions</div><div class="mcard-stat-val" style="color:var(--red)">${d.submissions}</div></div>` : '';
     const icer = d.icer_high ? fmtICER(d.icer_high) : '';
@@ -1907,7 +1921,7 @@ function showMultiResults(drugs, query) {
         <div class="mcard-ind">${escapeHtml(d.indication || '—')}</div>
       </div>
       <div class="mcard-aside">
-        ${d.pbac_status ? `<div><div class="mcard-stat-label">PBAC</div><div class="mcard-stat-val" style="color:${recColour(d.pbac_status)}">${escapeHtml(recLabel(d.pbac_status))}</div></div>` : ''}
+        ${d.pbac_status ? `<div><div class="mcard-stat-label">PBAC</div><div class="mcard-stat-val" style="color:${recColor(d.pbac_status)}">${escapeHtml(recLabelListed(d.pbac_status))}</div></div>` : ''}
         ${subsBadge}
         ${icer ? `<div><div class="mcard-stat-label">ICER</div><div class="mcard-stat-val" style="font-size:13px">${icer}</div></div>` : ''}
       </div>
@@ -1990,14 +2004,7 @@ function showDrugDetail(d) {
   const indication = d.indication || pd.indication || '';
   const therapy = d.therapy || pd.therapy_area || '';
   const status = d.pbac_status || pd.recommendation || 'Unknown';
-
-  const recColour = (() => {
-    const v=(status||'').toLowerCase();
-    if (v.startsWith('recommended')&&!v.startsWith('not')) return 'var(--green)';
-    if (v.startsWith('not')) return 'var(--red)';
-    if (v==='deferred') return 'var(--orange)';
-    return 'var(--text2)';
-  })();
+  const recColour = recColor(status);
 
   // ── KPI strip (4 cells) ────────────────────────────────────────
   const submissionsCell = `
@@ -2151,11 +2158,8 @@ function showDrugDetail(d) {
       const oTherapy = od.therapy_area || '';
       const oYear = od.latest_year || '';
       const oOutcome = od.recommendation || '';
-      const oOutcomeLower = oOutcome.toLowerCase();
-      const recCls = oOutcomeLower.startsWith('recommended') && !oOutcomeLower.startsWith('not')
-        ? 'y' : oOutcomeLower.startsWith('not') ? 'n' : oOutcomeLower === 'deferred' ? 'd' : 'u';
-      const recLabel = oOutcomeLower.startsWith('recommended') && !oOutcomeLower.startsWith('not')
-        ? 'Listed' : oOutcomeLower.startsWith('not') ? 'Not listed' : (oOutcome || '—');
+      const recCls = ({ rec: 'y', not: 'n', deferred: 'd', unknown: 'u' })[recBucket(oOutcome)];
+      const recLabel = recLabelListed(oOutcome);
       const ind = od.indication || '';
       const score = typeof n.score === 'number' ? n.score : 0;
       const pct = Math.max(2, Math.min(100, Math.round(score * 100)));
@@ -2254,7 +2258,7 @@ function showDrugDetail(d) {
     let dotsHtml = '';
     if (showDots) {
       const dots = pd.history.map(h => {
-        const col = h.rec && h.rec.startsWith('Recommended') ? 'var(--green)' : h.rec && h.rec.startsWith('Not') ? 'var(--red)' : h.rec === 'Deferred' ? 'var(--orange)' : 'var(--border)';
+        const col = h.rec ? recColor(h.rec) : 'var(--border)';
         const icer = h.icer_high ? fmtICER(h.icer_high) : '';
         return `<div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:48px">
           <div style="width:14px;height:14px;border-radius:50%;background:${col};flex-shrink:0" title="${h.rec || '?'}"></div>
@@ -2267,7 +2271,7 @@ function showDrugDetail(d) {
 
     const tableRows = pd.history.map(h => {
       const rec = h.rec || '—';
-      const recCls = rec.startsWith('Recommended') && !rec.startsWith('Not') ? 'drec-y' : rec.startsWith('Not') ? 'drec-n' : rec === 'Deferred' ? 'drec-d' : 'drec-u';
+      const recCls = recCssClass(rec);
       const ic = h.icer_high ? fmtICER(h.icer_high) : (h.icer_low ? '>' + fmtICER(h.icer_low) : '—');
       const lt = h.listing_type || '—';
       const link = h.filename ? `<a href="https://www.pbs.gov.au/industry/listing/elements/pbac-meetings/psd/${encodeURIComponent(h.filename)}" target="_blank" style="font-family:var(--ui);font-size:10.5px;color:var(--red);font-weight:600">PSD →</a>` : '';
