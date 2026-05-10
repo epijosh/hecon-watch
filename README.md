@@ -56,6 +56,7 @@ Everything is dispatched through `python -m script_report <command>`:
 | `download`| Polite scraper of new PBAC PSDs (HTML + PDF).                  |
 | `extract` | Haiku-powered field extraction over the PSD corpus.            |
 | `spend`   | Fetch PBS drug-level expenditure Excel.                        |
+| `schedule`| Backfill ATC codes from the monthly PBS Schedule CSV bundle.   |
 | `atc`     | Parse PBS ATC-class spend / scripts.                           |
 | `calendar`| Parse PBS Cycle Timeframe PDFs into `pbac_calendar.json`.      |
 | `embed`   | Voyage embeddings + nearest-neighbours table (ATC tiebreaker). |
@@ -79,7 +80,8 @@ script_report/
 │   └── site_builder.py    # writes site_data.js
 ├── scrapers/
 │   ├── psd_downloader.py  # polite PBAC PSD scraper (HTML + PDF)
-│   └── pbs_spend.py       # PBS expenditure Excel fetcher
+│   ├── pbs_spend.py       # PBS expenditure Excel fetcher
+│   └── pbs_schedule.py    # PBS Schedule API CSV bundle → ATC code backfill
 ├── extractors/
 │   └── psd_extractor.py   # Haiku-powered structured field extraction
 ├── embedders/
@@ -90,6 +92,7 @@ script_report/
 └── utils/
     ├── helpers.py         # MONTH_MAP, data_path resolver, .env loading
     ├── similarity.py      # ATC-prefix tiebreaker for cosine ties
+    ├── drug_names.py      # name normalisation + salt-strip / multi-drug split
     └── logging.py         # banner / step helpers
 ```
 

@@ -238,12 +238,16 @@ def write_outputs(drugs: list[dict], vectors: np.ndarray, model: str, top_k: int
     sim = unit @ unit.T                 # (n, n)
     np.fill_diagonal(sim, -1.0)         # exclude self
 
-    # ATC codes for tiebreaker — pulled from pbs_drug_spend.csv. Only ~43 of the
-    # ~880 drugs have ATC codes (the high-spenders); for the rest the tiebreaker
-    # is a no-op and pure cosine ordering survives.
+    # ATC codes for tiebreaker — merged from pbs_drug_spend.csv (authoritative
+    # for the high-spend subset) and pbs_schedule_atc.csv (wider coverage from
+    # the monthly PBS Schedule API CSV bundle). Lookup uses a salt-strip /
+    # multi-drug-split fallback chain so PSD-side names like
+    # "abiraterone acetate" or "drugA, drugB" still resolve.
     drug_atc = _load_drug_atc_map()
     names = [d["_drug_name"] for d in drugs]
-    atc_by_idx = {i: drug_atc.get(name) for i, name in enumerate(names)}
+    atc_by_idx = {i: _atc_for_drug(name, drug_atc) for i, name in enumerate(names)}
+    coverage = sum(1 for v in atc_by_idx.values() if v)
+    print(f"  ATC coverage : {coverage:,}/{len(names):,}  ({100*coverage/max(len(names),1):.0f}%)")
     tied_pairs = 0
 
     nearest: dict[str, list[dict]] = {}
@@ -265,26 +269,64 @@ def write_outputs(drugs: list[dict], vectors: np.ndarray, model: str, top_k: int
     print(f"  Wrote nearest → {NEAREST_JSON}  (ATC tiebreaker reordered {tied_pairs} drug lists)")
 
 
-def _load_drug_atc_map() -> dict[str, str]:
-    """Return {drug_name_lower: atc_code} from pbs_drug_spend.csv.
+SCHEDULE_ATC_CSV = DATA_DIR / "pbs_schedule_atc.csv"
 
-    Drug spend CSV is the only source carrying ATC codes; the PSD extraction
-    schema doesn't ask for them. Missing file or rows without ATC return an
-    empty dict — the tiebreaker becomes a no-op.
+
+def _load_drug_atc_map() -> dict[str, str]:
+    """Return {normalised_drug_name: atc_code} from PBS data sources.
+
+    Two sources, merged with spend taking priority:
+      1. pbs_drug_spend.csv  — authoritative for the high-spend subset
+                                (~35-43 drugs); has the most accurate ATC.
+      2. pbs_schedule_atc.csv — wider coverage (~1,000+ drugs) from the
+                                monthly PBS Schedule API CSV bundle.
+
+    Keys are normalised (lowercase, punctuation stripped, whitespace collapsed)
+    so callers can use ``script_report.utils.drug_names.candidate_keys()`` to
+    look up PSD-side names that don't match the schedule form exactly
+    ("abiraterone acetate" → "abiraterone").
     """
-    if not DRUG_SPEND_CSV.exists():
-        return {}
+    import re as _re
+    from script_report.utils.drug_names import normalise
+
     out: dict[str, str] = {}
-    with open(DRUG_SPEND_CSV, encoding="utf-8") as f:
-        for row in csv.DictReader(f):
-            name = (row.get("drug_name") or "").strip().lower()
-            atc  = (row.get("atc_code")  or "").strip()
-            if name and atc:
-                # Strip trailing PBS markers (^^/^/*/#) to match PSD-side keys
-                import re as _re
-                name = _re.sub(r'[\^*#]+$', '', name).strip()
-                out[name] = atc
+
+    # ── 2. Schedule first (lower priority — overwritten by spend) ────────────
+    if SCHEDULE_ATC_CSV.exists():
+        with open(SCHEDULE_ATC_CSV, encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                name = normalise(row.get("drug_name") or "")
+                atc  = (row.get("atc_code") or "").strip()
+                if name and atc:
+                    out[name] = atc
+
+    # ── 1. Spend on top (authoritative for high-spend drugs) ─────────────────
+    if DRUG_SPEND_CSV.exists():
+        with open(DRUG_SPEND_CSV, encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                # Strip trailing PBS markers (^^/^/*/#) before normalising
+                raw = _re.sub(r'[\^*#]+$', '', (row.get("drug_name") or "").strip())
+                name = normalise(raw)
+                atc  = (row.get("atc_code") or "").strip()
+                if name and atc:
+                    out[name] = atc
+
     return out
+
+
+def _atc_for_drug(name: str | None, atc_map: dict[str, str]) -> str | None:
+    """Look up an ATC code for ``name`` using the candidate-key fallback chain
+    (exact → salt-stripped → multi-drug split). Returns None if no candidate
+    hits the map.
+    """
+    if not name or not atc_map:
+        return None
+    from script_report.utils.drug_names import candidate_keys
+    for key in candidate_keys(name):
+        atc = atc_map.get(key)
+        if atc:
+            return atc
+    return None
 
 
 # ── Resume support ───────────────────────────────────────────────────────────

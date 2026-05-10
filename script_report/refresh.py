@@ -97,6 +97,10 @@ def main() -> None:
         steps_ok.append(("PBS spend",
                          _run_step("Fetch PBS drug spend data", spend_main)))
 
+        from script_report.scrapers.pbs_schedule import main as schedule_main
+        steps_ok.append(("PBS schedule (ATC)",
+                         _run_step("Backfill ATC codes from PBS Schedule", schedule_main)))
+
         if not args.no_embed:
             from script_report.embedders.voyage_embedder import main as embed_main
             steps_ok.append(("Embed",

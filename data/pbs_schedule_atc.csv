@@ -1,0 +1,1094 @@
+drug_name,atc_code,brand_name,pbs_code
+abacavir,J05AF06,Ziagen,10294T
+abacavir + lamivudine,J05AR02,Abacavir/Lamivudine Viatris,10357D
+abatacept,L04AA24,Orencia ClickJect,11684Y
+abemaciclib,L01EF03,Verzenio,11868P
+abiraterone,L02BX03,Zytiga,11206T
+abiraterone (&) methylprednisolone,H02AB04,Yonsa Mpred,13263C
+abiraterone (&) prednisolone,L02BX53,ANDRIGA-10,15209L
+acalabrutinib,L01EL02,CALQUENCE,13318Y
+acamprosate,N07BB03,Campral,8357W
+acarbose,A10BF01,GLYBOSAY,13869Y
+acetazolamide,S01EC01,Diamox,1004W
+acetic acid + oxyquinoline + ricinoleic acid,G02C,Aci-Jel,4434J
+aciclovir,S01AD03,XOROX,1002R
+acitretin,D05BB02,Neotigason,2019G
+aclidinium,R03BB05,Bretaris Genuair,10124W
+aclidinium + formoterol,R03AL05,Brimica Genuair,10565C
+adalimumab,L04AB04,Hadlima,10399H
+adapalene + benzoyl peroxide,D10AD53,Epiduo,13363H
+adrenaline (epinephrine),C01CA24,Link Medical Products Pty Ltd,1016L
+afatinib,L01EB03,Giotrif,11335N
+aflibercept,S01LA05,Eylea,10505X
+albendazole,P02CA03,Eskazole,8459F
+alectinib,L01ED03,Alecensa,11226W
+alemtuzumab,L04AG06,Lemtrada,10228H
+alendronate,M05BA04,APO-Alendronate,13499L
+alendronate + colecalciferol,M05BB03,Fosamax Plus 70 mg/140 mcg,13835E
+alfuzosin,G04CA01,Xatral SR,14183L
+allopurinol,M04AA01,Zyloprim,13358C
+alogliptin,A10BH04,Nesina,13897K
+alogliptin + metformin,A10BD13,Nesina Met 12.5/850,10032B
+alprazolam,N05BA12,Alprax 1,11186R
+alprostadil,G04BE01,Caverject Impulse,4579B
+amantadine,N04BB01,AMANTAMED,14486K
+ambrisentan,C02KX02,Cipla Ambrisentan,12180C
+amifampridine,N07XX05,Ruzurgi,13032X
+amiloride + hydrochlorothiazide,C03EA01,Moduretic,13410T
+"amino acid formula supplemented with prebiotics, probiotics and long chain polyunsaturated fatty acids",V06DX,Neocate Syneo,11331J
+amino acid formula with carbohydrate without phenylalanine,V06DX,PKU Easy Tablet,12072J
+"amino acid formula with carbohydrate, vitamins, minerals and trace elements without phenylalanine",V06DX,PKU Go,10806R
+"amino acid formula with fat, carbohydrate without methionine",V06DX,HCU Easy Tablet,12006X
+"amino acid formula with fat, carbohydrate without phenylalanine",V06DX,PKU Easy Microtabs,10683G
+"amino acid formula with fat, carbohydrate without phenylalanine and tyrosine",V06DX,TYR Easy Tablet,12015J
+"amino acid formula with fat, carbohydrate without valine, leucine and isoleucine",V06DX,MSUD Easy Tablet,12014H
+"amino acid formula with fat, carbohydrate, vitamins and minerals without phenylalanine",V06DX,PKU Easy Microtabs Plus,14782B
+"amino acid formula with fat, carbohydrate, vitamins, minerals and trace elements without phenylalanine",V06DX,PKU Easy Shake & Go,10632N
+"amino acid formula with fat, carbohydrate, vitamins, minerals and trace elements, without phenylalanine and tyrosine",V06DX,TYR Easy Shake & Go,10934L
+"amino acid formula with fat, carbohydrate, vitamins, minerals, trace elements and medium chain triglycerides",V06DE,Alfamino Junior,10522T
+amino acid formula with vitamins and minerals without lysine and low in tryptophan,V06DX,"XLYS, LOW TRY Maxamum",10466W
+amino acid formula with vitamins and minerals without methionine,V06DX,HCU Anamix Junior,10693T
+"amino acid formula with vitamins and minerals without methionine, threonine and valine and low in isoleucine",V06DX,MMA/PA Anamix Junior,10730R
+amino acid formula with vitamins and minerals without phenylalanine,V06DX,PKU Anamix Junior,10258X
+amino acid formula with vitamins and minerals without phenylalanine and tyrosine,V06DX,TYR Anamix Junior,10260B
+"amino acid formula with vitamins and minerals without phenylalanine, tyrosine and supplemented with arachidonic acid and docosahexaenoic acid",V06DX,TYR explore5,14126L
+"amino acid formula with vitamins and minerals without valine, leucine and isoleucine",V06DX,MSUD Anamix Junior,10259Y
+"amino acid formula with vitamins and minerals without valine, leucine, isoleucine and supplemented with arachidonic acid and docosahexaenoic acid",V06DX,MSUD explore5,14118C
+"amino acid formula with vitamins and minerals, low phenylalanine and supplemented with docosahexaenoic acid and arachidonic acid",V06DX,PKU Anamix First Spoon,11185Q
+"amino acid formula with vitamins and minerals, without methionine and supplemented with arachidonic acid and docosahexaenoic acid",V06DX,HCU explore5,14114W
+"amino acid formula with vitamins, minerals and long chain polyunsaturated fatty acids without phenylalanine",V06DX,PKU Start,14239K
+amino acid formula without phenylalanine,V06DX,Phlexy-10,8678R
+"amino acid formula without valine, leucine and isoleucine",V06DX,MSUD amino5,10161T
+amino acid synthetic formula,V06DB,Neocate Junior Vanilla,1180D
+amino acid synthetic formula supplemented with long chain polyunsaturated fatty acids,V06DB,Neocate LCP,2246F
+amino acid synthetic formula supplemented with long chain polyunsaturated fatty acids and medium chain triglycerides,V06DB,Alfamino,13615N
+amiodarone,C01BD01,Amdarone,2343H
+amisulpride,N05AL05,Amisulpride Sandoz Pharma,8594H
+amitriptyline,N06AA09,ENTRIP,2417F
+amivantamab,L01FX18,Rybrevant,14800Y
+amlodipine,C08CA01,Norvasc,13532F
+amlodipine + atorvastatin,C10BX03,Cadivast 10/20,13384K
+amlodipine + valsartan,C09DB01,Amlodipine/Valsartan Novartis 10/320,13389Q
+amlodipine + valsartan + hydrochlorothiazide,C09DX01,Amlodipine/Valsartan/HCT Novartis 10/160/25,13390R
+amorolfine,D01AE16,Loceryl,4010C
+amoxicillin,J01CA04,AMILOXYN,11947T
+amoxicillin + clavulanic acid,J01CR02,APO-Amoxycillin and Clavulanic Acid,11933C
+amphotericin b,A01AB04,Fungilin,2931G
+anakinra,L04AC03,Kineret,10263E
+anastrozole,L02BG03,APO-Anastrozole,13858J
+anifrolumab,L04AG11,Saphnelo,14189T
+apalutamide,L02BB05,Erlyand,12992T
+apixaban,B01AF02,Eliquis,13464P
+apomorphine,N04BC07,Movapo PFS,10950H
+apremilast,L04AA32,Otezla,12218C
+aprepitant,A04AD12,Aprepitant APOTEX,2518M
+arachidonic acid and docosahexaenoic acid with carbohydrate,V06DX,keyomega,10036F
+arginine with carbohydrate,V06DX,Arginine 5000,10093F
+aripiprazole,N05AX12,Abilify Maintena,10219W
+armodafinil,N06BA13,Nuvigil,10912H
+arsenic,L01XX27,Arsenic Trioxide Juno,10691Q
+artemether + lumefantrine,P01BF01,Riamet,9498X
+asciminib,L01EA06,Scemblix,13248G
+asenapine,N05AH05,Saphris,5140M
+aspirin,B01AC06,Spren 100,10590J
+aspirin + codeine,N02AJ07,Aspalgin 40,4286N
+atazanavir,J05AE08,Reyataz,10321F
+atazanavir + cobicistat,J05AE,Evotaz,10692R
+atenolol,C07AB03,Atenolol GH,1081X
+atezolizumab,L01FF05,Tecentriq,11277M
+atomoxetine,N06BA09,APO-Atomoxetine,9092M
+atorvastatin,C10AA05,Lipitor,13374X
+atovaquone,P01AX06,Wellvone,8300W
+atovaquone + proguanil,P01BB51,AtovaquoPro Lupin 250/100,9439T
+atropine sulfate,A03BA01,Atropine Injection (Bridgewest),1089H
+auranofin,M01CB03,Ridaura,1095P
+avacopan,L04AJ05,Tavneos,14605Q
+avanafil,G04BE10,Spedra,11837B
+avatrombopag,B02BX08,Doptelet,13313Q
+avelumab,L01FF04,Bavencio,11671G
+axitinib,L01EK01,Inlyta,10539Q
+azacitidine,L01BC07,Azacitidine Accord,12771E
+azathioprine,L04AX01,APO-Azathioprine,2687K
+azithromycin,J01FA10,Zithromax,4115N
+baclofen,M03BX01,Sintetica Baclofen Intrathecal,11126N
+balsalazide,A07EC04,Colazide,11351K
+bandage absorbent wool,V07AY,Surepress 650948,4653X
+bandage calico,V07AY,Handy 36361414,4717G
+bandage compression,V07AY,Rosidal TCS 26484,11714M
+bandage retention cohesive heavy,V07AY,Coban 1584,4660G
+bandage retention cohesive light,V07AY,Handygauze Cohesive 8635,4662J
+bandage retention cotton crepe,V07AY,Tensocrepe 36300501,4727T
+bandage tubular,V07AY,Elastoplast 2225,4663K
+bandage tubular finger,V07AY,Tubegauz 0501633,4798M
+bandage tubular light weight,V07AY,Tubifast 2434,4671W
+bandage tubular long stocking,V07AY,Tubigrip 1482,4674B
+bandage tubular short stocking,V07AY,Tubigrip 1479,4661H
+bandage zinc paste,V07AY,Steripaste 3610,4669R
+baricitinib,L04AF02,Olumiant,11437Y
+beclometasone,R03BA01,Qvar 50 Autohaler,14378R
+beclometasone + formoterol,R03AK08,Fostair,12183F
+beclometasone + formoterol + glycopyrronium,R03AL09,Trimbow,12468F
+belzutifan,L01XX74,Welireg,14665W
+bemotrizinol + diethylamino hydroxybenzoyl hexyl benzoate + homosalate + octocrylene + titanium dioxide,D02BA,Sunsense Comfort SPF 50+,13188D
+bendamustine,L01AA09,Bendamustine Sandoz,10760H
+benralizumab,R03DX10,Fasenra Pen,11994G
+benzathine benzylpenicillin,J01CE08,Bicillin L-A,11723B
+benzatropine,N04AC01,Benzatropine Injection,11249C
+benzydamine,A01AD02,Difflam,1121B
+benzylpenicillin,J01CE01,BenPen,1775K
+betaine,A16AA06,Cystadane,10119N
+betaine + polyaminopropyl biguanide,V07AY,Prontosan Wound Irrigation Solution,2525X
+betamethasone acetate + betamethasone sodium phosphate,H02AB01,Celestone Chronodose,2694T
+betamethasone dipropionate,D07AC01,Diprosone,10795E
+betamethasone valerate,D07AC01,Betnovate 1/2,10794D
+bevacizumab,L01FG01,Mvasi,12479T
+bicalutamide,L02BB03,Cosudex,8094B
+bicarbonate,G04BX,Sodibic,13933H
+bicarbonate + citric acid + tartaric acid,G04BX,Trust Cystitis Relief,12179B
+bictegravir + emtricitabine + tenofovir alafenamide,J05AR20,Biktarvy,11649D
+bimatoprost,S01EE03,Lumigan PF,10046R
+bimatoprost + timolol,S01EE,GANfort PF 0.3/5,10107Y
+bimekizumab,L04AC21,Bimzelx,13644D
+binimetinib,L01EE03,Mektovi,11948W
+bisacodyl,A06AB02,Dulcolax,10578R
+bisoprolol,C07AB07,Bisoprolol generichealth,13419G
+bivalirudin,B01AE06,BIVALIRUDIN ARX,8844L
+bleomycin,L01DC01,DBL Bleomycin Sulfate,4433H
+blinatumomab,L01FX07,Blincyto,11115B
+bortezomib,L01XG01,DBL Bortezomib,12219D
+bosentan,C02KX01,Bosentan RBX,12134P
+botulinum toxin type a,M03AX01,Botox,10993N
+brentuximab vedotin,L01FX05,Adcetris,10166C
+brexpiprazole,N05AX16,Rexulti,11184P
+brigatinib,L01ED04,Alunbrig,11974F
+brimonidine,S01EA05,Alphagan P 1.5,14496Y
+brimonidine + timolol,S01EA,Combigan,14491Q
+brinzolamide,S01EC04,Azopt,14321R
+brinzolamide + brimonidine,S01EC54,Simbrinza 1%/0.2%,10536M
+brinzolamide + timolol,S01EC54,Azarga,14495X
+brivaracetam,N03AX23,Briviact,11327E
+brolucizumab,S01LA06,Beovu,12667Q
+bromazepam,N05BA08,Lexotan,4150K
+bromocriptine,G02CB01,Parlodel,13979R
+budesonide,A07EA06,Budenofalk,10034D
+budesonide + formoterol,R03AK07,Symbicort Rapihaler 100/3,10015D
+budesonide + glycopyrronium + formoterol,R03AL11,Breztri Aerosphere,12672Y
+buprenorphine,N02AE01,Norspan,10746N
+buprenorphine + naloxone,N07BC51,Suboxone Film 8/2,13321D
+bupropion,N07BA,Zyban,8465M
+burosumab,M05BX05,Crysvita,13136J
+busulfan,L01AB01,Myleran,1128J
+cabazitaxel,L01CD04,Cabazitaxel Juno,4376H
+cabergoline,G02CB03,Dostinex,13901P
+cabotegravir,J05AJ04,Vocabria,12939B
+cabotegravir (&) rilpivirine,J05A,Cabenuva,12937X
+cabozantinib,L01EX07,Cabometyx,11360X
+cadexomer-iodine,V07AY,Iodosorb Powder 66051070,4931M
+calcipotriol + betamethasone dipropionate,D05AX52,Enstilar,11091R
+calcitonin salmon,H05BA01,Miacalcic 100,2997R
+calcitriol,A11CC04,Rocaltrol,13457G
+calcium,A12AA04,Cal-500,11726E
+candesartan,C09CA06,Atacand,13436E
+candesartan + hydrochlorothiazide,C09DA06,Atacand Plus 16/12.5,13391T
+cannabidiol,N03AX24,Epidyolex,12467E
+capecitabine,L01BC06,Capecitabine Sandoz,8362D
+capivasertib,L01EX27,Truqap,15049C
+captopril,C09AA01,Capoten,8760C
+carbamazepine,N03AF01,Tegretol Liquid,14051M
+carbamide peroxide,S02DC,Ear Clear for Ear Wax Removal,4176T
+carbimazole,H03BB01,Neo-Mercazole,1153Q
+"carbohydrate, fat, vitamins, minerals and trace elements",V06DX,Energivit,8369L
+"carbohydrates, fat, vitamins, minerals, trace elements and supplemented with arachidonic acid and docosahexaenoic acid",V06DX,basecal 200,10039J
+carbomer-980,S01XA20,Viscotears,14385D
+carboplatin,L01XA02,Carboplatin Accord,4309T
+carfilzomib,L01XG02,Kyprolis,11229B
+cariprazine,N05AX15,Reagila,12619E
+carmellose sodium,S01XA20,Evolve Carmellose,11852T
+carmustine,L01AD01,Gliadel,8898H
+carvedilol,C07AG02,Dilatrend 25,13387N
+cefaclor,J01DC04,Ceclor CD,1169M
+cefalexin,J01DB01,Keflex,10778G
+cefazolin,J01DB04,Cephazolin Viatris,12115P
+ceftriaxone,J01DD04,Ceftriaxone Viatris,11169W
+cefuroxime,J01DC02,Zinnat,11227X
+celecoxib,M01AH01,Celebrex,8439E
+cemiplimab,L01FF06,Libtayo,13135H
+ceritinib,L01ED02,Zykadia,11056X
+certolizumab pegol,L04AB05,Cimzia,10137M
+cetirizine,R06AE07,Alzene,4175R
+cetrorelix,H01CC02,Cetrotide,9599F
+cetuximab,L01FE01,Erbitux,10262D
+chlorambucil,L01AA02,Leukeran,1163F
+chloramphenicol,S01AA01,Chlorsig,11112W
+chlorhexidine,A01AB03,Plaqacide,4161B
+chlormethine,L01AA05,Ledaga,14658L
+chlorpromazine,N05AA01,Largactil,1195X
+chlortalidone,C03BA04,Hygroton 25,13500M
+choriogonadotropin alfa,G03GA08,Ovidrel,13300B
+ciclesonide,R03BA08,Alvesco 80,14312G
+ciclosporin,S01XA18,Ikervis,12663L
+cinacalcet,H05BX01,Pharmacor Cinacalcet,11885M
+ciprofloxacin,J01MA02,C-Flox 250,1208N
+cisplatin,L01XA01,Cisplatin Accord,4319H
+citalopram,N06AB04,Celapram,14313H
+citric acid + lauryl sulfoacetate sodium + sorbitol,A06AG20,Micolette,14534Y
+citrulline,V06DX,Citrulline Easy,10736C
+citrulline with carbohydrate,V06DX,Citrulline 1000,5481L
+cladribine,L04AA40,Mavenclad,11603Q
+clarithromycin,J01FA09,Klacid,8318T
+clindamycin,J01FF01,APO-Clindamycin,3138E
+clobetasol,D07AD01,Clobex,10080M
+clomifene,G03GB02,Clomid,1211R
+clomipramine,N06AA04,APO-Clomipramine,1561E
+clonazepam,N03AE01,Rivotril,11520H
+clonidine,C02AC01,Catapres,13548C
+clopidogrel,B01AC04,Clovix 75,13365K
+clopidogrel + aspirin,B01AC30,DuoPlidogrel,13427Q
+clostridium botulinum type a toxin-haemagglutinin complex,M03AX01,Dysport,10981Y
+clotrimazole,D01AC01,Pharmacy Action Anti-Fungal Cream,4004R
+clozapine,N05AH02,Clopine 200,10288L
+coal tar solution + phenol + precipitated sulfur,D05AA,Egopsoryl-TA,4505D
+coal tar solution + salicylic acid,D11AC30,Ionil-T,4560B
+cobimetinib,L01EE02,Cotellic,11074W
+codeine,N02AA,Aspen Pharmacare Australia Pty Ltd,12054K
+colchicine,M04AC01,Colcine,3410L
+colestyramine,C10AC01,Questran Lite,14477Y
+corifollitropin alfa,G03GA09,Elonva,5816D
+cortisone,H02AB10,Cortate,1246N
+crizotinib,L01ED01,Xalkori,10322G
+cyclophosphamide,L01AA01,Cyclonex,1266P
+cyproterone,G03HA01,Cyproterone Sandoz,1269T
+cytarabine,L01BC01,Pfizer Australia Pty Ltd,4357H
+dabigatran,B01AE07,Pradaxa,13489Y
+dabrafenib,L01EC02,Tafinlar,10003L
+dantrolene,M03CA01,Dantrium,1779P
+dapagliflozin,A10BK01,Forxiga,10011X
+dapagliflozin + metformin,A10BD15,Xigduo XR 5/1000,10510E
+dapagliflozin + sitagliptin,A10BD29,Sidapvia 10/100,14638K
+dapsone,D11AX,DAPSOMED,1272Y
+daratumumab,L01FC01,Darzalex,12220E
+darbepoetin alfa,B03XA02,Aranesp,5637Q
+darolutamide,L02BB06,Nubeqa,12684N
+darunavir,J05AE10,Prezista,10329P
+darunavir + cobicistat,J05AR14,Prezcobix,10903W
+darunavir + cobicistat + emtricitabine + tenofovir alafenamide,J05AR22,Symtuza,11955F
+dasatinib,L01EA02,DASATINIB-TEVA,12842X
+daunorubicin + cytarabine,L01XY01,Vyxeos,14661P
+decitabine + cedazuridine,L01BC58,Inqovi 35/100,13081L
+deferasirox,V03AC03,Deferasirox Juno,11231D
+deferiprone,V03AC02,Ferriprox,11724C
+degarelix,L02BX02,Firmagon 80mg,2784M
+denosumab,M05BX04,Wyost,10061M
+desferrioxamine,V03AC01,DBL Desferrioxamine Mesilate,5661Y
+desmopressin,H01BA02,Minirin,13889B
+desvenlafaxine,N06AX23,Desfax,10231L
+deucravacitinib,L04AF07,Sotyktu,13649J
+dexamethasone,S01BA01,Ozurdex,10943Y
+dexamfetamine,N06BA02,Aspen Pharmacare Australia Pty Ltd,1165H
+dextran-70 + hypromellose,S01XA20,Poly-Tears,14521G
+diazepam,N05BA01,Diazepam Elixir,2669L
+diclofenac,M01AB05,Fenac EC,1299J
+dicloxacillin,J01CF01,Distaph 500,10790X
+dienogest,G03DB08,Visanne,14667Y
+difelikefalin,V03AX04,Korsuva,14106K
+digoxin,C01AA05,Lanoxin,1322N
+diltiazem,C08DB01,Cardizem CD,1312C
+dimethyl fumarate,L04AX07,Tecfidera,2896K
+diphenoxylate + atropine sulfate,A07DA01,Lofenoxal,2501P
+diphtheria + tetanus vaccine,J07AM51,ADT Booster,3463G
+diroximel fumarate,L04AX09,Vumerity,13059H
+disopyramide,C01BA03,Rythmodan (UK),13280Y
+docetaxel,L01CD02,Docetaxel Accord,10148D
+docusate,S02DC,Waxsol,4199B
+docusate + sennoside b,A06AB56,Co-Senna,10177P
+dolutegravir,J05AJ03,Tivicay,10283F
+dolutegravir + abacavir + lamivudine,J05AR13,Triumeq,10345L
+dolutegravir + lamivudine,J05AR25,Dovato,11843H
+dolutegravir + rilpivirine,J05AR21,Juluca,11540J
+domperidone,A03FA03,APO-DOMPERIDONE,1347X
+donepezil,N06DA02,Aricept,2479L
+dornase alfa,R05CB13,Pulmozyme,5704F
+dorzolamide,S01EC03,Trusopt,14524K
+dorzolamide + timolol,S01EC,Cosdor,14386E
+dostarlimab,L01FF07,Jemperli,14109N
+dosulepin (dothiepin),N06AA16,Dosulepin Viatris,1357K
+doxorubicin,L01DB01,Adriamycin,4361M
+doxorubicin hydrochloride (as pegylated liposomal),L01DB01,Caelyx,4364Q
+doxycycline,J01AA02,Doxylin 100,10176N
+dressing activated charcoal malodorous wound,V07AY,Actisorb Plus MAP105,4681J
+dressing alginate cavity wound,V07AY,Kaltostat 168117,1905G
+dressing alginate superficial wound,V07AY,Kaltostat 168212,4683L
+dressing alginate with manuka honey,V07AY,Algivon Plus CR4225,10849B
+dressing alginate with silver cavity wound,V07AY,Melgisorb Ag 256605,12765W
+dressing alginate with silver deep wound,V07AY,Melgisorb Ag 256055,12772F
+dressing contact layer lipidocolloid,V07AY,UrgoTul Contact 100351,13022J
+dressing contact layer lipidocolloid with sucrose octasulfate,V07AY,UrgoStart Contact-Interface-Tul 100380,13002H
+dressing film,V07AY,Nexcare Tegaderm Transparent H1624,4686P
+dressing film island,V07AY,Tegaderm Transparent Island 3582,4689T
+dressing foam heavy exudate,V07AY,Mepilex XT 211100,12760N
+dressing foam lipidocolloid with silicone heavy exudate,V07AY,UrgoTul Absorb Silicone Border 102203,13007N
+dressing foam lipidocolloid with sucrose octasulfate heavy exudate,V07AY,UrgoStart Border 100481,13017D
+dressing foam lipidocolloid with sucrose octasulfate moderate exudate,V07AY,UrgoStart Pad 100377,13003J
+dressing foam moderate exudate,V07AY,Allevyn Adhesive 66000044,4590N
+dressing foam with silicone,V07AY,Allevyn Life 66801067,10017F
+dressing foam with silicone and silver,V07AY,Mepilex Ag,2439J
+dressing foam with silicone heavy exudate,V07AY,Mepilex Border Flex 595211,12184G
+dressing foam with silicone light exudate,V07AY,Mepilex Border Lite 281100,12774H
+dressing foam with silicone moderate exudate,V07AY,Mepilex Border Flex Lite 581011,12777L
+dressing foam with silver,V07AY,Allevyn Ag Adhesive 66800073,4252T
+dressing gauze,V07AY,Curity 4112,4768Y
+dressing gauze absorbent,V07AY,Handy 71117-05,4707R
+dressing gauze paraffin,V07AY,Jelonet 7404,4759L
+dressing gauze paraffin with chlorhexidine acetate,V07AY,Bactigras 7457,4845B
+dressing gelling fibre,V07AY,Exufiber 709901,12181D
+dressing gelling fibre lipidocolloid,V07AY,UrgoClean Pad 100372,13009Q
+dressing hydroactive debridement,V07AY,HydroClean Plus 609606,12629Q
+dressing hydroactive superficial wound high exudate semi-permeable absorbent foam,V07AY,Tielle MTL101E,4695D
+dressing hydroactive superficial wound light exudate,V07AY,Allevyn Thin 66047576,4905E
+dressing hydroactive superficial wound moderate exudate,V07AY,Cutinova Hydro 66047441,4885D
+dressing hydrocolloid cavity wound,V07AY,DuoDERM Paste 187930,4896Q
+dressing hydrocolloid superficial wound light exudate,V07AY,Comfeel Plus Transparent 3530,4888G
+dressing hydrocolloid superficial wound moderate exudate,V07AY,Comfeel Plus Pressure Relieving 3350,4678F
+dressing hydrofibre alternate to alginates,V07AY,Aquacel Foam Adhesive,10832D
+dressing hydrofibre with silver,V07AY,Aquacel Ag 403708,10097K
+dressing hydrogel,V07AY,Sorbact Gel Dressing S98137,11395R
+dressing hydrogel amorphous,V07AY,SoloSite Gel 36361338,4599C
+dressing hydrogel foam,V07AY,Sorbact Foam Dressing S98310,2533H
+dressing hydrogel ribbon,V07AY,Sorbact Ribbon Gauze S98118,2512F
+dressing hydrogel sheet,V07AY,Hydrosorb 900854,4806Y
+dressing hydrophobic,V07AY,Sorbact Foam Gentle Border 98532,11392N
+dressing lipidocolloid moderate exudate,V07AY,UrgoTul Lite Border 100357,13026N
+dressing non adherent,V07AY,Mepitel 290510,4243H
+dressing non-adherent absorbent,V07AY,Vliwasorb Pro 32643,11715N
+dressing non-adherent with silicone,V07AY,Mepitel One 289500,12196X
+dressing poly-absorbent fibre lipidocolloid with sucrose octasulfate heavy exudate,V07AY,UrgoStart Plus Border 100460,13013X
+dressing poly-absorbent fibre lipidocolloid with sucrose octasulfate moderate exudate,V07AY,UrgoStart Plus Pad 100422,13012W
+dressing tulle non-adherent primary wound contact layer paraffin,V07AY,Adaptic 2012,4909J
+dressing with silver,V07AY,Atrauman Ag 499573,12591Q
+drospirenone,G03AC10,Slinda,14791L
+drospirenone + ethinylestradiol,G03AA12,Yaz,14709E
+dry psyllium husk,A06AC01,Fybogel,4285M
+dulaglutide,A10BJ05,Trulicity,11364D
+duloxetine,N06AX21,APO-Duloxetine,14712H
+dupilumab,D11AH05,Dupixent,12291X
+durvalumab,L01FF03,Imfinzi,11911X
+dutasteride,G04CB02,APO-Dutasteride,10095H
+dutasteride + tamsulosin,G04CA52,Duodart 500ug/400ug,10102Q
+eculizumab,L04AJ01,Soliris,10182X
+edaravone,N07XX14,Radicava,14804E
+eflornithine,L01XX79,Ifinwil,14880E
+elafibranor,A05AX06,Iqirvo,15084X
+eletriptan,N02CC06,Relpax,5290K
+elexacaftor + tezacaftor + ivacaftor (&) ivacaftor,R07AX32,Trikafta,12936W
+elotuzumab,L01FX08,Empliciti,12983H
+elranatamab,L01FX32,Elrexfio,15293X
+eltrombopag,B02BX05,Revolade,14107L
+empagliflozin,A10BK03,Jardiance,10202Y
+empagliflozin + linagliptin,A10BD19,Glyxambi,11269D
+empagliflozin + metformin,A10BD20,Jardiamet 5 mg/500 mg,10626G
+emtricitabine + rilpivirine + tenofovir alafenamide,J05AR19,Odefsey,11104K
+emtricitabine + tenofovir alafenamide,J05AR17,Descovy,11099E
+enalapril,C09AA02,APO-Enalapril,13369P
+enalapril + hydrochlorothiazide,C09BA02,Renitec Plus 20/6,13439H
+encorafenib,L01EC03,Braftovi,11937G
+enfortumab vedotin,L01FX13,Padcev,13634N
+enoxaparin sodium,B01AB05,Exarane Forte,13688K
+entacapone,N04BX02,Comtan,14542J
+entecavir,J05AF10,ENTECAVIR RBX,10279B
+entrectinib,L01EX14,Rozlytrek,12092K
+enzalutamide,L02BB04,Xtandi,10174L
+epcoritamab,L01FX27,Epkinly,14792M
+epirubicin,L01DB03,Epirubicin Accord,4375G
+eplerenone,C03DA04,Inpler,13379E
+epoetin alfa,B03XA01,"Eprex 20,000",5713Q
+epoetin beta,B03XA01,NeoRecormon,5724G
+epoetin lambda,B03XA01,Novicrit,9587N
+epoprostenol,C02KX,Veletri,10111E
+eprosartan,C09CA02,Teveten,13861M
+eprosartan + hydrochlorothiazide,C09DA02,Teveten Plus 600/12.5,14337N
+eptinezumab,N02CD05,Vyepti,13342F
+eribulin,L01XX41,Halaven,10140Q
+erlotinib,L01EB02,Erlotinib Sandoz,10014C
+erythromycin,J01FA01,Mayne Pharma Erythromycin,10780J
+erythromycin ethylsuccinate,J01FA01,E-Mycin 200,2424N
+escitalopram,N06AB10,Lexapro,10181W
+esketamine,N06AX27,Spravato,14786F
+esomeprazole,A02BC05,Noxicid Caps,10295W
+esomeprazole (&) clarithromycin (&) amoxicillin,A02BD06,ESOMEPRAZOLE SANDOZ Hp7,10759G
+essential amino acids formula,V06DX,Essential Amino Acid Mix,9329B
+essential amino acids formula with minerals and vitamin c,V06DX,Dialamine,2027Q
+essential amino acids formula with vitamins and minerals,V06DX,EAA Supplement,13759E
+estetrol + drospirenone,G03AA18,Nextstellis,15054H
+estradiol,G03CA03,Vagifem Low,10203B
+estradiol (&) estradiol + dydrogesterone,G03FB08,Femoston 1/10,10146B
+estradiol (&) estradiol + norethisterone acetate,G03FB05,Estalis sequi 50/140,13932G
+estradiol + norethisterone acetate,G03FA01,Estalis continuous 50/140,13902Q
+estriol,G03CA04,Ovestin,13926Y
+etanercept,L04AB01,Enbrel,11197H
+ethosuximide,N03AD01,ZARONTIN,11703Y
+etonogestrel,G03AC08,Implanon NXT,8487Q
+etonogestrel + ethinylestradiol,G02BB01,NuvaRing,15074J
+etoposide,L01CB01,Vepesid,1389D
+etrasimod,L04AE05,Velsipity,14600K
+etravirine,J05AG04,Intelence,10301E
+everolimus,L01EG02,Afinitor,10131F
+evolocumab,C10AX13,Repatha,10958R
+exemestane,L02BG06,Aromasin,10103R
+ezetimibe,C10AX09,Zient 10mg,13440J
+ezetimibe (&) rosuvastatin,C10BA06,Rosuzet Composite Pack,10201X
+ezetimibe + atorvastatin,C10BA05,Atozet,10376D
+ezetimibe + simvastatin,C10BA02,APO-Ezetimibe/Simvastatin 10/10,13385L
+famciclovir,J05AB09,Famvir,2274Q
+famotidine,A02BA03,Ausfam 20,15047Y
+faricimab,S01LA09,Vabysmo,13177M
+febuxostat,M04AA03,Adenuric,10445R
+fedratinib,L01EJ02,Inrebic,15278D
+felodipine,C08CA02,Felodil XR 2.5,13377C
+fenfluramine,N03AX26,Fintepla,14833Q
+fenofibrate,C10AB05,FENOFIBRATE RBX,13469X
+fentanyl,N02AB03,Abstral,10600X
+ferric carboxymaltose,B03AC,Ferinject,10104T
+ferric derisomaltose,B03AC,Monofer,11615H
+ferrous fumarate,B03AA02,Ferro-tab,10594N
+ferrous fumarate + folic acid,B03AD02,Ferro-f-tab,10579T
+ferrous sulfate,B03AA07,Ferro-Liquid,8815Y
+fexofenadine,R06AX26,Telfast,4237B
+filgrastim,L03AA02,Zarzio,2733W
+finasteride,G04CB01,Finpro,14191X
+finerenone,C03DA05,Kerendia,13316W
+fingolimod,L04AE01,Gilenya,11818B
+flecainide,C01BC04,Flecainide Sandoz,1088G
+flucloxacillin,J01CF05,Flopen Viatris,10788T
+fluconazole,J02AC01,Diflucan,1471K
+fludarabine,L01BB05,"Fludarabine Phosphate Injection, USP 50 mg/2 mL (Areva, USA)",15144C
+fludrocortisone,H02AA02,FLUDROCORTISONE MEDSURGE,1433K
+flunitrazepam,N05CD03,Hypnodorm,4216X
+fluorouracil,L01BC02,TOLAK 4% ONCE DAILY,13758D
+fluoxetine,N06AB03,FLUOTEX,1434L
+flupentixol decanoate,N05AF01,Fluanxol Depot,2255Q
+flutamide,L02BB01,Flutamin,1417N
+fluticasone furoate,R03BA09,Arnuity Ellipta,11719T
+fluticasone furoate + umeclidinium + vilanterol,R03AL08,Trelegy Ellipta 100/62.5/25,11379X
+fluticasone furoate + vilanterol,R03AK10,Breo Ellipta 100/25,11124L
+fluticasone propionate,R03BA05,Flixotide,14347D
+fluticasone propionate + formoterol,R03AK11,flutiform 125/5,10007Q
+fluticasone propionate + salmeterol,R03AK06,Seretide MDI 250/25,14311F
+fluvoxamine,N06AB08,Luvox,14314J
+folic acid,B03BB01,Megafol 5,10573L
+folinic acid,V03AF03,Leucovorin Calcium (Pfizer Australia Pty Ltd),1610R
+follitropin alfa,G03GA05,Bemfola,10861P
+follitropin alfa + lutropin alfa,G03GA30,Pergoveris,11667C
+follitropin beta,G03GA06,Puregon 300 IU/0.36 mL,6335K
+follitropin delta,G03GA10,Rekovelle,11414R
+fondaparinux,B01AX05,Arixtra,8775W
+formoterol,R03AC13,Foradile,14419X
+fosaprepitant,A04AD12,FOSAPREPITANT-AFT,11103J
+fosinopril,C09AA09,Monace 10,1182F
+foslevodopa + foscarbidopa,N04BA07,Vyalev,14876Y
+fosnetupitant + palonosetron,A04AA,Akynzeo IV,13640X
+framycetin sulfate,S03AA,Soframycin,1440T
+framycetin sulfate + gramicidin + dexamethasone,S02CA06,Otodex,2781J
+fremanezumab,N02CD03,Ajovy,12603H
+fruquintinib,L01EK04,Fruzaqla,15336E
+fulvestrant,L02BA03,Fulvestrant Sandoz,12300J
+furosemide,C03CA01,Frusemix-M,12222G
+fusidate,J01XC01,Fucidin,10782L
+gabapentin,N03AX,Neurontin,1834M
+galantamine,N06DA04,Reminyl,2463P
+galcanezumab,N02CD02,Emgality,12469G
+ganciclovir,J05AB06,Cymevene,10328N
+ganirelix,H01CC01,GANIRELIX SUN,9583J
+garadacimab,B06AC07,Andembry,15295B
+gauze and cotton tissue combine roll,V07AY,JJ 12010,4761N
+gefitinib,L01EB01,Cipla Gefitinib,11264W
+gemcitabine,L01BC05,GEMCITABINE EUGIA,4439P
+gemfibrozil,C10AB04,Ausgem,13618R
+gemtuzumab ozogamicin,L01FX02,Mylotarg,12844B
+gilteritinib,L01EX13,Xospata,13093D
+givosiran,A16AX16,Givlaari,15289Q
+glatiramer acetate,L03AX13,Copaxone,10416F
+glecaprevir + pibrentasvir,J05AP57,Maviret,11332K
+glibenclamide,A10BB01,Daonil,13868X
+gliclazide,A10BB09,APX-Gliclazide,13896J
+glimepiride,A10BB12,Glimepiride Sandoz,13848W
+glipizide,A10BB07,Melizide,14019W
+glofitamab,L01FX28,Columvi,15227K
+glucagon hydrochloride,H04AA01,GlucaGen Hypokit,1449G
+glucose and ketone indicator urine,V04B,Keto-Diastix,3107M
+glycerol,A06AX01,Petrus Pharmaceuticals Pty Ltd,10586E
+glycerol + white soft paraffin,D02AX,QV Skin Lotion,11712K
+glyceryl trinitrate,C01DA02,Transiderm-Nitro 25,13490B
+glycine with carbohydrate,V06DX,Glycine500,10195N
+"glycomacropeptide and essential amino acid formula with vitamins, minerals, and low in tyrosine and phenylalanine",V06DX,TYR Sphere20,11832R
+glycomacropeptide and essential amino acids with vitamins and minerals,V06DX,PKU Glytactin RTD 15,10332T
+glycomacropeptide formula with amino acids and low phenylalanine,V06DX,PKU GMPro MIX-IN,14650C
+"glycomacropeptide formula with amino acids, vitamins, minerals, trace elements, carbohydrate, fat and low phenylalanine",V06DX,PKU GMPro ULTRA,14644R
+glycomacropeptide formula with docosahexaenoic acid and low phenylalanine,V06DX,PKU Sphere20,11071Q
+glycopyrronium,R03BB06,seebri breezhaler,10059K
+golimumab,L04AB06,Simponi,11361Y
+goserelin,L02AE03,Zoladex Implant,1454M
+goserelin (&) bicalutamide,L02AE,ZolaCos CP 3.6/50,9064C
+granisetron,A04AA02,Kytril,5898K
+griseofulvin,D01BA01,Grisovin,1460W
+guanfacine,N06B,Intuniv,11440D
+guselkumab,L04AC16,Tremfya,11614G
+haloperidol,N05AD01,HALOPERIDOL MEDSURGE,12519X
+haloperidol decanoate,N05AD01,Haldol decanoate,2765M
+heparin,B01AB01,DBL Heparin Sodium,1466E
+"high fat formula with vitamins, minerals and trace elements and low in protein and carbohydrate",V06DX,KetoCal 4:1 LQ,10185C
+honey bee venom,V01AA07,Albey Bee Venom,2886X
+human chorionic gonadotrophin,G03GA01,Brevactid 1500 I.E,12879W
+human menopausal gonadotrophin,G03GA02,Menopur 600,2036E
+hyaluronate sodium,S01XA20,Hylo-Fresh,14354L
+hydrochlorothiazide,C03AA03,Dithiazide,13409R
+hydrocortisone,H02AB09,Hydrocortisone Viatris 4,13863P
+hydrocortisone acetate,D07AA02,Cortic-DS 1%,10831C
+hydrocortisone sodium succinate,H02AB09,Solu-Cortef,1501B
+hydromorphone,N02AA03,Dilaudid,12010D
+hydroxocobalamin,B03BA03,Vita-B12,10577Q
+hydroxycarbamide,L01XX05,HYDROXYCARBAMIDE MEDSURGE,3093T
+hydroxychloroquine,M01CA,Hequinel,1512N
+hydroxyethyl starch 130/0.4 + sodium chloride,B05AA07,Voluven 6%,9487H
+hyoscine butylbromide,A03BB01,Buscopan,3473T
+hypromellose,S01XA20,Revive Tears,11625W
+ibandronate,M05BA06,Bondronat,9357L
+ibrutinib,L01EL01,Imbruvica,11213E
+ibuprofen,M01AE01,APO-Ibuprofen 400,3190X
+icatibant,B06AC02,Cipla Icatibant,1976B
+ichthammol,D11AX,Egoderm Cream,4281H
+ichthammol + zinc oxide,D11AX,Egoderm Ointment,4280G
+icosapent ethyl,C10AX06,Vazkepa,14617H
+idarubicin,L01DB06,Zavedos Solution,4440Q
+idelalisib,L01EM01,Zydelig,11162L
+ifosfamide,L01AA06,Holoxan,4448D
+iloprost,C02KX,Ventavis,5751Q
+imatinib,L01EA01,IMATINIB-DRLA,10915L
+imipramine,N06AA02,Imipramine (Leading),12113M
+imiquimod,D11AX,Aldara Pump,10106X
+inclisiran,C10AX16,Leqvio,14087K
+incobotulinumtoxina,M03AX01,Xeomin,10994P
+indacaterol,R03AC18,Onbrez,14334K
+indacaterol + glycopyrronium,R03AL04,ultibro breezhaler 110/50,10156M
+indacaterol + glycopyrronium + mometasone,R03AL12,Enerzair Breezhaler,12295D
+indacaterol + mometasone,R03AK14,Atectura Breezhaler,12269R
+indapamide,C03BA11,Dapa-Tabs,13378D
+indometacin,M01AB01,Arthrexin,2454E
+infliximab,L04AB02,Inflectra,10057H
+inotuzumab ozogamicin,L01FB01,Besponsa,11668D
+insulin aspart,A10AB05,NovoRapid FlexPen,12254Y
+insulin aspart + insulin aspart protamine,A10AD05,NovoMix 30 FlexPen,12238D
+insulin degludec + insulin aspart,A10AD06,Ryzodeg Penfill,11426J
+insulin detemir,A10AE05,Levemir FlexPen,12236B
+insulin glargine,A10AE04,Toujeo Solostar,11302W
+insulin glulisine,A10AB06,Apidra SoloStar,12268Q
+insulin isophane human,A10AC01,Humulin NPH,1533Q
+insulin lispro,A10AB04,Humalog U200 Kwikpen,11645X
+insulin lispro + insulin lispro protamine,A10AD04,Humalog Mix25 KwikPen,12234X
+insulin neutral human,A10AB01,Actrapid,1531N
+insulin neutral human + insulin isophane human,A10AD01,Humulin 30/70,1426C
+interferon beta-1b,L03AB08,Betaferon,8101J
+interferon gamma-1b,L03AB03,Imukin,5769P
+ipilimumab,L01FX04,Yervoy,15230N
+ipratropium,R03BB01,Atrovent,1542E
+iptacopan,L04AJ08,Fabhalta,15064W
+irbesartan,C09CA04,Avapro,13380F
+irbesartan + hydrochlorothiazide,C09DA04,Avapro HCT 300/25,13446Q
+irinotecan,L01CE02,Irinotecan Accord,4451G
+iron polymaltose,B03AC,Ferrosig,2593L
+iron sucrose,B03AC,Venofer,10229J
+isoleucine with carbohydrate,V06DX,Isoleucine 50,9134R
+isoniazid,J04AC01,Arrow Pharma Pty Ltd,1554T
+isosorbide dinitrate,C01DA08,Isordil Sublingual,13491C
+isosorbide mononitrate,C01DA14,Imdur Durule,13461L
+isotretinoin,D10BA01,Roaccutane,11621P
+itraconazole,J02AC02,Lozanoc,10732W
+ivabradine,C01EB17,Coralan,10012Y
+ivacaftor,R07AX02,Kalydeco,10170G
+ivermectin,P02CF01,Stromectol,2868Y
+ivosidenib,L01XM02,Tibsovo,14868M
+ixekizumab,L04AC13,Taltz,11032P
+labetalol,C07AG01,Presolol 100,13887X
+lacosamide,N03AX18,Lacosamide ARX,10293R
+lamivudine,J05AF05,3TC,10311Q
+lamivudine + zidovudine,J05AR01,Combivir,10284G
+lamotrigine,N03AX09,Lamictal,13842M
+lanadelumab,B06AC05,Takhzyro,12790E
+lanreotide,H01CB03,Mytolac,11289E
+lansoprazole,A02BC03,Zopral,11669E
+lanthanum,V03AE03,Fosrenol,13874F
+lapatinib,L01EH01,Tykerb,11251E
+larotrectinib,L01EX12,Vitrakvi,13027P
+latanoprost,S01EE01,Xalatan,14453Q
+latanoprost + timolol,S01EE,APO-Latanoprost/Timolol 0.05/5,14350G
+leflunomide,L04AK01,Arava,13940Q
+lenalidomide,L04AX04,Lenalidomide Dr.Reddy''s,11029L
+lenvatinib,L01EX08,Lenvima,10952K
+lercanidipine,C08CA13,Zircol 10,13411W
+lercanidipine + enalapril,C09BB02,Zan-Extra 10/20,13477H
+letrozole,L02BG04,Femara 2.5 mg,13939P
+leuprorelin,L02AE02,Lucrin Depot 6-Month,11943N
+leuprorelin (&) bicalutamide,L02AE51,Bi ELIGARD CP,10962Y
+levetiracetam,N03AX14,Levactam,13937M
+levodopa + benserazide,N04BA02,Madopar Rapid 62.5,14356N
+levodopa + carbidopa,N04BA02,Duodopa,11910W
+levodopa + carbidopa + entacapone,N04BA03,Lecteva,14357P
+levonorgestrel,G02BA03,Kyleena,11909T
+levonorgestrel + ethinylestradiol,G03AB03,Trifeme 28,1392G
+levothyroxine,H03AA01,Eltroxin,12830G
+lidocaine,N01BB02,LIGNOCAINE INJECTION (BRIDGEWEST),10209H
+light liquid paraffin + cocoamphodiacetate disodium,D11AX,Hamilton Skin Therapy Wash,4549K
+linagliptin,A10BH05,Trajenta,13954K
+linagliptin + metformin,A10BD11,Trajentamet,10038H
+lincomycin,J01FF02,LINCOMYCIN SXP,11366F
+liothyronine,H03AA02,Tertroxin,13966C
+lipegfilgrastim,L03AA14,Lonquex,10931H
+liquid paraffin + glycerol + tyloxapol + poloxamer-188 + trometamol hydrochloride + trometamol + cetalkonium chloride,S01XA20,Cationorm,12612T
+lisdexamfetamine,N06BA12,Vyvanse,10474G
+lisinopril,C09AA03,Zestril,13402J
+lithium carbonate,N06AX,Lithicarb,3059B
+loperamide,A07DA03,Gastrex,10592L
+lopinavir + ritonavir,J05AR10,Kaletra,10272P
+loratadine,R06AX13,Claratyne,4313B
+lorlatinib,L01ED05,Lorviqua,12091J
+lubricating agent,V07A,Lubri-Gel,4306P
+lumacaftor + ivacaftor,R07AX30,Orkambi,11463H
+lumasiran,A16AX18,Oxlumo,15052F
+lurasidone,N05AE05,Lurasidone Lupin,10526B
+lutropin alfa,G03GA07,Luveris,10465T
+lysine + thiamine + pyridoxine + cyanocobalamin + ferric pyrophosphate,A11EA,Accomin Adult Tonic,4493L
+macitentan,C02KX04,Opsumit,10134J
+macitentan + tadalafil,C02KX54,Opsynvi,14785E
+macrogol-3350,A06AD15,OsmoLax,11025G
+macrogol-3350 + sodium chloride + bicarbonate + potassium chloride,A06AD15,APO-MACROGOL plus ELECTROLYTES,14408H
+magnesium,A12CC05,Magmin,4321K
+mannitol,R05CB16,Bronchitol,2008Q
+maraviroc,J05AX09,Maraviroc Waymade,10318C
+maribavir,J05AX10,Livtencity,14856X
+mavacamten,C01EB24,Camzyos,14113T
+mebendazole,P02CA01,Trust Deworm,12194T
+mebeverine,A03AA04,Colofac,4328T
+mecasermin,H01AC03,Increlex,13116H
+medium chain triglycerides,V06D,MCT Oil,3128P
+medroxyprogesterone,G03DA02,Ralovera,13849X
+mefenamic acid,M01AG01,FEMIN,1824B
+melatonin,N05CH01,Slenyto,14188R
+meloxicam,M01AC06,CIPLA MELOXICAM 7.5,8561N
+melphalan,L01AA03,Alkeran,2547C
+memantine,N06DX01,Memantine generichealth,1956Y
+mepolizumab,R03DX09,Nucala,12007Y
+mercaptopurine,L01BB02,Allmercap,10214N
+mesalazine,A07EC02,Pentasa,10254Q
+mesna,V03AF01,Uromitexan,5960Q
+metformin,A10BA02,Diaformin XR 1000,13847T
+methadone,N02AC,METHADONE-AFT,12520Y
+methenamine hippurate,J01XX05,Uramet,14005D
+methotrexate,L04AX03,Trexject,11268C
+methoxsalen,D05BA02,Uvadex,12154Q
+methoxy polyethylene glycol-epoetin beta,B03XA03,Mircera,5794Y
+methoxyflurane,N02BG09,Penthrox (Combination Pack),3489P
+methyl salicylate + menthol + camphor + eucalyptus oil + pine oil pumilio + turpentine oil + peppermint oil + cajuput oil + capsicum extract,M02AC,Goanna Heat Cream,11707E
+methyldopa,C02AB01,Hydopa,1629R
+methylnaltrexone,A06AH01,Relistor,5423K
+methylphenidate,N06BA04,Ritalin LA,12116Q
+methylprednisolone,D07AC14,Advantan,10830B
+metoclopramide,A03FA01,METOCLOPRAMIDE INJECTION BP,10762K
+metoprolol succinate,C07AB02,Metrol-XL 190,13420H
+metoprolol tartrate,C07AB02,Metoprolol Sandoz,1324Q
+metronidazole,J01XD01,METRONIDAMED,1621H
+mianserin,N06AX03,Lumin 10,14366D
+miconazole,D01AC02,Daktarin,9027D
+midazolam,N05CD08,Pfizer Australia Pty Ltd,10178Q
+midostaurin,L01EX10,Rydapt,11505M
+mifepristone (&) misoprostol,G03XB51,MS-2 Step,10211K
+migalastat,A16AX14,Galafold,14573B
+milk powder synthetic low calcium,V06DF,Locasol,3092R
+milk protein and fat formula with vitamins and minerals carbohydrate free,V06DX,Carbohydrate Free Mixture,8630F
+minocycline,J01AA08,Akamin 50,14483G
+minoxidil,C02DC01,Loniten,14041B
+mirtazapine,N06AX11,MIRTANZA ODT,14369G
+mitozantrone,L01DB07,Mitozantrone Ebewe,4514N
+moclobemide,N06AG02,Aurorix 300 mg,14442D
+modafinil,N06BA07,Modafin,8816B
+modified long chain amylopectin,V06DC,Glycosade,9386B
+mogamulizumab,L01FX09,POTELIGEO,15271R
+molnupiravir,J05AB18,Lagevrio,12910L
+momelotinib,L01EJ04,Omjjara,14743Y
+mometasone,D07AC13,Elocon,10791Y
+montelukast,R03DC03,Montelukast Sandoz 4,14526M
+morphine,N02AA01,Morphine Juno,10858L
+moxonidine,C02AC05,Moxonidine GX,13552G
+mupirocin,R01AX06,Mupirocin Nasal (Medsurge),11822F
+mycobacterium bovis bcg danish strain,L03AX03,VesiCulture,12925G
+mycobacterium bovis bcg tice strain,L03AX03,OncoTICE,1131M
+mycophenolate,L04AA06,Mycophenolic Acid ARX,13856G
+nafarelin,H01CA02,Synarel,2962X
+naloxone,V03AB15,Naloxone Hydrochloride (DBL),10783M
+naltrexone,N07BB04,Naltrexone GH,8370M
+nanoparticle albumin-bound paclitaxel,L01CD01,nab-PACLITAXEL JUNO,10150F
+naproxen,M01AE02,Proxen SR 750,1614Y
+naratriptan,N02CC02,Naramig,8298R
+natalizumab,L04AG03,Tysabri,13820J
+nebivolol,C07AB12,APO-Nebivolol,13441K
+netupitant + palonosetron,A04AA55,Akynzeo,10714X
+nevirapine,J05AG01,Nevirapine Viatris,10304H
+nicorandil,C01DX16,Ikotab,13550E
+nicotine,N07BA01,nicorette 16hr Invisipatch,10076H
+nifedipine,C08CA05,APO-Nifedipine XR,13376B
+nilotinib,L01EA03,Tasigna,12858R
+nintedanib,L01EX09,Ofev,11100F
+niraparib,L01XK02,Zejula,14172X
+nirmatrelvir (&) ritonavir,J05AE30,Paxlovid,12996B
+nitrazepam,N05CD02,Alodorm,2723H
+nitrofurantoin,J01XE01,Nitrofurantoin BNM,1692C
+nivolumab,L01FF01,Opdivo,11900H
+nivolumab + relatlimab,L01FY02,Opdualag,14664T
+nizatidine,A02BA04,Tazac,14306Y
+norethisterone,G03DC02,Primolut N,13873E
+norethisterone + ethinylestradiol,G03AA05,Norimin 28 Day,2774B
+norfloxacin,J01MA06,APO-Norfloxacin,3010K
+nortriptyline,N06AA10,Allegron,2522R
+nusinersen,M09AX07,Spinraza,11363C
+nystatin,A01AB11,Pharmacy Action Nystatin Oral Drops,10854G
+obeticholic acid,A05AA04,Ocaliva,12623J
+obinutuzumab,L01FA03,Gazyva,10407R
+ocrelizumab,L04AG08,Ocrevus,11237K
+octreotide,H01CB02,Sandostatin LAR,10533J
+odevixibat,A05AX05,Bylvay,15134M
+ofatumumab,L04AG12,Kesimpta,12641H
+ofloxacin,S01AE01,Ocuflox,5567B
+olanzapine,N05AH03,APO-Olanzapine ODT,3381Y
+olaparib,L01XK01,Lynparza,11503K
+olmesartan,C09CA08,Olmesartan - MYL,13505T
+olmesartan + amlodipine,C09DB02,Olmesartan/Amlodipine - MYL 20/5,13449W
+olmesartan + amlodipine + hydrochlorothiazide,C09DX03,Sevikar HCT 20/5/12.5,10005N
+olmesartan + hydrochlorothiazide,C09DA08,Olmesartan HCT - MYL 20/12.5,13447R
+olsalazine,A07EC03,Dipentum,1728Y
+omalizumab,R03DX05,Omlyclo,10109C
+omeprazole,A02BC01,Losec Tablets,11677N
+onasemnogene abeparvovec,M09AX09,Zolgensma,12940C
+ondansetron,A04AA01,Zofran,1594X
+opicapone,N04BX04,Ongentys,13206C
+orlistat,A08AB01,Xenical,4570M
+ortho-dichlorobenzene + para-dichlorobenzene + chlorobutanol + arachis oil,S02DC,Cerumol,4180B
+osilodrostat,H02CA02,Isturisa,14714K
+osimertinib,L01EB04,Tagrisso,11620N
+oxaliplatin,L01XA03,Oxaliplatin SUN,4542C
+oxazepam,N05BA04,Alepam 15,3132W
+oxcarbazepine,N03AF02,Trileptal,13935K
+oxybutynin,G04BD04,Ditropan,13957N
+oxycodone,N02AA05,Oxycodone BNM,12031F
+oxycodone + naloxone,N02AA55,Targin 15/7.5mg,10757E
+oxymetazoline,R01AA05,Pharmacy Action Nasal Decongestant,11711J
+ozanimod,L04AE02,Zeposia,12271W
+paclitaxel,L01CD01,Paclitaxel Ebewe,4567J
+pad wound debridement,V07AY,Debrisoft,11383D
+palbociclib,L01EF01,Ibrance,12818P
+paliperidone,N05AX13,Invega Trinza,11066K
+palonosetron,A04AA05,Palonosetron Dr.Reddy''s,5295Q
+palovarotene,M09AX11,Sohonos,14966Q
+pamidronate disodium,M05BA03,Pamisol,5669J
+pancreatic extract,A09AA02,"Creon 35,000",12595X
+panitumumab,L01FE02,Vectibix,10069Y
+panthenol,D11AX,SebiRinse,4510J
+pantoprazole,A02BC02,Somac,11678P
+paper wasp venom,V01AA07,Hymenoptera Paper Wasp Venom,10620Y
+paracetamol,N02BE01,PHARMACY CARE PARACETAMOL,10582Y
+paracetamol + codeine,N02AJ06,Paracetamol/Codeine GH 500/30,12022R
+paraffin,S01XA20,Poly Visc,14353K
+paroxetine,N06AB05,Aropax,14367E
+pasireotide embonate,H01CB05,Signifor LAR,10880P
+patiromer,V03AE09,Veltassa,13609G
+patisiran,N07XX12,Onpattro,14264R
+pazopanib,L01EX03,Votrient,10041L
+pegcetacoplan,L04AJ03,Empaveli,13175K
+pegfilgrastim,L03AA13,Ziextenzo,6363X
+peginterferon alfa-2a,L03AB11,Pegasys,11037X
+peginterferon beta-1a,L03AB13,Plegridy,10212L
+pegvisomant,H01AX01,Somavert,11166Q
+pembrolizumab,L01FF02,Keytruda,10424P
+pemetrexed,L01BA04,Pemetrexed Accord,4600D
+penicillamine,M01CC01,D-Penamine,13425N
+perampanel,N03AX22,Fycompa,10151G
+perfluorohexyloctane,S01XA20,Novatears,11439C
+perhexiline,C01DX,Pexsig,1822X
+periciazine,N05AC01,Neulactil,3052P
+perindopril,C09AA04,PERISYL,13371R
+perindopril + amlodipine,C09BB04,APO-Perindopril Arginine/Amlodipine 5/10,13381G
+perindopril + indapamide,C09BA04,Coversyl Plus LD 2.5mg/0.625mg,13413Y
+permethrin,P03AC04,Lyclear,3054R
+pertuzumab,L01FD02,Perjeta,10267J
+phenelzine,N06AF03,Nardil,2856H
+phenobarbital,N03AA02,Phenobarb,1850J
+phenoxybenzamine,C04AX02,Amdipharm Mercury (Australia) Pty Limited,1166J
+phenoxymethylpenicillin,J01CE02,Cilicaine VK,13968E
+phenylalanine with carbohydrate,V06DX,Phenylalanine 50,9384X
+phenytoin,N03AB02,Dilantin Infatabs,1249R
+phosphorus,V03AG05,PHOSPHATE PHEBRA,13850Y
+phytomenadione,B02BA01,Konakion MM,10213M
+pilocarpine,S01EB01,Isopto Carpine,14355M
+pimecrolimus,D11AH02,Elidel,8802G
+pioglitazone,A10BG03,ARX-PIOGLITAZONE,13898L
+pirfenidone,L04AX05,Pirfenidone Sandoz,11406H
+piroxicam,M01AC01,APO-Piroxicam,1897W
+pizotifen,N02CX01,Sandomigran 0.5,13866T
+plerixafor,L03AX16,Plerixafor ARX,10083Q
+polyethylene glycol-400 + propylene glycol,S01XA20,Systane,13100L
+polylactic acid,V03AX,Sculptra,9475Q
+pomalidomide,L04AX06,Pomolide,10386P
+ponatinib,L01EA05,Iclusig,10520Q
+posaconazole,J02AC04,Posaconazole Juno,10460M
+potassium chloride,A12BA01,Span-K,13357B
+potassium chloride + potassium bicarbonate + potassium carbonate,A12BA01,Chlorvescent,13486T
+povidone-iodine,V07AY,Inadine,10847X
+pralatrexate,L01BA05,Folotyn,11271F
+pramipexole,N04BC05,SIMIPEX XR,14324X
+prasugrel,B01AC22,Prasugrel Lupin,14796R
+pravastatin,C10AA03,Pravachol,13432Y
+praziquantel,P02BA01,"Praziquantel Tablets, USP 600 mg (Endo, USA)",15199Y
+prazosin,C02CA01,APO-Prazosin,13367M
+prednisolone,H02AB06,Predsolone,13888Y
+prednisolone acetate + phenylephrine,S01BB02,Prednefrin Forte,11908R
+prednisolone sodium phosphate,H02AB06,Redipred,13837G
+prednisone,H02AB07,Panafcort,13944X
+pregabalin,N02BF02,Lyzalon,2335X
+primidone,N03AA03,Mysoline,1939C
+probenecid,M04AB01,Pro-Cid,13942T
+prochlorperazine,A04AD,Stemetil,2369Q
+progesterone,G03DA04,Endometrin,10116K
+progesterone (&) estradiol,G03FA04,Estrogel Pro,14720R
+propantheline,G04BD,Pro-Banthine,13927B
+propranolol,C07AA05,APO-Propranolol,13386M
+propylene glycol,S01XA20,Systane Balance,14768G
+propylthiouracil,H03BA02,PTU,13836F
+"protein formula with amino acids, carbohydrates, vitamins and minerals without phenylalanine, and supplemented with docosahexaenoic acid",V06DX,PKU Easy,10658Y
+"protein formula with arginine, vitamin c, e and zinc",V06DX,Cubitan,11401C
+"protein formula with carbohydrate, fat, vitamins and minerals",V06D,Nutrini Peptisorb Energy,11939J
+"protein formula with vitamins and minerals, and low in potassium, phosphorus, calcium, chloride and vitamin a",V06DX,Renastep,12191P
+protein hydrolysate formula with medium chain triglycerides,V06DB,Aptamil Gold+ Pepti-Junior,8259Q
+pseudoephedrine,R01BA02,Pharmacy Action Sinus & Nasal Decongestant Relief,4029C
+psyllium husk powder,A06AC01,Metamucil Natural Granular,12596Y
+pyrantel,P02CC01,Anthel 125,3047J
+pyridostigmine,N07AA02,Mestinon,14392L
+quetiapine,N05AH04,Seroquel XR,5458G
+quinapril,C09AA06,ACQUIN,1968N
+quinine,P01BC01,Quinate,1975Y
+rabeprazole,A02BC04,Rabeprazole Sandoz,11670F
+raloxifene,M05BX,Evista,13426P
+raltegravir,J05AJ01,Isentress,10286J
+raltitrexed,L01BA03,Tomudex,4610P
+ramipril,C09AA05,Ramipril Sandoz,1316G
+ramipril + felodipine,C09BB05,Triasyn 5.0/5.0,13534H
+ranibizumab,S01LA04,Lucentis,10138N
+ranitidine,A02BA02,Zantac 300,1977C
+rasagiline,N04BD02,Pharmacor Rasagiline,14458Y
+ravulizumab,L04AJ02,Ultomiris,12841W
+reboxetine,N06AX18,Edronax,14474T
+relugolix + estradiol + norethisterone acetate,H01CC54,Ryeqo,14795Q
+repotrectinib,L01EX28,Augtyro,15280F
+ribociclib,L01EF02,Kisqali,11385F
+rifabutin,J04AB04,Mycobutin,6195C
+rifampicin,J04AB02,Rimycin 300,12189M
+rifaximin,A07AA11,Xifaxan,10001J
+rilpivirine,J05AG05,Edurant,10298B
+riluzole,N07XX02,Teglutik,11662T
+riociguat,C02KX05,Adempas,10974N
+ripretinib,L01EX19,Qinlock,12764T
+risankizumab,L04AC18,Skyrizi,14111Q
+risdiplam,M09AX10,Evrysdi,12606L
+risedronate,M05BA07,Actonel,13360E
+risperidone,N05AX08,APO-Risperidone,11869Q
+ritonavir,J05AE03,Norvir,10273Q
+rituximab,L01FA01,Riximyo,13082M
+rivaroxaban,B01AF01,Rivaroxaban Dr.Reddy''s,11633G
+rivastigmine,N06DA03,Exelon Patch 15,10538P
+rizatriptan,N02CC04,RIXALT,10551H
+romiplostim,B02BX04,Nplate,9696H
+romosozumab,M05BX06,Evenity,12301K
+rosuvastatin,C10AA07,Rosuvastatin Sandoz,13406N
+rotigotine,N04BC09,Neupro,11140H
+roxithromycin,J01FA06,Roxar 300,11993F
+ruxolitinib,L01EJ01,Jakavi,10614P
+sacituzumab govitecan,L01FX17,Trodelvy,12944G
+sacubitril + valsartan,C09DX04,Entresto,11122J
+safinamide,N04BD03,Xadago,11656L
+salbutamol,R03CC02,Ventolin,1103C
+salicylic acid + lactic acid,D11AF,Duofilm Solution,11959K
+salmeterol,R03AC12,Serevent Accuhaler,14328D
+sapropterin,A16AX07,Kuvan,10086W
+saxagliptin,A10BH03,Onglyza,10128C
+saxagliptin + dapagliflozin,A10BD21,Qtern 5/10,11286B
+saxagliptin + metformin,A10BD10,Kombiglyze XR 2.5/1000,10048W
+secukinumab,L04AC10,Cosentyx,10425Q
+selegiline,N04BD01,Eldepryl,14430L
+selenium sulfide,D11AC03,Selsun,4452H
+selexipag,C02KX,Uptravi,12235Y
+selinexor,L01XX66,Xpovio,13085Q
+selpercatinib,L01EX22,Retevmo,14693H
+selumetinib,L01EE04,Koselugo,14236G
+semaglutide,A10BJ06,Ozempic,12075M
+sennoside b,A06AB06,Senokot,4455L
+sertraline,N06AB06,Zoloft,14400X
+sevelamer,V03AE02,Sevelamer Lupin,11838C
+sildenafil,C02KX,Sildenafil Sandoz PHT 20,12138W
+silodosin,G04CA04,Urorec,12077P
+siltuximab,L04AC11,Sylvant,12916T
+simvastatin,C10AA01,Simvar 20,13373W
+siponimod,L04AE03,Mayzent,12158X
+sirolimus,L04AH01,Rapamune,13860L
+sitagliptin,A10BH01,Sitagliptin Sandoz Pharma,13871C
+sitagliptin + metformin,A10BD07,Janumet XR,10089B
+skin emollient,D02AX,Alpha Keri Lotion,4107E
+sodium chloride,B05CB01,Baxter Healthcare Pty Ltd,4460R
+sodium chloride + hypochlorous acid + sodium hypochlorite,V07AY,Microdacyn,11134B
+sodium chloride + potassium chloride + glucose + citric acid,A07CA,O.R.S.,11049M
+sodium phenylbutyrate,A16AX03,Pheburane,11865L
+sodium polystyrene sulfonate,V03AE01,Resonium-A,4470G
+sofosbuvir + velpatasvir,J05AP55,Epclusa,11144M
+sofosbuvir + velpatasvir + voxilaprevir,J05AP56,Vosevi,11658N
+somatrogon,H01AC08,Ngenla,13119L
+somatropin,H01AC01,Genotropin GoQuick,10426R
+sonidegib,L01XJ02,Odomzo,11304Y
+sorafenib,L01EX02,Nexavar,10226F
+sotalol,C01BD,Cardol,2043M
+soy lecithin + tocopherol + vitamin a,S01XA20,tearsagain,14426G
+soy protein and fat formula with vitamins and minerals carbohydrate free,V06DX,RCF,8577K
+spironolactone,C03DA01,Spiractin 25,13503Q
+stiripentol,N03AX17,Diacomit,12088F
+sucroferric oxyhydroxide,V03AE05,Velphoro,10230K
+sulfasalazine,A07EC01,Pyralin EN,13433B
+sulthiame,N03AX03,Ospolot,13916K
+sumatriptan,N02CC01,Imigran FDT,10694W
+sunitinib,L01EX01,Sunitinib Sandoz,10004M
+sunscreens,D02BA,Sunsense Sensitive SPF 50+,4307Q
+tacrolimus,L04AD02,Tacrolimus Sandoz,10859M
+tadalafil,C02KX,Tadalca,12150L
+tafamidis,N07XX08,Vyndamax,14100D
+talazoparib,L01XK04,Talzenna,14683T
+tamoxifen,L02BA01,Nolvadex-D,10911G
+tamsulosin,G04CA02,Flomaxtra,14200J
+tape non woven retention polyacrylate,V07AY,Medipore 2961,4915Q
+tape plaster adhesive elastic,V07AY,Leukoplast 01071-00,4780N
+tape plaster adhesive hypoallergenic,V07AY,Leukopor 2471,4783R
+tape plaster adhesive with silicone,V07AY,Mepitac 298300,4239D
+tapentadol,N02AX06,Palexia SR,10091D
+tar + coal tar solution + salicylic acid,D11AC30,Sebitar,4447C
+tar + trolamine lauril sulfate,D04AX,Pinetarsol,4408B
+tebentafusp,L01XX75,Kimmtrak,13818G
+teduglutide,A16AX08,Revestive,11793Q
+telmisartan,C09CA07,Micardis,13437F
+telmisartan + amlodipine,C09DB04,ARX-Telmisartan/Amlodipine,13450X
+telmisartan + hydrochlorothiazide,C09DA07,Teltartan HCT 40/12.5,13546Y
+temazepam,N05CD07,Temtabs,2088X
+temozolomide,L01AX03,APO-Temozolomide,10062N
+tenofovir alafenamide + emtricitabine + elvitegravir + cobicistat,J05AR18,Genvoya,11114Y
+tenofovir disoproxil,J05AF07,Tenofovir Sandoz,10310P
+tenofovir disoproxil + emtricitabine,J05AR03,CIPLA TENOFOVIR + EMTRICITABINE 300/200,10347N
+tenofovir disoproxil + emtricitabine + efavirenz,J05AR06,Tenofovir Disoproxil Emtricitabine Efavirenz Viatris 300/200/600,11732L
+tepotinib,L01EP02,Tepmetko,13171F
+terbinafine,D01BA02,Terbinafine-DRLA,2285G
+terbutaline,R03CC03,Bricanyl,1034K
+teriflunomide,L04AK02,Teriflunomide Sandoz,2898M
+teriparatide,H05AA02,Terrosa,14093R
+testosterone,G03BA03,AndroForte 5,10378F
+testosterone undecanoate,G03BA03,Reandron 1000,10205D
+tetrabenazine,N07XX06,iNova Pharmaceuticals (Australia) Pty Ltd,1330B
+tetracosactide,H01AA02,Synacthen Depot 1 mg/1 mL,2832C
+tezacaftor + ivacaftor (&) ivacaftor,R07AX31,Symdeko,11833T
+thalidomide,L04AX02,Thalomid,6469L
+theophylline,R03DA04,Nuelin,2614N
+thiamine,A11DA01,Betavit,1070H
+thyrotropin alfa,H01AB01,Thyrogen,2700D
+tiagabine,N03AG06,Gabitril,13892E
+ticagrelor,B01AC24,ARX-TICAGRELOR,13524T
+tildrakizumab,L04AC17,Ilumya,11613F
+timolol,S01ED01,Timoptol,1279H
+tioguanine,L01BB03,Lanvis,1233X
+tiotropium,R03BB04,Spiriva Respimat,10509D
+tiotropium + olodaterol,R03AL06,Spiolto Respimat,10557P
+tirofiban,B01AC17,Aggrastat,8350L
+tislelizumab,L01FF09,Tevimbra,14756P
+tobramycin,J01GB01,TOBI podhaler,10066T
+tocilizumab,L04AC07,Actemra,10056G
+tofacitinib,L04AF01,Xeljanz,10511F
+tolnaftate,D01AE18,Tinaderm,4481W
+tolvaptan,C03XA01,Jinarc,11588X
+topiramate,N03AX11,Topamax Sprinkle,13878K
+topotecan,L01CE01,Hycamtin,4617B
+toremifene,L02BA02,Fareston,13859K
+toripalimab,L01FF13,Zytorvi,15125C
+trabectedin,L01CX01,Yondelis,13340D
+tramadol,N02AX02,Tramal,12008B
+trametinib,L01EE01,Mekinist,10382K
+trandolapril,C09AA10,Gopten,13403K
+trandolapril + verapamil,C09BB10,Tarka 4/240,13591H
+tranexamic acid,B02AA02,Cyklokapron,2180R
+tranylcypromine,N06AF04,Parnate,14401Y
+trastuzumab,L01FD01,Ogivri,10383L
+trastuzumab deruxtecan,L01FD04,Enhertu,13713R
+trastuzumab emtansine,L01FD03,Kadcyla,10281D
+travoprost,S01EE04,Travatan,14549R
+travoprost + timolol,S01EE,Duotrav,14316L
+tremelimumab,L01FX20,Imjudo,15090F
+triamcinolone,D07AB09,Tricortone,2117K
+triamcinolone + neomycin + gramicidin + nystatin,S02CA04,Otocomb Otic,2971J
+trientine,A16AX12,Trientine Waymade,13124R
+trifluridine + tipiracil,L01BC59,Lonsurf 15/6.14,11507P
+triglycerides long chain with glucose polymer,V06DX,ProZero,9309Y
+triglycerides medium chain and long chain with glucose polymer,V06DX,Duocal,3136C
+triglycerides medium chain formula,V06DB,Monogen,10152H
+trihexyphenidyl,N04AA01,Artane,1109J
+trimethoprim,J01EA01,Alprim,10785P
+trimethoprim + sulfamethoxazole,J01EE01,Bactrim DS,10784N
+triptorelin,L02AE04,Decapeptyl,10907C
+tyrosine with carbohydrate,V06DX,Tyrosine 1000,9165J
+ublituximab,L04AG14,Briumvi,15175Q
+umeclidinium,R03BB07,Incruse Ellipta,10187E
+umeclidinium + vilanterol,R03AL03,Anoro Ellipta 62.5/25,10188F
+upadacitinib,L04AF03,Rinvoq,11979L
+urea,D02AE01,Urederm,4042R
+ursodeoxycholic acid,A05AA02,Ursofalk,11180K
+ustekinumab,L04AC05,Stelara,10767Q
+valaciclovir,J05AB11,Valtrex,5480K
+valganciclovir,J05AB14,Valcyte,10277X
+valine with carbohydrate,V06DX,Valine 50,9135T
+valproate,N03AG01,Epilim,13840K
+valsartan,C09CA03,Dilart,13383J
+valsartan + hydrochlorothiazide,C09DA03,Dilart HCT 80/12.5,13393X
+vancomycin,J01XA01,Vancomycin Viatris,14696L
+vanzacaftor + tezacaftor + deutivacaftor,R07AX33,Alyftrek,15204F
+varenicline,N07BA03,VARENAPIX,5469W
+vedolizumab,L04AG05,Entyvio,10384M
+vemurafenib,L01EC01,Zelboraf,11076Y
+venetoclax,L01XX52,Venclexta,11630D
+venlafaxine,N06AX16,Efexor-XR,14402B
+verapamil,C08DA01,Cordilox SR,1241H
+vericiguat,C01DX22,Verquvo,13178N
+vigabatrin,N03AG04,Sabril,13919N
+vildagliptin,A10BH02,Galvus,13846R
+vildagliptin + metformin,A10BD08,ARX-Vildagliptin/Metformin 50/500,13877J
+vinblastine,L01CA01,DBL Vinblastine,4618C
+vincristine,L01CA02,DBL Vincristine Sulfate,4619D
+vinorelbine,L01CA04,Vinorelbine Ebewe,4620E
+vismodegib,L01XJ01,Erivedge,11070P
+"vitamins, minerals and trace elements",V06DX,Phlexy-Vits,11200L
+"vitamins, minerals and trace elements with carbohydrate",V06DX,FruitiVits,10149E
+voriconazole,J02AC03,Vfend,10168E
+vorinostat,L01XH01,Zolinza,11138F
+vosoritide,M05BX07,Voxzogo,13270K
+vutrisiran,N07XX18,Amvuttra,14810L
+warfarin,B01AA03,Coumadin,2209G
+"whey protein formula supplemented with amino acids, long chain polyunsaturated fatty acids, vitamins and minerals, low in protein, phosphate, potassium and lactose",V06DX,Renastart,2870C
+"whey protein formula supplemented with amino acids, vitamins and minerals, and low in protein, phosphate, potassium and lactose",V06DX,Kindergen,8587Y
+wool alcohols,D02AC,Eucerin,4041Q
+yellow jacket venom,V01AA07,Albey Yellow Jacket Venom,2883R
+zanubrutinib,L01EL03,Brukinsa,12891L
+zidovudine,J05AF01,Retrovir,10266H
+zilucoplan,L04AJ06,Zilbrysq,15276B
+zinc oxide + maize starch + purified talc + chlorphenesin,D11AX,Z.S.C.,4497Q
+zinc oxide + peru balsam + benzyl benzoate,C05AX04,Anusol,4039N
+ziprasidone,N05AE04,ZIPROX,9070J
+zoledronic acid,M05BA08,DEZTRON,13772W
+zolmitriptan,N02CC03,Zomig,8266C
+zonisamide,N03AX15,Zonegran,13853D
+zopiclone,N05CF01,Imovane,13307J
+zuclopenthixol decanoate,N05AF05,Clopixol Depot,8097E

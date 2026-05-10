@@ -5,7 +5,7 @@
 
 PYTHON = python -m script_report
 
-.PHONY: help setup refresh download extract spend embed atc calendar build deploy clean
+.PHONY: help setup refresh download extract spend schedule embed atc calendar build deploy clean
 
 help:
 	@echo ""
@@ -16,6 +16,7 @@ help:
 	@echo "  make download   Download new PBAC PSDs"
 	@echo "  make extract    Re-extract PSD data via Claude Haiku (--resume)"
 	@echo "  make spend      Fetch PBS drug spend Excel"
+	@echo "  make schedule   Backfill ATC codes from PBS Schedule API CSV bundle"
 	@echo "  make embed      Embed PSDs via Voyage AI (--resume)"
 	@echo "  make atc        Parse ATC class data"
 	@echo "  make calendar   Parse PBS Cycle Timeframe PDFs"
@@ -38,6 +39,9 @@ extract:
 
 spend:
 	$(PYTHON) spend
+
+schedule:
+	$(PYTHON) schedule
 
 embed:
 	$(PYTHON) embed --resume

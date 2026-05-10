@@ -45,9 +45,10 @@ only does new work.
 1.  python -m script_report download              →  data/psds/*.pdf  +  data/psds/*.html
 2.  python -m script_report extract --resume      →  data/psd_extracted.csv
 3.  python -m script_report spend                 →  data/pbs_drug_spend.csv
-4.  python -m script_report atc                   →  data/atc_benefit.csv  +  data/atc_services.csv
-5.  python -m script_report calendar              →  data/pbac_calendar.json   (cycle-timeframe PDFs)
-6.  python -m script_report embed --resume        →  data/psd_embeddings.bin
+4.  python -m script_report schedule              →  data/pbs_schedule_atc.csv (ATC backfill)
+5.  python -m script_report atc                   →  data/atc_benefit.csv  +  data/atc_services.csv
+6.  python -m script_report calendar              →  data/pbac_calendar.json   (cycle-timeframe PDFs)
+7.  python -m script_report embed --resume        →  data/psd_embeddings.bin
                                                    +  data/psd_embeddings_meta.json
                                                    +  data/psd_nearest.json
 7.  python -m script_report build                 →  site_data.js
@@ -76,12 +77,14 @@ only does new work.
 | `script_report/builders/site_builder.py` | Composes `site_data.js` from loader output. |
 | `script_report/scrapers/psd_downloader.py` | Polite PBAC PSD scraper (fingerprint dedup). |
 | `script_report/scrapers/pbs_spend.py` | PBS expenditure Excel fetcher. |
+| `script_report/scrapers/pbs_schedule.py` | Monthly PBS Schedule API CSV bundle → ATC backfill. |
 | `script_report/extractors/psd_extractor.py` | Haiku-powered field extraction (PDFs + HTML PSDs). |
 | `script_report/embedders/voyage_embedder.py` | Voyage embeddings + nearest table (ATC tiebreaker). |
 | `script_report/parsers/atc_parser.py` | PBS ATC HTML-as-XLS parser. |
 | `script_report/parsers/pbac_calendar.py` | PBS Cycle Timeframe PDF parser. |
 | `script_report/utils/helpers.py` | MONTH_MAP, data_path resolver, .env loader. |
 | `script_report/utils/similarity.py` | ATC-prefix tiebreaker for cosine ties. |
+| `script_report/utils/drug_names.py` | Drug-name normalisation + salt-strip / multi-drug split candidate keys. |
 | `api/search.py` | Vercel Python function. Loads embeddings binary at cold start, embeds queries, returns top-N by cosine. |
 | `api/requirements.txt` | Function deps: `voyageai`, `numpy`. |
 | `vercel.json` | Function config + headers. |

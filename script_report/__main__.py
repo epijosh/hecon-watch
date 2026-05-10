@@ -6,6 +6,7 @@ Usage:
     python -m script_report download      # download new PBAC PSDs
     python -m script_report extract       # Haiku field extraction
     python -m script_report spend         # fetch PBS drug spend Excel
+    python -m script_report schedule      # backfill ATC codes from PBS Schedule
     python -m script_report atc           # parse ATC class data
     python -m script_report calendar      # parse PBS Cycle Timeframe PDFs
     python -m script_report embed         # build Voyage embeddings + nearest table
@@ -25,6 +26,7 @@ _COMMANDS = {
     "download": ("script_report.scrapers.psd_downloader",   "main"),
     "extract":  ("script_report.extractors.psd_extractor",  "main"),
     "spend":    ("script_report.scrapers.pbs_spend",        "main"),
+    "schedule": ("script_report.scrapers.pbs_schedule",     "main"),
     "atc":      ("script_report.parsers.atc_parser",        "main"),
     "calendar": ("script_report.parsers.pbac_calendar",     "main"),
     "embed":    ("script_report.embedders.voyage_embedder", "main"),
