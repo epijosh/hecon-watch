@@ -3,14 +3,19 @@ extract_psd_text.py
 ━━━━━━━━━━━━━━━━━━
 Extracts structured data from PBAC Public Summary Documents using Claude Haiku.
 
-For each PDF in this folder:
-  1. Pulls text with pdfplumber (first 5 pages — enough for the key fields)
-  2. Sends to Claude Haiku with a structured extraction prompt
-  3. Gets back JSON: recommendation, ICER, comparator, indication, etc.
-  4. Saves to psd_extracted.csv
+Handles both formats now:
+  - PDF PSDs (the historic format) — text pulled via pdfplumber
+  - HTML PSDs (the post-2024 online format, captured by download_missing_psds.py)
+    — text pulled via BeautifulSoup
+
+For each PSD in data/psds/:
+  1. Pull text (first 5 pages of PDFs / cleaned HTML body)
+  2. Send to Claude Haiku with a structured extraction prompt
+  3. Receive JSON: recommendation, ICER, comparator, indication, etc.
+  4. Append to data/psd_extracted.csv
 
 SETUP:
-  pip install pdfplumber anthropic python-dotenv --break-system-packages
+  pip install pdfplumber anthropic python-dotenv beautifulsoup4 --break-system-packages
 
   Create a .env file in this folder:
     ANTHROPIC_API_KEY=sk-ant-api03-...
@@ -22,10 +27,10 @@ USAGE:
   python extract_psd_text.py --delay 1   # slower if hitting rate limits
 
 COST (rough estimate):
-  ~1,600 PSDs × ~2,500 tokens input + 1,024 output ≈ $10–14 total (Haiku pricing)
+  ~$0.006 per PSD with Haiku pricing — ~$10–14 for 1,600+ PSDs
 
 OUTPUT:
-  psd_extracted.csv — one row per PSD with structured PBAC fields
+  data/psd_extracted.csv — one row per PSD with structured PBAC fields
 """
 
 from __future__ import annotations
@@ -40,6 +45,17 @@ import time
 from pathlib import Path
 
 HERE = Path(__file__).parent
+DATA = HERE / "data"          # CSVs written here; fall back to HERE for legacy
+DATA.mkdir(exist_ok=True)
+PSDS = DATA / "psds"          # PDFs live here after migration (or in HERE before)
+
+def _pdf_dirs() -> list[Path]:
+    """Folders to scan for PSD PDFs (psds/ first, then root fallback)."""
+    dirs = []
+    if PSDS.exists():
+        dirs.append(PSDS)
+    dirs.append(HERE)
+    return dirs
 
 # ── Try loading .env ──────────────────────────────────────────────────────────
 try:
@@ -51,14 +67,10 @@ except ImportError:
 # ── Dependencies check ────────────────────────────────────────────────────────
 try:
     import pdfplumber
-except ImportError:
-    print("Missing dependency. Run:\n  pip install pdfplumber anthropic python-dotenv --break-system-packages")
-    sys.exit(1)
-
-try:
     import anthropic
+    from bs4 import BeautifulSoup
 except ImportError:
-    print("Missing dependency. Run:\n  pip install anthropic --break-system-packages")
+    print("Missing dependency. Run:\n  pip install pdfplumber anthropic python-dotenv beautifulsoup4 --break-system-packages")
     sys.exit(1)
 
 # ── CSV output fields ─────────────────────────────────────────────────────────
@@ -79,6 +91,17 @@ FIELDS = [
     "population_per_year",
     "key_trials",
     "resubmission",
+    # ── Deeper fields (added May 2026) ────────────────────────────────────────
+    "budget_impact_aud",
+    "rejection_reasons",
+    "patient_advocacy",
+    "pico_population",
+    "evidence_type",
+    "line_of_therapy",
+    "trial_size",
+    "primary_endpoint",
+    "economic_model",
+    # ─────────────────────────────────────────────────────────────────────────
     "pbac_year",
     "pbac_month",
     "extraction_ok",
@@ -107,7 +130,16 @@ Return ONLY a JSON object with these fields (use null for anything not found):
   "risk_sharing_note": "brief description of the arrangement if risk_sharing is true, else null",
   "population_per_year": <integer — estimated eligible Australian patients per year, null if not stated>,
   "key_trials": "comma-separated trial names/identifiers (e.g. 'KEYNOTE-189, KEYNOTE-407'), null if none",
-  "resubmission": <true if described as a resubmission, re-application, or major re-submission, else false>
+  "resubmission": <true if described as a resubmission, re-application, or major re-submission, else false>,
+  "budget_impact_aud": <integer — estimated net annual budget impact in AUD (government perspective), null if not stated>,
+  "rejection_reasons": "if not recommended: comma-separated list of the PBAC's main concerns (e.g. 'uncertain OS benefit, high ICER, immature survival data') — else null",
+  "patient_advocacy": <true if patient advocacy group, consumer group, or patient organisation input is noted in the PSD, else false>,
+  "pico_population": "brief description of the PICO population — who the drug is indicated for (e.g. 'adults with previously treated metastatic NSCLC with PD-L1 ≥50%')",
+  "evidence_type": "one of: RCT | Single-arm | Registry | Cost-minimisation | Meta-analysis | Other",
+  "line_of_therapy": "one of: First-line | Second-line | Later-line | Any | Not applicable | null",
+  "trial_size": <integer — number of patients in the pivotal trial(s), null if not stated>,
+  "primary_endpoint": "one of: OS | PFS | DFS | ORR | QoL | Surrogate | Cost-minimisation | Other | null",
+  "economic_model": "one of: CUA | CEA | Cost-minimisation | BIA only | Not modelled | null"
 }}
 
 Return ONLY the JSON object. No markdown fences, no explanation, no extra text.
@@ -132,6 +164,44 @@ def extract_pdf_text(pdf_path: Path, max_pages: int = 5) -> str:
         return ""
 
 
+def extract_html_text(html_path: Path) -> str:
+    """Extract clean text from an HTML PSD captured by download_missing_psds.py.
+    The downloader already trims chrome, but we strip again defensively."""
+    try:
+        raw = html_path.read_text(encoding="utf-8", errors="ignore")
+    except Exception:
+        return ""
+
+    soup = BeautifulSoup(raw, "html.parser")
+    for tag in soup(["script", "style", "nav", "header", "footer",
+                     "aside", "noscript", "iframe", "svg", "form"]):
+        tag.decompose()
+
+    # Preserve table structure by inserting tabs/newlines, then collapse the rest
+    for br in soup.find_all("br"):
+        br.replace_with("\n")
+    for tr in soup.find_all("tr"):
+        tr.append("\n")
+    for td in soup.find_all(["td", "th"]):
+        td.append("\t")
+
+    text = soup.get_text("\n", strip=True)
+    # Collapse runs of blank lines / repeated whitespace
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    text = re.sub(r"[ \t]{2,}", " ", text)
+    return text.strip()
+
+
+def extract_text(path: Path) -> str:
+    """Dispatch by extension."""
+    ext = path.suffix.lower()
+    if ext == ".pdf":
+        return extract_pdf_text(path)
+    if ext == ".html":
+        return extract_html_text(path)
+    return ""
+
+
 def truncate(text: str, max_chars: int = 9_000) -> str:
     if len(text) <= max_chars:
         return text
@@ -140,10 +210,10 @@ def truncate(text: str, max_chars: int = 9_000) -> str:
 
 # ── Claude extraction ─────────────────────────────────────────────────────────
 
-def call_claude(client: anthropic.Anthropic, text: str, delay: float) -> dict:
+def call_claude(client: anthropic.Anthropic, text: str) -> dict:
     """Send text to Claude Haiku and parse JSON response."""
     if len(text.strip()) < 80:
-        return {"extraction_ok": False, "error_note": "PDF yielded no usable text"}
+        return {"extraction_ok": False, "error_note": "Source yielded no usable text"}
 
     prompt = USER_PROMPT_TEMPLATE.format(text=truncate(text))
 
@@ -152,7 +222,7 @@ def call_claude(client: anthropic.Anthropic, text: str, delay: float) -> dict:
         try:
             msg = client.messages.create(
                 model="claude-haiku-4-5-20251001",
-                max_tokens=1024,
+                max_tokens=1536,
                 system=SYSTEM_PROMPT,
                 messages=[{"role": "user", "content": prompt}],
             )
@@ -195,17 +265,18 @@ def load_done(path: Path) -> set[str]:
 
 
 def parse_psd_date(filename: str) -> tuple[str, str]:
-    """Extract year and month from PSD filename like 'drug-psd-march-2023.pdf'."""
+    """Extract year and month from a PSD filename like 'drug-psd-march-2023.pdf'
+    or 'drug-psd-nov-2024.html'."""
     MONTHS = {
         "jan": "1", "feb": "2", "mar": "3", "apr": "4", "may": "5", "jun": "6",
         "jul": "7", "aug": "8", "sep": "9", "oct": "10", "nov": "11", "dec": "12",
     }
-    m = re.search(r'-psd-([a-z]+)-(\d{4})\.pdf$', filename.lower())
+    m = re.search(r'-psd-([a-z]+)-(\d{4})\.(?:pdf|html)$', filename.lower())
     if m:
         mon = MONTHS.get(m.group(1)[:3], "")
         return m.group(2), mon
     # Alternate pattern: drug-psd-03-2023.pdf
-    m2 = re.search(r'-psd-(\d{1,2})-(\d{4})\.pdf$', filename.lower())
+    m2 = re.search(r'-psd-(\d{1,2})-(\d{4})\.(?:pdf|html)$', filename.lower())
     if m2:
         return m2.group(2), m2.group(1).lstrip("0")
     return "", ""
@@ -248,24 +319,40 @@ def main():
 
     client = anthropic.Anthropic(api_key=api_key)
 
-    # Find PSD PDFs
-    PSD_RE = re.compile(r'.+-psd-.+\.pdf$', re.IGNORECASE)
-    all_pdfs = sorted(p for p in HERE.glob("*.pdf") if PSD_RE.match(p.name))
+    # Find PSD files — PDFs and HTML pages (the latter for online-only PSDs).
+    # Check data/psds/ first, then root for legacy installs.
+    PSD_RE = re.compile(r'.+-psd-.+\.(?:pdf|html)$', re.IGNORECASE)
+    all_files: list[Path] = []
+    for psd_dir in _pdf_dirs():
+        found = []
+        for ext in ("*.pdf", "*.html"):
+            found.extend(p for p in psd_dir.glob(ext) if PSD_RE.match(p.name))
+        all_files.extend(sorted(found))
+    # Deduplicate by filename (psds/ takes priority)
+    seen_names: set[str] = set()
+    unique_files: list[Path] = []
+    for p in all_files:
+        if p.name not in seen_names:
+            seen_names.add(p.name)
+            unique_files.append(p)
+    all_files = unique_files
 
-    if not all_pdfs:
-        print("No PSD PDF files found in this folder.")
+    if not all_files:
+        print(f"No PSD files found. Expected .pdf or .html in {PSDS} or {HERE}.")
         sys.exit(1)
+    pdf_count = sum(1 for p in all_files if p.suffix.lower() == ".pdf")
+    html_count = sum(1 for p in all_files if p.suffix.lower() == ".html")
 
-    output_path = HERE / "psd_extracted.csv"
+    output_path = DATA / "psd_extracted.csv"
     done = load_done(output_path) if args.resume else set()
-    queue = [p for p in all_pdfs if p.name not in done]
+    queue = [p for p in all_files if p.name not in done]
     if args.limit:
         queue = queue[: args.limit]
 
     print("=" * 62)
     print("PBAC PSD Extractor — Claude Haiku")
     print("=" * 62)
-    print(f"  PSDs found       : {len(all_pdfs):,}")
+    print(f"  PSDs found       : {len(all_files):,}  ({pdf_count} PDF · {html_count} HTML)")
     print(f"  Already done     : {len(done):,}")
     print(f"  To process       : {len(queue):,}")
     if args.limit:
@@ -287,14 +374,15 @@ def main():
         if mode == "w":
             writer.writeheader()
 
-        for i, pdf_path in enumerate(queue, 1):
+        for i, psd_path in enumerate(queue, 1):
             pct = i / len(queue) * 100
-            short_name = pdf_path.name[:52]
-            print(f"  [{i:4d}/{len(queue)}] {pct:5.1f}%  {short_name:<52}", end="", flush=True)
+            kind = "HTML" if psd_path.suffix.lower() == ".html" else "PDF "
+            short_name = psd_path.name[:48]
+            print(f"  [{i:4d}/{len(queue)}] {pct:5.1f}% {kind} {short_name:<48}", end="", flush=True)
 
-            text = extract_pdf_text(pdf_path)
-            data = call_claude(client, text, args.delay)
-            write_row(writer, pdf_path.name, data)
+            text = extract_text(psd_path)
+            data = call_claude(client, text)
+            write_row(writer, psd_path.name, data)
             f.flush()
 
             if data.get("extraction_ok"):

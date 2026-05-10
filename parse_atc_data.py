@@ -7,7 +7,6 @@ downloaded from medicarestatistics.humanservices.gov.au.
 Produces:
   atc_services.csv   — PBS prescriptions by ATC class, year, state (1992–2026)
   atc_benefit.csv    — Government benefit ($) by ATC class, year, state
-  atc_combined.csv   — Both metrics merged into one file
 
 The site returns HTML with a .xls extension + UTF-8 BOM. This script handles it.
 
@@ -46,6 +45,8 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).parent
+DATA = HERE / "data"
+DATA.mkdir(exist_ok=True)
 
 try:
     from bs4 import BeautifulSoup
@@ -267,16 +268,13 @@ def main():
         print(f"\nParsing services file: {services_file.name}")
         recs = parse_file(services_file, "services")
         all_records.extend(recs)
-        save_csv(recs, HERE / "atc_services.csv")
+        save_csv(recs, DATA / "atc_services.csv")
 
     if benefit_file:
         print(f"\nParsing benefit file: {benefit_file.name}")
         recs = parse_file(benefit_file, "benefit_aud")
         all_records.extend(recs)
-        save_csv(recs, HERE / "atc_benefit.csv")
-
-    if all_records:
-        save_csv(all_records, HERE / "atc_combined.csv")
+        save_csv(recs, DATA / "atc_benefit.csv")
 
     # Summary stats
     print("\n" + "=" * 60)

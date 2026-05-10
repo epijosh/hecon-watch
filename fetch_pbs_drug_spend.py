@@ -27,6 +27,8 @@ import time
 from pathlib import Path
 
 HERE = Path(__file__).parent
+DATA = HERE / "data"
+DATA.mkdir(exist_ok=True)
 
 # ── Known Excel URLs by financial year end ────────────────────────────────────
 EXCEL_URLS = {
@@ -114,8 +116,6 @@ def extract_drug_rows(sheet) -> list[dict]:
     Extract drug-level rows from an openpyxl worksheet.
     Scans all rows to find the header row, then extracts data rows.
     """
-    from openpyxl import load_workbook
-
     rows_raw = list(sheet.iter_rows(values_only=True))
     if not rows_raw:
         return []
@@ -358,7 +358,7 @@ def main():
     print()
 
     # Download
-    xlsx_path = HERE / f"pbs_drug_spend_{args.year}.xlsx"
+    xlsx_path = DATA / f"pbs_drug_spend_{args.year}.xlsx"
     if not xlsx_path.exists():
         ok = download_excel(url, xlsx_path)
         if not ok:
@@ -384,7 +384,7 @@ def main():
         sys.exit(1)
 
     # Save
-    out_path = HERE / "pbs_drug_spend.csv"
+    out_path = DATA / "pbs_drug_spend.csv"
     save_csv(rows, out_path, args.year, url)
     print_highlights(rows)
 

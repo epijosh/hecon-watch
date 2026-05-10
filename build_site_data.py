@@ -74,45 +74,6 @@ def load_atc_data() -> dict:
     with open(benefit_path, encoding="utf-8") as f:
         rows = list(csv.DictReader(f))
 
-    # Identify the grand-total series:
-    # The third "Various +" group has values ~$1-18B, consistent with PBS totals.
-    # Strategy: for each atc+year combination, keep all rows.
-    # The grand total is the row where value is >= sum of all individual classes.
-    # Simpler heuristic: the grand total row for 2024 is $18.39B (>$10B).
-
-    # Collect by class, excluding TOTAL rows and YTD rows
-    class_series: dict[str, dict] = {}  # atc_label -> {year_int -> value}
-
-    # Track which rows seem like grand totals (value > 5B in 2024 era)
-    GRAND_TOTAL_THRESHOLD = 5_000_000_000
-
-    for row in rows:
-        year_s = row.get("year", "")
-        if year_s in ("TOTAL",) or "_ytd" in year_s:
-            continue
-        try:
-            year = int(year_s)
-        except ValueError:
-            continue
-        if year < 1992 or year > 2030:
-            continue
-
-        atc = row.get("atc", "").strip()
-        total = row.get("total")
-        if not total:
-            continue
-        try:
-            val = int(float(total))
-        except (ValueError, TypeError):
-            continue
-
-        key = f"{atc}___{year}"  # composite key to detect duplicates
-        if atc not in class_series:
-            class_series[atc] = {}
-        if year not in class_series[atc]:
-            class_series[atc][year] = []
-        class_series[atc][year].append(val)
-
     # ── Build per-ATC-class series, then SUM them for grand total ────────────
     # Each ATC class may have multiple rows per year (different magnitude brackets
     # from the data source). Strategy:
