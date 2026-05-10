@@ -202,7 +202,6 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 .bar-chart { margin-top: 4px; }
 .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; }
 .bar-name { font-family: var(--ui); font-size: 12px; color: var(--text2); min-width: 130px; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.bar-name-hint { color: var(--text3); font-size: 10.5px; font-style: italic; font-weight: 400; }
 .bar-track { flex: 1; height: 14px; background: var(--bg3); position: relative; overflow: hidden; }
 .bar-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--red); opacity: .82; }
 .bar-val { font-family: var(--ui); font-size: 12px; font-weight: 600; min-width: 42px; text-align: right; color: var(--text2); }
@@ -1503,14 +1502,6 @@ function buildATCList() {
 // ╔═══════════════════════════════════════════════════════════════════╗
 // ║  CHART 6 · Therapy area volume                                       ║
 // ╚═══════════════════════════════════════════════════════════════════╝
-// What the "Other" therapy bucket actually contains — derived from a sample
-// review of the ~189 drugs Haiku categorised as Other (the prompt's enum is
-// narrow and these don't fit any existing bucket). Surfaced in brackets so
-// the dashboard doesn't pretend "Other" is meaningless. Short list inline,
-// fuller list on hover.
-const OTHER_THERAPY_HINT_SHORT = 'Pain, GI, Derm, Endo, …';
-const OTHER_THERAPY_HINT_FULL  = 'Pain · GI / Hepatology · Endocrinology · Dermatology · Women’s health · Metabolic';
-
 function buildTherapyBars() {
   const D = window.SITE_DATA; if (!D || !D.psd || !D.psd.by_therapy) return;
   const entries = Object.entries(D.psd.by_therapy).sort((a,b) => b[1]-a[1]).slice(0, 10);
@@ -1519,13 +1510,8 @@ function buildTherapyBars() {
 
   document.getElementById('therapy-bar-chart').innerHTML = entries.map(([n, v]) => {
     const pct = (v / max) * 100;
-    const isOther = n.toLowerCase() === 'other';
-    const titleAttr = isOther ? ` title="${escapeHtml(OTHER_THERAPY_HINT_FULL)}"` : '';
-    const nameHtml = isOther
-      ? `${escapeHtml(n)} <span class="bar-name-hint">(${escapeHtml(OTHER_THERAPY_HINT_SHORT)})</span>`
-      : escapeHtml(n);
-    return `<div class="bar-row" role="button" tabindex="0" style="cursor:pointer" onclick="runSearch('${jsAttr(n)}')"${titleAttr}>
-      <div class="bar-name">${nameHtml}</div>
+    return `<div class="bar-row" role="button" tabindex="0" style="cursor:pointer" onclick="runSearch('${jsAttr(n)}')">
+      <div class="bar-name">${escapeHtml(n)}</div>
       <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
       <div class="bar-val">${v}</div>
     </div>`;

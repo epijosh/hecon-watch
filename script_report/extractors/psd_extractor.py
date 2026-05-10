@@ -118,7 +118,7 @@ Return ONLY a JSON object with these fields (use null for anything not found):
   "drug": "generic/INN drug name",
   "brand_name": "trade/brand name if mentioned, else null",
   "indication": "the specific indication being assessed — concise, 1–2 sentences",
-  "therapy_area": "one of: Oncology | Haematology | Rare disease | Immunology | Cardiovascular | Diabetes | Neurology | Respiratory | Musculo-skeletal | Ophthalmology | Infectious disease | Other",
+  "therapy_area": "one of: Oncology | Haematology | Rare disease | Immunology | Cardiovascular | Diabetes | Endocrinology | Neurology | Pain | Respiratory | Musculo-skeletal | Rheumatology | Dermatology | Gastroenterology | Hepatology | Ophthalmology | Women's health | Urology | Mental health | Metabolic | Vaccines | Infectious disease | Other. Pick the most specific applicable category. Use Endocrinology for hormonal disorders (acromegaly, HRT, growth hormone). Use Pain for opioid analgesics and addiction medicine. Use Gastroenterology for IBD/GI; Hepatology for liver disease (PBC, hepatic encephalopathy). Use Women's health for contraception, fertility, and obstetric indications. Use Metabolic for inborn errors of metabolism (PKU, tyrosinaemia, lysosomal storage) and nutritional formulas. Use Other only as a true last resort.",
   "recommendation": "one of: Recommended | Not recommended | Deferred | Noted | Recommended with restriction",
   "listing_type": "one of: Unrestricted | Restricted | Authority Required | Not applicable | null",
   "comparator": "the main comparator used in the economic model (e.g. 'best supportive care', 'docetaxel')",
@@ -257,10 +257,18 @@ def call_claude(client: anthropic.Anthropic, text: str) -> dict:
 # ── CSV helpers ───────────────────────────────────────────────────────────────
 
 def load_done(path: Path) -> set[str]:
+    """Return the set of filenames that already have a *successful* row in
+    ``path``. Rows where ``extraction_ok != "yes"`` (transient API errors,
+    rate limits, malformed JSON, etc.) are NOT counted as done — so a
+    follow-up --resume will retry them once the underlying issue is fixed."""
     if not path.exists():
         return set()
     with open(path, encoding="utf-8") as f:
-        return {row["filename"] for row in csv.DictReader(f) if row.get("filename")}
+        return {
+            row["filename"]
+            for row in csv.DictReader(f)
+            if row.get("filename") and row.get("extraction_ok") == "yes"
+        }
 
 
 def parse_psd_date(filename: str) -> tuple[str, str]:
@@ -300,12 +308,55 @@ def write_row(writer: csv.DictWriter, filename: str, data: dict):
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 
+def _drop_rows_by_therapy(csv_path: Path, therapy: str) -> int:
+    """Rewrite ``csv_path`` without any rows whose therapy_area matches ``therapy``
+    (case-insensitive). Returns the count of rows dropped.
+
+    Used by --reextract-therapy to scope a re-run to a specific bucket without
+    blowing away the whole CSV. The dropped filenames will then be missing from
+    ``load_done()``, so the normal --resume path picks them up.
+    """
+    if not csv_path.exists():
+        return 0
+    target = (therapy or "").strip().lower()
+    if not target:
+        return 0
+
+    with open(csv_path, encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        fieldnames = reader.fieldnames or FIELDS
+        kept: list[dict] = []
+        dropped = 0
+        for row in reader:
+            if (row.get("therapy_area") or "").strip().lower() == target:
+                dropped += 1
+            else:
+                kept.append(row)
+
+    if not dropped:
+        return 0
+    with open(csv_path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
+        writer.writeheader()
+        writer.writerows(kept)
+    return dropped
+
+
 def main():
     parser = argparse.ArgumentParser(description="Extract structured data from PBAC PSDs via Claude Haiku")
     parser.add_argument("--limit",  type=int,   default=0,   help="Process only first N PDFs (0 = all)")
     parser.add_argument("--resume", action="store_true",     help="Skip already-processed files")
     parser.add_argument("--delay",  type=float, default=0.5, help="Seconds to pause between API calls")
+    parser.add_argument("--reextract-therapy", default="",
+                        help="Drop existing rows with this therapy_area (case-insensitive) "
+                             "from the CSV first, so they get re-processed. Implies --resume.")
     args = parser.parse_args()
+
+    if args.reextract_therapy:
+        # Force --resume so we read the existing CSV after the trim.
+        args.resume = True
+        dropped = _drop_rows_by_therapy(DATA / "psd_extracted.csv", args.reextract_therapy)
+        print(f"  --reextract-therapy={args.reextract_therapy!r}: dropped {dropped} existing rows")
 
     api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
     if not api_key or not api_key.startswith("sk-"):
