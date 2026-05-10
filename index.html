@@ -2441,12 +2441,33 @@ function showDrugDetail(d) {
       <div class="detail-cell-sub">${pd.resubmissions ? `${pd.resubmissions} resubmission${pd.resubmissions!==1?'s':''}` : (pd.first_year ? `First seen ${pd.first_year}` : 'Single attempt')}</div>
     </div>`;
 
-  const icerCell = `
-    <div class="detail-cell">
-      <div class="detail-cell-label">ICER (AUD/QALY)</div>
-      <div class="detail-cell-val" style="color:${icerColor(pd.icer_high)}">${fmtICER(pd.icer_high || pd.icer_low)}</div>
-      <div class="detail-cell-sub">${pd.icer_low && pd.icer_high && pd.icer_low !== pd.icer_high ? `Range: ${fmtICER(pd.icer_low)} – ${fmtICER(pd.icer_high)}` : (pd.icer_low||pd.icer_high?'Base-case':'Not extracted')}</div>
-    </div>`;
+  const icerCell = (() => {
+    const basis = pd.cost_basis || 'unknown';
+    if (basis === 'numeric') {
+      return `
+        <div class="detail-cell">
+          <div class="detail-cell-label">ICER (AUD/QALY)</div>
+          <div class="detail-cell-val" style="color:${icerColor(pd.icer_high)}">${fmtICER(pd.icer_high || pd.icer_low)}</div>
+          <div class="detail-cell-sub">${pd.icer_low && pd.icer_high && pd.icer_low !== pd.icer_high ? `Range: ${fmtICER(pd.icer_low)} – ${fmtICER(pd.icer_high)}` : 'Base-case'}</div>
+        </div>`;
+    }
+    // No numeric ICER — show the actual cost-effectiveness framing.
+    const labels = {
+      cost_minimisation: { text: 'Cost-min',    sub: 'Cost-minimisation analysis',         color: 'var(--text2)' },
+      dominant:          { text: 'Dominant',    sub: 'Less costly + more effective',       color: 'var(--green)' },
+      cost_neutral:      { text: 'Cost-neutral',sub: 'No incremental cost vs comparator',  color: 'var(--text2)' },
+      redacted:          { text: 'Redacted',    sub: 'Commercial-in-confidence',           color: 'var(--text3)' },
+      not_modelled:      { text: 'Not modelled',sub: 'No economic evaluation submitted',   color: 'var(--text3)' },
+      unknown:           { text: '—',           sub: 'Not stated in PSD',                  color: 'var(--text3)' },
+    };
+    const l = labels[basis] || labels.unknown;
+    return `
+      <div class="detail-cell">
+        <div class="detail-cell-label">ICER (AUD/QALY)</div>
+        <div class="detail-cell-val" style="color:${l.color};font-size:18px">${escapeHtml(l.text)}</div>
+        <div class="detail-cell-sub">${escapeHtml(l.sub)}</div>
+      </div>`;
+  })();
 
   // 4th cell: Budget impact OR Population OR Patient advocacy badge fallback
   let cell4Html = '';

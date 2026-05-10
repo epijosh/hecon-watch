@@ -181,6 +181,64 @@ def _safe_int(val) -> int | None:
         return None
 
 
+_DOMINANT_RE = re.compile(
+    r"\b(?:dominant|dominate[sd]?|dominance|"
+    r"less\s+(?:costly|expensive)\s+and\s+more\s+effective|"
+    r"more\s+effective\s+and\s+less\s+(?:costly|expensive)|"
+    r"cost\s*[-\s]?\s*saving)\b",
+    re.I,
+)
+_COST_NEUTRAL_RE = re.compile(r"\bcost\s*[-\s]?\s*neutral\b", re.I)
+_COST_MIN_RE = re.compile(r"cost[-\s]?minimisat", re.I)
+_REDACTED_RE = re.compile(
+    r"\b(?:redacted|commercial[-\s]?in[-\s]?confidence|\bcic\b|withheld|"
+    r"not\s+(?:disclosed|stated|reported|provided|publicly\s+available)|"
+    r"removed\s+from\s+the\s+psd)\b",
+    re.I,
+)
+_NOT_MODELLED_RE = re.compile(
+    r"\b(?:not\s+modelled|no\s+(?:economic\s+)?(?:model|evaluation)|"
+    r"not\s+(?:calculated|applicable)|bia\s+only|budget\s+impact\s+only)\b",
+    re.I,
+)
+
+
+def _classify_cost_basis(row: dict) -> str:
+    """Classify a single PSD row's economic basis.
+
+    Returns one of: numeric, dominant, cost_neutral, cost_minimisation,
+    redacted, not_modelled, unknown.
+
+    The dashboard shows "—" wherever there's no numeric ICER, which
+    over-reports those drugs as "data missing" — but ~90% of the corpus
+    has no numeric ICER, almost all because the framing is something
+    other than an ICER (cost-minimisation, dominance, redaction, etc.).
+    This classifier picks up that framing from icer_note / economic_model
+    so the dashboard can show the actual basis.
+    """
+    icer_low  = _safe_int(row.get("icer_low"))
+    icer_high = _safe_int(row.get("icer_high"))
+    if icer_low or icer_high:
+        return "numeric"
+
+    em   = (row.get("economic_model") or "").strip()
+    note = (row.get("icer_note") or "").strip()
+    blob = note + " " + em   # search both as one string
+
+    # Dominance language is the most informative signal — check first.
+    if _DOMINANT_RE.search(blob):
+        return "dominant"
+    if _COST_NEUTRAL_RE.search(blob):
+        return "cost_neutral"
+    if _COST_MIN_RE.search(blob):
+        return "cost_minimisation"
+    if _REDACTED_RE.search(blob):
+        return "redacted"
+    if _NOT_MODELLED_RE.search(blob):
+        return "not_modelled"
+    return "unknown"
+
+
 def _outcome_bucket(rec: str) -> str:
     """Bucket a PBAC recommendation string into rec / not / deferred / unknown.
     Mirrors the JS recBucket() helper so Python and JS agree on the taxonomy.
@@ -341,6 +399,7 @@ def load_psd_extracted() -> dict:
             "latest_year":       latest.get("pbac_year", ""),
             "history":           history,
             "deltas":            deltas,
+            "cost_basis":        _classify_cost_basis(latest),
             # ── Deeper fields (May 2026) ──────────────────────────────────────
             "budget_impact_aud": _safe_int(latest.get("budget_impact_aud")),
             "rejection_reasons": latest.get("rejection_reasons", "") or None,
