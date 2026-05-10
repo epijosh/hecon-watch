@@ -181,6 +181,85 @@ def _safe_int(val) -> int | None:
         return None
 
 
+def _outcome_bucket(rec: str) -> str:
+    """Bucket a PBAC recommendation string into rec / not / deferred / unknown.
+    Mirrors the JS recBucket() helper so Python and JS agree on the taxonomy.
+    """
+    s = (rec or "").lower()
+    if s.startswith("recommended") and not s.startswith("not"):
+        return "rec"
+    if s.startswith("not"):
+        return "not"
+    if s == "deferred":
+        return "deferred"
+    return "unknown"
+
+
+def _compute_deltas(history: list[dict]) -> list[dict]:
+    """Given a chronologically sorted history, compute per-pair deltas.
+
+    Each delta describes what changed between PSD N and PSD N+1: outcome flips,
+    ICER moves (with %change), comparator switches, evidence-type upgrades,
+    listing-type changes. Returns a list of one dict per pair (so a drug with
+    4 PSDs produces 3 deltas).
+    """
+    out: list[dict] = []
+    for i in range(1, len(history)):
+        prev, cur = history[i - 1], history[i]
+        changes: list[str] = []
+
+        prev_b, cur_b = _outcome_bucket(prev.get("rec")), _outcome_bucket(cur.get("rec"))
+        outcome_flip = (prev_b != cur_b) and (prev_b in ("rec", "not", "deferred")) and (cur_b in ("rec", "not", "deferred"))
+
+        # ICER move
+        prev_icer = prev.get("icer_high") or prev.get("icer_low")
+        cur_icer  = cur.get("icer_high")  or cur.get("icer_low")
+        icer_change_aud = None
+        icer_change_pct = None
+        if prev_icer and cur_icer and prev_icer > 0:
+            delta = cur_icer - prev_icer
+            icer_change_aud = delta
+            icer_change_pct = round(delta / prev_icer * 100, 1)
+            if abs(icer_change_pct) >= 5:
+                direction = "dropped" if delta < 0 else "rose"
+                changes.append(f"ICER {direction} ${prev_icer:,} → ${cur_icer:,} ({icer_change_pct:+.0f}%)")
+
+        # Comparator pivot
+        prev_comp = (prev.get("comparator") or "").strip()
+        cur_comp  = (cur.get("comparator") or "").strip()
+        if prev_comp and cur_comp and prev_comp.lower() != cur_comp.lower():
+            changes.append(f"Comparator changed: {prev_comp} → {cur_comp}")
+
+        # Evidence upgrade (Single-arm → RCT etc.)
+        prev_ev = (prev.get("evidence_type") or "").strip()
+        cur_ev  = (cur.get("evidence_type") or "").strip()
+        if prev_ev and cur_ev and prev_ev != cur_ev:
+            changes.append(f"Evidence: {prev_ev} → {cur_ev}")
+
+        # Listing type
+        prev_lt = (prev.get("listing_type") or "").strip()
+        cur_lt  = (cur.get("listing_type") or "").strip()
+        if prev_lt and cur_lt and prev_lt != cur_lt:
+            changes.append(f"Listing: {prev_lt} → {cur_lt}")
+
+        out.append({
+            "from_year":     prev.get("year", ""),
+            "from_month":    prev.get("month", ""),
+            "to_year":       cur.get("year", ""),
+            "to_month":      cur.get("month", ""),
+            "from_rec":      prev.get("rec", ""),
+            "to_rec":        cur.get("rec", ""),
+            "outcome_flip":  outcome_flip,
+            "from_bucket":   prev_b,
+            "to_bucket":     cur_b,
+            "icer_change":   icer_change_aud,
+            "icer_pct":      icer_change_pct,
+            "changes":       changes,
+            "prior_concerns": (prev.get("rejection_reasons") or "").strip()[:160] or None,
+        })
+    return out
+
+
 def load_psd_extracted() -> dict:
     """Load psd_extracted.csv (from extract_psd_text.py).
 
@@ -224,16 +303,22 @@ def load_psd_extracted() -> dict:
 
         history = [
             {
-                "year":         r.get("pbac_year", ""),
-                "month":        r.get("pbac_month", ""),
-                "rec":          r.get("recommendation", ""),
-                "icer_low":     _safe_int(r.get("icer_low")),
-                "icer_high":    _safe_int(r.get("icer_high")),
-                "listing_type": r.get("listing_type", ""),
-                "filename":     r.get("filename", ""),
+                "year":             r.get("pbac_year", ""),
+                "month":            r.get("pbac_month", ""),
+                "rec":              r.get("recommendation", ""),
+                "icer_low":         _safe_int(r.get("icer_low")),
+                "icer_high":        _safe_int(r.get("icer_high")),
+                "listing_type":     r.get("listing_type", ""),
+                "filename":         r.get("filename", ""),
+                # Extra fields used for delta computation between consecutive PSDs
+                "comparator":       (r.get("comparator") or "").strip()[:120],
+                "evidence_type":    r.get("evidence_type", ""),
+                "primary_endpoint": r.get("primary_endpoint", ""),
+                "rejection_reasons": (r.get("rejection_reasons") or "").strip()[:200],
             }
             for r in decisions[-6:]
         ]
+        deltas = _compute_deltas(history)
 
         drug_summaries[drug] = {
             "drug":              drug,
@@ -255,6 +340,7 @@ def load_psd_extracted() -> dict:
             "first_year":        decisions[0].get("pbac_year", ""),
             "latest_year":       latest.get("pbac_year", ""),
             "history":           history,
+            "deltas":            deltas,
             # ── Deeper fields (May 2026) ──────────────────────────────────────
             "budget_impact_aud": _safe_int(latest.get("budget_impact_aud")),
             "rejection_reasons": latest.get("rejection_reasons", "") or None,
@@ -320,6 +406,45 @@ def load_psd_extracted() -> dict:
     if recent:
         print(f"  Recent feed   : {len(recent)} most-recent PSDs (latest {recent[0]['year']}-{recent[0]['month']:02d})")
 
+    # ── "Drugs that earned their listing" (rejection → recommendation flips) ──
+    # Walk per-drug history; pick drugs whose first PSD bucketed to "not" (or
+    # deferred) and whose latest PSD bucketed to "rec". Highlight the most
+    # recent flip-pair as the "story" delta. Sort by the year of the flip
+    # (most recent first) so the homepage shows newer wins above older ones.
+    flips: list[dict] = []
+    for drug, summary in drug_summaries.items():
+        hist = summary["history"]
+        if len(hist) < 2:
+            continue
+        first_b = _outcome_bucket(hist[0]["rec"])
+        last_b  = _outcome_bucket(hist[-1]["rec"])
+        if first_b not in ("not", "deferred") or last_b != "rec":
+            continue
+        # Find the specific delta that flipped to rec (last "not"/"deferred" → first "rec")
+        flip_delta = None
+        for d in summary["deltas"]:
+            if d["from_bucket"] in ("not", "deferred") and d["to_bucket"] == "rec":
+                flip_delta = d
+                break
+        if not flip_delta:
+            continue
+        flips.append({
+            "drug":          drug,
+            "therapy_area":  summary["therapy_area"],
+            "indication":    (summary["indication"] or "")[:140],
+            "submissions":   summary["submissions"],
+            "first_year":    summary["first_year"],
+            "latest_year":   summary["latest_year"],
+            "flip":          flip_delta,
+        })
+    # Most recent flip first
+    flips.sort(
+        key=lambda f: (int(f["flip"]["to_year"] or 0), int(f["flip"]["to_month"] or 0)),
+        reverse=True,
+    )
+    if flips:
+        print(f"  Flip stories  : {len(flips)} drugs went rejection/deferred → recommended")
+
     return {
         "total":             len(drug_summaries),
         "drugs":             drug_summaries,
@@ -327,6 +452,7 @@ def load_psd_extracted() -> dict:
         "by_therapy":        dict(sorted(by_therapy.items(), key=lambda x: -x[1])),
         "by_year":           dict(sorted(by_year.items())),
         "recent":            recent,
+        "flips":             flips,
     }
 
 

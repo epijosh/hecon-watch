@@ -178,6 +178,36 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
   .recent-aside { flex-direction: row; align-items: center; min-width: 0; gap: 10px; }
 }
 
+/* ── Resubmission flip stories ───────────────────────────── */
+.flips-strip { padding: 26px 0; border-bottom: 1px solid var(--border); background: var(--bg2); }
+.flips-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.flip-card { background: var(--bg); padding: 16px 18px; cursor: pointer; transition: background .12s; display: grid; gap: 8px; }
+.flip-card:hover { background: var(--bg2); }
+.flip-card:hover .flip-name { color: var(--red); }
+.flip-card:focus-visible { outline: 2px solid var(--red); outline-offset: -2px; }
+.flip-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.flip-name { font-family: var(--display); font-size: 17px; font-weight: 700; letter-spacing: -.2px; transition: color .15s; }
+.flip-meta { font-family: var(--ui); font-size: 11px; color: var(--text3); letter-spacing: .4px; }
+.flip-arc  { font-family: var(--ui); font-size: 12px; color: var(--text2); }
+.flip-arc strong { color: var(--text); font-weight: 700; }
+.flip-changes { font-family: var(--body); font-size: 12.5px; color: var(--text2); line-height: 1.5; padding-left: 10px; border-left: 2px solid var(--red); }
+.flip-change-line { display: block; }
+@media (max-width: 800px) { .flips-list { grid-template-columns: 1fr; } }
+
+/* ── Resubmission story rail (drug-detail) ───────────────── */
+.resub-story { display: flex; flex-direction: column; gap: 12px; margin-top: 6px; }
+.resub-step { display: grid; grid-template-columns: 110px 1fr; gap: 14px; padding: 12px 14px; background: var(--bg2); border-left: 2px solid var(--border); }
+.resub-step.flip-rec { border-left-color: var(--green); background: #2e7d3208; }
+.resub-step.flip-not { border-left-color: var(--red); background: #C6282808; }
+.resub-step.flip-deferred { border-left-color: var(--orange); background: #E6510008; }
+.resub-when { font-family: var(--ui); font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); }
+.resub-arc { font-family: var(--ui); font-size: 12px; color: var(--text); margin-bottom: 4px; }
+.resub-arc strong { font-weight: 700; }
+.resub-changes { font-family: var(--body); font-size: 13px; color: var(--text2); line-height: 1.55; }
+.resub-changes ul { margin: 0; padding-left: 18px; }
+.resub-changes li { margin-bottom: 2px; }
+.resub-prior { font-family: var(--body); font-size: 12px; color: var(--text3); font-style: italic; margin-top: 6px; }
+
 /* ── PBAC cycle calendar panel ─────────────────────────────── */
 .cal-strip { padding: 26px 0; border-bottom: 1px solid var(--border); background: var(--bg2); }
 .cal-head { display: flex; align-items: baseline; justify-content: space-between; gap: 18px; flex-wrap: wrap; margin-bottom: 14px; }
@@ -587,6 +617,20 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
         <div class="recent-sub" id="recent-sub">—</div>
       </div>
       <div id="recent-list" class="recent-list"></div>
+    </div>
+  </div>
+
+  <!-- ─── DRUGS THAT EARNED THEIR LISTING ──────────────────────────── -->
+  <div class="flips-strip" id="flips-strip" style="display:none">
+    <div class="container">
+      <div class="recent-head">
+        <div>
+          <div class="eyebrow">Resubmission stories</div>
+          <h3>Drugs that earned their listing</h3>
+        </div>
+        <div class="recent-sub" id="flips-sub">—</div>
+      </div>
+      <div id="flips-list" class="flips-list"></div>
     </div>
   </div>
 
@@ -1317,6 +1361,81 @@ function buildRecentFeed() {
 function expandRecent() {
   _recentExpanded = true;
   buildRecentFeed();
+}
+
+// ╔═══════════════════════════════════════════════════════════════════╗
+// ║  RESUBMISSION FLIP STORIES                                            ║
+// ╚═══════════════════════════════════════════════════════════════════╝
+// Helper: format a delta block. Used both on homepage (compact) and on the
+// drug-detail "Resubmission story" rail (full).
+function _formatDeltaChanges(changes) {
+  if (!changes || !changes.length) return '';
+  return changes.map(c => `<span class="flip-change-line">· ${escapeHtml(c)}</span>`).join('');
+}
+
+function buildFlipsSection() {
+  const D = window.SITE_DATA;
+  const strip = document.getElementById('flips-strip');
+  if (!strip || !D || !D.psd || !Array.isArray(D.psd.flips) || !D.psd.flips.length) return;
+  const all = D.psd.flips;
+  const visible = all.slice(0, 12);
+
+  const sub = document.getElementById('flips-sub');
+  if (sub) sub.textContent = `${all.length} drugs went from rejection or deferral to a recommendation · click to open`;
+
+  const list = document.getElementById('flips-list');
+  if (!list) return;
+  list.innerHTML = visible.map(f => {
+    const flip = f.flip;
+    const fmt = (yr, mo) => `${MONTHS[+mo] || ''} ${yr}`.trim();
+    const arc = `<strong>${escapeHtml(flip.from_rec || '?')}</strong> in ${escapeHtml(fmt(flip.from_year, flip.from_month))}  →  <strong>${escapeHtml(flip.to_rec || '?')}</strong> in ${escapeHtml(fmt(flip.to_year, flip.to_month))}`;
+    const subs = `${f.submissions} submission${f.submissions === 1 ? '' : 's'} · ${escapeHtml(f.therapy_area || '—')}`;
+    const changes = _formatDeltaChanges(flip.changes);
+    return `<div class="flip-card" role="button" tabindex="0" onclick="selectFromResults('${jsAttr(f.drug)}')">
+      <div class="flip-head">
+        <span class="flip-name">${escapeHtml(titleCase(f.drug))}</span>
+        <span class="flip-meta">${subs}</span>
+      </div>
+      <div class="flip-arc">${arc}</div>
+      ${changes ? `<div class="flip-changes">${changes}</div>` : ''}
+    </div>`;
+  }).join('');
+  strip.style.display = '';
+}
+
+// Drug-detail: render the full resubmission story for a given drug summary.
+// Returns HTML to be injected next to the submission-history section.
+function renderResubStory(pd) {
+  const deltas = (pd && pd.deltas) || [];
+  if (!deltas.length) return '';
+  const fmt = (yr, mo) => `${MONTHS[+mo] || ''} ${yr}`.trim();
+  const stepsHtml = deltas.map(d => {
+    const flipCls = d.outcome_flip ? `flip-${d.to_bucket}` : '';
+    const arc = `<strong>${escapeHtml(d.from_rec || '?')}</strong> in ${escapeHtml(fmt(d.from_year, d.from_month))}  →  <strong>${escapeHtml(d.to_rec || '?')}</strong> in ${escapeHtml(fmt(d.to_year, d.to_month))}`;
+    const items = (d.changes || []).map(c => `<li>${escapeHtml(c)}</li>`).join('');
+    const prior = d.prior_concerns ? `<div class="resub-prior">Prior concerns: ${glossify(escapeHtml(d.prior_concerns))}</div>` : '';
+    return `<div class="resub-step ${flipCls}">
+      <div>
+        <div class="resub-when">${escapeHtml(fmt(d.to_year, d.to_month))}</div>
+      </div>
+      <div>
+        <div class="resub-arc">${arc}</div>
+        ${items ? `<div class="resub-changes"><ul>${items}</ul></div>` : '<div class="resub-changes muted">No fields changed in the extracted summary.</div>'}
+        ${prior}
+      </div>
+    </div>`;
+  }).join('');
+  return `
+    <div class="detail-section">
+      <div class="detail-section-head">
+        <div>
+          <div class="eyebrow">Resubmission story</div>
+          <h3>What changed between submissions</h3>
+        </div>
+        <div class="detail-section-sub">${deltas.length} transition${deltas.length === 1 ? '' : 's'} on file</div>
+      </div>
+      <div class="resub-story">${stepsHtml}</div>
+    </div>`;
 }
 
 // ╔═══════════════════════════════════════════════════════════════════╗
@@ -2644,6 +2763,7 @@ function showDrugDetail(d) {
     ${clinSection}
     ${ctxSection}
     ${rejectionHtml}
+    ${renderResubStory(pd)}
     ${historyHtml}
 
     <div style="margin-top:24px;padding:16px 0;border-top:1px solid var(--border);display:flex;gap:18px;flex-wrap:wrap;align-items:center">
@@ -2756,6 +2876,7 @@ function initAll() {
   initKPIs();
   initBrowse();
   buildRecentFeed();
+  buildFlipsSection();
   buildPBSChart();
   buildOutcomesDonut();
   buildSubmissionsChart();
