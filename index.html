@@ -2103,6 +2103,11 @@ function clearSearch() {
   document.getElementById('search-input').value = '';
   document.getElementById('search-clear').classList.remove('visible');
   showMain();
+  // Drop a #/drug/<name> hash if present, so the URL reflects "back to dashboard".
+  if (location.hash.startsWith('#/drug/')) {
+    history.pushState(null, '', location.pathname + location.search);
+    document.title = _DEFAULT_TITLE;
+  }
 }
 
 function showResults() {
@@ -2475,9 +2480,43 @@ function showDrugDetail(d) {
       <span class="sans" style="font-size:12px;color:var(--text3);cursor:pointer;margin-left:auto" onclick="clearSearch()">← Back to dashboard</span>
     </div>
   `;
+
+  // ── Hash routing: keep the URL in sync so the page is shareable ─────────
+  const targetHash = '#/drug/' + encodeURIComponent(d.name);
+  if (location.hash !== targetHash) {
+    history.pushState({ drug: d.name }, '', targetHash);
+  }
+  document.title = `${name} · ${_DEFAULT_TITLE}`;
 }
 
 const MONTHS = { 1:'Jan', 2:'Feb', 3:'Mar', 4:'Apr', 5:'May', 6:'Jun', 7:'Jul', 8:'Aug', 9:'Sep', 10:'Oct', 11:'Nov', 12:'Dec' };
+const _DEFAULT_TITLE = 'script.report — which medicines Australia funds';
+
+// Resolve a drug from a URL hash like "#/drug/aspirin" and open its detail
+// page if the data is loaded. Called on initial load and on popstate.
+function routeFromHash() {
+  const m = (location.hash || '').match(/^#\/drug\/(.+)$/);
+  if (m) {
+    const name = decodeURIComponent(m[1]).toLowerCase();
+    const d = (window.DRUG_DB && DRUG_DB[name])
+           || (_browseRows && _browseRows.find(r => r.name === name));
+    if (d) {
+      _currentMode = 'detail';
+      hideMain();
+      showDrugDetail(d);
+      return;
+    }
+  }
+  // Hash empty or no match — make sure we're on the dashboard view
+  if (_currentMode === 'detail') {
+    document.getElementById('search-results').classList.remove('active');
+    document.getElementById('main-content').style.display = '';
+    _currentMode = 'browse';
+    document.title = _DEFAULT_TITLE;
+  }
+}
+
+window.addEventListener('popstate', routeFromHash);
 
 // ╔═══════════════════════════════════════════════════════════════════╗
 // ║  NAVIGATION                                                           ║
@@ -2552,6 +2591,8 @@ function initAll() {
   buildICERDist();
   buildPersistChart();
   buildTherapyOutcomes();
+  // If the page was opened with a #/drug/<name> deep-link, route to it.
+  routeFromHash();
 }
 
 if (document.readyState === 'loading') {
