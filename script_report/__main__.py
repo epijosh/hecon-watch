@@ -9,6 +9,7 @@ Usage:
     python -m script_report schedule      # backfill ATC codes from PBS Schedule
     python -m script_report atc           # parse ATC class data
     python -m script_report calendar      # parse PBS Cycle Timeframe PDFs
+    python -m script_report agendas       # extract upcoming PBAC + Intracycle meeting agendas
     python -m script_report embed         # build Voyage embeddings + nearest table
 
 Each subcommand passes any remaining argv on to the underlying entry function,
@@ -29,6 +30,7 @@ _COMMANDS = {
     "schedule": ("script_report.scrapers.pbs_schedule",     "main"),
     "atc":      ("script_report.parsers.atc_parser",        "main"),
     "calendar": ("script_report.parsers.pbac_calendar",     "main"),
+    "agendas":  ("script_report.extractors.agenda_extractor","main"),
     "embed":    ("script_report.embedders.voyage_embedder", "main"),
 }
 

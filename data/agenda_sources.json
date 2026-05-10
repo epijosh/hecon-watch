@@ -1,0 +1,7 @@
+{
+  "_comment": "Hand-curated list of upcoming PBAC + Intracycle meeting agenda URLs. Each URL can be a direct PDF or the HTML wrapper page (the extractor finds the PDF link). New agendas are typically published ~6 weeks before each meeting; PBAC keeps roughly two ahead. Add new entries as they're published; old entries become harmless after the meeting passes (the loader filters them out).",
+  "sources": [
+    "https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/agenda/July-2026-PBAC-Meeting",
+    "https://www.pbs.gov.au/industry/listing/elements/pbac-meetings/agenda/pdf/2026/PBAC-Intracycle-meeting-agenda-May-2026v2.pdf"
+  ]
+}

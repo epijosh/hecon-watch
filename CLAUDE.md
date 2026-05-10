@@ -48,14 +48,15 @@ only does new work.
 4.  python -m script_report schedule              →  data/pbs_schedule_atc.csv (ATC backfill)
 5.  python -m script_report atc                   →  data/atc_benefit.csv  +  data/atc_services.csv
 6.  python -m script_report calendar              →  data/pbac_calendar.json   (cycle-timeframe PDFs)
-7.  python -m script_report embed --resume        →  data/psd_embeddings.bin
+7.  python -m script_report agendas               →  data/pbac_agendas.json    (upcoming meeting agendas)
+8.  python -m script_report embed --resume        →  data/psd_embeddings.bin
                                                    +  data/psd_embeddings_meta.json
                                                    +  data/psd_nearest.json
-7.  python -m script_report build                 →  site_data.js
-8.  vercel --prod  (or git push)
+9.  python -m script_report build                 →  site_data.js
+10. vercel --prod  (or git push)
 ```
 
-`python -m script_report refresh` orchestrates 1–7 with flags:
+`python -m script_report refresh` orchestrates 1–9 with flags:
 - `--build-only`   skip downloads/extract/embed, just rebuild site_data.js
 - `--no-psds`      skip PSD downloading
 - `--no-embed`     skip Voyage embedding
@@ -79,9 +80,11 @@ only does new work.
 | `script_report/scrapers/pbs_spend.py` | PBS expenditure Excel fetcher. |
 | `script_report/scrapers/pbs_schedule.py` | Monthly PBS Schedule API CSV bundle → ATC backfill. |
 | `script_report/extractors/psd_extractor.py` | Haiku-powered field extraction (PDFs + HTML PSDs). |
+| `script_report/extractors/agenda_extractor.py` | Pulls upcoming PBAC + Intracycle meeting agendas (URLs in `data/agenda_sources.json`) → `data/pbac_agendas.json` via Haiku. |
 | `script_report/embedders/voyage_embedder.py` | Voyage embeddings + nearest table (ATC tiebreaker). |
 | `script_report/parsers/atc_parser.py` | PBS ATC HTML-as-XLS parser. |
 | `script_report/parsers/pbac_calendar.py` | PBS Cycle Timeframe PDF parser. |
+| `data/agenda_sources.json` | Hand-curated list of upcoming PBAC / Intracycle agenda URLs. New ones get pasted in ~6 weeks before each meeting. |
 | `script_report/utils/helpers.py` | MONTH_MAP, data_path resolver, .env loader. |
 | `script_report/utils/similarity.py` | ATC-prefix tiebreaker for cosine ties. |
 | `script_report/utils/drug_names.py` | Drug-name normalisation + salt-strip / multi-drug split candidate keys. |
@@ -140,7 +143,11 @@ only does new work.
 - Semantic precedent search at `/api/search` — UI mode toggle in the search
   bar, sentence-style suggestions, loading + error states, in-session cache.
 - Homepage analytical panels:
-  - Recently-published feed (top of dashboard)
+  - Recently-published feed (top-left, 2/3 width)
+  - "Coming up at PBAC" agenda panel (top-right, 1/3 width) — upcoming
+    PBAC + Intracycle meetings, drugs/indications on the docket, with
+    backlinks to existing drug pages where the drug is already in the
+    extracted set
   - "Earned their listing" — drugs that succeeded after rejection
   - Time-to-listing (first-try success rate, multi-attempt median, by-year trend)
   - Cost-basis labels in the browse table + recent feed
@@ -159,8 +166,6 @@ only does new work.
 - Contact page.
 - Filters on semantic search results (the API already supports
   `&filter_outcome=`; no UI for it yet).
-- Snippet highlighting on semantic results (showing which sentence matched).
-- Email alert signup (Substack/Beehiiv embed).
 
 ---
 

@@ -20,8 +20,10 @@ from script_report.data.loaders import (
     load_psd_extracted,
     load_drug_spend,
     load_pbac_calendar,
+    load_pbac_agendas,
     load_psd_nearest,
     attach_nearest_to_psd,
+    attach_agenda_drug_slugs,
 )
 
 
@@ -55,6 +57,7 @@ def write_site_data(
     psd: dict,
     drug_spend: dict | None = None,
     calendar: dict | None = None,
+    agendas: dict | None = None,
 ) -> None:
     """Compose the SITE_DATA payload and write site_data.js."""
     now = datetime.now().strftime("%Y-%m-%d")
@@ -84,6 +87,7 @@ def write_site_data(
         "psd":        psd,
         "drug_spend": drug_spend or {"total": 0, "top_spend": [], "top_cost_per_script": [], "by_drug": {}},
         "calendar":   calendar or {"meetings": [], "last_updated": None, "last_milestone": None},
+        "agendas":    agendas  or {"meetings": [], "n_meetings": 0, "n_items": 0, "last_updated": None},
     }
 
     js = (
@@ -103,27 +107,31 @@ def main() -> None:
     print("Building site_data.js")
     print("=" * 60)
 
-    print("\n[1/6] Loading PBS ATC data...")
+    print("\n[1/7] Loading PBS ATC data...")
     pbs = load_atc_data()
 
-    print("\n[2/6] Scanning PBAC PSDs...")
+    print("\n[2/7] Scanning PBAC PSDs...")
     pbac = load_pbac_psds()
 
-    print("\n[3/6] Loading extracted PSD data...")
+    print("\n[3/7] Loading extracted PSD data...")
     psd = load_psd_extracted()
 
-    print("\n[4/6] Loading PBS drug-level spend...")
+    print("\n[4/7] Loading PBS drug-level spend...")
     drug_spend = load_drug_spend()
 
-    print("\n[5/6] Loading PBAC cycle calendar...")
+    print("\n[5/7] Loading PBAC cycle calendar...")
     calendar = load_pbac_calendar()
 
-    print("\n[6/6] Loading nearest-neighbour links (embed_psds.py output)...")
+    print("\n[6/7] Loading nearest-neighbour links (embed_psds.py output)...")
     nearest = load_psd_nearest()
     attach_nearest_to_psd(psd, nearest)
 
+    print("\n[7/7] Loading upcoming PBAC + Intracycle agendas...")
+    agendas = load_pbac_agendas()
+    attach_agenda_drug_slugs(agendas, psd)
+
     print("\nWriting output...")
-    write_site_data(pbs, pbac, psd, drug_spend, calendar)
+    write_site_data(pbs, pbac, psd, drug_spend, calendar, agendas)
 
     # ── Summary ──────────────────────────────────────────────────────────────
     print("\n" + "=" * 60)

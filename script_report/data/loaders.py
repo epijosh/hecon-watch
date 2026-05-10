@@ -14,9 +14,11 @@ from __future__ import annotations
 import csv
 import json
 import re
+from datetime import date
 
 from script_report.config import DATA_DIR, REPO_ROOT
 from script_report.utils.helpers import MONTH_MAP, data_path
+from script_report.utils.drug_names import candidate_keys
 
 
 # ── 1. PBS ATC class spend / scripts ─────────────────────────────────────────
@@ -856,3 +858,78 @@ def load_pbac_calendar() -> dict:
         "source_files":   data.get("source_files", []),
         "last_milestone": last_milestone,
     }
+
+
+# ── 7. Upcoming PBAC + Intracycle agendas ────────────────────────────────────
+
+def load_pbac_agendas() -> dict:
+    """Load data/pbac_agendas.json (produced by agenda_extractor.py).
+
+    Filters to meetings whose date is in the future. Past agendas are kept in
+    the source JSON (so re-runs are cheap) but aren't surfaced — once a meeting
+    happens its decisions flow through the PSD pipeline instead.
+    """
+    path = data_path("pbac_agendas.json")
+    empty = {"meetings": [], "n_meetings": 0, "n_items": 0, "last_updated": None}
+    if not path.exists():
+        print("  pbac_agendas.json not found — run `python -m script_report agendas`")
+        return empty
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as e:
+        print(f"  Could not parse pbac_agendas.json ({e})")
+        return empty
+
+    # The agenda extractor stores meeting_date as YYYY-MM-01 (month-level
+    # precision — the exact day comes from the PBS cycle calendar elsewhere).
+    # Compare on YYYY-MM only so a meeting *later this month* isn't filtered
+    # out just because today is past the 1st.
+    today_ym = date.today().isoformat()[:7]
+    upcoming: list[dict] = []
+    for ag in data.get("agendas", []) or []:
+        mdate = ag.get("meeting_date")
+        # Keep undated agendas (rare; defensive) so they're not silently dropped.
+        if mdate and mdate[:7] < today_ym:
+            continue
+        upcoming.append({
+            "meeting_label": ag.get("meeting_label"),
+            "meeting_date":  mdate,
+            "meeting_kind":  ag.get("meeting_kind"),
+            "source_url":    ag.get("source_url"),
+            "pdf_url":       ag.get("pdf_url"),
+            "items":         list(ag.get("items") or []),
+        })
+
+    upcoming.sort(key=lambda m: (m.get("meeting_date") or "9999"))
+    n_items = sum(len(m["items"]) for m in upcoming)
+    print(f"  PBAC agendas: {len(upcoming)} upcoming meetings, {n_items} items")
+
+    return {
+        "meetings":     upcoming,
+        "n_meetings":   len(upcoming),
+        "n_items":      n_items,
+        "last_updated": data.get("last_updated"),
+    }
+
+
+def attach_agenda_drug_slugs(agendas: dict, psd: dict) -> None:
+    """For each agenda item, fill in `drug_slugs` listing matching drug keys
+    in the dashboard's drugs DB so the UI can render backlinks. Works in
+    place; safe to call with empty inputs."""
+    if not agendas or not psd:
+        return
+    drugs_map = psd.get("drugs") or {}
+    if not drugs_map:
+        return
+    matched = 0
+    for meeting in agendas.get("meetings") or []:
+        for item in meeting.get("items") or []:
+            slugs: list[str] = []
+            for cand in candidate_keys(item.get("drug") or ""):
+                if cand in drugs_map and cand not in slugs:
+                    slugs.append(cand)
+            if slugs:
+                item["drug_slugs"] = slugs
+                matched += 1
+    if matched:
+        print(f"  Linked {matched} agenda items to existing drug pages")

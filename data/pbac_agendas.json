@@ -1,0 +1,263 @@
+{
+  "agendas": [
+    {
+      "source_url": "https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/agenda/July-2026-PBAC-Meeting",
+      "pdf_url": "https://www.pbs.gov.au/industry/listing/elements/pbac-meetings/agenda/pdf/2026/July-2026-PBAC-Meeting%20v3.pdf",
+      "pdf_filename": "July-2026-PBAC-Meeting v3.pdf",
+      "pdf_sha256": "89de8367c202c7d25dcc7fd7b28a40220f175d6c3ae058bd3fbc7e7f85c7944c",
+      "meeting_label": "July 2026 PBAC Meeting",
+      "meeting_date": "2026-07-01",
+      "meeting_kind": "PBAC",
+      "items": [
+        {
+          "drug": "ACALABRUTINIB",
+          "trade_name": "Calquence®",
+          "sponsor": "ASTRAZENECA PTY LTD",
+          "indication": "Mantle cell lymphoma",
+          "submission_category": "Internal submission",
+          "submission_pathway": "Change to existing listing",
+          "purpose": "Consider revised proposal for listing acalabrutinib in combination with bendamustine and rituximab for first-line treatment of Stage III or IV MCL."
+        },
+        {
+          "drug": "AMIVANTAMAB",
+          "trade_name": "Rybrevant SC®",
+          "sponsor": "JANSSEN-CILAG PTY LTD",
+          "indication": "Non-small cell lung cancer",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "purpose": "Request listing of subcutaneous form of amivantamab for first-line (with chemotherapy) and second-line (monotherapy) treatment of NSCLC with EGFR gene mutation."
+        },
+        {
+          "drug": "APADAMTASE ALFA / CINAXADAMTASE ALFA",
+          "trade_name": "Adzynma®",
+          "sponsor": "TAKEDA PHARMACEUTICALS AUSTRALIA PTY. LTD.",
+          "indication": "Congenital thrombotic thrombocytopenic purpura",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "purpose": "Request listing of enzyme replacement therapy for prevention of acute events in adult and paediatric cTTP patients with confirmed ADAMTS13 genetic mutation."
+        },
+        {
+          "drug": "BELANTAMAB MAFODOTIN",
+          "trade_name": "Blenrep®",
+          "sponsor": "GLAXOSMITHKLINE AUSTRALIA PTY LTD",
+          "indication": "Relapsed and/or refractory multiple myeloma",
+          "submission_category": "Resubmission",
+          "submission_pathway": "Standard Re-entry",
+          "purpose": "Resubmission to request listing in combination with bortezomib and dexamethasone for relapsed/refractory MM with prior progressive disease."
+        },
+        {
+          "drug": "BEMPEDOIC ACID",
+          "trade_name": "Nexletol®",
+          "sponsor": "SEQIRUS (AUSTRALIA) PTY LTD",
+          "indication": "Hypercholesterolaemia",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "purpose": "Request listing as monotherapy and with ezetimibe for hypercholesterolaemia in statin-intolerant patients or on maximally tolerated therapy with elevated LDL-C."
+        },
+        {
+          "drug": "BEMPEDOIC ACID WITH EZETIMIBE",
+          "trade_name": "Nexlizet®",
+          "sponsor": "SEQIRUS (AUSTRALIA) PTY LTD",
+          "indication": "Hypercholesterolaemia",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "purpose": "Request listing for hypercholesterolaemia in statin-intolerant patients or on maximally tolerated therapy with persistent elevated LDL-C."
+        },
+        {
+          "drug": "BIRCH TRITERPENES",
+          "trade_name": "Filsuvez®",
+          "sponsor": "CHIESI AUSTRALIA PTY LTD",
+          "indication": "Dystrophic or junctional epidermolysis bullosa",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "purpose": "Request listing for treatment of partial thickness skin wounds in patients aged 6 months and older with dystrophic or junctional EB."
+        },
+        {
+          "drug": "BRENTUXIMAB VEDOTIN",
+          "trade_name": "Adcetris®",
+          "sponsor": "TAKEDA PHARMACEUTICALS AUSTRALIA PTY. LTD.",
+          "indication": "Hodgkin lymphoma",
+          "submission_category": "Internal submission",
+          "submission_pathway": "Change to existing listing",
+          "purpose": "Request listing in combination with multi-drug chemotherapy for first-line treatment of advanced stage CD30 positive Hodgkin lymphoma."
+        },
+        {
+          "drug": "BUDESONIDE WITH GLYCOPYRRONIUM AND FORMOTEROL",
+          "trade_name": "Breztri Aerosphere®",
+          "sponsor": "ASTRAZENECA PTY LTD",
+          "indication": "Severe asthma",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "purpose": "Request listing of new form for maintenance treatment of severe asthma in adults inadequately controlled on LABA/ICS with recent exacerbations."
+        },
+        {
+          "drug": "DEPEMOKIMAB",
+          "trade_name": "Exdensur®",
+          "sponsor": "GLAXOSMITHKLINE AUSTRALIA PTY LTD",
+          "indication": "Uncontrolled severe eosinophilic asthma",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "purpose": "Request listing for uncontrolled severe eosinophilic asthma in patients aged 12+ with elevated blood eosinophil counts."
+        },
+        {
+          "drug": "DONIDALORSEN",
+          "trade_name": "Zirdawny®",
+          "sponsor": "OTSUKA AUSTRALIA PHARMACEUTICAL PTY. LTD",
+          "indication": "Hereditary angioedema",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "purpose": "Request listing for long-term prophylaxis of recurrent attacks in patients with hereditary angioedema."
+        },
+        {
+          "drug": "ELACESTRANT",
+          "trade_name": "Orserdu®",
+          "sponsor": "A.MENARINI AUSTRALIA PTY LIMITED",
+          "indication": "Breast cancer",
+          "submission_category": "Resubmission",
+          "submission_pathway": "Standard Re-entry",
+          "purpose": "Resubmission for ER+/HER2- locally advanced or metastatic breast cancer with ESR1 mutation after endocrine therapy and CDK4/6 inhibitor progression."
+        },
+        {
+          "drug": "FINERENONE",
+          "trade_name": "Kerendia®",
+          "sponsor": "BAYER AUSTRALIA LTD",
+          "indication": "Heart failure",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "purpose": "Request listing for symptomatic heart failure (NYHA Class II-IV) with LVEF greater than or equal to 40%."
+        },
+        {
+          "drug": "GUSELKUMAB",
+          "trade_name": "Tremfya®",
+          "sponsor": "JANSSEN-CILAG PTY LTD",
+          "indication": "Severe Crohn disease",
+          "submission_category": "Internal submission",
+          "submission_pathway": "New listing",
+          "purpose": "Consider revised proposal for listing guselkumab in severe CD with failed response to corticosteroids and immunosuppressive therapy."
+        },
+        {
+          "drug": "LONCASTUXIMAB TESIRINE",
+          "trade_name": "Zynlonta®",
+          "sponsor": "SWEDISH ORPHAN BIOVITRUM PTY LTD",
+          "indication": "Diffuse large B-cell lymphoma",
+          "submission_category": "Resubmission",
+          "submission_pathway": "Standard Re-entry",
+          "purpose": "Resubmission for relapsed or refractory DLBCL in patients with two or more prior lines of therapy."
+        },
+        {
+          "drug": "MIFEPRISTONE AND MISOPROSTOL",
+          "trade_name": "MS-2 Step®",
+          "sponsor": "MS HEALTH PTY LTD",
+          "indication": "Termination of an intra-uterine pregnancy",
+          "submission_category": "Internal submission",
+          "submission_pathway": "Change to existing listing",
+          "purpose": "Request change to allow use for intra-uterine pregnancy up to 70 days of gestation (currently 63 days)."
+        }
+      ],
+      "extracted_at": "2026-05-11"
+    },
+    {
+      "source_url": "https://www.pbs.gov.au/industry/listing/elements/pbac-meetings/agenda/pdf/2026/PBAC-Intracycle-meeting-agenda-May-2026v2.pdf",
+      "pdf_url": "https://www.pbs.gov.au/industry/listing/elements/pbac-meetings/agenda/pdf/2026/PBAC-Intracycle-meeting-agenda-May-2026v2.pdf",
+      "pdf_filename": "PBAC-Intracycle-meeting-agenda-May-2026v2.pdf",
+      "pdf_sha256": "eed9e2433678cfedc7ae079ab3ac0b0dcda61e06b44f258d539e9876255c2ce0",
+      "meeting_label": "May 2026 PBAC Intracycle Meeting",
+      "meeting_date": "2026-05-01",
+      "meeting_kind": "Intracycle",
+      "items": [
+        {
+          "drug": "ADALIMUMAB and INFLIXIMAB",
+          "trade_name": null,
+          "sponsor": "Various brands and sponsors",
+          "indication": "Crohn disease",
+          "submission_category": "Internal submission",
+          "submission_pathway": "Change to existing listing",
+          "purpose": "Consider amendments to adalimumab and infliximab listings to permit dosing flexibility for paediatric treatment of moderate to severe Crohn disease."
+        },
+        {
+          "drug": "DESIGNATED REGISTERED NURSE PRESCRIBING",
+          "trade_name": null,
+          "sponsor": null,
+          "indication": "Not applicable",
+          "submission_category": "Other matter",
+          "submission_pathway": "Other matters",
+          "purpose": "Consider Tranche 1 and Tranche 2 lists of medicines for designated registered nurse prescribing suitability."
+        },
+        {
+          "drug": "MIGALISTAT",
+          "trade_name": "Galafold®",
+          "sponsor": "AMICUS THERAPEUTICS PTY LTD",
+          "indication": "Fabry disease",
+          "submission_category": "Matter arising",
+          "submission_pathway": "Pricing matter",
+          "purpose": "Confirm the approach for adjusting the risk-sharing arrangement recommended at the March 2026 meeting."
+        },
+        {
+          "drug": "PD-(L)1 INHIBITORS",
+          "trade_name": null,
+          "sponsor": null,
+          "indication": "Not applicable",
+          "submission_category": "Other matter",
+          "submission_pathway": "Other matters",
+          "purpose": "Consider and advise on drafted departmental guidance for sponsors seeking broad multi-cancer listing of PD-(L)1 inhibitors."
+        },
+        {
+          "drug": "POST MARKET REVIEW WORK PLAN",
+          "trade_name": null,
+          "sponsor": null,
+          "indication": "Various indications",
+          "submission_category": "Post-market review",
+          "submission_pathway": "PBS review",
+          "purpose": "Note an update on the status of current PMR research projects and advise on any new PMRs or preliminary research topics."
+        },
+        {
+          "drug": "RANIBIZUMAB",
+          "trade_name": "Susvimo®",
+          "sponsor": "Roche Products Pty Ltd",
+          "indication": "Neovascular age-related macular degeneration",
+          "submission_category": "Matter arising",
+          "submission_pathway": "Change to existing listing",
+          "purpose": "Reconsider ranibizumab delivered via port delivery system following deferred outcome at the March 2022 PBAC meeting."
+        },
+        {
+          "drug": "RAXTOZINAMERAN",
+          "trade_name": "Comirnaty® Omicron XBB.1.5",
+          "sponsor": "PFIZER AUSTRALIA PTY LTD",
+          "indication": "Prevention of COVID-19",
+          "submission_category": "Matter arising",
+          "submission_pathway": "Other matters",
+          "purpose": "Consider a revised pricing offer for National Immunisation Program listing of BNT162b2-platform COVID-19 vaccine."
+        },
+        {
+          "drug": "PULMONARY ARTERIAL HYPERTENSION LISTINGS REVIEW",
+          "trade_name": null,
+          "sponsor": null,
+          "indication": "Pulmonary arterial hypertension",
+          "submission_category": "Post-market review",
+          "submission_pathway": "PBS review",
+          "purpose": "Consider restriction amendments for PAH medicines to allow clinicians the option of initiating/escalating treatment based on mortality risk rather than WHO functional class."
+        },
+        {
+          "drug": "RESPIRATORY SYNCYTIAL VIRUS VACCINE",
+          "trade_name": "mResvia®",
+          "sponsor": "MODERNA AUSTRALIA PTY LTD",
+          "indication": "Prevention of lower respiratory tract disease caused by RSV",
+          "submission_category": "Other matter",
+          "submission_pathway": "New NIP listing",
+          "purpose": "Request National Immunisation Program listing for prevention of lower respiratory tract RSV disease in individuals aged over 75 years and Aboriginal and Torres Strait Islander people aged over 60 years."
+        },
+        {
+          "drug": "TUCATINIB",
+          "trade_name": "TUKYSA®",
+          "sponsor": "Pfizer Australia Pty Ltd",
+          "indication": "Breast cancer",
+          "submission_category": "Matter arising",
+          "submission_pathway": "Pricing matter",
+          "purpose": "Reconsider the November 2025 recommended pricing following a revised proposal from the sponsor."
+        }
+      ],
+      "extracted_at": "2026-05-11"
+    }
+  ],
+  "last_updated": "2026-05-11"
+}

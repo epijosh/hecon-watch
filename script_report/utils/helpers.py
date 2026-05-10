@@ -56,6 +56,9 @@ def load_dotenv_safely() -> None:
     """
     try:
         from dotenv import load_dotenv
-        load_dotenv(REPO_ROOT / ".env")
+        # override=True so an empty / stale ANTHROPIC_API_KEY in the parent
+        # shell doesn't shadow the real key from .env (silent "key not set"
+        # failures were caused by this default).
+        load_dotenv(REPO_ROOT / ".env", override=True)
     except ImportError:
         pass
