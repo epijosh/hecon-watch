@@ -26,6 +26,9 @@ __pycache__/
 *.xls
 *.log
 
+# Local build artifacts
+dist/
+
 # Secrets and local config
 .env
 .env.*

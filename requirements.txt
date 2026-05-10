@@ -1,0 +1,19 @@
+# script.report — Python dependencies
+# Install with: pip install -r requirements.txt --break-system-packages
+
+# ── Core (required for all scripts) ──────────────────────────────────────────
+requests>=2.31.0          # HTTP downloads (PSDs, PBS data)
+beautifulsoup4>=4.12.0    # HTML scraping (PBAC site, HTML PSDs)
+lxml>=5.0.0               # XML parser (PBS Schedule XML, fast HTML)
+
+# ── PSD extraction (extract_psd_text.py) ─────────────────────────────────────
+pdfplumber>=0.10.0        # PDF text extraction
+anthropic>=0.25.0         # Claude Haiku API (structured extraction)
+python-dotenv>=1.0.0      # Load ANTHROPIC_API_KEY / VOYAGE_API_KEY from .env
+
+# ── PBS spend / ATC data (fetch_pbs_drug_spend.py, parse_atc_data.py) ────────
+openpyxl>=3.1.0           # Read PBS expenditure Excel files
+
+# ── Embeddings + semantic search (embed_psds.py, api/search.py) ──────────────
+voyageai>=0.3.0           # Voyage AI embedding client
+numpy>=1.24               # Vector math (cosine similarity, packing)

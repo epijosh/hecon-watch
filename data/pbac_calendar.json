@@ -1,0 +1,211 @@
+{
+  "meetings": [
+    {
+      "code": "2023-11",
+      "label": "November 2023 PBAC meeting",
+      "meeting_date": "2023-11-03",
+      "deadlines": [
+        {
+          "key": "submission_major",
+          "name": "Major submission deadline",
+          "date": "2023-07-05"
+        },
+        {
+          "key": "submission_minor",
+          "name": "Minor / resubmission deadline",
+          "date": "2023-08-25"
+        },
+        {
+          "key": "prepbac_response",
+          "name": "Pre-PBAC response",
+          "date": "2023-10-25"
+        },
+        {
+          "key": "meeting",
+          "name": "PBAC meeting",
+          "date": "2023-11-03"
+        },
+        {
+          "key": "outcomes",
+          "name": "Outcomes published",
+          "date": "2023-12-17"
+        }
+      ]
+    },
+    {
+      "code": "2024-03",
+      "label": "March 2024 PBAC meeting",
+      "meeting_date": null,
+      "deadlines": [
+        {
+          "key": "submission_major",
+          "name": "Major submission deadline",
+          "date": "2023-11-01"
+        },
+        {
+          "key": "submission_minor",
+          "name": "Minor / resubmission deadline",
+          "date": "2023-12-22"
+        },
+        {
+          "key": "prepbac_response",
+          "name": "Pre-PBAC response",
+          "date": "2024-03-06"
+        },
+        {
+          "key": "outcomes",
+          "name": "Outcomes published",
+          "date": "2024-04-26"
+        },
+        {
+          "key": "psds",
+          "name": "PSDs published",
+          "date": "2024-08-30"
+        }
+      ]
+    },
+    {
+      "code": "2024-07",
+      "label": "July 2024 PBAC meeting",
+      "meeting_date": null,
+      "deadlines": [
+        {
+          "key": "submission_major",
+          "name": "Major submission deadline",
+          "date": "2024-03-13"
+        },
+        {
+          "key": "submission_minor",
+          "name": "Minor / resubmission deadline",
+          "date": "2024-05-03"
+        },
+        {
+          "key": "prepbac_response",
+          "name": "Pre-PBAC response",
+          "date": "2024-07-03"
+        },
+        {
+          "key": "outcomes",
+          "name": "Outcomes published",
+          "date": "2024-08-23"
+        },
+        {
+          "key": "psds",
+          "name": "PSDs published",
+          "date": "2024-12-20"
+        }
+      ]
+    },
+    {
+      "code": "2024-11",
+      "label": "November 2024 PBAC meeting",
+      "meeting_date": "2024-11-08",
+      "deadlines": [
+        {
+          "key": "submission_major",
+          "name": "Major submission deadline",
+          "date": "2024-07-10"
+        },
+        {
+          "key": "submission_minor",
+          "name": "Minor / resubmission deadline",
+          "date": "2024-08-30"
+        },
+        {
+          "key": "prepbac_response",
+          "name": "Pre-PBAC response",
+          "date": "2024-10-30"
+        },
+        {
+          "key": "meeting",
+          "name": "PBAC meeting",
+          "date": "2024-11-08"
+        },
+        {
+          "key": "outcomes",
+          "name": "Outcomes published",
+          "date": "2024-12-20"
+        },
+        {
+          "key": "psds",
+          "name": "PSDs published",
+          "date": "2025-05-02"
+        }
+      ]
+    },
+    {
+      "code": "2025-03",
+      "label": "March 2025 PBAC meeting",
+      "meeting_date": null,
+      "deadlines": [
+        {
+          "key": "submission_major",
+          "name": "Major submission deadline",
+          "date": "2024-11-06"
+        },
+        {
+          "key": "submission_minor",
+          "name": "Minor / resubmission deadline",
+          "date": "2025-01-03"
+        },
+        {
+          "key": "prepbac_response",
+          "name": "Pre-PBAC response",
+          "date": "2025-03-05"
+        },
+        {
+          "key": "outcomes",
+          "name": "Outcomes published",
+          "date": "2025-04-24"
+        },
+        {
+          "key": "psds",
+          "name": "PSDs published",
+          "date": "2025-08-22"
+        }
+      ]
+    },
+    {
+      "code": "2025-07",
+      "label": "July 2025 PBAC meeting",
+      "meeting_date": "2025-07-11",
+      "deadlines": [
+        {
+          "key": "submission_major",
+          "name": "Major submission deadline",
+          "date": "2025-03-12"
+        },
+        {
+          "key": "submission_minor",
+          "name": "Minor / resubmission deadline",
+          "date": "2025-05-02"
+        },
+        {
+          "key": "prepbac_response",
+          "name": "Pre-PBAC response",
+          "date": "2025-07-02"
+        },
+        {
+          "key": "meeting",
+          "name": "PBAC meeting",
+          "date": "2025-07-11"
+        },
+        {
+          "key": "outcomes",
+          "name": "Outcomes published",
+          "date": "2025-08-22"
+        },
+        {
+          "key": "psds",
+          "name": "PSDs published",
+          "date": "2025-12-19"
+        }
+      ]
+    }
+  ],
+  "source": "Parsed from PBS Cycle Timeframe PDF(s) by parse_pbac_calendar.py",
+  "source_files": [
+    "PBS-Cycle-timeframe-for-2024-2025-v2.pdf"
+  ],
+  "last_updated": "2026-05-10"
+}
