@@ -295,6 +295,10 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 .detail-brand { font-family: var(--ui); font-size: 13px; color: var(--text3); margin-bottom: 8px; }
 .detail-ind { font-family: var(--body); font-size: 16px; color: var(--text2); font-style: italic; }
 
+/* ── Glossary tooltips ───────────────────────────────────────── */
+abbr[title] { text-decoration: underline dotted var(--text3); text-underline-offset: 2px; cursor: help; -webkit-text-decoration-style: dotted; -webkit-text-decoration-color: var(--text3); }
+abbr[title]:hover { color: var(--red); -webkit-text-decoration-color: var(--red); text-decoration-color: var(--red); }
+
 .detail-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 22px; }
 .detail-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
 .detail-cell { background: var(--bg); padding: 18px 20px; }
@@ -432,9 +436,9 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
   <div class="container">
     <div class="eyebrow" style="margin-bottom:10px">Australian medicine subsidy tracker</div>
     <h1>Which medicines Australia funds — and what they cost</h1>
-    <p class="lede">script.report tracks every decision the Pharmaceutical Benefits Advisory Committee (PBAC) makes about adding a medicine to the PBS, and the government spend that follows. Outcomes, evidence, ICERs, and prescriptions — all drawn from <span style="font-family:var(--ui);font-size:13px">pbs.gov.au</span>.</p>
+    <p class="lede">script.report tracks every decision the Pharmaceutical Benefits Advisory Committee (<abbr title="Pharmaceutical Benefits Advisory Committee — the body that recommends which medicines should be subsidised on the PBS">PBAC</abbr>) makes about adding a medicine to the <abbr title="Pharmaceutical Benefits Scheme — the Australian government program that subsidises listed prescription medicines">PBS</abbr>, and the government spend that follows. Outcomes, evidence, <abbr title="Incremental Cost-Effectiveness Ratio — additional cost per QALY gained vs the comparator">ICER</abbr>s, and prescriptions — all drawn from <span style="font-family:var(--ui);font-size:13px">pbs.gov.au</span>.</p>
     <div class="meta-row">
-      <span class="pill"><strong id="meta-psds">—</strong>PSDs indexed</span>
+      <span class="pill"><strong id="meta-psds">—</strong><abbr title="Public Summary Documents — PBAC's published account of each submission's evidence, comparator, ICER and decision rationale">PSDs</abbr> indexed</span>
       <span class="pill"><strong id="meta-range">—</strong>year coverage</span>
       <span class="pill" id="meta-next-deadline-pill" title="Next upcoming deadline in the published PBAC cycle calendar"><strong id="meta-next-deadline">—</strong><span id="meta-next-deadline-label">next PBAC deadline</span></span>
       <span class="pill"><strong id="meta-updated">—</strong>last refresh</span>
@@ -933,6 +937,56 @@ const escapeHtml = s => String(s ?? '').replace(/[&<>"']/g, c => ({
 }[c]));
 // Escape for inline onclick="...'${...}'..." contexts: HTML-escape, then escape JS quote/backslash.
 const jsAttr = s => escapeHtml(String(s ?? '').replace(/\\/g, '\\\\').replace(/'/g, "\\'"));
+
+// ── Glossary tooltips ─────────────────────────────────────────────────────
+// HTA / PBAC jargon that lay readers shouldn't have to Google. Hovering or
+// long-pressing any of these acronyms in rendered text reveals the gloss.
+const GLOSSARY = {
+  PBAC:  "Pharmaceutical Benefits Advisory Committee — the body that recommends which medicines should be subsidised on the PBS",
+  PBS:   "Pharmaceutical Benefits Scheme — the Australian government program that subsidises listed prescription medicines",
+  PSD:   "Public Summary Document — PBAC's published account of each submission's evidence, comparator, ICER and decision rationale",
+  ATC:   "Anatomical Therapeutic Chemical — the WHO classification of medicines by organ system and mechanism (e.g. L01 = antineoplastics)",
+  HTA:   "Health Technology Assessment — formal evaluation of a medicine's clinical value and cost-effectiveness",
+  TGA:   "Therapeutic Goods Administration — Australia's medicines regulator (separate from PBAC, which decides subsidy)",
+  ARTG:  "Australian Register of Therapeutic Goods — the TGA's list of every approved medicine and device",
+  ICER:  "Incremental Cost-Effectiveness Ratio — the additional cost per QALY gained vs. the comparator (lower = more cost-effective)",
+  QALY:  "Quality-Adjusted Life Year — one year of life in perfect health (or two years at 0.5 quality, etc.)",
+  DALY:  "Disability-Adjusted Life Year — a year of healthy life lost to disease or premature death",
+  RSA:   "Risk-Sharing Arrangement — a financial agreement between sponsor and government that caps PBS spend or rebates above thresholds",
+  MAA:   "Managed Access Arrangement — a subsidy with conditions on patient eligibility, monitoring, or expenditure caps",
+  PSCR:  "Pre-Sub-Committee Response — the sponsor's response to issues raised in the PBAC commentary, submitted before sub-committee review",
+  ESC:   "Economics Sub-Committee — the PBAC sub-committee that reviews the economic evaluation",
+  DUSC:  "Drug Utilisation Sub-Committee — the PBAC sub-committee that reviews predicted vs. actual utilisation",
+  CUA:   "Cost-Utility Analysis — economic evaluation using QALYs as the outcome unit",
+  CEA:   "Cost-Effectiveness Analysis — economic evaluation using a clinical outcome (e.g. life-years gained)",
+  BIA:   "Budget Impact Analysis — projection of net financial impact on the PBS over 5 years",
+  PICO:  "Population, Intervention, Comparator, Outcome — the framing used to scope a clinical question",
+  RCT:   "Randomised Controlled Trial — the standard evidence design for demonstrating clinical effect",
+  OS:    "Overall Survival — time from randomisation to death from any cause",
+  PFS:   "Progression-Free Survival — time from randomisation to disease progression or death",
+  DFS:   "Disease-Free Survival — time from randomisation to recurrence or death",
+  ORR:   "Objective Response Rate — proportion of patients whose tumours shrink by a defined amount",
+  QoL:   "Quality of Life — patient-reported measure of well-being, often via a standardised instrument",
+};
+// Build a single regex matching any acronym as a whole word. Sorted by length
+// descending so longer terms (DUSC, PSCR) match before shorter ones (DC, PS).
+const _GLOSS_RE = new RegExp(
+  '\\b(' +
+    Object.keys(GLOSSARY).sort((a, b) => b.length - a.length).join('|') +
+  ')\\b',
+  'g'
+);
+// Wrap each acronym in an <abbr title="..."> element. SAFE TO CALL ON ALREADY-
+// HTML-ESCAPED text — only matches plain word characters and the title attribute
+// content comes from our own GLOSSARY (no user input).
+function glossify(htmlSafe) {
+  if (!htmlSafe) return htmlSafe;
+  return String(htmlSafe).replace(_GLOSS_RE, (match) => {
+    const def = GLOSSARY[match] || GLOSSARY[match.toUpperCase()];
+    if (!def) return match;
+    return `<abbr title="${escapeHtml(def)}">${match}</abbr>`;
+  });
+}
 
 // PBAC recommendation bucket — handles both "Recommended"/"Not recommended"/"Deferred"/etc.
 // "Recommended with restriction" buckets to 'rec'; "Not recommended" buckets to 'not'.
@@ -1738,7 +1792,7 @@ function rowHtml(r) {
   return `<tr role="button" tabindex="0" onclick="selectBrowseRow('${jsAttr(r.name)}')">
     <td><div class="dname">${escapeHtml(titleCase(r.name))}</div>${r.brand ? `<div class="dbrand">${escapeHtml(r.brand)}</div>` : ''}</td>
     <td><span class="sans" style="font-size:12px;color:var(--text2)">${escapeHtml(r.therapy || '—')}</span></td>
-    <td><div class="dind" title="${escapeHtml(r.indication||'')}">${escapeHtml(r.indication || '—')}</div></td>
+    <td><div class="dind" title="${escapeHtml(r.indication||'')}">${glossify(escapeHtml(r.indication || '—'))}</div></td>
     <td><span class="drec ${recCssClass(r.outcome)}">${escapeHtml(recLabel)}</span></td>
     <td><span class="sans" style="font-size:12px">${escapeHtml(r.year || '—')}</span></td>
     <td><span class="sans" style="font-size:12px;font-weight:${(r.subs||0)>1?'700':'400'};color:${(r.subs||0)>1?'var(--red)':'var(--text2)'}">${r.subs || '—'}</span></td>
@@ -1938,7 +1992,7 @@ function renderSemanticResults(query, data) {
       <div>
         <div class="mcard-name">${escapeHtml(titleCase(key))}</div>
         <div class="mcard-meta">${escapeHtml([therapy, brand, r.year].filter(Boolean).join(' · '))}</div>
-        <div class="mcard-ind">${escapeHtml(indication || '—')}</div>
+        <div class="mcard-ind">${glossify(escapeHtml(indication || '—'))}</div>
       </div>
       <div class="mcard-aside semantic-card-score">
         <div style="text-align:right">
@@ -2176,7 +2230,7 @@ function showDrugDetail(d) {
     cell4Html = `
       <div class="detail-cell">
         <div class="detail-cell-label">Economic model</div>
-        <div class="detail-cell-val" style="font-size:18px">${escapeHtml(pd.economic_model)}</div>
+        <div class="detail-cell-val" style="font-size:18px">${glossify(escapeHtml(pd.economic_model))}</div>
         <div class="detail-cell-sub">model class used in submission</div>
       </div>`;
   } else {
@@ -2236,12 +2290,12 @@ function showDrugDetail(d) {
         </div>
       </div>`;
   } else if (pd.icer_note) {
-    icerHtml = `<div class="callout" style="margin-top:14px"><div class="callout-eyebrow">ICER note</div><div class="callout-body">${escapeHtml(pd.icer_note)}</div></div>`;
+    icerHtml = `<div class="callout" style="margin-top:14px"><div class="callout-eyebrow"><abbr title="${escapeHtml(GLOSSARY.ICER)}">ICER</abbr> note</div><div class="callout-body">${glossify(escapeHtml(pd.icer_note))}</div></div>`;
   }
 
   // ── Cost-effectiveness section (chips + ICER bar) ──────────────
   const ceChips = [];
-  if (pd.economic_model) ceChips.push(`<span class="tag-chip purple">${escapeHtml(pd.economic_model)}</span>`);
+  if (pd.economic_model) ceChips.push(`<span class="tag-chip purple">${glossify(escapeHtml(pd.economic_model))}</span>`);
   if (pd.listing_type)   ceChips.push(`<span class="tag-chip">${escapeHtml(pd.listing_type)}</span>`);
   if (pd.risk_sharing)   ceChips.push(`<span class="tag-chip orange">Risk-sharing arrangement</span>`);
 
@@ -2332,12 +2386,12 @@ function showDrugDetail(d) {
 
   // ── Clinical evidence section ──────────────────────────────────
   const clinSpecs = [];
-  if (pd.pico_population) clinSpecs.push(['Patient population', escapeHtml(pd.pico_population)]);
-  if (pd.line_of_therapy) clinSpecs.push(['Line of therapy', escapeHtml(pd.line_of_therapy)]);
-  if (pd.evidence_type)   clinSpecs.push(['Evidence type', `<span class="tag-chip blue">${escapeHtml(pd.evidence_type)}</span>`]);
+  if (pd.pico_population) clinSpecs.push(['Patient population', glossify(escapeHtml(pd.pico_population))]);
+  if (pd.line_of_therapy) clinSpecs.push(['Line of therapy', glossify(escapeHtml(pd.line_of_therapy))]);
+  if (pd.evidence_type)   clinSpecs.push(['Evidence type', `<span class="tag-chip blue">${glossify(escapeHtml(pd.evidence_type))}</span>`]);
   if (pd.trial_size)      clinSpecs.push(['Trial size', `${pd.trial_size.toLocaleString()} <em>participants</em>`]);
-  if (pd.primary_endpoint) clinSpecs.push(['Primary endpoint', escapeHtml(pd.primary_endpoint)]);
-  if (pd.key_trials)      clinSpecs.push(['Key trials', escapeHtml(pd.key_trials)]);
+  if (pd.primary_endpoint) clinSpecs.push(['Primary endpoint', glossify(escapeHtml(pd.primary_endpoint))]);
+  if (pd.key_trials)      clinSpecs.push(['Key trials', glossify(escapeHtml(pd.key_trials))]);
 
   let clinSection = '';
   if (clinSpecs.length) {
@@ -2385,7 +2439,7 @@ function showDrugDetail(d) {
     rejectionHtml = `
       <div class="callout red" style="margin-top:18px">
         <div class="callout-eyebrow">PBAC concerns &amp; rejection reasons</div>
-        <div class="callout-body">${escapeHtml(pd.rejection_reasons)}</div>
+        <div class="callout-body">${glossify(escapeHtml(pd.rejection_reasons))}</div>
       </div>`;
   }
 
@@ -2447,9 +2501,9 @@ function showDrugDetail(d) {
 
   // ── Detail head: chip row beneath name ─────────────────────────
   const headChips = [];
-  if (pd.evidence_type)    headChips.push(`<span class="tag-chip blue">${escapeHtml(pd.evidence_type)}</span>`);
-  if (pd.economic_model)   headChips.push(`<span class="tag-chip purple">${escapeHtml(pd.economic_model)}</span>`);
-  if (pd.line_of_therapy)  headChips.push(`<span class="tag-chip teal">${escapeHtml(pd.line_of_therapy)}</span>`);
+  if (pd.evidence_type)    headChips.push(`<span class="tag-chip blue">${glossify(escapeHtml(pd.evidence_type))}</span>`);
+  if (pd.economic_model)   headChips.push(`<span class="tag-chip purple">${glossify(escapeHtml(pd.economic_model))}</span>`);
+  if (pd.line_of_therapy)  headChips.push(`<span class="tag-chip teal">${glossify(escapeHtml(pd.line_of_therapy))}</span>`);
   if (pd.patient_advocacy) headChips.push(`<span class="advocacy-badge">Consumer input</span>`);
 
   document.getElementById('result-content').innerHTML = `
@@ -2459,7 +2513,7 @@ function showDrugDetail(d) {
       ${therapy ? `<div class="eyebrow">${escapeHtml(therapy)}</div>` : ''}
       <div class="detail-name">${escapeHtml(name)}</div>
       ${brand ? `<div class="detail-brand">Brand: ${escapeHtml(brand)}</div>` : ''}
-      ${indication ? `<div class="detail-ind">${escapeHtml(indication)}</div>` : ''}
+      ${indication ? `<div class="detail-ind">${glossify(escapeHtml(indication))}</div>` : ''}
       ${headChips.length ? `<div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:6px;align-items:center">${headChips.join('')}</div>` : ''}
     </div>
 
