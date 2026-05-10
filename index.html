@@ -347,7 +347,7 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 .drec-d { background: #E6510020; color: var(--orange); }
 .drec-u { background: var(--bg3); color: var(--text3); }
 .dicer { font-family: var(--ui); font-size: 12px; font-weight: 600; }
-.dicer-basis { font-size: 11px; font-weight: 500; font-style: italic; cursor: help; }
+.dicer-basis { font-size: 11px; font-weight: 500; font-style: italic; white-space: nowrap; }
 
 /* ── Search results / drug detail ────────────────────────────── */
 #search-results { display: none; padding: 20px 0 40px; }
@@ -1042,13 +1042,14 @@ const icerColor = v => v == null ? 'var(--text3)' : v > 150000 ? 'var(--red)' : 
 
 // Cost-basis label/colour for drugs without a numeric ICER. Mirrors the
 // classifier in script_report/data/loaders.py:_classify_cost_basis().
+// `text` is meant to be self-sufficient in a table cell — no hover required.
 const COST_BASIS_LABELS = {
-  cost_minimisation: { text: 'Cost-min',     sub: 'Cost-minimisation analysis',        color: 'var(--text2)' },
-  dominant:          { text: 'Dominant',     sub: 'Less costly + more effective',      color: 'var(--green)' },
-  cost_neutral:      { text: 'Cost-neutral', sub: 'No incremental cost vs comparator', color: 'var(--text2)' },
-  redacted:          { text: 'Redacted',     sub: 'Commercial-in-confidence',          color: 'var(--text3)' },
-  not_modelled:      { text: 'Not modelled', sub: 'No economic evaluation submitted',  color: 'var(--text3)' },
-  unknown:           { text: '—',            sub: 'Not stated in PSD',                 color: 'var(--text3)' },
+  cost_minimisation: { text: 'Cost-minimisation', sub: 'Cost-minimisation analysis',        color: 'var(--text2)' },
+  dominant:          { text: 'Dominant',          sub: 'Less costly + more effective',      color: 'var(--green)' },
+  cost_neutral:      { text: 'Cost-neutral',      sub: 'No incremental cost vs comparator', color: 'var(--text2)' },
+  redacted:          { text: 'Redacted',          sub: 'Commercial-in-confidence',          color: 'var(--text3)' },
+  not_modelled:      { text: 'Not modelled',      sub: 'No economic evaluation submitted',  color: 'var(--text3)' },
+  unknown:           { text: 'Not stated',        sub: 'Not stated in PSD',                 color: 'var(--text3)' },
 };
 function costBasisLabel(basis) {
   return COST_BASIS_LABELS[basis] || COST_BASIS_LABELS.unknown;
