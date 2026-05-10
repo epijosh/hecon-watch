@@ -572,6 +572,78 @@ def load_psd_extracted() -> dict:
     print(f"  Comparator backlinks: {len(comparator_index)} comparators referenced by 2+ drugs")
     print(f"  Trial backlinks     : {len(trial_index)} trials referenced by 2+ drugs")
 
+    # ── Time from first submission to first "Recommended" outcome ────────────
+    # Most drugs are recommended first try (zero delay). The editorially
+    # interesting cohort is the minority that needs multiple submissions.
+    # Report both an overall headline (% first try) and a per-year median for
+    # multi-attempt drugs so the time-trend is meaningful.
+    def _mo_index(h: dict) -> int:
+        try:
+            yr = int(h.get("year") or 0); mo = int(h.get("month") or 0)
+            return yr * 12 + mo
+        except (ValueError, TypeError):
+            return 0
+
+    multi_delays_by_year: dict[int, list[int]] = {}
+    n_total = 0
+    n_first_try = 0
+    multi_delays: list[int] = []
+    for drug, summary in drug_summaries.items():
+        hist = summary.get("history") or []
+        if not hist:
+            continue
+        rec_idx = next(
+            (i for i, h in enumerate(hist) if _outcome_bucket(h.get("rec")) == "rec" and _mo_index(h) > 0),
+            None,
+        )
+        if rec_idx is None:
+            continue
+        first_mo = _mo_index(hist[0])
+        rec_mo   = _mo_index(hist[rec_idx])
+        if first_mo <= 0 or rec_mo <= 0:
+            continue
+        months = rec_mo - first_mo
+        n_total += 1
+        if months == 0:
+            n_first_try += 1
+            continue
+        multi_delays.append(months)
+        rec_year = hist[rec_idx].get("year")
+        if rec_year and str(rec_year).isdigit():
+            multi_delays_by_year.setdefault(int(rec_year), []).append(months)
+
+    def _median(vals: list[int]) -> float:
+        if not vals:
+            return 0.0
+        s = sorted(vals)
+        n = len(s)
+        return float(s[n // 2]) if n % 2 == 1 else (s[n // 2 - 1] + s[n // 2]) / 2
+
+    by_year_summary = {}
+    for yr in sorted(multi_delays_by_year):
+        vals = multi_delays_by_year[yr]
+        if len(vals) >= 3:   # require >=3 drugs/year so the median isn't just one drug
+            by_year_summary[str(yr)] = {
+                "n":      len(vals),
+                "median": _median(vals),
+                "min":    min(vals),
+                "max":    max(vals),
+            }
+
+    time_to_listing = {
+        "n_with_recommendation": n_total,
+        "n_first_try":           n_first_try,
+        "pct_first_try":         (n_first_try * 100 // n_total) if n_total else 0,
+        "n_multi_attempt":       len(multi_delays),
+        "median_months_multi":   _median(multi_delays),
+        "min_months_multi":      min(multi_delays) if multi_delays else 0,
+        "max_months_multi":      max(multi_delays) if multi_delays else 0,
+        "by_year":               by_year_summary,
+    }
+    print(f"  Time to listing: {time_to_listing['pct_first_try']}% first try; "
+          f"resubmission median {time_to_listing['median_months_multi']:.0f} mo "
+          f"({len(multi_delays)} drugs)")
+
     return {
         "total":             len(drug_summaries),
         "drugs":             drug_summaries,
@@ -582,6 +654,7 @@ def load_psd_extracted() -> dict:
         "flips":             flips,
         "comparator_index":  comparator_index,
         "trial_index":       trial_index,
+        "time_to_listing":   time_to_listing,
     }
 
 

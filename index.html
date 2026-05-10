@@ -208,6 +208,19 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 .resub-changes li { margin-bottom: 2px; }
 .resub-prior { font-family: var(--body); font-size: 12px; color: var(--text3); font-style: italic; margin-top: 6px; }
 
+/* ── Time to listing ───────────────────────────────────────── */
+.ttl-strip { padding: 26px 0; border-bottom: 1px solid var(--border); background: var(--bg); }
+.ttl-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 18px; }
+.ttl-stat { background: var(--bg); padding: 14px 18px; }
+.ttl-stat-label { font-family: var(--ui); font-size: 10.5px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text3); margin-bottom: 4px; }
+.ttl-stat-val { font-family: var(--display); font-size: 28px; font-weight: 700; letter-spacing: -.3px; color: var(--text); }
+.ttl-stat-val .ttl-unit { font-family: var(--body); font-size: 13px; font-weight: 400; color: var(--text2); margin-left: 4px; }
+.ttl-stat-sub { font-family: var(--body); font-size: 12px; color: var(--text2); margin-top: 4px; line-height: 1.4; }
+.ttl-chart-wrap { padding-top: 4px; }
+.ttl-chart-title { font-family: var(--ui); font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; }
+.ttl-foot { font-family: var(--body); font-size: 12px; color: var(--text3); font-style: italic; margin-top: 10px; }
+@media (max-width: 800px) { .ttl-stats { grid-template-columns: 1fr; } }
+
 /* ── PBAC cycle calendar panel ─────────────────────────────── */
 .cal-strip { padding: 26px 0; border-bottom: 1px solid var(--border); background: var(--bg2); }
 .cal-head { display: flex; align-items: baseline; justify-content: space-between; gap: 18px; flex-wrap: wrap; margin-bottom: 14px; }
@@ -639,6 +652,25 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
         <div class="recent-sub" id="flips-sub">—</div>
       </div>
       <div id="flips-list" class="flips-list"></div>
+    </div>
+  </div>
+
+  <!-- ─── TIME TO LISTING ──────────────────────────────────────────── -->
+  <div class="ttl-strip" id="ttl-strip" style="display:none">
+    <div class="container">
+      <div class="recent-head">
+        <div>
+          <div class="eyebrow">Time to listing</div>
+          <h3>How long does PBAC take?</h3>
+        </div>
+        <div class="recent-sub" id="ttl-sub">—</div>
+      </div>
+      <div class="ttl-stats" id="ttl-stats"></div>
+      <div class="ttl-chart-wrap">
+        <div class="ttl-chart-title">Median months (resubmission journeys only) by year of recommendation</div>
+        <canvas id="ttl-chart" height="120"></canvas>
+        <div class="ttl-foot" id="ttl-foot"></div>
+      </div>
     </div>
   </div>
 
@@ -1543,6 +1575,104 @@ function renderResubStory(pd) {
       </div>
       <div class="resub-story">${stepsHtml}</div>
     </div>`;
+}
+
+// ╔═══════════════════════════════════════════════════════════════════╗
+// ║  TIME TO LISTING                                                      ║
+// ╚═══════════════════════════════════════════════════════════════════╝
+async function buildTimeToListing() {
+  const D = window.SITE_DATA;
+  const ttl = D && D.psd && D.psd.time_to_listing;
+  const strip = document.getElementById('ttl-strip');
+  if (!strip || !ttl || !ttl.n_with_recommendation) return;
+
+  // Three KPI stats — % first try, multi-attempt count, multi-attempt median
+  const stats = document.getElementById('ttl-stats');
+  if (stats) {
+    stats.innerHTML = `
+      <div class="ttl-stat">
+        <div class="ttl-stat-label">First-try success</div>
+        <div class="ttl-stat-val">${ttl.pct_first_try}<span class="ttl-unit">%</span></div>
+        <div class="ttl-stat-sub">${ttl.n_first_try.toLocaleString()} of ${ttl.n_with_recommendation.toLocaleString()} drugs were recommended at their first PBAC submission.</div>
+      </div>
+      <div class="ttl-stat">
+        <div class="ttl-stat-label">Resubmission median</div>
+        <div class="ttl-stat-val">${ttl.median_months_multi.toFixed(0)}<span class="ttl-unit">months</span></div>
+        <div class="ttl-stat-sub">For the ${ttl.n_multi_attempt} drugs that needed multiple submissions, time from first PSD to first recommendation.</div>
+      </div>
+      <div class="ttl-stat">
+        <div class="ttl-stat-label">Resubmission range</div>
+        <div class="ttl-stat-val">${ttl.min_months_multi}–${ttl.max_months_multi}<span class="ttl-unit">months</span></div>
+        <div class="ttl-stat-sub">Fastest to slowest journey on file. Some drugs needed five or more PBAC cycles to land.</div>
+      </div>`;
+  }
+
+  const sub = document.getElementById('ttl-sub');
+  if (sub) sub.textContent = `Drug-level analysis · ${ttl.n_with_recommendation.toLocaleString()} drugs ever recommended on file`;
+
+  // Bar chart: median months by year, multi-attempt cohort only
+  const byYear = ttl.by_year || {};
+  const years = Object.keys(byYear).sort();
+  if (!years.length) {
+    const foot = document.getElementById('ttl-foot');
+    if (foot) foot.textContent = 'Per-year trend not shown — fewer than 3 multi-attempt drugs in any year.';
+    strip.style.display = '';
+    return;
+  }
+
+  await ensureChartJS();
+  const c = colors();
+  const canvas = document.getElementById('ttl-chart');
+  if (canvas._chart) canvas._chart.destroy();
+  const data = years.map(y => byYear[y].median);
+  const ns   = years.map(y => byYear[y].n);
+  canvas._chart = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: years,
+      datasets: [{
+        data,
+        backgroundColor: COLOURS.primary,
+        borderRadius: 0,
+        borderWidth: 0,
+        barThickness: 'flex',
+        maxBarThickness: 36,
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1A1208', titleColor: '#F0EDE4', bodyColor: '#B0A898', padding: 10,
+          callbacks: {
+            label: it => ` ${it.raw} months  ·  n = ${ns[it.dataIndex]} drugs`,
+          },
+        },
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { color: c.muted, font: { family: '-apple-system, BlinkMacSystemFont, sans-serif', size: 10 } },
+          border: { color: c.grid },
+        },
+        y: {
+          grid: { color: c.grid, lineWidth: .5 },
+          ticks: { color: c.muted, font: { family: '-apple-system, BlinkMacSystemFont, sans-serif', size: 10 }, callback: v => v + ' mo' },
+          border: { display: false },
+        },
+      },
+    },
+  });
+
+  const foot = document.getElementById('ttl-foot');
+  if (foot) {
+    foot.textContent = `Years with fewer than 3 multi-attempt drugs are omitted. ` +
+      `Hover for cohort size — most years have only 4–9 drugs, so the trend is suggestive rather than statistically tight. ` +
+      `The 2019–20 peak (40–50 mo) is real but reflects a small cohort.`;
+  }
+  strip.style.display = '';
 }
 
 // ╔═══════════════════════════════════════════════════════════════════╗
@@ -3006,6 +3136,7 @@ function initAll() {
   initBrowse();
   buildRecentFeed();
   buildFlipsSection();
+  buildTimeToListing();
   buildPBSChart();
   buildOutcomesDonut();
   buildSubmissionsChart();
