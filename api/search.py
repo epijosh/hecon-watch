@@ -6,7 +6,6 @@ embeddings produced by embed_psds.py.
 
 REQUEST
   GET  /api/search?q=<query>&limit=<n>&filter_outcome=<recommended|not|deferred>
-                  &filter_therapy=<area>
 
 RESPONSE
   {
@@ -98,7 +97,7 @@ def _normalise_outcome(outcome: str) -> str:
     return s
 
 
-def _search(query: str, limit: int, filter_outcome: str | None, filter_therapy: str | None) -> dict:
+def _search(query: str, limit: int, filter_outcome: str | None) -> dict:
     import numpy as np
     _ensure_loaded()
 
@@ -120,17 +119,14 @@ def _search(query: str, limit: int, filter_outcome: str | None, filter_therapy: 
     # Cosine similarity (vectors are pre-normalised → just a dot product)
     sims = _VECTORS @ qv
 
-    # Build candidate list with metadata; apply filters
+    # Outcome filter is normalised on both sides so e.g. "Not recommended" matches "not".
     drugs = _META["drugs"]
-    f_out = filter_outcome.lower() if filter_outcome else None
-    f_ta  = filter_therapy.lower() if filter_therapy else None
+    f_out = _normalise_outcome(filter_outcome) if filter_outcome else None
 
     scored = []
     for i, score in enumerate(sims):
         meta = drugs[i]
         if f_out and _normalise_outcome(meta.get("outcome", "")) != f_out:
-            continue
-        if f_ta and (meta.get("therapy_area", "").lower() != f_ta):
             continue
         scored.append((float(score), i))
 
@@ -183,10 +179,9 @@ class handler(BaseHTTPRequestHandler):
         except ValueError:
             limit = 20
         f_out = (qs.get("filter_outcome", [""])[0] or None)
-        f_ta  = (qs.get("filter_therapy", [""])[0] or None)
 
         try:
-            payload = _search(q, limit, f_out, f_ta)
+            payload = _search(q, limit, f_out)
             return self._send(200, payload)
         except Exception as e:
             return self._send(500, {"error": str(e)[:240]})

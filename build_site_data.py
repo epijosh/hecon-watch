@@ -191,7 +191,7 @@ def load_atc_data() -> dict:
                 continue
             try:
                 val = int(float(row.get("total", 0)))
-            except:
+            except (ValueError, TypeError):
                 continue
             if val > 50_000_000:  # Grand total threshold for services (>50M scripts/year)
                 if year not in svc_grand or val > svc_grand[year]:

@@ -904,6 +904,12 @@ const fmtICER = v => v == null ? '—' : v >= 1e6 ? '$' + (v/1e6).toFixed(1) + '
                                     : '$' + Math.round(v/1e3) + 'k';
 const icerColor = v => v == null ? 'var(--text3)' : v > 150000 ? 'var(--red)' : v > 75000 ? 'var(--orange)' : 'var(--green)';
 const titleCase = s => (s||'').charAt(0).toUpperCase() + (s||'').slice(1);
+// Escape HTML special chars for safe interpolation into innerHTML.
+const escapeHtml = s => String(s ?? '').replace(/[&<>"']/g, c => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+}[c]));
+// Escape for inline onclick="...'${...}'..." contexts: HTML-escape, then escape JS quote/backslash.
+const jsAttr = s => escapeHtml(String(s ?? '').replace(/\\/g, '\\\\').replace(/'/g, "\\'"));
 
 function isThemeDark() { return document.documentElement.dataset.theme === 'dark'; }
 function colors() {
@@ -1300,13 +1306,13 @@ async function buildSpendCharts() {
     const top10 = ds.top_cost_per_script.slice(0, 10);
     const max = top10[0].cost_per_script_aud || 1;
     document.getElementById('cost-per-script-list').innerHTML = top10.map((r, i) => {
-      const safe = (r.drug_name||'').replace(/'/g,"\\'").toLowerCase();
+      const safe = jsAttr((r.drug_name||'').toLowerCase());
       const pct = (r.cost_per_script_aud / max) * 100;
       return `<li class="rank-item" style="cursor:pointer" onclick="selectFromResults('${safe}')">
         <span class="rank-num">${i+1}</span>
         <div>
-          <div class="rank-name">${r.drug_name}</div>
-          <div class="rank-sub">${(r.scripts||0).toLocaleString()} scripts · ${r.brand_name || '—'}</div>
+          <div class="rank-name">${escapeHtml(r.drug_name)}</div>
+          <div class="rank-sub">${(r.scripts||0).toLocaleString()} scripts · ${escapeHtml(r.brand_name || '—')}</div>
           <div class="rank-bar"><div class="rank-bar-fill" style="width:${pct}%"></div></div>
         </div>
         <span class="rank-val">$${Math.round(r.cost_per_script_aud).toLocaleString()}</span>
@@ -1361,9 +1367,8 @@ function buildTherapyBars() {
 
   document.getElementById('therapy-bar-chart').innerHTML = entries.map(([n, v]) => {
     const pct = (v / max) * 100;
-    const safe = n.replace(/'/g, "\\'");
-    return `<div class="bar-row" style="cursor:pointer" onclick="runSearch('${safe}')">
-      <div class="bar-name">${n}</div>
+    return `<div class="bar-row" style="cursor:pointer" onclick="runSearch('${jsAttr(n)}')">
+      <div class="bar-name">${escapeHtml(n)}</div>
       <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
       <div class="bar-val">${v}</div>
     </div>`;
@@ -1480,10 +1485,9 @@ function buildTherapyOutcomes() {
   const recMax = Math.max(...recRows.map(r => r.rate), 1);
   document.getElementById('rec-rate-chart').innerHTML = recRows.length ? recRows.map(r => {
     const pct = (r.rate / recMax) * 100;
-    const safe = r.n.replace(/'/g, "\\'");
     const fillCol = r.rate >= 70 ? 'var(--green)' : r.rate >= 50 ? '#43a047' : r.rate >= 30 ? 'var(--orange)' : 'var(--red)';
-    return `<div class="bar-row" style="cursor:pointer" onclick="runSearch('${safe}')">
-      <div class="bar-name">${r.n}</div>
+    return `<div class="bar-row" style="cursor:pointer" onclick="runSearch('${jsAttr(r.n)}')">
+      <div class="bar-name">${escapeHtml(r.n)}</div>
       <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${fillCol};opacity:.85"></div></div>
       <div class="bar-val">${r.rate.toFixed(0)}%</div>
     </div>`;
@@ -1496,9 +1500,8 @@ function buildTherapyOutcomes() {
   const resubMax = Math.max(...resubRows.map(r => r.rate), 1);
   document.getElementById('resub-chart').innerHTML = resubRows.length ? resubRows.map(r => {
     const pct = (r.rate / resubMax) * 100;
-    const safe = r.n.replace(/'/g, "\\'");
-    return `<div class="bar-row" style="cursor:pointer" onclick="runSearch('${safe}')">
-      <div class="bar-name">${r.n}</div>
+    return `<div class="bar-row" style="cursor:pointer" onclick="runSearch('${jsAttr(r.n)}')">
+      <div class="bar-name">${escapeHtml(r.n)}</div>
       <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:var(--red)"></div></div>
       <div class="bar-val">${r.rate.toFixed(0)}%</div>
     </div>`;
@@ -1536,7 +1539,7 @@ function initBrowse() {
   _browseRows.forEach(r => { if (r.therapy) counts[r.therapy] = (counts[r.therapy]||0) + 1; });
   const top = Object.entries(counts).sort((a,b) => b[1]-a[1]).slice(0, 8).map(x => x[0]);
   const pc = document.getElementById('therapy-filter-pills');
-  if (pc) pc.innerHTML = top.map(t => `<button class="filter-pill" onclick="filterBrowse('therapy','${t.replace(/'/g,"\\'")}',this)">${t}</button>`).join('');
+  if (pc) pc.innerHTML = top.map(t => `<button class="filter-pill" onclick="filterBrowse('therapy','${jsAttr(t)}',this)">${escapeHtml(t)}</button>`).join('');
   applyBrowseFilters();
 }
 
@@ -1589,13 +1592,12 @@ function renderBrowseTable(rows) {
 function rowHtml(r) {
   const recCls = (() => { const v = (r.outcome||'').toLowerCase(); return v.startsWith('recommended') && !v.startsWith('not') ? 'drec-y' : v.startsWith('not') ? 'drec-n' : v === 'deferred' ? 'drec-d' : 'drec-u'; })();
   const recLabel = (() => { const v = (r.outcome||'').toLowerCase(); if (v.startsWith('recommended') && !v.startsWith('not')) return 'Recommended'; if (v.startsWith('not')) return 'Not rec.'; return r.outcome || '—'; })();
-  const safe = r.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-  return `<tr onclick="selectBrowseRow('${safe}')">
-    <td><div class="dname">${titleCase(r.name)}</div>${r.brand ? `<div class="dbrand">${r.brand}</div>` : ''}</td>
-    <td><span class="sans" style="font-size:12px;color:var(--text2)">${r.therapy || '—'}</span></td>
-    <td><div class="dind" title="${(r.indication||'').replace(/"/g,'&quot;')}">${r.indication || '—'}</div></td>
-    <td><span class="drec ${recCls}">${recLabel}</span></td>
-    <td><span class="sans" style="font-size:12px">${r.year || '—'}</span></td>
+  return `<tr onclick="selectBrowseRow('${jsAttr(r.name)}')">
+    <td><div class="dname">${escapeHtml(titleCase(r.name))}</div>${r.brand ? `<div class="dbrand">${escapeHtml(r.brand)}</div>` : ''}</td>
+    <td><span class="sans" style="font-size:12px;color:var(--text2)">${escapeHtml(r.therapy || '—')}</span></td>
+    <td><div class="dind" title="${escapeHtml(r.indication||'')}">${escapeHtml(r.indication || '—')}</div></td>
+    <td><span class="drec ${recCls}">${escapeHtml(recLabel)}</span></td>
+    <td><span class="sans" style="font-size:12px">${escapeHtml(r.year || '—')}</span></td>
     <td><span class="sans" style="font-size:12px;font-weight:${(r.subs||0)>1?'700':'400'};color:${(r.subs||0)>1?'var(--red)':'var(--text2)'}">${r.subs || '—'}</span></td>
     <td><span class="dicer" style="color:${icerColor(r.icer)}">${fmtICER(r.icer)}</span></td>
   </tr>`;
@@ -1792,17 +1794,16 @@ function renderSemanticResults(query, data) {
       ? 'Listed' : oLower.startsWith('not') ? 'Not listed' : (outcome || '—');
     const score = typeof r.score === 'number' ? r.score : 0;
     const pct = Math.max(2, Math.min(100, Math.round(score * 100)));
-    const safe = key.replace(/'/g,"\\'");
-    return `<div class="mcard" onclick="selectFromResults('${safe}')">
+    return `<div class="mcard" onclick="selectFromResults('${jsAttr(key)}')">
       <div>
-        <div class="mcard-name">${titleCase(key)}</div>
-        <div class="mcard-meta">${[therapy, brand, r.year].filter(Boolean).join(' · ')}</div>
-        <div class="mcard-ind">${indication || '—'}</div>
+        <div class="mcard-name">${escapeHtml(titleCase(key))}</div>
+        <div class="mcard-meta">${escapeHtml([therapy, brand, r.year].filter(Boolean).join(' · '))}</div>
+        <div class="mcard-ind">${escapeHtml(indication || '—')}</div>
       </div>
       <div class="mcard-aside semantic-card-score">
         <div style="text-align:right">
           <div class="mcard-stat-label">PBAC</div>
-          <div class="mcard-stat-val" style="color:${recCol}">${recLabel}</div>
+          <div class="mcard-stat-val" style="color:${recCol}">${escapeHtml(recLabel)}</div>
         </div>
         <div style="text-align:right">
           <div class="mcard-stat-label">Match</div>
@@ -1817,9 +1818,9 @@ function renderSemanticResults(query, data) {
     <div class="semantic-header">
       <div>
         <div class="eyebrow">Semantic precedent search</div>
-        <span class="results-title">${results.length} precedent${results.length!==1?'s':''} for “${query}”</span>
+        <span class="results-title">${results.length} precedent${results.length!==1?'s':''} for “${escapeHtml(query)}”</span>
       </div>
-      <span class="results-sub">${model} · ranked by cosine similarity</span>
+      <span class="results-sub">${escapeHtml(model)} · ranked by cosine similarity</span>
     </div>
     <div class="semantic-callout">
       <strong>Tip:</strong> these are PBAC decisions whose <em>full decision profile</em>
@@ -1843,13 +1844,13 @@ function renderSemanticError(query, err) {
     </div>
     <div class="callout red" style="margin:18px 0">
       <div class="callout-eyebrow">Error</div>
-      <div class="callout-body">${msg}</div>
+      <div class="callout-body">${escapeHtml(msg)}</div>
     </div>
     <div style="font-family:var(--ui);font-size:13px;color:var(--text2);line-height:1.55">
       The semantic search hits a server endpoint at <code style="background:var(--bg3);padding:1px 6px">/api/search</code>
       which may be cold-starting (~2 s on first hit), missing its <code>VOYAGE_API_KEY</code> environment variable, or temporarily rate-limited.
       <div style="margin-top:10px">
-        <span class="sans" style="cursor:pointer;color:var(--red);font-weight:600" onclick="performSemanticSearch('${(query||'').replace(/'/g,"\\'")}')">↻ Retry</span>
+        <span class="sans" style="cursor:pointer;color:var(--red);font-weight:600" onclick="performSemanticSearch('${jsAttr(query||'')}')">↻ Retry</span>
         <span style="margin:0 10px;color:var(--text3)">·</span>
         <span class="sans" style="cursor:pointer;color:var(--text3)" onclick="setSearchMode('keyword',document.getElementById('mode-keyword'))">Switch to keyword mode</span>
         <span style="margin:0 10px;color:var(--text3)">·</span>
@@ -1903,17 +1904,16 @@ function showMultiResults(drugs, query) {
   const recColour = rec => { const v=(rec||'').toLowerCase(); if(v.startsWith('recommended')&&!v.startsWith('not'))return 'var(--green)'; if(v.startsWith('not'))return 'var(--red)'; return 'var(--orange)'; };
   const recLabel = rec => { const v=(rec||'').toLowerCase(); if(v.startsWith('recommended')&&!v.startsWith('not'))return 'Listed'; if(v.startsWith('not'))return 'Not listed'; return rec || '—'; };
   const cards = drugs.map(d => {
-    const safe = d.name.replace(/'/g,"\\'");
     const subsBadge = (d.submissions||1) > 1 ? `<div><div class="mcard-stat-label">Submissions</div><div class="mcard-stat-val" style="color:var(--red)">${d.submissions}</div></div>` : '';
     const icer = d.icer_high ? fmtICER(d.icer_high) : '';
-    return `<div class="mcard" onclick="selectFromResults('${safe}')">
+    return `<div class="mcard" onclick="selectFromResults('${jsAttr(d.name)}')">
       <div>
-        <div class="mcard-name">${titleCase(d.name)}</div>
-        <div class="mcard-meta">${[d.therapy, d.brand, d.pbac_year].filter(Boolean).join(' · ')}</div>
-        <div class="mcard-ind">${d.indication || '—'}</div>
+        <div class="mcard-name">${escapeHtml(titleCase(d.name))}</div>
+        <div class="mcard-meta">${escapeHtml([d.therapy, d.brand, d.pbac_year].filter(Boolean).join(' · '))}</div>
+        <div class="mcard-ind">${escapeHtml(d.indication || '—')}</div>
       </div>
       <div class="mcard-aside">
-        ${d.pbac_status ? `<div><div class="mcard-stat-label">PBAC</div><div class="mcard-stat-val" style="color:${recColour(d.pbac_status)}">${recLabel(d.pbac_status)}</div></div>` : ''}
+        ${d.pbac_status ? `<div><div class="mcard-stat-label">PBAC</div><div class="mcard-stat-val" style="color:${recColour(d.pbac_status)}">${escapeHtml(recLabel(d.pbac_status))}</div></div>` : ''}
         ${subsBadge}
         ${icer ? `<div><div class="mcard-stat-label">ICER</div><div class="mcard-stat-val" style="font-size:13px">${icer}</div></div>` : ''}
       </div>
@@ -1922,7 +1922,7 @@ function showMultiResults(drugs, query) {
 
   document.getElementById('result-content').innerHTML = `
     <div class="results-header">
-      <span class="results-title">${drugs.length} result${drugs.length!==1?'s':''} for "${query}"</span>
+      <span class="results-title">${drugs.length} result${drugs.length!==1?'s':''} for "${escapeHtml(query)}"</span>
       ${drugs.length >= 30 ? '<span class="results-sub">Showing top 30</span>' : ''}
     </div>
     <div>${cards}</div>
@@ -2042,14 +2042,14 @@ function showDrugDetail(d) {
     cell4Html = `
       <div class="detail-cell">
         <div class="detail-cell-label">Economic model</div>
-        <div class="detail-cell-val" style="font-size:18px">${pd.economic_model}</div>
+        <div class="detail-cell-val" style="font-size:18px">${escapeHtml(pd.economic_model)}</div>
         <div class="detail-cell-sub">model class used in submission</div>
       </div>`;
   } else {
     cell4Html = `
       <div class="detail-cell">
         <div class="detail-cell-label">Listing type</div>
-        <div class="detail-cell-val" style="font-size:17px">${pd.listing_type || '—'}</div>
+        <div class="detail-cell-val" style="font-size:17px">${escapeHtml(pd.listing_type || '—')}</div>
         <div class="detail-cell-sub">PBS restriction tier</div>
       </div>`;
   }
@@ -2058,8 +2058,8 @@ function showDrugDetail(d) {
     <div class="detail-grid">
       <div class="detail-cell">
         <div class="detail-cell-label">PBAC outcome (latest)</div>
-        <div class="detail-cell-val" style="color:${recColour}">${status}</div>
-        <div class="detail-cell-sub">${[pd.listing_type, pd.latest_year].filter(Boolean).join(' · ') || '—'}</div>
+        <div class="detail-cell-val" style="color:${recColour}">${escapeHtml(status)}</div>
+        <div class="detail-cell-sub">${escapeHtml([pd.listing_type, pd.latest_year].filter(Boolean).join(' · ') || '—')}</div>
       </div>
       ${submissionsCell}
       ${icerCell}
@@ -2099,13 +2099,13 @@ function showDrugDetail(d) {
         </div>
       </div>`;
   } else if (pd.icer_note) {
-    icerHtml = `<div class="callout" style="margin-top:14px"><div class="callout-eyebrow">ICER note</div><div class="callout-body">${pd.icer_note}</div></div>`;
+    icerHtml = `<div class="callout" style="margin-top:14px"><div class="callout-eyebrow">ICER note</div><div class="callout-body">${escapeHtml(pd.icer_note)}</div></div>`;
   }
 
   // ── Cost-effectiveness section (chips + ICER bar) ──────────────
   const ceChips = [];
-  if (pd.economic_model) ceChips.push(`<span class="tag-chip purple">${pd.economic_model}</span>`);
-  if (pd.listing_type)   ceChips.push(`<span class="tag-chip">${pd.listing_type}</span>`);
+  if (pd.economic_model) ceChips.push(`<span class="tag-chip purple">${escapeHtml(pd.economic_model)}</span>`);
+  if (pd.listing_type)   ceChips.push(`<span class="tag-chip">${escapeHtml(pd.listing_type)}</span>`);
   if (pd.risk_sharing)   ceChips.push(`<span class="tag-chip orange">Risk-sharing arrangement</span>`);
 
   let ceSection = '';
@@ -2122,7 +2122,7 @@ function showDrugDetail(d) {
         ${pd.comparator ? `
         <div class="spec-grid">
           <div class="spec-key">Comparator</div>
-          <div class="spec-val">${pd.comparator}</div>
+          <div class="spec-val">${escapeHtml(pd.comparator)}</div>
         </div>` : ''}
         ${icerHtml}
       </div>`;
@@ -2164,19 +2164,18 @@ function showDrugDetail(d) {
         ? 'y' : oOutcomeLower.startsWith('not') ? 'n' : oOutcomeLower === 'deferred' ? 'd' : 'u';
       const recLabel = oOutcomeLower.startsWith('recommended') && !oOutcomeLower.startsWith('not')
         ? 'Listed' : oOutcomeLower.startsWith('not') ? 'Not listed' : (oOutcome || '—');
-      const ind = (od.indication || '').replace(/"/g, '&quot;');
+      const ind = od.indication || '';
       const score = typeof n.score === 'number' ? n.score : 0;
       const pct = Math.max(2, Math.min(100, Math.round(score * 100)));
-      const safe = otherKey.replace(/'/g, "\\'");
       cards.push(`
-        <div class="similar-card" onclick="selectFromResults('${safe}')">
+        <div class="similar-card" onclick="selectFromResults('${jsAttr(otherKey)}')">
           <div>
-            <div class="similar-name">${oTitle}</div>
-            <div class="similar-meta">${[oTherapy, oYear].filter(Boolean).join(' · ') || '—'}</div>
-            <div class="similar-ind" title="${ind}">${ind || '—'}</div>
+            <div class="similar-name">${escapeHtml(oTitle)}</div>
+            <div class="similar-meta">${escapeHtml([oTherapy, oYear].filter(Boolean).join(' · ') || '—')}</div>
+            <div class="similar-ind" title="${escapeHtml(ind)}">${escapeHtml(ind || '—')}</div>
           </div>
           <div class="similar-aside">
-            <span class="similar-rec ${recCls}">${recLabel}</span>
+            <span class="similar-rec ${recCls}">${escapeHtml(recLabel)}</span>
             <span class="similar-score" title="Cosine similarity">${score.toFixed(2)}</span>
             <span class="similar-score-bar"><span style="width:${pct}%"></span></span>
           </div>
@@ -2199,12 +2198,12 @@ function showDrugDetail(d) {
 
   // ── Clinical evidence section ──────────────────────────────────
   const clinSpecs = [];
-  if (pd.pico_population) clinSpecs.push(['Patient population', pd.pico_population]);
-  if (pd.line_of_therapy) clinSpecs.push(['Line of therapy', pd.line_of_therapy]);
-  if (pd.evidence_type)   clinSpecs.push(['Evidence type', `<span class="tag-chip blue">${pd.evidence_type}</span>`]);
+  if (pd.pico_population) clinSpecs.push(['Patient population', escapeHtml(pd.pico_population)]);
+  if (pd.line_of_therapy) clinSpecs.push(['Line of therapy', escapeHtml(pd.line_of_therapy)]);
+  if (pd.evidence_type)   clinSpecs.push(['Evidence type', `<span class="tag-chip blue">${escapeHtml(pd.evidence_type)}</span>`]);
   if (pd.trial_size)      clinSpecs.push(['Trial size', `${pd.trial_size.toLocaleString()} <em>participants</em>`]);
-  if (pd.primary_endpoint) clinSpecs.push(['Primary endpoint', pd.primary_endpoint]);
-  if (pd.key_trials)      clinSpecs.push(['Key trials', pd.key_trials]);
+  if (pd.primary_endpoint) clinSpecs.push(['Primary endpoint', escapeHtml(pd.primary_endpoint)]);
+  if (pd.key_trials)      clinSpecs.push(['Key trials', escapeHtml(pd.key_trials)]);
 
   let clinSection = '';
   if (clinSpecs.length) {
@@ -2227,7 +2226,7 @@ function showDrugDetail(d) {
   const ctxSpecs = [];
   if (pd.population_per_year) ctxSpecs.push(['Population per year', `${pd.population_per_year.toLocaleString()} <em>patients estimated</em>`]);
   if (pd.budget_impact_aud)   ctxSpecs.push(['Budget impact', `${fmtAUD(pd.budget_impact_aud)} <em>net cost to PBS, year 1–5</em>`]);
-  if (pd.risk_sharing) ctxSpecs.push(['Risk-sharing arrangement', `<span class="tag-chip orange">Yes</span>${pd.risk_sharing_note ? ` <span style="color:var(--text3)">${pd.risk_sharing_note}</span>` : ''}`]);
+  if (pd.risk_sharing) ctxSpecs.push(['Risk-sharing arrangement', `<span class="tag-chip orange">Yes</span>${pd.risk_sharing_note ? ` <span style="color:var(--text3)">${escapeHtml(pd.risk_sharing_note)}</span>` : ''}`]);
   if (pd.patient_advocacy) ctxSpecs.push(['Patient advocacy', `<span class="advocacy-badge">Consumer input received</span>`]);
 
   let ctxSection = '';
@@ -2252,7 +2251,7 @@ function showDrugDetail(d) {
     rejectionHtml = `
       <div class="callout red" style="margin-top:18px">
         <div class="callout-eyebrow">PBAC concerns &amp; rejection reasons</div>
-        <div class="callout-body">${pd.rejection_reasons}</div>
+        <div class="callout-body">${escapeHtml(pd.rejection_reasons)}</div>
       </div>`;
   }
 
@@ -2279,11 +2278,11 @@ function showDrugDetail(d) {
       const recCls = rec.startsWith('Recommended') && !rec.startsWith('Not') ? 'drec-y' : rec.startsWith('Not') ? 'drec-n' : rec === 'Deferred' ? 'drec-d' : 'drec-u';
       const ic = h.icer_high ? fmtICER(h.icer_high) : (h.icer_low ? '>' + fmtICER(h.icer_low) : '—');
       const lt = h.listing_type || '—';
-      const link = h.filename ? `<a href="https://www.pbs.gov.au/industry/listing/elements/pbac-meetings/psd/${h.filename}" target="_blank" style="font-family:var(--ui);font-size:10.5px;color:var(--red);font-weight:600">PSD →</a>` : '';
+      const link = h.filename ? `<a href="https://www.pbs.gov.au/industry/listing/elements/pbac-meetings/psd/${encodeURIComponent(h.filename)}" target="_blank" style="font-family:var(--ui);font-size:10.5px;color:var(--red);font-weight:600">PSD →</a>` : '';
       return `<tr>
         <td style="font-family:var(--ui);font-size:12px;font-weight:700;padding:9px 12px 9px 0;border-bottom:1px solid var(--border);white-space:nowrap">${h.year||'—'}${h.month?` <span style="font-weight:400;color:var(--text3)">${MONTHS[h.month]||''}</span>`:''}</td>
-        <td style="padding:9px 12px 9px 0;border-bottom:1px solid var(--border)"><span class="drec ${recCls}" style="font-size:10px">${rec}</span></td>
-        <td style="font-family:var(--ui);font-size:12px;color:var(--text2);padding:9px 12px 9px 0;border-bottom:1px solid var(--border)">${lt}</td>
+        <td style="padding:9px 12px 9px 0;border-bottom:1px solid var(--border)"><span class="drec ${recCls}" style="font-size:10px">${escapeHtml(rec)}</span></td>
+        <td style="font-family:var(--ui);font-size:12px;color:var(--text2);padding:9px 12px 9px 0;border-bottom:1px solid var(--border)">${escapeHtml(lt)}</td>
         <td style="font-family:var(--ui);font-size:12px;color:var(--text2);padding:9px 12px 9px 0;border-bottom:1px solid var(--border)">${ic}</td>
         <td style="padding:9px 0;border-bottom:1px solid var(--border)">${link}</td>
       </tr>`;
@@ -2314,19 +2313,19 @@ function showDrugDetail(d) {
 
   // ── Detail head: chip row beneath name ─────────────────────────
   const headChips = [];
-  if (pd.evidence_type)    headChips.push(`<span class="tag-chip blue">${pd.evidence_type}</span>`);
-  if (pd.economic_model)   headChips.push(`<span class="tag-chip purple">${pd.economic_model}</span>`);
-  if (pd.line_of_therapy)  headChips.push(`<span class="tag-chip teal">${pd.line_of_therapy}</span>`);
+  if (pd.evidence_type)    headChips.push(`<span class="tag-chip blue">${escapeHtml(pd.evidence_type)}</span>`);
+  if (pd.economic_model)   headChips.push(`<span class="tag-chip purple">${escapeHtml(pd.economic_model)}</span>`);
+  if (pd.line_of_therapy)  headChips.push(`<span class="tag-chip teal">${escapeHtml(pd.line_of_therapy)}</span>`);
   if (pd.patient_advocacy) headChips.push(`<span class="advocacy-badge">Consumer input</span>`);
 
   document.getElementById('result-content').innerHTML = `
     <div class="back-nav" onclick="clearSearch()"><span class="back-label">← Back to dashboard</span></div>
 
     <div class="detail-head">
-      ${therapy ? `<div class="eyebrow">${therapy}</div>` : ''}
-      <div class="detail-name">${name}</div>
-      ${brand ? `<div class="detail-brand">Brand: ${brand}</div>` : ''}
-      ${indication ? `<div class="detail-ind">${indication}</div>` : ''}
+      ${therapy ? `<div class="eyebrow">${escapeHtml(therapy)}</div>` : ''}
+      <div class="detail-name">${escapeHtml(name)}</div>
+      ${brand ? `<div class="detail-brand">Brand: ${escapeHtml(brand)}</div>` : ''}
+      ${indication ? `<div class="detail-ind">${escapeHtml(indication)}</div>` : ''}
       ${headChips.length ? `<div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:6px;align-items:center">${headChips.join('')}</div>` : ''}
     </div>
 
