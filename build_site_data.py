@@ -7,7 +7,8 @@ a single JS file that embeds every dataset the site needs.
 DATA SOURCES (any that exist are incorporated):
   atc_benefit.csv      — PBS government benefit by ATC class, year, state
   atc_services.csv     — PBS prescriptions by ATC class, year
-  nice_metadata.csv    — NICE Technology Appraisals (scraped)
+  psd_extracted.csv    — Structured PSD fields (from extract_psd_text.py)
+  pbs_drug_spend.csv   — Drug-level spend (from fetch_pbs_drug_spend.py)
   *.pdf (PSD names)    — PBAC Public Summary Documents (parsed from filenames)
 
 OUTPUT:
@@ -27,6 +28,13 @@ from pathlib import Path
 from datetime import datetime
 
 HERE = Path(__file__).parent
+DATA = HERE / "data"          # CSV/data outputs go here; fallback to HERE for legacy files
+DATA.mkdir(exist_ok=True)
+
+def _d(filename: str) -> Path:
+    """Resolve a data file path: prefer data/ subfolder, fall back to root."""
+    p = DATA / filename
+    return p if p.exists() else HERE / filename
 
 MONTH_MAP = {
     "jan": 1, "january": 1, "feb": 2, "february": 2, "mar": 3, "march": 3,
@@ -57,7 +65,7 @@ def load_atc_data() -> dict:
     }
 
     # ── Benefit data ──────────────────────────────────────────────────────────
-    benefit_path = HERE / "atc_benefit.csv"
+    benefit_path = _d("atc_benefit.csv")
     if not benefit_path.exists():
         print("  atc_benefit.csv not found — run parse_atc_data.py first")
         return result
@@ -105,33 +113,17 @@ def load_atc_data() -> dict:
             class_series[atc][year] = []
         class_series[atc][year].append(val)
 
-    # Identify the grand total series: it has values > $1B even in early years
-    # and > $10B in 2024. The genuine "Various" ATC class is < $500M/year.
-    grand_total: dict[int, int] = {}
-    individual_classes: dict[str, dict[int, int]] = {}
+    # ── Build per-ATC-class series, then SUM them for grand total ────────────
+    # Each ATC class may have multiple rows per year (different magnitude brackets
+    # from the data source). Strategy:
+    #   1. For each ATC class, collect all (year, value) rows
+    #   2. Per year, keep the MEDIAN value to exclude outliers
+    #   3. Sum across all classes per year → grand total
+    # This is robust: no hard thresholds, no spurious "total" row detection.
 
-    GRAND_TOTAL_2024_MIN = 10_000_000_000  # $10B threshold
+    individual_classes: dict[str, dict[int, int]] = {}  # atc → {year → value}
+    raw_by_atc_year: dict[str, dict[int, list[int]]] = {}  # atc → year → [vals]
 
-    # For each atc class, we may have multiple value series.
-    # The grand total series is the one where 2024 value > $10B.
-    for atc, year_vals in class_series.items():
-        # Group into separate series by magnitude
-        series_by_year: list[dict[int, int]] = []
-
-        # Re-process: collect all values per year, then bucket by magnitude
-        # We need to reconstruct the series properly.
-        # Simple approach: if any year in 1992-2000 has value > $500M,
-        # it's the grand total series (since individual classes were <$1B in 2000).
-
-        # Actually: reprocess rows for this ATC class to split series
-        pass  # handled below
-
-    # Reprocess rows to split series properly
-    # Group rows by their approximate magnitude bracket
-    # The grand total grows from ~$2B (1994) to ~$18B (2024)
-    # Individual ATC classes are much smaller
-
-    series_groups: dict[str, list[dict]] = {}
     for row in rows:
         year_s = row.get("year", "")
         if year_s in ("TOTAL",) or "_ytd" in year_s:
@@ -140,47 +132,37 @@ def load_atc_data() -> dict:
             year = int(year_s)
         except ValueError:
             continue
+        if year < 1992 or year > 2030:
+            continue
         atc = row.get("atc", "").strip()
+        if not atc:
+            continue
         total = row.get("total", "0")
         try:
             val = int(float(total))
-        except:
+        except (ValueError, TypeError):
+            continue
+        if val <= 0:
             continue
 
-        # Key: atc + magnitude bracket (grand total vs individual)
-        is_grand = val > GRAND_TOTAL_THRESHOLD
-        series_key = f"{atc}:::grand" if is_grand else f"{atc}:::individual"
-        if series_key not in series_groups:
-            series_groups[series_key] = []
-        series_groups[series_key].append({"year": year, "val": val, "atc": atc})
+        raw_by_atc_year.setdefault(atc, {}).setdefault(year, []).append(val)
 
-    # Extract grand total from series
-    for key, rows_s in series_groups.items():
-        atc, kind = key.split(":::")
-        by_year = {r["year"]: r["val"] for r in rows_s}
-        if kind == "grand":
-            # Merge into grand total (take max per year in case of overlap)
-            for yr, val in by_year.items():
-                if yr not in grand_total or val > grand_total[yr]:
-                    grand_total[yr] = val
-        else:
-            # Individual ATC class — pick the series with more data
-            label = atc
-            if label not in individual_classes:
-                individual_classes[label] = by_year
-            else:
-                # If duplicate, take the one with more years or higher values
-                existing = individual_classes[label]
-                if len(by_year) > len(existing):
-                    individual_classes[label] = by_year
-                elif len(by_year) == len(existing):
-                    # Take higher-value series
-                    avg_new = sum(by_year.values()) / max(len(by_year), 1)
-                    avg_old = sum(existing.values()) / max(len(existing), 1)
-                    if avg_new > avg_old:
-                        individual_classes[label] = by_year
+    # For each ATC class+year pick the MINIMUM (most conservative single-class value)
+    # Multiple values per year arise when the PBS XLS has sub-group rows; the minimum
+    # is almost always the correct single-class figure.
+    for atc, year_list in raw_by_atc_year.items():
+        by_year: dict[int, int] = {}
+        for yr, vals in year_list.items():
+            by_year[yr] = min(vals)   # take minimum to avoid summing sub-rows
+        individual_classes[atc] = by_year
 
-    # Convert to sorted year lists
+    # Grand total = sum of all individual class values per year
+    grand_total: dict[int, int] = {}
+    for by_year in individual_classes.values():
+        for yr, val in by_year.items():
+            grand_total[yr] = grand_total.get(yr, 0) + val
+
+    # Convert to sorted string-keyed dicts for JSON
     result["grand_total_by_year"] = {str(y): v for y, v in sorted(grand_total.items())}
 
     for atc_name, by_year in individual_classes.items():
@@ -194,7 +176,7 @@ def load_atc_data() -> dict:
     print(f"  ATC benefit: {len(individual_classes)} individual classes, grand total {len(grand_total)} years")
 
     # ── Services data ─────────────────────────────────────────────────────────
-    services_path = HERE / "atc_services.csv"
+    services_path = _d("atc_services.csv")
     if services_path.exists():
         with open(services_path, encoding="utf-8") as f:
             srows = list(csv.DictReader(f))
@@ -232,20 +214,29 @@ def load_pbac_psds() -> dict:
     )
 
     psds = []
-    for pdf in HERE.glob("*.pdf"):
-        m = PSD_PATTERN.match(pdf.name.lower())
-        if not m:
+    seen_files = set()
+    # Scan PSDs in both the project root AND the data/psds/ subfolder
+    scan_dirs = [HERE, DATA / "psds", DATA]
+    for d in scan_dirs:
+        if not d.exists():
             continue
-        drug, month_s, year_s = m.group(1), m.group(2), m.group(3)
-        month = MONTH_MAP.get(month_s[:3])
-        if not month:
-            continue
-        psds.append({
-            "drug":  drug.replace("-", " ").title(),
-            "month": month,
-            "year":  int(year_s),
-            "filename": pdf.name,
-        })
+        for pdf in d.glob("*.pdf"):
+            if pdf.name in seen_files:
+                continue
+            m = PSD_PATTERN.match(pdf.name.lower())
+            if not m:
+                continue
+            drug, month_s, year_s = m.group(1), m.group(2), m.group(3)
+            month = MONTH_MAP.get(month_s[:3])
+            if not month:
+                continue
+            seen_files.add(pdf.name)
+            psds.append({
+                "drug":  drug.replace("-", " ").title(),
+                "month": month,
+                "year":  int(year_s),
+                "filename": pdf.name,
+            })
 
     by_year: dict[str, int] = {}
     for p in psds:
@@ -261,171 +252,14 @@ def load_pbac_psds() -> dict:
     }
 
 
-# ── 3. PBAC–NICE Matched Data ────────────────────────────────────────────────
-
-def load_matched_data() -> dict:
-    """
-    Load pbac_nice_matched.csv and produce per-drug summaries with access gap.
-
-    Returns:
-      {
-        "total": int,          # number of unique matched drugs
-        "drugs": [             # top 150 most interesting, sorted by |gap|
-          { drug, therapy, pbac_date, nice_date, gap_months, nice_count,
-            nice_tas: [{ta, title, rec, url, date}], nice_rec },
-          ...
-        ],
-        "by_therapy": { therapy: {total, median_gap, nice_first, aus_first} },
-        "stats": { median_gap_months, pct_nice_first, pct_aus_first, total_matched }
-      }
-    """
-    path = HERE / "pbac_nice_matched.csv"
-    if not path.exists():
-        print("  pbac_nice_matched.csv not found — run match_pbac_nice.py first")
-        return {"total": 0, "drugs": [], "by_therapy": {}, "stats": {}}
-
-    with open(path, encoding="utf-8") as f:
-        rows = list(csv.DictReader(f))
-
-    # Aggregate per unique drug name
-    drug_map: dict[str, dict] = {}
-    for row in rows:
-        drug    = row.get("drug", "").strip().lower()
-        therapy = row.get("therapy_area", "").strip()
-        pbac_d  = row.get("pbac_date", "").strip()
-        nice_d  = row.get("nice_date", "").strip()
-        nice_ta = row.get("nice_ta_number", "").strip()
-        nice_rec= row.get("nice_recommendation", "").strip()
-        nice_url= row.get("nice_guidance_url", "").strip()
-        nice_ttl= row.get("nice_title", "").strip()
-        try:
-            gap = float(row.get("gap_months", 0) or 0)
-        except (ValueError, TypeError):
-            gap = 0.0
-
-        if not drug:
-            continue
-        if drug not in drug_map:
-            drug_map[drug] = {
-                "drug":      drug,
-                "therapy":   therapy,
-                "pbac_dates": [],
-                "nice_dates": [],
-                "tas":       {},   # ta_number -> {ta, title, rec, url, date}
-            }
-        d = drug_map[drug]
-        if pbac_d and pbac_d not in d["pbac_dates"]:
-            d["pbac_dates"].append(pbac_d)
-        if nice_d and nice_d not in d["nice_dates"]:
-            d["nice_dates"].append(nice_d)
-        if nice_ta and nice_ta not in d["tas"]:
-            d["tas"][nice_ta] = {
-                "ta":    nice_ta,
-                "title": nice_ttl[:80],
-                "rec":   nice_rec[:40] if nice_rec else "",
-                "url":   nice_url,
-                "date":  nice_d,
-            }
-
-    # Build summary per drug
-    drug_list: list[dict] = []
-    for drug, d in drug_map.items():
-        pbac_dates = sorted(d["pbac_dates"])
-        nice_dates = sorted(d["nice_dates"])
-        first_pbac = pbac_dates[0] if pbac_dates else None
-        first_nice = nice_dates[0] if nice_dates else None
-
-        # Gap = PBAC first date minus NICE first date (in months)
-        rep_gap = 0.0
-        if first_pbac and first_nice:
-            try:
-                pd_dt = datetime.strptime(first_pbac, "%Y-%m-%d")
-                nd_dt = datetime.strptime(first_nice, "%Y-%m-%d")
-                rep_gap = round((pd_dt - nd_dt).days / 30.44, 1)
-            except ValueError:
-                pass
-
-        # Best NICE recommendation (prefer "Recommended" over "Not recommended")
-        tas_sorted = sorted(d["tas"].values(), key=lambda x: x["date"])
-        best_rec = ""
-        for ta in tas_sorted:
-            r = ta.get("rec", "")
-            if r.startswith("Recommended"):
-                best_rec = r
-                break
-        if not best_rec:
-            for ta in tas_sorted:
-                if ta.get("rec"):
-                    best_rec = ta["rec"]
-                    break
-
-        drug_list.append({
-            "drug":       drug,
-            "therapy":    d["therapy"],
-            "pbac_date":  first_pbac,
-            "nice_date":  first_nice,
-            "gap_months": rep_gap,
-            "nice_count": len(d["tas"]),
-            "nice_tas":   tas_sorted[:4],   # up to 4 TAs per drug
-            "nice_rec":   best_rec[:40] if best_rec else "",
-        })
-
-    # Sort by |gap| descending (most divergent first = most interesting)
-    drug_list.sort(key=lambda x: -abs(x["gap_months"]))
-
-    # Stats
-    all_gaps = [d["gap_months"] for d in drug_list]
-    median_gap = sorted(all_gaps)[len(all_gaps)//2] if all_gaps else 0
-    nice_first_n = sum(1 for g in all_gaps if g > 0)
-    aus_first_n  = sum(1 for g in all_gaps if g < 0)
-    n = len(drug_list)
-
-    # By therapy
-    by_therapy: dict[str, dict] = {}
-    for d in drug_list:
-        t = d["therapy"] or "Other"
-        if t not in by_therapy:
-            by_therapy[t] = {"total": 0, "gaps": [], "nice_first": 0, "aus_first": 0}
-        by_therapy[t]["total"] += 1
-        by_therapy[t]["gaps"].append(d["gap_months"])
-        if d["gap_months"] > 0: by_therapy[t]["nice_first"] += 1
-        elif d["gap_months"] < 0: by_therapy[t]["aus_first"] += 1
-
-    by_therapy_out = {}
-    for t, v in sorted(by_therapy.items(), key=lambda x: -x[1]["total"]):
-        g = sorted(v["gaps"])
-        med = round(g[len(g)//2], 1) if g else 0
-        by_therapy_out[t] = {
-            "total":       v["total"],
-            "median_gap":  med,
-            "nice_first":  v["nice_first"],
-            "aus_first":   v["aus_first"],
-        }
-
-    print(f"  Matched: {n} unique drugs, median gap {round(median_gap,1)} months, "
-          f"{round(nice_first_n/n*100) if n else 0}% UK first")
-
-    return {
-        "total":       n,
-        "drugs":       drug_list[:150],  # top 150 most divergent
-        "by_therapy":  by_therapy_out,
-        "stats": {
-            "median_gap_months":  round(median_gap, 1),
-            "pct_nice_first":     round(nice_first_n / n * 100) if n else 0,
-            "pct_aus_first":      round(aus_first_n  / n * 100) if n else 0,
-            "total_matched":      n,
-        },
-    }
-
-
-# ── 4. PSD Extracted Data ─────────────────────────────────────────────────────
+# ── 3. PSD Extracted Data ─────────────────────────────────────────────────────
 
 def load_psd_extracted() -> dict:
     """
     Load psd_extracted.csv (from extract_psd_text.py).
     Groups by drug name, produces per-drug summaries with submission history.
     """
-    path = HERE / "psd_extracted.csv"
+    path = _d("psd_extracted.csv")
     if not path.exists():
         print("  psd_extracted.csv not found — run extract_psd_text.py first")
         return {"total": 0, "drugs": {}, "by_recommendation": {}, "by_therapy": {}}
@@ -498,6 +332,16 @@ def load_psd_extracted() -> dict:
             "first_year":       decisions[0].get("pbac_year", ""),
             "latest_year":      latest.get("pbac_year", ""),
             "history":          history,
+            # ── Deeper fields (May 2026) ──────────────────────────────────────
+            "budget_impact_aud":  _int(latest.get("budget_impact_aud")),
+            "rejection_reasons":  latest.get("rejection_reasons", "") or None,
+            "patient_advocacy":   latest.get("patient_advocacy", "") == "yes",
+            "pico_population":    latest.get("pico_population", "") or None,
+            "evidence_type":      latest.get("evidence_type", "") or None,
+            "line_of_therapy":    latest.get("line_of_therapy", "") or None,
+            "trial_size":         _int(latest.get("trial_size")),
+            "primary_endpoint":   latest.get("primary_endpoint", "") or None,
+            "economic_model":     latest.get("economic_model", "") or None,
         }
 
     by_rec: dict[str, int] = {}
@@ -508,168 +352,98 @@ def load_psd_extracted() -> dict:
         t = d["therapy_area"]
         if t: by_therapy[t] = by_therapy.get(t, 0) + 1
 
+    # Year-by-year volume of every extracted PSD record (not just one per drug)
+    by_year: dict[str, int] = {}
+    for row in good:
+        yr = (row.get("pbac_year") or "").strip()
+        if yr.isdigit() and 2000 <= int(yr) <= 2030:
+            by_year[yr] = by_year.get(yr, 0) + 1
+
     total_recommended = by_rec.get("Recommended", 0) + by_rec.get("Recommended with restriction", 0)
     total_with_rec    = sum(by_rec.values())
     print(f"  Unique drugs: {len(drug_summaries)}  |  "
           f"Recommended: {total_recommended}  |  "
           f"Not recommended: {by_rec.get('Not recommended', 0)}")
+    print(f"  Year coverage: {len(by_year)} years, {sum(by_year.values())} records")
 
     return {
         "total":            len(drug_summaries),
         "drugs":            drug_summaries,
         "by_recommendation": dict(sorted(by_rec.items(),    key=lambda x: -x[1])),
         "by_therapy":        dict(sorted(by_therapy.items(), key=lambda x: -x[1])),
+        "by_year":           dict(sorted(by_year.items())),
     }
 
 
-# ── 5. NICE Metadata ──────────────────────────────────────────────────────────
+# ── 4. Nearest-neighbour links from embed_psds.py ─────────────────────────────
 
-# ── Therapy area tagging ──────────────────────────────────────────────────────
+def load_psd_nearest() -> dict:
+    """Load data/psd_nearest.json (produced by embed_psds.py).
 
-# Keywords → canonical therapy area label
-THERAPY_TAGS: list[tuple[list[str], str]] = [
-    (["cancer","carcinoma","tumour","tumor","melanoma","lymphoma","leukaemia","leukemia",
-      "myeloma","sarcoma","glioma","glioblastoma","mesothelioma","neuroblastoma",
-      "neoplasm","malignant","malignancy","oncol","antineoplastic","checkpoint"],
-     "Oncology"),
-    (["breast cancer","breast"],          "Breast cancer"),
-    (["lung cancer","non-small-cell","nsclc","small-cell","sclc","mesothelioma"],
-     "Lung cancer"),
-    (["prostate"],                         "Prostate cancer"),
-    (["colorectal","colon cancer","rectal"], "Colorectal cancer"),
-    (["leukaemia","leukemia","lymphoma","myeloma","multiple myeloma","hodgkin","cll","cml"],
-     "Haematology"),
-    (["renal cell","kidney cancer","renal cancer"],  "Renal cancer"),
-    (["ovarian","fallopian","peritoneal"],  "Ovarian cancer"),
-    (["bladder"],                           "Bladder cancer"),
-    (["melanoma"],                          "Melanoma"),
-    (["head and neck"],                     "Head & neck cancer"),
-    (["rheumatoid arthritis","psoriatic arthritis","ankylosing spondylitis",
-      "axial spondyloarthritis","juvenile idiopathic"],
-     "Inflammatory arthritis"),
-    (["psoriasis","plaque psoriasis"],      "Psoriasis"),
-    (["crohn","ulcerative colitis","inflammatory bowel"],
-     "Inflammatory bowel disease"),
-    (["atopic dermatitis","eczema"],        "Atopic dermatitis"),
-    (["asthma","copd","pulmonary"],         "Respiratory"),
-    (["multiple sclerosis","relapsing","secondary progressive"],
-     "Multiple sclerosis"),
-    (["diabetes","glycaemic","insulin","semaglutide","glp-1","sglt"],
-     "Diabetes"),
-    (["heart failure","cardiac","atrial fibrillation","anticoagul",
-      "thromboembolism","venous thrombosis","pulmonary embolism"],
-     "Cardiovascular"),
-    (["alzheimer","dementia","parkinson"],  "Neurology"),
-    (["hiv","antiretroviral"],              "HIV"),
-    (["hepatitis"],                         "Hepatitis"),
-    (["rare disease","orphan","gaucher","fabry","pompe","spinal muscular",
-      "duchenne","cystic fibrosis","lysosomal","enzyme replacement"],
-     "Rare disease"),
-    (["osteoporosis","bone"],               "Musculo-skeletal"),
-    (["age-related macular","wet amd","macular degeneration","retinal"],
-     "Ophthalmology"),
-    (["migraine","epilepsy","seizure"],     "Neurology"),
-]
-
-def extract_tags(title: str, drug: str) -> list[str]:
-    """Extract therapy-area tags from a NICE title or drug name."""
-    t = (title + " " + drug).lower()
-    tags: list[str] = []
-    seen: set[str] = set()
-    for keywords, label in THERAPY_TAGS:
-        if label in seen:
-            continue
-        if any(kw in t for kw in keywords):
-            tags.append(label)
-            seen.add(label)
-            # Top-level Oncology tag for all cancer sub-types
-            if label not in ("Oncology",) and any(
-                kw in t for kw in ["cancer","carcinoma","tumour","tumor","lymphoma",
-                                   "leukaemia","leukemia","myeloma","melanoma","sarcoma"]
-            ):
-                if "Oncology" not in seen:
-                    tags.insert(0, "Oncology")
-                    seen.add("Oncology")
-    return tags
-
-
-def load_nice_data() -> dict:
-    """Load nice_metadata.csv and build a rich search index."""
-    path = HERE / "nice_metadata.csv"
+    Schema:
+        { drug_name: [ {drug: <other_name>, score: <float>}, ... ] }
+    """
+    path = _d("psd_nearest.json")
     if not path.exists():
-        return {"total": 0, "by_year": {}, "search_index": []}
-
-    rows = []
-    with open(path, encoding="utf-8") as f:
-        rows = list(csv.DictReader(f))
-
-    by_year: dict[str, int] = {}
-    by_therapy: dict[str, int] = {}
-    search_index: list[dict] = []
-
-    for row in rows:
-        ta_raw  = row.get("ta_number", "").strip()
-        title   = row.get("title", "").strip()
-        drug    = row.get("drug_name", "").strip()
-        date_s  = row.get("published_date", "").strip()
-        rec     = row.get("recommendation", "").strip()
-        url     = row.get("guidance_url", "").strip()
-
-        # Year
-        yr_m = re.search(r'\b(\d{4})\b', date_s)
-        year = int(yr_m.group(1)) if yr_m else None
-        if year:
-            yr_s = str(year)
-            by_year[yr_s] = by_year.get(yr_s, 0) + 1
-
-        # Therapy tags
-        tags = extract_tags(title, drug)
-        for tag in tags:
-            by_therapy[tag] = by_therapy.get(tag, 0) + 1
-
-        # Extract indication from title ("for treating X" or "for X")
-        indication = ""
-        ind_m = re.search(r'\bfor\s+(?:treating\s+|the\s+treatment\s+of\s+|preventing\s+)?(.+?)(?:\s*[-–(]|$)',
-                          title, re.IGNORECASE)
-        if ind_m:
-            indication = ind_m.group(1).strip()[:100]
-
-        # Build search entry
-        entry: dict = {
-            "ta":   int(ta_raw) if ta_raw.isdigit() else 0,
-            "id":   f"ta{ta_raw}",
-            "title": title,
-            "drug": drug,
-            "indication": indication,
-            "year": year,
-            "tags": tags,
-            "rec":  rec[:60] if rec else "",
-            "url":  url,
-        }
-        search_index.append(entry)
-
-    # Sort by TA number
-    search_index.sort(key=lambda x: x["ta"])
-
-    ta_max = max((r["ta"] for r in search_index if r["ta"] > 0), default=0)
-    print(f"  NICE TAs: {len(rows)} appraisals, {len(by_year)} years, {len(set(t for e in search_index for t in e['tags']))} therapy areas")
-    return {
-        "total":        len(rows),
-        "by_year":      dict(sorted(by_year.items())),
-        "by_therapy":   dict(sorted(by_therapy.items(), key=lambda x: -x[1])),
-        "ta_range":     [1, ta_max],
-        "search_index": search_index,
-    }
+        print("  psd_nearest.json not found — run embed_psds.py for 'Similar drugs' links")
+        return {}
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        if not isinstance(data, dict):
+            return {}
+        # Normalise keys to lowercase to match psd['drugs'] keying
+        out = {}
+        for k, v in data.items():
+            key = (k or "").strip().lower()
+            if not key or not isinstance(v, list):
+                continue
+            cleaned = []
+            for item in v:
+                if not isinstance(item, dict):
+                    continue
+                name = (item.get("drug") or "").strip().lower()
+                score = item.get("score")
+                if name and isinstance(score, (int, float)):
+                    cleaned.append({"drug": name, "score": float(round(score, 4))})
+            if cleaned:
+                out[key] = cleaned
+        print(f"  Nearest-neighbour table: {len(out)} drugs")
+        return out
+    except Exception as e:
+        print(f"  ⚠ Could not parse psd_nearest.json ({e})")
+        return {}
 
 
-# ── 6. Drug-level PBS spend ───────────────────────────────────────────────────
+def attach_nearest_to_psd(psd: dict, nearest: dict) -> None:
+    """Fold the nearest-neighbour list onto each drug record in psd['drugs']."""
+    if not psd or not psd.get("drugs") or not nearest:
+        return
+    drugs = psd["drugs"]
+    matched = 0
+    for key, drug_summary in drugs.items():
+        nbrs = nearest.get(key.lower())
+        if not nbrs:
+            continue
+        # Filter out neighbours we don't have in the local set
+        valid = [n for n in nbrs if n["drug"] in drugs]
+        if not valid:
+            continue
+        # Limit to 10 — the dashboard shows at most a handful, and this keeps the JS file small
+        drug_summary["nearest"] = valid[:10]
+        matched += 1
+    if matched:
+        print(f"  Attached nearest-neighbour lists to {matched} drugs")
+
+
+# ── 7. Drug-level PBS spend ───────────────────────────────────────────────────
 
 def load_drug_spend() -> dict:
     """
     Load pbs_drug_spend.csv (from fetch_pbs_drug_spend.py).
     Returns top drugs by spend and by cost-per-script.
     """
-    path = HERE / "pbs_drug_spend.csv"
+    path = _d("pbs_drug_spend.csv")
     if not path.exists():
         print("  pbs_drug_spend.csv not found — run fetch_pbs_drug_spend.py first")
         return {"total": 0, "top_spend": [], "top_cost_per_script": [], "by_drug": {}}
@@ -776,7 +550,7 @@ def load_drug_spend() -> dict:
 
 # ── 7. Write site_data.js ─────────────────────────────────────────────────────
 
-def write_site_data(pbs: dict, pbac: dict, psd: dict, nice: dict, matched: dict,
+def write_site_data(pbs: dict, pbac: dict, psd: dict,
                     drug_spend: dict | None = None):
     now = datetime.now().strftime("%Y-%m-%d")
 
@@ -793,13 +567,9 @@ def write_site_data(pbs: dict, pbac: dict, psd: dict, nice: dict, matched: dict,
         "stats": {
             "pbac_psds":         pbac["total"],
             "pbac_years":        pbac["year_range"],
-            "nice_tas":          nice["total"],
             "pbs_2024_aud":      pbs_2024,
             "pbs_growth_x":      pbs_growth,
             "scripts_2024":      scripts_2024,
-            "matched_drugs":     matched.get("total", 0),
-            "median_gap_months": matched.get("stats", {}).get("median_gap_months", 0),
-            "pct_nice_first":    matched.get("stats", {}).get("pct_nice_first", 0),
         },
         "pbs": {
             "grand_total_by_year": pbs["grand_total_by_year"],
@@ -809,8 +579,6 @@ def write_site_data(pbs: dict, pbac: dict, psd: dict, nice: dict, matched: dict,
         },
         "pbac":       pbac,
         "psd":        psd,
-        "nice":       nice,
-        "matched":    matched,
         "drug_spend": drug_spend or {"total": 0, "top_spend": [], "top_cost_per_script": [], "by_drug": {}},
     }
 
@@ -831,26 +599,24 @@ def main():
     print("Building site_data.js")
     print("=" * 60)
 
-    print("\n[1/6] Loading PBS ATC data...")
+    print("\n[1/5] Loading PBS ATC data...")
     pbs = load_atc_data()
 
-    print("\n[2/6] Scanning PBAC PSDs...")
+    print("\n[2/5] Scanning PBAC PSDs...")
     pbac = load_pbac_psds()
 
-    print("\n[3/6] Loading extracted PSD data...")
+    print("\n[3/5] Loading extracted PSD data...")
     psd = load_psd_extracted()
 
-    print("\n[4/6] Loading NICE metadata...")
-    nice = load_nice_data()
-
-    print("\n[5/6] Loading PBAC–NICE matched data...")
-    matched = load_matched_data()
-
-    print("\n[6/6] Loading PBS drug-level spend...")
+    print("\n[4/5] Loading PBS drug-level spend...")
     drug_spend = load_drug_spend()
 
+    print("\n[5/5] Loading nearest-neighbour links (embed_psds.py output)...")
+    nearest = load_psd_nearest()
+    attach_nearest_to_psd(psd, nearest)
+
     print("\nWriting output...")
-    write_site_data(pbs, pbac, psd, nice, matched, drug_spend)
+    write_site_data(pbs, pbac, psd, drug_spend)
 
     # Summary
     gt = pbs["grand_total_by_year"]
@@ -871,11 +637,6 @@ def main():
     rec_counts = psd.get('by_recommendation', {})
     for rec, n in rec_counts.items():
         print(f"    {rec:<35} {n}")
-    print(f"  NICE TAs           : {nice['total']}")
-    ms = matched.get("stats", {})
-    print(f"  Matched drugs      : {matched.get('total', 0)}")
-    print(f"  Median access gap  : {ms.get('median_gap_months', 0)} months")
-    print(f"  UK moves first     : {ms.get('pct_nice_first', 0)}%")
     print()
     print("  ATC classes in benefit data:")
     for atc, meta in sorted(pbs["atc_meta"].items(), key=lambda x: -x[1].get("spend_2024_aud",0)):
