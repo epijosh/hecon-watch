@@ -336,22 +336,15 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 .similar-rec.n { background: #C6282820; color: var(--red); }
 .similar-rec.d { background: #E6510020; color: var(--orange); }
 .similar-rec.u { background: var(--bg3); color: var(--text3); }
-@media (max-width: 800px) { .similar-grid { grid-template-columns: 1fr; } }
-
-@media (max-width: 800px) {
-  .detail-grid, .detail-grid.cols-3 { grid-template-columns: 1fr 1fr; }
-  .spec-grid { grid-template-columns: 1fr; }
-  .spec-grid .spec-key { padding-bottom: 2px; }
-  .spec-grid .spec-val { padding-top: 4px; border-top: none; }
-}
 
 /* ── Footer ──────────────────────────────────────────────────── */
 footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32px 0 24px; }
-.footer-inner { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 28px; margin-bottom: 22px; }
+.footer-inner { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 28px; margin-bottom: 22px; }
 .footer-col-title { font-family: var(--ui); font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; }
 .footer-col p { font-family: var(--body); font-size: 13px; color: var(--text2); line-height: 1.55; margin-bottom: 8px; }
-.footer-col a { display: block; font-family: var(--ui); font-size: 12.5px; color: var(--text2); padding: 3px 0; }
-.footer-col a:hover { color: var(--red); }
+.footer-col a, .footer-col .footer-link { display: block; font-family: var(--ui); font-size: 12.5px; color: var(--text2); padding: 3px 0; cursor: pointer; }
+.footer-col .footer-link { background: none; border: 0; text-align: left; }
+.footer-col a:hover, .footer-col .footer-link:hover { color: var(--red); }
 .footer-bottom { border-top: 1px solid var(--border); padding-top: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
 .footer-copy { font-family: var(--ui); font-size: 11.5px; color: var(--text3); }
 
@@ -364,8 +357,12 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
   .kpi-grid { grid-template-columns: repeat(2, 1fr); }
   .panel-grid.cols-2, .panel-grid.cols-3, .panel-grid.split-7-5 { grid-template-columns: 1fr; }
   .nav-links { display: none; }
-  .footer-inner { grid-template-columns: 1fr 1fr; }
-  .detail-grid { grid-template-columns: 1fr; }
+  .footer-inner { grid-template-columns: 1fr; }
+  .similar-grid { grid-template-columns: 1fr; }
+  .detail-grid, .detail-grid.cols-3 { grid-template-columns: 1fr; }
+  .spec-grid { grid-template-columns: 1fr; }
+  .spec-grid .spec-key { padding-bottom: 2px; }
+  .spec-grid .spec-val { padding-top: 4px; border-top: none; }
   .page-head h1 { font-size: 26px; }
 }
 </style>
@@ -788,8 +785,6 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
       <div class="footer-col">
         <div class="footer-col-title">script.report</div>
         <p>An independent, free, open-source tracker of Australian medicine subsidy decisions. Built from public summary documents and prescription data published on pbs.gov.au.</p>
-        <a href="#">GitHub repository →</a>
-        <a href="#">Methodology</a>
       </div>
       <div class="footer-col">
         <div class="footer-col-title">Data sources</div>
@@ -799,16 +794,10 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
       </div>
       <div class="footer-col">
         <div class="footer-col-title">Sections</div>
-        <a onclick="navTo('dashboard')">Dashboard</a>
-        <a onclick="navTo('decisions')">All decisions</a>
-        <a onclick="navTo('spend')">PBS spend</a>
-        <a onclick="navTo('trends')">Trends</a>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-title">About</div>
-        <a href="#">Data refresh schedule</a>
-        <a href="#">Field definitions</a>
-        <a href="#">Known limitations</a>
+        <button class="footer-link" onclick="navTo('dashboard')">Dashboard</button>
+        <button class="footer-link" onclick="navTo('decisions')">All decisions</button>
+        <button class="footer-link" onclick="navTo('spend')">PBS spend</button>
+        <button class="footer-link" onclick="navTo('trends')">Trends</button>
       </div>
     </div>
     <div class="footer-bottom">
@@ -1380,7 +1369,7 @@ function buildTherapyBars() {
 
   document.getElementById('therapy-bar-chart').innerHTML = entries.map(([n, v]) => {
     const pct = (v / max) * 100;
-    return `<div class="bar-row" style="cursor:pointer" onclick="runSearch('${jsAttr(n)}')">
+    return `<div class="bar-row" role="button" tabindex="0" style="cursor:pointer" onclick="runSearch('${jsAttr(n)}')">
       <div class="bar-name">${escapeHtml(n)}</div>
       <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
       <div class="bar-val">${v}</div>
@@ -1499,7 +1488,7 @@ function buildTherapyOutcomes() {
   document.getElementById('rec-rate-chart').innerHTML = recRows.length ? recRows.map(r => {
     const pct = (r.rate / recMax) * 100;
     const fillCol = r.rate >= 70 ? 'var(--green)' : r.rate >= 50 ? '#43a047' : r.rate >= 30 ? 'var(--orange)' : 'var(--red)';
-    return `<div class="bar-row" style="cursor:pointer" onclick="runSearch('${jsAttr(r.n)}')">
+    return `<div class="bar-row" role="button" tabindex="0" style="cursor:pointer" onclick="runSearch('${jsAttr(r.n)}')">
       <div class="bar-name">${escapeHtml(r.n)}</div>
       <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${fillCol};opacity:.85"></div></div>
       <div class="bar-val">${r.rate.toFixed(0)}%</div>
@@ -1513,7 +1502,7 @@ function buildTherapyOutcomes() {
   const resubMax = Math.max(...resubRows.map(r => r.rate), 1);
   document.getElementById('resub-chart').innerHTML = resubRows.length ? resubRows.map(r => {
     const pct = (r.rate / resubMax) * 100;
-    return `<div class="bar-row" style="cursor:pointer" onclick="runSearch('${jsAttr(r.n)}')">
+    return `<div class="bar-row" role="button" tabindex="0" style="cursor:pointer" onclick="runSearch('${jsAttr(r.n)}')">
       <div class="bar-name">${escapeHtml(r.n)}</div>
       <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:var(--red)"></div></div>
       <div class="bar-val">${r.rate.toFixed(0)}%</div>
@@ -1605,7 +1594,7 @@ function renderBrowseTable(rows) {
 function rowHtml(r) {
   const b = recBucket(r.outcome);
   const recLabel = b === 'rec' ? 'Recommended' : b === 'not' ? 'Not rec.' : (r.outcome || '—');
-  return `<tr onclick="selectBrowseRow('${jsAttr(r.name)}')">
+  return `<tr role="button" tabindex="0" onclick="selectBrowseRow('${jsAttr(r.name)}')">
     <td><div class="dname">${escapeHtml(titleCase(r.name))}</div>${r.brand ? `<div class="dbrand">${escapeHtml(r.brand)}</div>` : ''}</td>
     <td><span class="sans" style="font-size:12px;color:var(--text2)">${escapeHtml(r.therapy || '—')}</span></td>
     <td><div class="dind" title="${escapeHtml(r.indication||'')}">${escapeHtml(r.indication || '—')}</div></td>
@@ -1804,7 +1793,7 @@ function renderSemanticResults(query, data) {
     const recLabel = recLabelListed(outcome);
     const score = typeof r.score === 'number' ? r.score : 0;
     const pct = Math.max(2, Math.min(100, Math.round(score * 100)));
-    return `<div class="mcard" onclick="selectFromResults('${jsAttr(key)}')">
+    return `<div class="mcard" role="button" tabindex="0" onclick="selectFromResults('${jsAttr(key)}')">
       <div>
         <div class="mcard-name">${escapeHtml(titleCase(key))}</div>
         <div class="mcard-meta">${escapeHtml([therapy, brand, r.year].filter(Boolean).join(' · '))}</div>
@@ -1914,7 +1903,7 @@ function showMultiResults(drugs, query) {
   const cards = drugs.map(d => {
     const subsBadge = (d.submissions||1) > 1 ? `<div><div class="mcard-stat-label">Submissions</div><div class="mcard-stat-val" style="color:var(--red)">${d.submissions}</div></div>` : '';
     const icer = d.icer_high ? fmtICER(d.icer_high) : '';
-    return `<div class="mcard" onclick="selectFromResults('${jsAttr(d.name)}')">
+    return `<div class="mcard" role="button" tabindex="0" onclick="selectFromResults('${jsAttr(d.name)}')">
       <div>
         <div class="mcard-name">${escapeHtml(titleCase(d.name))}</div>
         <div class="mcard-meta">${escapeHtml([d.therapy, d.brand, d.pbac_year].filter(Boolean).join(' · '))}</div>
@@ -2076,12 +2065,15 @@ function showDrugDetail(d) {
     const hiP = hi ? Math.min(98, hi/MAX*100) : null;
     const left = loP != null ? loP : (hiP || 0);
     const wid = (loP != null && hiP != null) ? Math.max(hiP - loP, 3) : 4;
-    const col = (hi||lo) > 150000 ? 'var(--red)' : (hi||lo) > 75000 ? 'var(--orange)' : 'var(--green)';
+    const v = hi || lo;
+    const col = v > 150000 ? 'var(--red)' : v > 75000 ? 'var(--orange)' : 'var(--green)';
+    const band = v > 150000 ? 'high range' : v > 75000 ? 'borderline range' : 'commonly accepted range';
     icerHtml = `
       <div style="margin-top:14px">
-        <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:10px">
+        <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:10px;flex-wrap:wrap">
           <span class="eyebrow" style="color:${col}">ICER on the cost-effectiveness scale</span>
           <span style="font-family:var(--display);font-size:22px;font-weight:700;color:${col}">${loStr}${hi && hi !== lo ? ' – ' + hiStr : ''}</span>
+          <span class="sans" style="font-size:12px;color:${col};font-weight:600;text-transform:uppercase;letter-spacing:.6px">${band}</span>
         </div>
         <div style="position:relative;height:10px;background:var(--bg3)">
           <div style="position:absolute;left:${left}%;width:${wid}%;height:100%;background:${col};opacity:.85"></div>
@@ -2164,7 +2156,7 @@ function showDrugDetail(d) {
       const score = typeof n.score === 'number' ? n.score : 0;
       const pct = Math.max(2, Math.min(100, Math.round(score * 100)));
       cards.push(`
-        <div class="similar-card" onclick="selectFromResults('${jsAttr(otherKey)}')">
+        <div class="similar-card" role="button" tabindex="0" onclick="selectFromResults('${jsAttr(otherKey)}')">
           <div>
             <div class="similar-name">${escapeHtml(oTitle)}</div>
             <div class="similar-meta">${escapeHtml([oTherapy, oYear].filter(Boolean).join(' · ') || '—')}</div>
@@ -2429,6 +2421,18 @@ if (document.readyState === 'loading') {
 window.addEventListener('load', () => {
   // Re-run charts in case site_data.js was deferred
   if (window.SITE_DATA && !_browseRows.length) initAll();
+});
+
+// Keyboard a11y: Enter / Space activates any clickable card/row/pill that
+// carries role="button". Browsers do this for real <button>s for free; this
+// brings the same behaviour to the div/tr-based clickables.
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const t = e.target;
+  if (t && t.getAttribute && t.getAttribute('role') === 'button' && typeof t.click === 'function') {
+    e.preventDefault();
+    t.click();
+  }
 });
 </script>
 </body>
