@@ -401,6 +401,10 @@ def _compute_sponsor_stats(rows: list[dict], drug_summaries: dict[str, dict]) ->
             "owned_drug_keys":  set(),
             "therapy_areas":    {},
             "last_year":        0,
+            "first_year":       0,
+            "years":            {},                 # {year: submission count}
+            "drug_sub_counts":  {},                 # {drug: submissions-by-this-sponsor}
+            "rejection_reasons": [],                # raw strings from not-rec rows
         })
         entry["_display_counts"][sponsor] = entry["_display_counts"].get(sponsor, 0) + 1
         entry["n_submissions"] += 1
@@ -408,10 +412,19 @@ def _compute_sponsor_stats(rows: list[dict], drug_summaries: dict[str, dict]) ->
         elif bucket == "not":    entry["n_not"] += 1
         elif bucket == "deferred": entry["n_deferred"] += 1
         entry["drug_keys"].add(drug)
+        entry["drug_sub_counts"][drug] = entry["drug_sub_counts"].get(drug, 0) + 1
         if therapy:
             entry["therapy_areas"][therapy] = entry["therapy_areas"].get(therapy, 0) + 1
         if yr > entry["last_year"]:
             entry["last_year"] = yr
+        if yr and (entry["first_year"] == 0 or yr < entry["first_year"]):
+            entry["first_year"] = yr
+        if yr:
+            entry["years"][yr] = entry["years"].get(yr, 0) + 1
+        if bucket == "not":
+            reasons = (row.get("rejection_reasons") or "").strip()
+            if reasons:
+                entry["rejection_reasons"].append(reasons)
 
         drug_subs.setdefault(drug, []).append((key, bucket, yr, mo))
 
@@ -906,32 +919,36 @@ def attach_sponsor_spend(psd: dict, drug_spend: dict | None) -> None:
     if not psd:
         return
     raw = psd.get("sponsors_raw") or {}
+    drugs_map = psd.get("drugs") or {}
     if not raw:
         psd["sponsors"] = []
+        psd["sponsor_details"] = {}
         return
 
     by_drug = (drug_spend or {}).get("by_drug") or {}
 
     leaderboard: list[dict] = []
+    details: dict[str, dict] = {}
+
     for key, entry in raw.items():
-        # Spend is attributed to the owning sponsor only (see _compute_sponsor_stats)
-        # so biosimilars don't get their spend double-counted across sponsors.
+        # Spend attribution: only owned drugs (see _compute_sponsor_stats).
         owned = entry.get("owned_drug_keys") or set()
-        per_drug_spend: list[tuple[str, int]] = []
+        per_drug_spend: dict[str, int] = {}
         total_spend = 0
         for d in owned:
             sp = by_drug.get(d.lower())
             if sp and sp.get("gov_benefit_aud"):
                 amt = int(sp["gov_benefit_aud"])
                 total_spend += amt
-                per_drug_spend.append((d, amt))
-        per_drug_spend.sort(key=lambda kv: kv[1], reverse=True)
+                per_drug_spend[d] = amt
 
         n_subs = entry["n_submissions"]
         n_rec  = entry["n_recommended"]
         bucketable = n_rec + entry["n_not"] + entry["n_deferred"]
         pct_rec = round(n_rec * 100 / bucketable) if bucketable else None
 
+        # ── Slim leaderboard entry ────────────────────────────────────────
+        sorted_pairs = sorted(per_drug_spend.items(), key=lambda kv: kv[1], reverse=True)
         leaderboard.append({
             "sponsor":           entry["display"],
             "key":               key,
@@ -941,25 +958,91 @@ def attach_sponsor_spend(psd: dict, drug_spend: dict | None) -> None:
             "n_recommended":     n_rec,
             "n_not":             entry["n_not"],
             "n_deferred":        entry["n_deferred"],
-            "pct_recommended":   pct_rec,            # null when no bucketable submissions
+            "pct_recommended":   pct_rec,
             "top_therapy_area":  entry["top_therapy_area"],
             "last_year":         entry["last_year"],
             "total_spend_aud":   total_spend,
             "top_drugs":         [
-                {"drug": d, "spend_aud": v} for d, v in per_drug_spend[:3]
+                {"drug": d, "spend_aud": v} for d, v in sorted_pairs[:3]
             ],
         })
 
-    # Sort by total spend desc; tiebreak by submission count desc
+        # ── Rich detail blob (consumed by the sponsor detail page) ────────
+        drug_rows: list[dict] = []
+        for d in entry["drug_keys"]:
+            summary = drugs_map.get(d) or {}
+            drug_rows.append({
+                "drug":           d,
+                "indication":     (summary.get("indication") or "")[:200],
+                "therapy_area":   summary.get("therapy_area", ""),
+                "latest_rec":     summary.get("recommendation", ""),
+                "latest_year":    summary.get("latest_year", ""),
+                "subs_by_this_sponsor": entry["drug_sub_counts"].get(d, 0),
+                "spend_aud":      per_drug_spend.get(d, 0),
+                "owned":          d in owned,
+            })
+        # Sort: owned-with-spend first (by spend), then by sponsor's own submission count
+        drug_rows.sort(key=lambda r: (
+            -(r["spend_aud"] or 0),
+            -(r["subs_by_this_sponsor"] or 0),
+            r["drug"],
+        ))
+
+        # Therapy histogram, sorted by count
+        therapy_list = sorted(
+            ({"area": a, "n": n} for a, n in entry["therapy_areas"].items()),
+            key=lambda r: r["n"], reverse=True,
+        )
+
+        # Year activity — keep as {year: count} dict for the chart
+        by_year_sorted = {str(y): entry["years"][y] for y in sorted(entry["years"])}
+
+        # Top rejection reasons across this sponsor's not-rec subs.
+        # Reasons are comma-separated phrases in the raw field; split, lowercase,
+        # tally, return top 5 with original casing of the first occurrence.
+        reason_counts: dict[str, int] = {}
+        reason_display: dict[str, str] = {}
+        for blob in entry["rejection_reasons"]:
+            for piece in re.split(r"\s*[,;]\s*", blob):
+                p = piece.strip()
+                if not p or len(p) < 4:
+                    continue
+                k = p.lower()
+                reason_counts[k] = reason_counts.get(k, 0) + 1
+                reason_display.setdefault(k, p)
+        top_reasons = sorted(reason_counts.items(), key=lambda kv: kv[1], reverse=True)[:5]
+        rejection_reasons = [{"reason": reason_display[k], "n": n} for k, n in top_reasons]
+
+        details[key] = {
+            "sponsor":           entry["display"],
+            "key":               key,
+            "n_submissions":     n_subs,
+            "n_drugs":           entry["n_drugs"],
+            "n_drugs_listed":    entry["n_drugs_listed"],
+            "n_recommended":     n_rec,
+            "n_not":             entry["n_not"],
+            "n_deferred":        entry["n_deferred"],
+            "pct_recommended":   pct_rec,
+            "total_spend_aud":   total_spend,
+            "first_year":        entry["first_year"],
+            "last_year":         entry["last_year"],
+            "top_therapy_area":  entry["top_therapy_area"],
+            "drugs":             drug_rows,
+            "therapy_areas":     therapy_list,
+            "by_year":           by_year_sorted,
+            "rejection_reasons": rejection_reasons,
+        }
+
     leaderboard.sort(key=lambda r: (r["total_spend_aud"], r["n_submissions"]), reverse=True)
     psd["sponsors"] = leaderboard
-    # sponsors_raw was internal to the build — drop it so it doesn't bloat site_data.js
+    psd["sponsor_details"] = details
     psd.pop("sponsors_raw", None)
 
     n_with_spend = sum(1 for r in leaderboard if r["total_spend_aud"] > 0)
     total_spend = sum(r["total_spend_aud"] for r in leaderboard)
     print(f"  Sponsor leaderboard: {len(leaderboard)} entries, {n_with_spend} with linked spend, "
           f"total ${total_spend/1e9:.2f}B captured")
+    print(f"  Sponsor detail blobs: {len(details)} (drugs portfolios + therapy histograms + rejection patterns)")
 
 
 # ── 5. Drug-level PBS spend ──────────────────────────────────────────────────

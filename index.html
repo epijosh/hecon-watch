@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Lora:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
 <script>window.SITE_DATA = window.SITE_DATA || null;</script>
-<script src="site_data.js?v=bfeaa273"></script>
+<script src="site_data.js?v=69cb623d"></script>
 
 <!-- Vercel Web Analytics — static-site script injection.
      Cookie-less, no PII collected. Vercel serves /_vercel/insights/script.js
@@ -297,8 +297,10 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 .lb-strip { padding: 26px 0; border-bottom: 1px solid var(--border); background: var(--bg2); }
 .lb-table-head { display: grid; grid-template-columns: 36px 1.7fr 1fr 1fr 1.1fr; gap: 14px; padding: 10px 4px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); font-family: var(--ui); font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text3); }
 .lb-list { }
-.lb-row { display: grid; grid-template-columns: 36px 1.7fr 1fr 1fr 1.1fr; gap: 14px; padding: 14px 4px; border-bottom: 1px solid var(--border); align-items: start; transition: background .12s, padding-left .12s; }
+.lb-row { display: grid; grid-template-columns: 36px 1.7fr 1fr 1fr 1.1fr; gap: 14px; padding: 14px 4px; border-bottom: 1px solid var(--border); align-items: start; cursor: pointer; transition: background .12s, padding-left .12s; }
 .lb-row:hover { background: var(--bg); padding-left: 12px; }
+.lb-row:hover .lb-name { color: var(--red); }
+.lb-row:focus-visible { outline: 2px solid var(--red); outline-offset: -2px; }
 .lb-rank { font-family: var(--display); font-size: 17px; font-weight: 700; color: var(--text3); padding-top: 1px; }
 .lb-name { font-family: var(--display); font-size: 15px; font-weight: 700; letter-spacing: -.2px; line-height: 1.25; }
 .lb-sub  { font-family: var(--ui); font-size: 11px; color: var(--text3); margin-top: 3px; line-height: 1.4; }
@@ -315,6 +317,41 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
   .lb-col-drugs { display: none; }
   .lb-spend { text-align: left; }
   .lb-spend-foot { text-align: left; }
+}
+
+/* ── Sponsor detail page ───────────────────────────────────── */
+.sp-yr-chart { display: flex; align-items: flex-end; gap: 4px; height: 90px; padding: 4px 0 0; border-bottom: 1px solid var(--border); }
+.sp-yr-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; min-width: 18px; cursor: default; }
+.sp-yr-bar { width: 100%; background: var(--red); opacity: .8; transition: opacity .12s; }
+.sp-yr-bar-wrap:hover .sp-yr-bar { opacity: 1; }
+.sp-yr-label { font-family: var(--ui); font-size: 9.5px; color: var(--text3); margin-top: 4px; }
+.sp-drug-table { width: 100%; border-collapse: collapse; font-family: var(--body); }
+.sp-drug-table th { font-family: var(--ui); font-size: 9.5px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text3); padding: 8px 12px 8px 0; border-bottom: 2px solid var(--text); text-align: left; }
+.sp-drug-table th:nth-child(4), .sp-drug-table th:nth-child(5) { text-align: right; }
+.sp-drug-row { border-bottom: 1px solid var(--border); transition: background .12s; }
+.sp-drug-row td { padding: 10px 12px 10px 0; vertical-align: top; }
+.sp-drug-row.linked { cursor: pointer; }
+.sp-drug-row.linked:hover { background: var(--bg2); }
+.sp-drug-row.linked:hover .sp-drug-name { color: var(--red); }
+.sp-drug-row:focus-visible { outline: 2px solid var(--red); outline-offset: -2px; }
+.sp-drug-name { font-family: var(--display); font-size: 14px; font-weight: 700; letter-spacing: -.1px; transition: color .15s; }
+.sp-drug-ind { font-family: var(--body); font-size: 11.5px; color: var(--text3); margin-top: 2px; line-height: 1.4; max-width: 480px; }
+.sp-drug-therapy { font-family: var(--ui); font-size: 11px; color: var(--text2); letter-spacing: .3px; white-space: nowrap; }
+.sp-drug-subs { font-family: var(--ui); font-size: 13px; font-weight: 700; color: var(--text); text-align: right; padding-right: 14px !important; }
+.sp-drug-spend { font-family: var(--ui); font-size: 12px; text-align: right; white-space: nowrap; }
+.sp-th-list { display: flex; flex-direction: column; gap: 6px; }
+.sp-th-row { display: grid; grid-template-columns: 180px 1fr 40px; gap: 12px; align-items: center; }
+.sp-th-label { font-family: var(--body); font-size: 13px; color: var(--text); }
+.sp-th-bar-wrap { height: 8px; background: var(--bg3); }
+.sp-th-bar { height: 8px; background: var(--red); opacity: .75; }
+.sp-th-val { font-family: var(--ui); font-size: 12px; font-weight: 700; color: var(--text); text-align: right; }
+.sp-rej-list { font-family: var(--body); font-size: 13.5px; color: var(--text2); line-height: 1.6; padding-left: 0; list-style: none; }
+.sp-rej-list li { padding: 4px 0; border-bottom: 1px dotted var(--border); }
+.sp-rej-list li:last-child { border-bottom: 0; }
+.sp-rej-count { font-family: var(--ui); font-size: 11px; font-weight: 700; color: var(--red); background: var(--bg2); padding: 2px 6px; margin-right: 8px; border: 1px solid var(--border); }
+@media (max-width: 800px) {
+  .sp-th-row { grid-template-columns: 110px 1fr 36px; }
+  .sp-drug-table th:nth-child(2), .sp-drug-row td:nth-child(2) { display: none; }
 }
 
 /* ── PBAC cycle calendar panel ─────────────────────────────── */
@@ -2073,7 +2110,7 @@ function buildSponsorLeaderboard() {
     if (s.last_year)        subParts.push(`last decision ${s.last_year}`);
     const subtitle = subParts.length ? subParts.join(' · ') : '';
 
-    return `<div class="lb-row">
+    return `<div class="lb-row" role="button" tabindex="0" onclick="openSponsor('${jsAttr(s.key)}')">
       <div class="lb-rank">${i + 1}</div>
       <div>
         <div class="lb-name">${escapeHtml(s.sponsor)}</div>
@@ -3196,8 +3233,9 @@ function clearSearch() {
   document.getElementById('search-input').value = '';
   document.getElementById('search-clear').classList.remove('visible');
   showMain();
-  // Drop a #/drug/<name> or #/about hash if present, so the URL reflects "back to dashboard".
-  if (location.hash.startsWith('#/drug/') || location.hash === '#/about') {
+  // Drop a #/drug/<name>, #/sponsor/<key>, or #/about hash if present, so the
+  // URL reflects "back to dashboard".
+  if (location.hash.startsWith('#/drug/') || location.hash.startsWith('#/sponsor/') || location.hash === '#/about') {
     history.pushState(null, '', location.pathname + location.search);
     document.title = _DEFAULT_TITLE;
   }
@@ -3611,6 +3649,213 @@ function showDrugDetail(d) {
   document.title = `${name} · ${_DEFAULT_TITLE}`;
 }
 
+// ╔═══════════════════════════════════════════════════════════════════╗
+// ║  SPONSOR DETAIL                                                       ║
+// ╚═══════════════════════════════════════════════════════════════════╝
+function openSponsor(key) {
+  const D = window.SITE_DATA;
+  if (!D || !D.psd || !D.psd.sponsor_details) return;
+  const det = D.psd.sponsor_details[key];
+  if (!det) return;
+  _currentMode = 'detail';
+  hideMain();
+  showSponsorDetail(det);
+}
+
+function showSponsorDetail(s) {
+  if (!s) return;
+  const D = window.SITE_DATA;
+  const drugs = (D && D.psd && D.psd.drugs) || {};
+
+  // ── KPI strip (4 cells) ────────────────────────────────────────────
+  const winPct = (s.pct_recommended != null)
+    ? `${s.pct_recommended}<span class="ttl-unit">%</span>`
+    : '<span style="font-size:18px;color:var(--text3)">n/a</span>';
+  const winSub = (s.pct_recommended != null)
+    ? `${s.n_recommended} recommended of ${s.n_recommended + s.n_not + s.n_deferred} bucketable`
+    : 'no decisive outcomes on file';
+
+  const spendVal = s.total_spend_aud
+    ? fmtAUD(s.total_spend_aud)
+    : '<span style="font-size:18px;color:var(--text3)">—</span>';
+  const spendSub = s.total_spend_aud
+    ? 'FY-latest govt benefit on owned drugs'
+    : 'no PBS expenditure linked to this sponsor';
+
+  const kpiStrip = `
+    <div class="detail-grid">
+      <div class="detail-cell">
+        <div class="detail-cell-label">Submissions</div>
+        <div class="detail-cell-val">${s.n_submissions}</div>
+        <div class="detail-cell-sub">${s.first_year && s.last_year ? `${s.first_year} → ${s.last_year}` : ''}</div>
+      </div>
+      <div class="detail-cell">
+        <div class="detail-cell-label">Win rate</div>
+        <div class="detail-cell-val">${winPct}</div>
+        <div class="detail-cell-sub">${winSub}</div>
+      </div>
+      <div class="detail-cell">
+        <div class="detail-cell-label">Drugs in portfolio</div>
+        <div class="detail-cell-val">${s.n_drugs}<span class="ttl-unit" style="color:var(--text3)"> · ${s.n_drugs_listed} currently listed</span></div>
+        <div class="detail-cell-sub">unique molecules submitted</div>
+      </div>
+      <div class="detail-cell">
+        <div class="detail-cell-label">PBS spend captured</div>
+        <div class="detail-cell-val" style="color:var(--red)">${spendVal}</div>
+        <div class="detail-cell-sub">${spendSub}</div>
+      </div>
+    </div>`;
+
+  // ── Year activity (small CSS bar chart) ────────────────────────────
+  const byYear = s.by_year || {};
+  const years = Object.keys(byYear);
+  let activityHtml = '';
+  if (years.length) {
+    const maxN = Math.max(...Object.values(byYear));
+    const bars = years.map(y => {
+      const h = Math.max(4, Math.round(byYear[y] / maxN * 60));
+      return `<div class="sp-yr-bar-wrap" title="${y}: ${byYear[y]} submission${byYear[y]===1?'':'s'}">
+        <div class="sp-yr-bar" style="height:${h}px"></div>
+        <div class="sp-yr-label">${y.slice(-2)}</div>
+      </div>`;
+    }).join('');
+    activityHtml = `
+      <div class="detail-section">
+        <div class="detail-section-head">
+          <div>
+            <div class="eyebrow">Activity</div>
+            <h3>Submissions per year</h3>
+          </div>
+          <div class="detail-section-sub">${s.n_submissions} total over ${years.length} year${years.length===1?'':'s'}</div>
+        </div>
+        <div class="sp-yr-chart">${bars}</div>
+      </div>`;
+  }
+
+  // ── Drugs portfolio table ──────────────────────────────────────────
+  const drugRows = (s.drugs || []).map(dr => {
+    const drugSummary = drugs[dr.drug];
+    const linkable = !!drugSummary;
+    const recCls = ({ rec: 'y', not: 'n', deferred: 'd', unknown: 'u' })[recBucket(dr.latest_rec)];
+    const recLabel = recLabelListed(dr.latest_rec);
+    const spendCell = dr.spend_aud
+      ? `<span style="color:var(--red);font-weight:700">${fmtAUD(dr.spend_aud)}</span>`
+      : (dr.owned ? '<span style="color:var(--text3)">—</span>' : '<span class="muted" style="font-size:11px" title="spend goes to a different sponsor (latest Recommended decision)">other sponsor</span>');
+    const onclick = linkable ? `onclick="selectFromResults('${jsAttr(dr.drug)}')"` : '';
+    const role = linkable ? 'role="button" tabindex="0"' : '';
+    return `<tr class="sp-drug-row ${linkable?'linked':''}" ${onclick} ${role}>
+      <td>
+        <div class="sp-drug-name">${escapeHtml(titleCase(dr.drug))}</div>
+        ${dr.indication ? `<div class="sp-drug-ind">${glossify(escapeHtml(dr.indication))}</div>` : ''}
+      </td>
+      <td class="sp-drug-therapy">${escapeHtml(dr.therapy_area || '—')}</td>
+      <td><span class="drec ${recCls}">${escapeHtml(recLabel)}</span>${dr.latest_year ? `<div class="muted" style="font-size:10px;margin-top:2px">${dr.latest_year}</div>`:''}</td>
+      <td class="sp-drug-subs">${dr.subs_by_this_sponsor}</td>
+      <td class="sp-drug-spend">${spendCell}</td>
+    </tr>`;
+  }).join('');
+
+  const portfolioHtml = drugRows ? `
+    <div class="detail-section">
+      <div class="detail-section-head">
+        <div>
+          <div class="eyebrow">Portfolio</div>
+          <h3>Drugs submitted by this sponsor</h3>
+        </div>
+        <div class="detail-section-sub">${s.n_drugs} drug${s.n_drugs===1?'':'s'} · sorted by PBS spend captured</div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="sp-drug-table">
+          <thead><tr>
+            <th>Drug</th>
+            <th>Therapy</th>
+            <th>Latest outcome</th>
+            <th>Subs</th>
+            <th>PBS spend</th>
+          </tr></thead>
+          <tbody>${drugRows}</tbody>
+        </table>
+      </div>
+    </div>` : '';
+
+  // ── Therapy area histogram ─────────────────────────────────────────
+  let therapyHtml = '';
+  if ((s.therapy_areas || []).length) {
+    const max = s.therapy_areas[0].n;
+    const bars = s.therapy_areas.map(t => {
+      const pct = Math.round(t.n / max * 100);
+      return `<div class="sp-th-row">
+        <div class="sp-th-label">${escapeHtml(t.area)}</div>
+        <div class="sp-th-bar-wrap"><div class="sp-th-bar" style="width:${pct}%"></div></div>
+        <div class="sp-th-val">${t.n}</div>
+      </div>`;
+    }).join('');
+    therapyHtml = `
+      <div class="detail-section">
+        <div class="detail-section-head">
+          <div>
+            <div class="eyebrow">Specialisation</div>
+            <h3>Therapy area mix</h3>
+          </div>
+          <div class="detail-section-sub">submissions by therapy area</div>
+        </div>
+        <div class="sp-th-list">${bars}</div>
+      </div>`;
+  }
+
+  // ── Rejection patterns (only when there are notable rejections) ────
+  let rejectionHtml = '';
+  if ((s.rejection_reasons || []).length && s.n_not >= 2) {
+    const items = s.rejection_reasons.map(r =>
+      `<li><span class="sp-rej-count">${r.n}×</span> ${glossify(escapeHtml(r.reason))}</li>`
+    ).join('');
+    rejectionHtml = `
+      <div class="detail-section">
+        <div class="detail-section-head">
+          <div>
+            <div class="eyebrow">Rejection patterns</div>
+            <h3>What PBAC has flagged in this sponsor's submissions</h3>
+          </div>
+          <div class="detail-section-sub">across ${s.n_not} Not recommended decision${s.n_not===1?'':'s'}</div>
+        </div>
+        <ul class="sp-rej-list">${items}</ul>
+      </div>`;
+  }
+
+  // ── Head subtitle ──────────────────────────────────────────────────
+  const subBits = [];
+  if (s.top_therapy_area)              subBits.push(`Mostly ${s.top_therapy_area}`);
+  if (s.first_year && s.last_year)     subBits.push(`Active ${s.first_year}–${s.last_year}`);
+  const subtitle = subBits.join(' · ');
+
+  document.getElementById('result-content').innerHTML = `
+    <div class="back-nav" onclick="clearSearch()"><span class="back-label">← Back to dashboard</span></div>
+
+    <div class="detail-head">
+      <div class="eyebrow">Sponsor</div>
+      <div class="detail-name">${escapeHtml(s.sponsor)}</div>
+      ${subtitle ? `<div class="detail-ind">${escapeHtml(subtitle)}</div>` : ''}
+    </div>
+
+    ${kpiStrip}
+    ${activityHtml}
+    ${portfolioHtml}
+    ${therapyHtml}
+    ${rejectionHtml}
+
+    <div style="margin-top:24px;padding:16px 0;border-top:1px solid var(--border);display:flex;gap:18px;flex-wrap:wrap;align-items:center">
+      <span class="sans" style="font-size:12px;color:var(--text3);cursor:pointer;margin-left:auto" onclick="clearSearch()">← Back to dashboard</span>
+    </div>
+  `;
+
+  const targetHash = '#/sponsor/' + encodeURIComponent(s.key);
+  if (location.hash !== targetHash) {
+    history.pushState({ sponsor: s.key }, '', targetHash);
+  }
+  document.title = `${s.sponsor} · ${_DEFAULT_TITLE}`;
+  window.scrollTo({ top: 0, behavior: 'auto' });
+}
+
 const MONTHS = { 1:'Jan', 2:'Feb', 3:'Mar', 4:'Apr', 5:'May', 6:'Jun', 7:'Jul', 8:'Aug', 9:'Sep', 10:'Oct', 11:'Nov', 12:'Dec' };
 const _DEFAULT_TITLE = 'script.report — which medicines Australia funds';
 
@@ -3632,6 +3877,11 @@ function routeFromHash() {
       showDrugDetail(d);
       return;
     }
+  }
+  const sm = (location.hash || '').match(/^#\/sponsor\/(.+)$/);
+  if (sm) {
+    openSponsor(decodeURIComponent(sm[1]));
+    return;
   }
   // Hash empty or no match — make sure we're on the dashboard view
   if (_currentMode === 'detail' || _currentMode === 'about') {
