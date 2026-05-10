@@ -2,6 +2,7 @@
 
 Usage:
     python -m script_report build         # rebuild site_data.js
+    python -m script_report prerender     # emit static SEO pages (/drug/<slug>/, /sponsor/<key>/)
     python -m script_report refresh       # full pipeline (download → extract → build → deploy)
     python -m script_report download      # download new PBAC PSDs
     python -m script_report extract       # Haiku field extraction
@@ -24,6 +25,7 @@ import sys
 
 _COMMANDS = {
     "build":    ("script_report.builders.site_builder", "main"),
+    "prerender":("script_report.builders.prerenderer",  "main"),
     "refresh":  ("script_report.refresh",               "main"),
     "download": ("script_report.scrapers.psd_downloader",   "main"),
     "extract":  ("script_report.extractors.psd_extractor",  "main"),

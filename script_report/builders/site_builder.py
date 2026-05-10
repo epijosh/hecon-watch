@@ -137,6 +137,15 @@ def main() -> None:
     print("\nWriting output...")
     write_site_data(pbs, pbac, psd, drug_spend, calendar, agendas)
 
+    # Pre-render static SEO landing pages from the freshly-built payload.
+    # Importing inline avoids a circular dependency at module load time.
+    print("\nPre-rendering static SEO pages...")
+    from script_report.builders.prerenderer import generate_static_pages
+    site_data_view = {"psd": psd, "drug_spend": drug_spend}
+    stats = generate_static_pages(site_data_view, REPO_ROOT)
+    print(f"  Drug pages    : {stats['drug_pages']} (avg {stats['avg_drug_kb']:.1f} KB)")
+    print(f"  Sponsor pages : {stats['sponsor_pages']} (avg {stats['avg_sponsor_kb']:.1f} KB)")
+
     # ── Summary ──────────────────────────────────────────────────────────────
     print("\n" + "=" * 60)
     print("KEY STATS")
