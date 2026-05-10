@@ -128,6 +128,26 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 .semantic-callout strong { color: var(--text); font-weight: 600; }
 
 /* ── KPI Strip ───────────────────────────────────────────────── */
+/* ── PBAC cycle calendar panel ─────────────────────────────── */
+.cal-strip { padding: 26px 0; border-bottom: 1px solid var(--border); background: var(--bg2); }
+.cal-head { display: flex; align-items: baseline; justify-content: space-between; gap: 18px; flex-wrap: wrap; margin-bottom: 14px; }
+.cal-head h3 { font-family: var(--display); font-size: 22px; font-weight: 700; letter-spacing: -.2px; }
+.cal-head .cal-sub { font-family: var(--ui); font-size: 12px; color: var(--text3); }
+.cal-meeting { display: grid; grid-template-columns: 200px 1fr; gap: 24px; padding: 14px 0; border-top: 1px solid var(--border); }
+.cal-meeting:last-child { border-bottom: 1px solid var(--border); }
+.cal-meeting.upcoming .cal-mlabel { color: var(--red); }
+.cal-mlabel { font-family: var(--display); font-size: 16px; font-weight: 700; letter-spacing: -.2px; }
+.cal-mdate  { font-family: var(--ui); font-size: 11px; color: var(--text3); margin-top: 3px; }
+.cal-mtimeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; }
+.cal-milestone { font-family: var(--ui); padding: 6px 8px; border-left: 2px solid var(--border); }
+.cal-milestone.past { opacity: .5; }
+.cal-milestone.future { border-left-color: var(--red); }
+.cal-milestone.next  { border-left-color: var(--red); background: var(--bg); }
+.cal-mday   { font-size: 14px; font-weight: 700; color: var(--text); }
+.cal-mname  { font-size: 10.5px; color: var(--text3); margin-top: 2px; line-height: 1.3; }
+.cal-stale  { font-family: var(--ui); font-size: 12px; color: var(--text3); padding: 8px 0; font-style: italic; }
+@media (max-width: 800px) { .cal-meeting { grid-template-columns: 1fr; gap: 10px; } }
+
 .kpi-strip { padding: 22px 0; border-bottom: 1px solid var(--border); background: var(--bg); }
 .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
 .kpi-cell { background: var(--bg); padding: 18px 20px; }
@@ -416,6 +436,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
     <div class="meta-row">
       <span class="pill"><strong id="meta-psds">—</strong>PSDs indexed</span>
       <span class="pill"><strong id="meta-range">—</strong>year coverage</span>
+      <span class="pill" id="meta-next-deadline-pill" title="Next upcoming deadline in the published PBAC cycle calendar"><strong id="meta-next-deadline">—</strong><span id="meta-next-deadline-label">next PBAC deadline</span></span>
       <span class="pill"><strong id="meta-updated">—</strong>last refresh</span>
       <span class="pill" style="border-color:var(--red);color:var(--red)"><strong style="color:var(--red)">Free</strong>open source</span>
     </div>
@@ -498,6 +519,20 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
           <div class="kpi-sub" id="kpi-scripts-sub">prescriptions filled</div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- ─── PBAC CYCLE CALENDAR ──────────────────────────────────────── -->
+  <div class="cal-strip" id="cal-strip" style="display:none">
+    <div class="container">
+      <div class="cal-head">
+        <div>
+          <div class="eyebrow">PBAC cycle calendar</div>
+          <h3 id="cal-title">Upcoming meetings &amp; deadlines</h3>
+        </div>
+        <div class="cal-sub" id="cal-source">—</div>
+      </div>
+      <div id="cal-list"></div>
     </div>
   </div>
 
@@ -999,6 +1034,111 @@ function initKPIs() {
     document.getElementById('meta-updated').textContent = D.generated + ' ';
     document.getElementById('footer-generated').textContent = `Last data refresh: ${D.generated}`;
   }
+  buildCalendar();
+}
+
+// ╔═══════════════════════════════════════════════════════════════════╗
+// ║  PBAC CYCLE CALENDAR                                                 ║
+// ╚═══════════════════════════════════════════════════════════════════╝
+const _MONTH_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function _fmtCalDate(iso) {
+  // ISO yyyy-mm-dd → "5 Jul 2024"
+  if (!iso) return '—';
+  const [y, m, d] = iso.split('-').map(Number);
+  if (!y || !m || !d) return iso;
+  return `${d} ${_MONTH_SHORT[m-1]} ${y}`;
+}
+function _fmtCalShort(iso) {
+  // ISO → "5 Jul"
+  if (!iso) return '—';
+  const [y, m, d] = iso.split('-').map(Number);
+  if (!y || !m || !d) return iso;
+  return `${d} ${_MONTH_SHORT[m-1]}`;
+}
+
+function buildCalendar() {
+  const D = window.SITE_DATA;
+  const cal = D && D.calendar;
+  const strip = document.getElementById('cal-strip');
+  if (!strip || !cal || !Array.isArray(cal.meetings) || !cal.meetings.length) return;
+
+  const today = new Date().toISOString().slice(0, 10);
+
+  // Find the next upcoming milestone across all meetings
+  let nextMilestone = null;
+  for (const m of cal.meetings) {
+    for (const dl of (m.deadlines || [])) {
+      if (dl.date && dl.date >= today && (!nextMilestone || dl.date < nextMilestone.date)) {
+        nextMilestone = { ...dl, meeting_label: m.label, meeting_code: m.code };
+      }
+    }
+  }
+
+  // KPI pill in the header
+  const pillNum = document.getElementById('meta-next-deadline');
+  const pillLabel = document.getElementById('meta-next-deadline-label');
+  const pill = document.getElementById('meta-next-deadline-pill');
+  if (pillNum && pillLabel) {
+    if (nextMilestone) {
+      pillNum.textContent = _fmtCalShort(nextMilestone.date) + ' ';
+      pillLabel.textContent = nextMilestone.name.toLowerCase();
+      if (pill) pill.title = `${nextMilestone.name} for ${nextMilestone.meeting_label} — ${_fmtCalDate(nextMilestone.date)}`;
+    } else {
+      pillNum.textContent = 'pending refresh ';
+      pillLabel.textContent = 'PBAC calendar';
+      if (pill && cal.last_milestone) pill.title = `Calendar covers up to ${_fmtCalDate(cal.last_milestone)}. Refresh PBS-Cycle-timeframe-*.pdf and re-run parse_pbac_calendar.py.`;
+    }
+  }
+
+  // Pick which meetings to show:
+  //   • Any meeting whose final milestone is in the future (fully or partly upcoming).
+  //   • If none, show the most recent 2 cycles as a backstop.
+  const meetingsToShow = [];
+  for (const m of cal.meetings) {
+    const lastDate = (m.deadlines || []).reduce((acc, dl) => dl.date > acc ? dl.date : acc, '');
+    if (lastDate && lastDate >= today) meetingsToShow.push(m);
+  }
+  let showingHistorical = false;
+  if (!meetingsToShow.length) {
+    showingHistorical = true;
+    meetingsToShow.push(...cal.meetings.slice(-2));
+  }
+  if (!meetingsToShow.length) return;
+
+  // Title + source line
+  const title = document.getElementById('cal-title');
+  const source = document.getElementById('cal-source');
+  if (title) title.textContent = showingHistorical ? 'Most recent PBAC cycles on record' : 'Upcoming meetings & deadlines';
+  if (source) {
+    const refreshHint = showingHistorical
+      ? `Calendar through ${_fmtCalDate(cal.last_milestone)} · pending refresh`
+      : (cal.last_updated ? `Updated ${cal.last_updated}` : '');
+    source.textContent = refreshHint;
+  }
+
+  // Render rows
+  const list = document.getElementById('cal-list');
+  if (!list) return;
+  const html = meetingsToShow.map(m => {
+    const isUpcoming = m.meeting_date && m.meeting_date >= today;
+    const milestonesHtml = (m.deadlines || []).map(dl => {
+      let cls = dl.date >= today ? 'future' : 'past';
+      if (nextMilestone && dl.date === nextMilestone.date && m.code === nextMilestone.meeting_code) cls = 'next';
+      return `<div class="cal-milestone ${cls}">
+        <div class="cal-mday">${_fmtCalShort(dl.date)}</div>
+        <div class="cal-mname">${escapeHtml(dl.name)}</div>
+      </div>`;
+    }).join('');
+    return `<div class="cal-meeting ${isUpcoming ? 'upcoming' : ''}">
+      <div>
+        <div class="cal-mlabel">${escapeHtml(m.label)}</div>
+        ${m.meeting_date ? `<div class="cal-mdate">Meeting ${_fmtCalDate(m.meeting_date)}</div>` : ''}
+      </div>
+      <div class="cal-mtimeline">${milestonesHtml}</div>
+    </div>`;
+  }).join('');
+  list.innerHTML = html;
+  strip.style.display = '';
 }
 
 // ╔═══════════════════════════════════════════════════════════════════╗

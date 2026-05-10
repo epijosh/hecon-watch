@@ -125,9 +125,9 @@ only does new work.
 - Deployed to script.report.
 
 **Built but not yet wired into the dashboard:**
-- `data/pbac_calendar.json` — parser works, schema produced by
-  `parse_pbac_calendar.py`. Needs a "Next deadline" KPI cell + upcoming-meeting
-  timeline panel on the dashboard.
+- (none — pbac_calendar.json is now wired through `build_site_data.py`'s
+  `load_pbac_calendar()` and rendered as a "Next deadline" header pill plus
+  an upcoming-meetings timeline panel beneath the KPI strip).
 
 **Not yet built:**
 - Per-drug shareable URLs (hash routing — `#/drug/<name>`).
