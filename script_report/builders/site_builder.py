@@ -8,10 +8,12 @@ incremental diff or partial regeneration; the input data is small enough
 
 from __future__ import annotations
 
+import hashlib
 import json
+import re
 from datetime import datetime
 
-from script_report.config import SITE_DATA_JS
+from script_report.config import REPO_ROOT, SITE_DATA_JS
 from script_report.data.loaders import (
     load_atc_data,
     load_pbac_psds,
@@ -21,6 +23,30 @@ from script_report.data.loaders import (
     load_psd_nearest,
     attach_nearest_to_psd,
 )
+
+
+_SITE_DATA_SCRIPT_RE = re.compile(r'<script src="site_data\.js(?:\?v=[^"]*)?"></script>')
+
+
+def _bust_index_html_cache(site_data_bytes: bytes) -> None:
+    """Pin index.html to this build's site_data.js via a content-hash query string.
+
+    Without this, Vercel's 1h cache on site_data.js can serve a browser an old
+    payload paired with a fresh index.html — fields the new HTML reads can be
+    missing from the stale JSON, silently rendering as 0/empty.
+    """
+    index_html = REPO_ROOT / "index.html"
+    digest = hashlib.sha256(site_data_bytes).hexdigest()[:8]
+    html = index_html.read_text(encoding="utf-8")
+    new_html, n = _SITE_DATA_SCRIPT_RE.subn(
+        f'<script src="site_data.js?v={digest}"></script>', html, count=1
+    )
+    if n == 0:
+        print("  [warn] index.html: site_data.js script tag not found — skipping cache-bust")
+        return
+    if new_html != html:
+        index_html.write_text(new_html, encoding="utf-8")
+        print(f"  Pinned index.html → site_data.js?v={digest}")
 
 
 def write_site_data(
@@ -68,6 +94,7 @@ def write_site_data(
 
     SITE_DATA_JS.write_text(js, encoding="utf-8")
     print(f"  Written: site_data.js  ({SITE_DATA_JS.stat().st_size // 1024} KB)")
+    _bust_index_html_cache(js.encode("utf-8"))
 
 
 def main() -> None:
