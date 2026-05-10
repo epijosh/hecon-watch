@@ -587,6 +587,7 @@ def load_psd_extracted() -> dict:
     multi_delays_by_year: dict[int, list[int]] = {}
     n_total = 0
     n_first_try = 0
+    n_first_try_with_followups = 0
     multi_delays: list[int] = []
     for drug, summary in drug_summaries.items():
         hist = summary.get("history") or []
@@ -606,6 +607,10 @@ def load_psd_extracted() -> dict:
         n_total += 1
         if months == 0:
             n_first_try += 1
+            # Drugs that succeeded first try but returned later for new
+            # indications, restriction tweaks, or price reviews.
+            if (summary.get("submissions") or 1) > 1:
+                n_first_try_with_followups += 1
             continue
         multi_delays.append(months)
         rec_year = hist[rec_idx].get("year")
@@ -634,6 +639,10 @@ def load_psd_extracted() -> dict:
         "n_with_recommendation": n_total,
         "n_first_try":           n_first_try,
         "pct_first_try":         (n_first_try * 100 // n_total) if n_total else 0,
+        "n_first_try_with_followups": n_first_try_with_followups,
+        "pct_first_try_with_followups": (
+            (n_first_try_with_followups * 100 // n_first_try) if n_first_try else 0
+        ),
         "n_multi_attempt":       len(multi_delays),
         "median_months_multi":   _median(multi_delays),
         "min_months_multi":      min(multi_delays) if multi_delays else 0,

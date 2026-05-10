@@ -229,6 +229,7 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 .ttl-stat-val .ttl-unit { font-family: var(--body); font-size: 13px; font-weight: 400; color: var(--text2); margin-left: 4px; }
 .ttl-stat-sub { font-family: var(--body); font-size: 12px; color: var(--text2); margin-top: 4px; line-height: 1.4; }
 .ttl-chart-wrap { padding-top: 4px; }
+.ttl-chart-canvas-wrap { position: relative; height: 200px; }
 .ttl-chart-title { font-family: var(--ui); font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; }
 .ttl-foot { font-family: var(--body); font-size: 12px; color: var(--text3); font-style: italic; margin-top: 10px; }
 @media (max-width: 800px) { .ttl-stats { grid-template-columns: 1fr; } }
@@ -395,6 +396,10 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 .mcard-name { font-family: var(--display); font-size: 19px; font-weight: 700; margin-bottom: 2px; transition: color .15s; }
 .mcard-meta { font-family: var(--ui); font-size: 11px; color: var(--text3); margin-bottom: 4px; }
 .mcard-ind { font-family: var(--body); font-size: 13px; color: var(--text2); font-style: italic; }
+.mcard-snippet { font-family: var(--body); font-size: 12.5px; color: var(--text2); margin-top: 6px; padding-left: 10px; border-left: 2px solid var(--border); line-height: 1.5; }
+.mcard-snippet .snippet-eyebrow { display: inline-block; font-family: var(--ui); font-size: 9.5px; font-weight: 700; letter-spacing: 1.1px; text-transform: uppercase; color: var(--text3); margin-right: 6px; vertical-align: 1px; }
+.mcard-snippet mark { background: rgba(198, 40, 40, 0.14); color: inherit; padding: 0 2px; border-radius: 2px; font-weight: 600; }
+[data-theme="dark"] .mcard-snippet mark { background: rgba(255, 120, 120, 0.18); }
 .mcard-aside { padding-left: 24px; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; justify-content: center; min-width: 140px; }
 .mcard-stat-label { font-family: var(--ui); font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); }
 .mcard-stat-val { font-weight: 700; font-size: 14px; text-align: right; font-family: var(--ui); }
@@ -690,14 +695,14 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
       <div class="recent-head">
         <div>
           <div class="eyebrow">Time to listing</div>
-          <h3>How long does PBAC take?</h3>
+          <h3>How long from first submission to first listing?</h3>
         </div>
         <div class="recent-sub" id="ttl-sub">—</div>
       </div>
       <div class="ttl-stats" id="ttl-stats"></div>
       <div class="ttl-chart-wrap">
         <div class="ttl-chart-title">Median months (resubmission journeys only) by year of recommendation</div>
-        <canvas id="ttl-chart" height="120"></canvas>
+        <div class="ttl-chart-canvas-wrap"><canvas id="ttl-chart"></canvas></div>
         <div class="ttl-foot" id="ttl-foot"></div>
       </div>
     </div>
@@ -1615,29 +1620,29 @@ async function buildTimeToListing() {
   const strip = document.getElementById('ttl-strip');
   if (!strip || !ttl || !ttl.n_with_recommendation) return;
 
-  // Three KPI stats — % first try, multi-attempt count, multi-attempt median
+  // Three KPI stats — first-try rate, returned-later rate, multi-attempt median
   const stats = document.getElementById('ttl-stats');
   if (stats) {
     stats.innerHTML = `
       <div class="ttl-stat">
-        <div class="ttl-stat-label">First-try success</div>
+        <div class="ttl-stat-label">Listed on first attempt</div>
         <div class="ttl-stat-val">${ttl.pct_first_try}<span class="ttl-unit">%</span></div>
-        <div class="ttl-stat-sub">${ttl.n_first_try.toLocaleString()} of ${ttl.n_with_recommendation.toLocaleString()} drugs were recommended at their first PBAC submission.</div>
+        <div class="ttl-stat-sub">${ttl.n_first_try.toLocaleString()} of ${ttl.n_with_recommendation.toLocaleString()} drugs were recommended at their very first PBAC decision.</div>
+      </div>
+      <div class="ttl-stat">
+        <div class="ttl-stat-label">Returned for more</div>
+        <div class="ttl-stat-val">${ttl.pct_first_try_with_followups||0}<span class="ttl-unit">%</span></div>
+        <div class="ttl-stat-sub">Of those first-try drugs, ${(ttl.n_first_try_with_followups||0).toLocaleString()} came back for additional reviews — new indications, restriction tweaks, or price adjustments.</div>
       </div>
       <div class="ttl-stat">
         <div class="ttl-stat-label">Resubmission median</div>
         <div class="ttl-stat-val">${ttl.median_months_multi.toFixed(0)}<span class="ttl-unit">months</span></div>
-        <div class="ttl-stat-sub">For the ${ttl.n_multi_attempt} drugs that needed multiple submissions, time from first PSD to first recommendation.</div>
-      </div>
-      <div class="ttl-stat">
-        <div class="ttl-stat-label">Resubmission range</div>
-        <div class="ttl-stat-val">${ttl.min_months_multi}–${ttl.max_months_multi}<span class="ttl-unit">months</span></div>
-        <div class="ttl-stat-sub">Fastest to slowest journey on file. Some drugs needed five or more PBAC cycles to land.</div>
+        <div class="ttl-stat-sub">For the ${ttl.n_multi_attempt} drugs that needed multiple submissions to land, time from first PSD to first recommendation (range: ${ttl.min_months_multi}–${ttl.max_months_multi} months).</div>
       </div>`;
   }
 
   const sub = document.getElementById('ttl-sub');
-  if (sub) sub.textContent = `Drug-level analysis · ${ttl.n_with_recommendation.toLocaleString()} drugs ever recommended on file`;
+  if (sub) sub.textContent = `From first submission to first listing only · ${ttl.n_with_recommendation.toLocaleString()} drugs ever recommended on file`;
 
   // Bar chart: median months by year, multi-attempt cohort only
   const byYear = ttl.by_year || {};
@@ -2452,6 +2457,45 @@ function handleSearchKey(e) {
   else handleSearch(e.target.value);
 }
 
+// ── Snippet highlighting (lexical overlap on profile sentences) ─────────────
+const _STOP_WORDS = new Set([
+  'the','and','for','with','from','that','this','have','has','was','were','are',
+  'but','not','any','all','can','its','their','they','them','what','when','where',
+  'which','while','about','into','over','than','then','also','been','being','some',
+  'such','due','one','two','out','per','via','use','used','using','like','more',
+  'most','our','your','will','would','could','should','may','might','high','low'
+]);
+
+function _queryTokens(q) {
+  return (q || '')
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .filter(t => t.length >= 3 && !_STOP_WORDS.has(t));
+}
+
+function pickSnippet(profile, tokens) {
+  if (!profile || !tokens.length) return '';
+  const sentences = profile.split(/\.\s+/).map(s => s.trim()).filter(s => s.length > 12);
+  let best = '', bestScore = 0;
+  sentences.forEach(s => {
+    const lower = s.toLowerCase();
+    let score = 0;
+    tokens.forEach(t => { if (lower.includes(t)) score += t.length; });
+    if (score > bestScore) { bestScore = score; best = s; }
+  });
+  return bestScore > 0 ? best : '';
+}
+
+function highlightTokens(text, tokens) {
+  let out = escapeHtml(text || '');
+  tokens.forEach(t => {
+    if (t.length < 3) return;
+    const re = new RegExp('(' + t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+    out = out.replace(re, '<mark>$1</mark>');
+  });
+  return out;
+}
+
 function showSearchSpinner(on) {
   const el = document.getElementById('search-spinner');
   if (el) el.classList.toggle('visible', !!on);
@@ -2545,6 +2589,7 @@ function renderSemanticResults(query, data) {
     return;
   }
 
+  const qTokens = _queryTokens(query);
   const cards = results.map(r => {
     const key = (r.drug || '').toLowerCase();
     const od = (window.SITE_DATA && window.SITE_DATA.psd && window.SITE_DATA.psd.drugs && window.SITE_DATA.psd.drugs[key]) || null;
@@ -2556,11 +2601,16 @@ function renderSemanticResults(query, data) {
     const recLabel = recLabelListed(outcome);
     const score = typeof r.score === 'number' ? r.score : 0;
     const pct = Math.max(2, Math.min(100, Math.round(score * 100)));
+    const snippet = pickSnippet(r.profile, qTokens);
+    const snippetHtml = snippet
+      ? `<div class="mcard-snippet"><span class="snippet-eyebrow">Match</span>${highlightTokens(snippet, qTokens)}</div>`
+      : '';
     return `<div class="mcard" role="button" tabindex="0" onclick="selectFromResults('${jsAttr(key)}')">
       <div>
         <div class="mcard-name">${escapeHtml(titleCase(key))}</div>
         <div class="mcard-meta">${escapeHtml([therapy, brand, r.year].filter(Boolean).join(' · '))}</div>
         <div class="mcard-ind">${glossify(escapeHtml(indication || '—'))}</div>
+        ${snippetHtml}
       </div>
       <div class="mcard-aside semantic-card-score">
         <div style="text-align:right">

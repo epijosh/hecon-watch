@@ -142,6 +142,7 @@ def _search(query: str, limit: int, filter_outcome: str | None) -> dict:
             "year":       m.get("year"),
             "indication": m.get("indication"),
             "outcome":    m.get("outcome"),
+            "profile":    m.get("profile") or "",
         })
     return {
         "query":   query,

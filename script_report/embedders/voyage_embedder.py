@@ -223,6 +223,7 @@ def write_outputs(drugs: list[dict], vectors: np.ndarray, model: str, top_k: int
                 "year":       (drugs[i].get("pbac_year") or "").strip(),
                 "indication": (drugs[i].get("indication") or "").strip()[:140],
                 "outcome":    (drugs[i].get("recommendation") or "").strip(),
+                "profile":    build_profile(drugs[i])[:800],
             }
             for i in range(n)
         ],
