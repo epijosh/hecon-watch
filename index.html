@@ -349,6 +349,13 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 .dicer { font-family: var(--ui); font-size: 12px; font-weight: 600; }
 .dicer-basis { font-size: 11px; font-weight: 500; font-style: italic; white-space: nowrap; }
 
+/* ── Comparator / trial backlink chips ─────────────────────── */
+.backlink-row { margin-top: 8px; font-family: var(--ui); font-size: 11.5px; color: var(--text3); display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; }
+.backlink-label { font-weight: 700; letter-spacing: .5px; text-transform: uppercase; font-size: 10.5px; color: var(--text3); margin-right: 4px; }
+.backlink-chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border: 1px solid var(--border); background: var(--bg); color: var(--text2); cursor: pointer; transition: background .12s, color .12s, border-color .12s; font-family: var(--ui); }
+.backlink-chip:hover { background: var(--bg2); color: var(--red); border-color: var(--red); }
+.backlink-chip-count { color: var(--text3); font-size: 10.5px; font-weight: 600; }
+
 /* ── Search results / drug detail ────────────────────────────── */
 #search-results { display: none; padding: 20px 0 40px; }
 #search-results.active { display: block; }
@@ -1053,6 +1060,78 @@ const COST_BASIS_LABELS = {
 };
 function costBasisLabel(basis) {
   return COST_BASIS_LABELS[basis] || COST_BASIS_LABELS.unknown;
+}
+
+// ── Comparator / trial backlink helpers ─────────────────────────────────
+// Mirror the Python splitters in script_report/data/loaders.py so that the
+// keys we generate here match the keys in SITE_DATA.psd.comparator_index /
+// trial_index.
+function _splitComparators(s) {
+  const full = (s || '').trim();
+  if (!full) return [];
+  const out = [full];
+  const parts = full.split(/\s*(?:[+,&/]| or | and )\s*/i);
+  for (const p of parts) {
+    const t = p.trim();
+    if (t && t.toLowerCase() !== full.toLowerCase() && t.length >= 3) out.push(t);
+  }
+  return out;
+}
+function _splitTrials(s) {
+  const full = (s || '').trim();
+  if (!full) return [];
+  return full.split(/\s*[,;]\s*/).map(p => p.trim()).filter(p => p && p.length >= 3);
+}
+function _normEntity(s) {
+  return (s || '').toLowerCase().trim().replace(/^[,.;:]+|[,.;:]+$/g, '').replace(/\s+/g, ' ');
+}
+function _renderBacklinks(text, idx, navFn, splitter) {
+  if (!text || !idx) return '';
+  const seen = new Set();
+  const chips = [];
+  for (const p of splitter(text)) {
+    const key = _normEntity(p);
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+    const entry = idx[key];
+    if (entry && entry.drugs && entry.drugs.length >= 2) {
+      chips.push(
+        `<a class="backlink-chip" role="button" tabindex="0" onclick="${navFn}('${jsAttr(key)}')">` +
+          `${escapeHtml(entry.display)}<span class="backlink-chip-count">${entry.drugs.length}</span>` +
+        `</a>`
+      );
+    }
+  }
+  if (!chips.length) return '';
+  return `<div class="backlink-row"><span class="backlink-label">Also seen in:</span>${chips.join('')}</div>`;
+}
+function renderComparatorBacklinks(text) {
+  const idx = (window.SITE_DATA && SITE_DATA.psd && SITE_DATA.psd.comparator_index) || {};
+  return _renderBacklinks(text, idx, 'showSharedComparator', _splitComparators);
+}
+function renderTrialBacklinks(text) {
+  const idx = (window.SITE_DATA && SITE_DATA.psd && SITE_DATA.psd.trial_index) || {};
+  return _renderBacklinks(text, idx, 'showSharedTrial', _splitTrials);
+}
+function showSharedComparator(key) {
+  const idx = (window.SITE_DATA && SITE_DATA.psd && SITE_DATA.psd.comparator_index) || {};
+  const entry = idx[key];
+  if (!entry) return;
+  const drugs = entry.drugs.map(k => DRUG_DB[k]).filter(Boolean);
+  if (!drugs.length) return;
+  hideMain();
+  _currentMode = 'results';
+  showMultiResults(drugs, `Drugs compared against "${entry.display}"`);
+}
+function showSharedTrial(key) {
+  const idx = (window.SITE_DATA && SITE_DATA.psd && SITE_DATA.psd.trial_index) || {};
+  const entry = idx[key];
+  if (!entry) return;
+  const drugs = entry.drugs.map(k => DRUG_DB[k]).filter(Boolean);
+  if (!drugs.length) return;
+  hideMain();
+  _currentMode = 'results';
+  showMultiResults(drugs, `Drugs citing trial "${entry.display}"`);
 }
 const titleCase = s => (s||'').charAt(0).toUpperCase() + (s||'').slice(1);
 // Escape HTML special chars for safe interpolation into innerHTML.
@@ -2601,7 +2680,7 @@ function showDrugDetail(d) {
         ${pd.comparator ? `
         <div class="spec-grid">
           <div class="spec-key">Comparator</div>
-          <div class="spec-val">${escapeHtml(pd.comparator)}</div>
+          <div class="spec-val">${escapeHtml(pd.comparator)}${renderComparatorBacklinks(pd.comparator)}</div>
         </div>` : ''}
         ${icerHtml}
       </div>`;
@@ -2679,7 +2758,7 @@ function showDrugDetail(d) {
   if (pd.evidence_type)   clinSpecs.push(['Evidence type', `<span class="tag-chip blue">${glossify(escapeHtml(pd.evidence_type))}</span>`]);
   if (pd.trial_size)      clinSpecs.push(['Trial size', `${pd.trial_size.toLocaleString()} <em>participants</em>`]);
   if (pd.primary_endpoint) clinSpecs.push(['Primary endpoint', glossify(escapeHtml(pd.primary_endpoint))]);
-  if (pd.key_trials)      clinSpecs.push(['Key trials', glossify(escapeHtml(pd.key_trials))]);
+  if (pd.key_trials)      clinSpecs.push(['Key trials', glossify(escapeHtml(pd.key_trials)) + renderTrialBacklinks(pd.key_trials)]);
 
   let clinSection = '';
   if (clinSpecs.length) {

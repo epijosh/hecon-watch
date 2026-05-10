@@ -203,6 +203,40 @@ _NOT_MODELLED_RE = re.compile(
 )
 
 
+def _normalise_entity(s: str) -> str:
+    """Lowercase, collapse whitespace, strip surrounding punctuation. Used for
+    keying comparator / trial backlinks so equivalent strings collapse."""
+    s = (s or "").lower().strip().strip(".,;:")
+    s = re.sub(r"\s+", " ", s)
+    return s
+
+
+def _split_comparators(s: str) -> list[str]:
+    """Split a comparator string into atomic candidates plus the original whole.
+
+    "docetaxel + carboplatin" -> ["docetaxel + carboplatin", "docetaxel", "carboplatin"]
+    "docetaxel or BSC" -> ["docetaxel or BSC", "docetaxel", "BSC"]
+    """
+    full = (s or "").strip()
+    if not full:
+        return []
+    out = [full]
+    components = re.split(r"\s*(?:[+,&/]| or | and )\s*", full, flags=re.IGNORECASE)
+    for c in components:
+        c = c.strip()
+        if c and c.lower() != full.lower() and len(c) >= 3:
+            out.append(c)
+    return out
+
+
+def _split_trials(s: str) -> list[str]:
+    """Split a comma/semicolon-separated trial-IDs string."""
+    full = (s or "").strip()
+    if not full:
+        return []
+    return [p.strip() for p in re.split(r"\s*[,;]\s*", full) if p.strip() and len(p.strip()) >= 3]
+
+
 def _classify_cost_basis(row: dict) -> str:
     """Classify a single PSD row's economic basis.
 
@@ -504,6 +538,40 @@ def load_psd_extracted() -> dict:
     if flips:
         print(f"  Flip stories  : {len(flips)} drugs went rejection/deferred → recommended")
 
+    # ── Comparator + trial inverse indexes (backlinks) ───────────────────────
+    # For each drug, walk its comparator + key_trials fields, normalise into
+    # atomic candidates, and add the drug to that candidate's index entry.
+    # Only ship entries that ended up with >=2 drugs — singletons have nothing
+    # to "link to" beyond the drug we're already on.
+    comparator_index_raw: dict[str, dict] = {}
+    trial_index_raw:      dict[str, dict] = {}
+    for drug, summary in drug_summaries.items():
+        for c in _split_comparators(summary.get("comparator") or ""):
+            key = _normalise_entity(c)
+            if not key:
+                continue
+            entry = comparator_index_raw.setdefault(key, {"display": c, "drugs": set()})
+            entry["drugs"].add(drug)
+        for t in _split_trials(summary.get("key_trials") or ""):
+            key = _normalise_entity(t)
+            if not key:
+                continue
+            entry = trial_index_raw.setdefault(key, {"display": t, "drugs": set()})
+            entry["drugs"].add(drug)
+
+    comparator_index = {
+        k: {"display": v["display"], "drugs": sorted(v["drugs"])}
+        for k, v in comparator_index_raw.items()
+        if len(v["drugs"]) >= 2
+    }
+    trial_index = {
+        k: {"display": v["display"], "drugs": sorted(v["drugs"])}
+        for k, v in trial_index_raw.items()
+        if len(v["drugs"]) >= 2
+    }
+    print(f"  Comparator backlinks: {len(comparator_index)} comparators referenced by 2+ drugs")
+    print(f"  Trial backlinks     : {len(trial_index)} trials referenced by 2+ drugs")
+
     return {
         "total":             len(drug_summaries),
         "drugs":             drug_summaries,
@@ -512,6 +580,8 @@ def load_psd_extracted() -> dict:
         "by_year":           dict(sorted(by_year.items())),
         "recent":            recent,
         "flips":             flips,
+        "comparator_index":  comparator_index,
+        "trial_index":       trial_index,
     }
 
 
