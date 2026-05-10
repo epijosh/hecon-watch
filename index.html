@@ -347,6 +347,7 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 .drec-d { background: #E6510020; color: var(--orange); }
 .drec-u { background: var(--bg3); color: var(--text3); }
 .dicer { font-family: var(--ui); font-size: 12px; font-weight: 600; }
+.dicer-basis { font-size: 11px; font-weight: 500; font-style: italic; cursor: help; }
 
 /* ── Search results / drug detail ────────────────────────────── */
 #search-results { display: none; padding: 20px 0 40px; }
@@ -1038,6 +1039,20 @@ const fmtNum = v => v == null ? '—' : v >= 1e9 ? (v/1e9).toFixed(1) + 'B'
 const fmtICER = v => v == null ? '—' : v >= 1e6 ? '$' + (v/1e6).toFixed(1) + 'M'
                                     : '$' + Math.round(v/1e3) + 'k';
 const icerColor = v => v == null ? 'var(--text3)' : v > 150000 ? 'var(--red)' : v > 75000 ? 'var(--orange)' : 'var(--green)';
+
+// Cost-basis label/colour for drugs without a numeric ICER. Mirrors the
+// classifier in script_report/data/loaders.py:_classify_cost_basis().
+const COST_BASIS_LABELS = {
+  cost_minimisation: { text: 'Cost-min',     sub: 'Cost-minimisation analysis',        color: 'var(--text2)' },
+  dominant:          { text: 'Dominant',     sub: 'Less costly + more effective',      color: 'var(--green)' },
+  cost_neutral:      { text: 'Cost-neutral', sub: 'No incremental cost vs comparator', color: 'var(--text2)' },
+  redacted:          { text: 'Redacted',     sub: 'Commercial-in-confidence',          color: 'var(--text3)' },
+  not_modelled:      { text: 'Not modelled', sub: 'No economic evaluation submitted',  color: 'var(--text3)' },
+  unknown:           { text: '—',            sub: 'Not stated in PSD',                 color: 'var(--text3)' },
+};
+function costBasisLabel(basis) {
+  return COST_BASIS_LABELS[basis] || COST_BASIS_LABELS.unknown;
+}
 const titleCase = s => (s||'').charAt(0).toUpperCase() + (s||'').slice(1);
 // Escape HTML special chars for safe interpolation into innerHTML.
 const escapeHtml = s => String(s ?? '').replace(/[&<>"']/g, c => ({
@@ -1337,7 +1352,19 @@ function buildRecentFeed() {
     const date = fmt(r.year, r.month);
     const ind = r.indication || '';
     const truncated = ind.length >= 140;
-    const icer = (r.icer_high || r.icer_low) ? fmtICER(r.icer_high || r.icer_low) : '';
+    // ICER chip: numeric if available; otherwise the cost-basis label —
+    // looked up from the per-drug summary since the recent feed entries
+    // don't carry cost_basis directly. Falls back to "—" if the drug
+    // can't be found in the per-drug map (shouldn't happen).
+    const drugRow = D.psd.drugs && D.psd.drugs[r.drug];
+    const numICER = r.icer_high || r.icer_low;
+    let icerChip = '';
+    if (numICER) {
+      icerChip = `<span class="recent-icer">ICER ${fmtICER(numICER)}</span>`;
+    } else if (drugRow && drugRow.cost_basis && drugRow.cost_basis !== 'unknown' && drugRow.cost_basis !== 'numeric') {
+      const l = costBasisLabel(drugRow.cost_basis);
+      icerChip = `<span class="recent-icer" style="color:${l.color};font-style:italic" title="${escapeHtml(l.sub)}">${escapeHtml(l.text)}</span>`;
+    }
     return `<div class="recent-row" role="button" tabindex="0" onclick="selectFromResults('${jsAttr(r.drug)}')">
       <div class="recent-date">${escapeHtml(date)}</div>
       <div>
@@ -1346,7 +1373,7 @@ function buildRecentFeed() {
       </div>
       <div class="recent-aside">
         <span class="drec ${recCls}">${escapeHtml(recLabel)}</span>
-        ${icer ? `<span class="recent-icer">ICER ${icer}</span>` : ''}
+        ${icerChip}
       </div>
     </div>`;
   }).join('');
@@ -1959,6 +1986,7 @@ function buildBrowseRows() {
         year: pd.latest_year ? parseInt(pd.latest_year) : null,
         subs: pd.submissions || 1,
         icer: pd.icer_high || pd.icer_low || null,
+        cost_basis: pd.cost_basis || 'unknown',
         _pd: pd,
       });
     }
@@ -2027,6 +2055,15 @@ function renderBrowseTable(rows) {
 function rowHtml(r) {
   const b = recBucket(r.outcome);
   const recLabel = b === 'rec' ? 'Recommended' : b === 'not' ? 'Not rec.' : (r.outcome || '—');
+  // ICER cell: numeric value if extracted, otherwise the cost-basis label
+  // (Cost-min, Dominant, Redacted, Not modelled, Cost-neutral, —).
+  let icerHtml;
+  if (r.icer) {
+    icerHtml = `<span class="dicer" style="color:${icerColor(r.icer)}">${fmtICER(r.icer)}</span>`;
+  } else {
+    const l = costBasisLabel(r.cost_basis);
+    icerHtml = `<span class="dicer dicer-basis" style="color:${l.color}" title="${escapeHtml(l.sub)}">${escapeHtml(l.text)}</span>`;
+  }
   return `<tr role="button" tabindex="0" onclick="selectBrowseRow('${jsAttr(r.name)}')">
     <td><div class="dname">${escapeHtml(titleCase(r.name))}</div>${r.brand ? `<div class="dbrand">${escapeHtml(r.brand)}</div>` : ''}</td>
     <td><span class="sans" style="font-size:12px;color:var(--text2)">${escapeHtml(r.therapy || '—')}</span></td>
@@ -2034,7 +2071,7 @@ function rowHtml(r) {
     <td><span class="drec ${recCssClass(r.outcome)}">${escapeHtml(recLabel)}</span></td>
     <td><span class="sans" style="font-size:12px">${escapeHtml(r.year || '—')}</span></td>
     <td><span class="sans" style="font-size:12px;font-weight:${(r.subs||0)>1?'700':'400'};color:${(r.subs||0)>1?'var(--red)':'var(--text2)'}">${r.subs || '—'}</span></td>
-    <td><span class="dicer" style="color:${icerColor(r.icer)}">${fmtICER(r.icer)}</span></td>
+    <td>${icerHtml}</td>
   </tr>`;
 }
 
@@ -2451,16 +2488,7 @@ function showDrugDetail(d) {
           <div class="detail-cell-sub">${pd.icer_low && pd.icer_high && pd.icer_low !== pd.icer_high ? `Range: ${fmtICER(pd.icer_low)} – ${fmtICER(pd.icer_high)}` : 'Base-case'}</div>
         </div>`;
     }
-    // No numeric ICER — show the actual cost-effectiveness framing.
-    const labels = {
-      cost_minimisation: { text: 'Cost-min',    sub: 'Cost-minimisation analysis',         color: 'var(--text2)' },
-      dominant:          { text: 'Dominant',    sub: 'Less costly + more effective',       color: 'var(--green)' },
-      cost_neutral:      { text: 'Cost-neutral',sub: 'No incremental cost vs comparator',  color: 'var(--text2)' },
-      redacted:          { text: 'Redacted',    sub: 'Commercial-in-confidence',           color: 'var(--text3)' },
-      not_modelled:      { text: 'Not modelled',sub: 'No economic evaluation submitted',   color: 'var(--text3)' },
-      unknown:           { text: '—',           sub: 'Not stated in PSD',                  color: 'var(--text3)' },
-    };
-    const l = labels[basis] || labels.unknown;
+    const l = costBasisLabel(basis);
     return `
       <div class="detail-cell">
         <div class="detail-cell-label">ICER (AUD/QALY)</div>
