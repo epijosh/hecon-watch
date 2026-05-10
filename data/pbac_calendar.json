@@ -201,11 +201,162 @@
           "date": "2025-12-19"
         }
       ]
+    },
+    {
+      "code": "2025-11",
+      "label": "November 2025 PBAC meeting",
+      "meeting_date": "2025-11-07",
+      "deadlines": [
+        {
+          "key": "submission_major",
+          "name": "Major submission deadline",
+          "date": "2025-07-09"
+        },
+        {
+          "key": "submission_minor",
+          "name": "Minor / resubmission deadline",
+          "date": "2025-08-29"
+        },
+        {
+          "key": "prepbac_response",
+          "name": "Pre-PBAC response",
+          "date": "2025-10-29"
+        },
+        {
+          "key": "meeting",
+          "name": "PBAC meeting",
+          "date": "2025-11-07"
+        },
+        {
+          "key": "outcomes",
+          "name": "Outcomes published",
+          "date": "2025-12-19"
+        }
+      ]
+    },
+    {
+      "code": "2026-03",
+      "label": "March 2026 PBAC meeting",
+      "meeting_date": null,
+      "deadlines": [
+        {
+          "key": "submission_major",
+          "name": "Major submission deadline",
+          "date": "2025-11-05"
+        },
+        {
+          "key": "submission_minor",
+          "name": "Minor / resubmission deadline",
+          "date": "2026-01-02"
+        },
+        {
+          "key": "prepbac_response",
+          "name": "Pre-PBAC response",
+          "date": "2026-03-04"
+        },
+        {
+          "key": "outcomes",
+          "name": "Outcomes published",
+          "date": "2026-04-24"
+        }
+      ]
+    },
+    {
+      "code": "2026-07",
+      "label": "July 2026 PBAC meeting",
+      "meeting_date": "2026-07-10",
+      "deadlines": [
+        {
+          "key": "submission_major",
+          "name": "Major submission deadline",
+          "date": "2026-03-11"
+        },
+        {
+          "key": "submission_minor",
+          "name": "Minor / resubmission deadline",
+          "date": "2026-05-01"
+        },
+        {
+          "key": "prepbac_response",
+          "name": "Pre-PBAC response",
+          "date": "2026-07-01"
+        },
+        {
+          "key": "meeting",
+          "name": "PBAC meeting",
+          "date": "2026-07-10"
+        },
+        {
+          "key": "outcomes",
+          "name": "Outcomes published",
+          "date": "2025-08-21"
+        }
+      ]
+    },
+    {
+      "code": "2026-11",
+      "label": "November 2026 PBAC meeting",
+      "meeting_date": "2026-11-06",
+      "deadlines": [
+        {
+          "key": "submission_major",
+          "name": "Major submission deadline",
+          "date": "2026-07-08"
+        },
+        {
+          "key": "submission_minor",
+          "name": "Minor / resubmission deadline",
+          "date": "2026-08-28"
+        },
+        {
+          "key": "prepbac_response",
+          "name": "Pre-PBAC response",
+          "date": "2026-10-28"
+        },
+        {
+          "key": "meeting",
+          "name": "PBAC meeting",
+          "date": "2026-11-06"
+        },
+        {
+          "key": "outcomes",
+          "name": "Outcomes published",
+          "date": "2026-12-18"
+        }
+      ]
+    },
+    {
+      "code": "2027-03",
+      "label": "March 2027 PBAC meeting",
+      "meeting_date": null,
+      "deadlines": [
+        {
+          "key": "submission_major",
+          "name": "Major submission deadline",
+          "date": "2026-11-04"
+        },
+        {
+          "key": "submission_minor",
+          "name": "Minor / resubmission deadline",
+          "date": "2026-12-24"
+        },
+        {
+          "key": "prepbac_response",
+          "name": "Pre-PBAC response",
+          "date": "2027-03-03"
+        },
+        {
+          "key": "outcomes",
+          "name": "Outcomes published",
+          "date": "2027-04-23"
+        }
+      ]
     }
   ],
   "source": "Parsed from PBS Cycle Timeframe PDF(s) by parse_pbac_calendar.py",
   "source_files": [
-    "PBS-Cycle-timeframe-for-2024-2025-v2.pdf"
+    "PBS-Cycle-timeframe-for-2024-2025-v2.pdf",
+    "PBS-Cycle-timeframe-for-2025-2027.pdf"
   ],
   "last_updated": "2026-05-10"
 }
