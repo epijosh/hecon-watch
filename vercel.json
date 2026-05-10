@@ -1,7 +1,4 @@
 {
-  "rewrites": [
-    { "source": "/", "destination": "/site_preview.html" }
-  ],
   "functions": {
     "api/search.py": {
       "memory": 512,
@@ -32,7 +29,7 @@
       ]
     },
     {
-      "source": "/site_preview.html",
+      "source": "/index.html",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=300" }
       ]

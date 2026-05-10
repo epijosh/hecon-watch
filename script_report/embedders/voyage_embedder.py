@@ -43,47 +43,34 @@ import json
 import os
 import sys
 import time
-from pathlib import Path
 
-HERE = Path(__file__).parent
-DATA = HERE / "data"
-DATA.mkdir(exist_ok=True)
+from script_report.config import (
+    DATA_DIR,
+    VOYAGE_MODEL as DEFAULT_MODEL,
+    VOYAGE_BATCH_SIZE as BATCH_SIZE,
+    VOYAGE_PRICE_PER_1M as PRICE_PER_1M,
+    NEAREST_TOP_K,
+    SIMILARITY_TIE_EPSILON,
+)
+from script_report.utils.helpers import load_dotenv_safely
+from script_report.utils.similarity import break_score_ties
 
-# Optional .env loader
-try:
-    from dotenv import load_dotenv
-    load_dotenv(HERE / ".env")
-except ImportError:
-    pass
+load_dotenv_safely()
 
 # Required deps
 try:
     import numpy as np
-except ImportError:
-    print("Missing: pip install numpy --break-system-packages")
-    sys.exit(1)
-
-try:
     import voyageai
 except ImportError:
-    print("Missing: pip install voyageai --break-system-packages")
+    print("Missing dep. Run:\n  pip install -r requirements.txt --break-system-packages")
     sys.exit(1)
 
 
-CSV_PATH       = DATA / "psd_extracted.csv"
-EMB_BIN        = DATA / "psd_embeddings.bin"
-EMB_META       = DATA / "psd_embeddings_meta.json"
-NEAREST_JSON   = DATA / "psd_nearest.json"
-
-# Default Voyage model — voyage-3 balances quality + cost. Lite is cheaper/smaller.
-DEFAULT_MODEL  = "voyage-3"
-BATCH_SIZE     = 64           # Voyage handles up to 128 inputs per call
-PRICE_PER_1M = {              # rough current Voyage pricing (USD)
-    "voyage-3":         0.06,
-    "voyage-3-lite":    0.02,
-    "voyage-3-large":   0.18,
-    "voyage-large-2":   0.12,
-}
+CSV_PATH       = DATA_DIR / "psd_extracted.csv"
+EMB_BIN        = DATA_DIR / "psd_embeddings.bin"
+EMB_META       = DATA_DIR / "psd_embeddings_meta.json"
+NEAREST_JSON   = DATA_DIR / "psd_nearest.json"
+DRUG_SPEND_CSV = DATA_DIR / "pbs_drug_spend.csv"
 
 
 # ── CSV ingestion ─────────────────────────────────────────────────────────────
@@ -243,7 +230,7 @@ def write_outputs(drugs: list[dict], vectors: np.ndarray, model: str, top_k: int
     EMB_META.write_text(json.dumps(meta, indent=2), encoding="utf-8")
     print(f"  Wrote meta → {EMB_META}")
 
-    # ── Nearest-neighbour table (cosine similarity) ─────────────────────────
+    # ── Nearest-neighbour table (cosine similarity + ATC tiebreaker) ────────
     print(f"  Computing top-{top_k} nearest neighbours per drug…")
     norms = np.linalg.norm(vectors, axis=1, keepdims=True)
     norms[norms == 0] = 1
@@ -251,17 +238,53 @@ def write_outputs(drugs: list[dict], vectors: np.ndarray, model: str, top_k: int
     sim = unit @ unit.T                 # (n, n)
     np.fill_diagonal(sim, -1.0)         # exclude self
 
-    nearest: dict[str, list[dict]] = {}
+    # ATC codes for tiebreaker — pulled from pbs_drug_spend.csv. Only ~43 of the
+    # ~880 drugs have ATC codes (the high-spenders); for the rest the tiebreaker
+    # is a no-op and pure cosine ordering survives.
+    drug_atc = _load_drug_atc_map()
     names = [d["_drug_name"] for d in drugs]
+    atc_by_idx = {i: drug_atc.get(name) for i, name in enumerate(names)}
+    tied_pairs = 0
+
+    nearest: dict[str, list[dict]] = {}
     for i, name in enumerate(names):
         idxs = np.argpartition(-sim[i], min(top_k, n - 1))[:top_k]
         idxs = idxs[np.argsort(-sim[i, idxs])]
+        ranked = [(float(sim[i, j]), int(j)) for j in idxs.tolist() if sim[i, j] > 0]
+        # Apply ATC tiebreaker: stably re-sort each near-tie cluster so candidates
+        # whose ATC code shares more prefix with the source drug float up.
+        before = list(ranked)
+        ranked = break_score_ties(ranked, atc_by_idx, atc_by_idx.get(i), epsilon=SIMILARITY_TIE_EPSILON)
+        if ranked != before:
+            tied_pairs += 1
         nearest[name] = [
-            {"drug": names[j], "score": float(round(sim[i, j], 4))}
-            for j in idxs.tolist() if sim[i, j] > 0
+            {"drug": names[j], "score": float(round(score, 4))}
+            for score, j in ranked
         ]
     NEAREST_JSON.write_text(json.dumps(nearest, indent=2), encoding="utf-8")
-    print(f"  Wrote nearest → {NEAREST_JSON}")
+    print(f"  Wrote nearest → {NEAREST_JSON}  (ATC tiebreaker reordered {tied_pairs} drug lists)")
+
+
+def _load_drug_atc_map() -> dict[str, str]:
+    """Return {drug_name_lower: atc_code} from pbs_drug_spend.csv.
+
+    Drug spend CSV is the only source carrying ATC codes; the PSD extraction
+    schema doesn't ask for them. Missing file or rows without ATC return an
+    empty dict — the tiebreaker becomes a no-op.
+    """
+    if not DRUG_SPEND_CSV.exists():
+        return {}
+    out: dict[str, str] = {}
+    with open(DRUG_SPEND_CSV, encoding="utf-8") as f:
+        for row in csv.DictReader(f):
+            name = (row.get("drug_name") or "").strip().lower()
+            atc  = (row.get("atc_code")  or "").strip()
+            if name and atc:
+                # Strip trailing PBS markers (^^/^/*/#) to match PSD-side keys
+                import re as _re
+                name = _re.sub(r'[\^*#]+$', '', name).strip()
+                out[name] = atc
+    return out
 
 
 # ── Resume support ───────────────────────────────────────────────────────────
@@ -283,7 +306,7 @@ def main():
     ap = argparse.ArgumentParser(description="Build PSD embeddings via Voyage AI")
     ap.add_argument("--model",  default=DEFAULT_MODEL, help=f"Voyage model (default: {DEFAULT_MODEL})")
     ap.add_argument("--batch",  type=int, default=BATCH_SIZE, help="Batch size")
-    ap.add_argument("--top-k",  type=int, default=20,  help="Neighbours to precompute per drug")
+    ap.add_argument("--top-k",  type=int, default=NEAREST_TOP_K, help="Neighbours to precompute per drug")
     ap.add_argument("--resume", action="store_true",   help="Skip drugs already embedded (matches by name + model)")
     ap.add_argument("--dry-run",action="store_true",   help="Estimate cost without calling the API")
     ap.add_argument("--limit",  type=int, default=0,   help="Embed only first N drugs (testing)")

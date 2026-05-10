@@ -11,7 +11,7 @@ making changes — the conventions and "things to avoid" sections matter.
 
 ## Stack
 
-- **Frontend**: single-file dashboard `site_preview.html` (~3,000 lines, vanilla
+- **Frontend**: single-file dashboard `index.html` (~3,000 lines, vanilla
   HTML/CSS/JS). Plus `site_data.js` — an auto-generated `window.SITE_DATA = {...}`
   payload that the dashboard reads at load time. **Never hand-edit `site_data.js`.**
 - **Charting**: Chart.js v4 loaded from cdnjs at runtime. Bar/donut/line charts.
@@ -23,36 +23,41 @@ making changes — the conventions and "things to avoid" sections matter.
 - **Backend**: a single Python serverless function on Vercel at `api/search.py`
   for semantic precedent search (Voyage AI embeddings, in-memory cosine
   similarity over a ~12 MB float32 binary).
+- **Pipeline**: Python package `script_report/` with subpackages for scrapers,
+  extractors, embedders, parsers, and the site builder. Dispatched via
+  `python -m script_report <command>`.
 - **Data extraction**: Claude Haiku (model `claude-haiku-4-5-20251001`) used by
-  `extract_psd_text.py` to turn PSD text into structured CSV fields.
-- **Embeddings**: Voyage AI (`voyage-3` by default) used by `embed_psds.py` to
-  build per-drug "decision profile" vectors for similar-drug recommendations
+  `script_report.extractors.psd_extractor` to turn PSD text into structured
+  CSV fields.
+- **Embeddings**: Voyage AI (`voyage-3` by default) used by
+  `script_report.embedders.voyage_embedder` to build per-drug "decision profile"
+  vectors for similar-drug recommendations (with an ATC-prefix tiebreaker)
   and free-text semantic search.
 
 ---
 
 ## Data pipeline
 
-Run in order. Each script is `--resume`-aware where applicable, so re-running
+Run in order. Each step is `--resume`-aware where applicable, so re-running
 only does new work.
 
 ```
-1.  download_missing_psds.py   →  data/psds/*.pdf  +  data/psds/*.html
-2.  extract_psd_text.py --resume  →  data/psd_extracted.csv
-3.  fetch_pbs_drug_spend.py    →  data/pbs_drug_spend.csv
-4.  parse_atc_data.py          →  data/atc_benefit.csv  +  data/atc_services.csv
-5.  parse_pbac_calendar.py     →  data/pbac_calendar.json   (cycle-timeframe PDFs)
-6.  embed_psds.py --resume     →  data/psd_embeddings.bin
-                                 +  data/psd_embeddings_meta.json
-                                 +  data/psd_nearest.json
-7.  build_site_data.py         →  site_data.js
+1.  python -m script_report download              →  data/psds/*.pdf  +  data/psds/*.html
+2.  python -m script_report extract --resume      →  data/psd_extracted.csv
+3.  python -m script_report spend                 →  data/pbs_drug_spend.csv
+4.  python -m script_report atc                   →  data/atc_benefit.csv  +  data/atc_services.csv
+5.  python -m script_report calendar              →  data/pbac_calendar.json   (cycle-timeframe PDFs)
+6.  python -m script_report embed --resume        →  data/psd_embeddings.bin
+                                                   +  data/psd_embeddings_meta.json
+                                                   +  data/psd_nearest.json
+7.  python -m script_report build                 →  site_data.js
 8.  vercel --prod  (or git push)
 ```
 
-`refresh.py` orchestrates 1–7 with flags:
+`python -m script_report refresh` orchestrates 1–7 with flags:
 - `--build-only`   skip downloads/extract/embed, just rebuild site_data.js
 - `--no-psds`      skip PSD downloading
-- `--no-embed`     skip Voyage embedding (saves ~$0 incremental, but useful)
+- `--no-embed`     skip Voyage embedding
 - `--no-deploy`    build but don't push to Vercel
 
 ---
@@ -61,19 +66,27 @@ only does new work.
 
 | Path | What |
 |------|------|
-| `site_preview.html` | The dashboard. Renamed to `index.html` on Vercel. |
-| `site_data.js` | **Auto-generated.** Do not edit. Run `build_site_data.py`. |
-| `build_site_data.py` | Orchestrator that reads every CSV/JSON and produces `site_data.js`. |
-| `download_missing_psds.py` | Polite scraper. Uses fingerprint dedup so it only downloads new PSDs. Output goes to `data/psds/`. |
-| `extract_psd_text.py` | Haiku-powered field extraction. Reads PDFs and HTML PSDs. Writes `data/psd_extracted.csv`. |
-| `embed_psds.py` | Voyage embeddings + precomputed nearest-neighbours table. |
-| `parse_pbac_calendar.py` | One-shot parser for `PBS-Cycle-timeframe-*.pdf` files. |
+| `index.html` | The dashboard (vanilla HTML/CSS/JS, served at `/` on Vercel). |
+| `site_data.js` | **Auto-generated.** Do not edit. Run `python -m script_report build`. |
+| `pyproject.toml` | Package metadata + deps. `pip install -e .` for editable install. |
+| `script_report/__main__.py` | CLI dispatcher (`python -m script_report <command>`). |
+| `script_report/config.py` | Paths, model identifiers, batch sizes, pricing. |
+| `script_report/refresh.py` | Full pipeline orchestrator (direct calls, not subprocess). |
+| `script_report/data/loaders.py` | Per-input loaders consumed by the site builder. |
+| `script_report/builders/site_builder.py` | Composes `site_data.js` from loader output. |
+| `script_report/scrapers/psd_downloader.py` | Polite PBAC PSD scraper (fingerprint dedup). |
+| `script_report/scrapers/pbs_spend.py` | PBS expenditure Excel fetcher. |
+| `script_report/extractors/psd_extractor.py` | Haiku-powered field extraction (PDFs + HTML PSDs). |
+| `script_report/embedders/voyage_embedder.py` | Voyage embeddings + nearest table (ATC tiebreaker). |
+| `script_report/parsers/atc_parser.py` | PBS ATC HTML-as-XLS parser. |
+| `script_report/parsers/pbac_calendar.py` | PBS Cycle Timeframe PDF parser. |
+| `script_report/utils/helpers.py` | MONTH_MAP, data_path resolver, .env loader. |
+| `script_report/utils/similarity.py` | ATC-prefix tiebreaker for cosine ties. |
 | `api/search.py` | Vercel Python function. Loads embeddings binary at cold start, embeds queries, returns top-N by cosine. |
 | `api/requirements.txt` | Function deps: `voyageai`, `numpy`. |
 | `vercel.json` | Function config + headers. |
 | `.vercelignore` | Excludes 3,000 source PDFs and other heavy local-only files from deployment. |
 | `.env` | Local secrets (gitignored). Contains `ANTHROPIC_API_KEY`, `VOYAGE_API_KEY`. |
-| `refresh.py` | Full pipeline runner. |
 
 ---
 
@@ -84,8 +97,8 @@ only does new work.
 - Auto-deploy on git push to main.
 - **Required env vars in Vercel** (Project Settings → Environment Variables):
   - `VOYAGE_API_KEY` — for `api/search.py`. Set in Production scope.
-- Static files served from project root. The `rewrites` rule in `vercel.json`
-  serves `site_preview.html` at `/`.
+- Static files served from project root. `index.html` is served at `/` by
+  default (no rewrites needed after the v0.11 rename).
 - Function memory 512 MB, max duration 10 s.
 
 ---
@@ -144,7 +157,7 @@ only does new work.
 
 ## Things to avoid
 
-- **Don't hand-edit `site_data.js`** — regenerated by `build_site_data.py`.
+- **Don't hand-edit `site_data.js`** — regenerated by `python -m script_report build`.
 - **Don't re-add NICE / UK comparison content** — intentionally removed.
 - **Don't add AI-generated blog articles, "latest analysis" cards, or fake
   testimonials** — site is data-only.
@@ -163,20 +176,23 @@ only does new work.
 ## Common commands
 
 ```bash
+# Install the package (once)
+pip install -e .
+
 # Add new PSDs and rebuild everything
-python refresh.py
+python -m script_report refresh
 
 # Just rebuild site_data.js after manual CSV edits
-python build_site_data.py
+python -m script_report build
 
-# Embed only newly added drugs (cheap)
-python embed_psds.py --resume
+# Embed only newly added drugs (cheap; ATC tiebreaker applied automatically)
+python -m script_report embed --resume
 
 # Test the live semantic search endpoint
 curl "https://script.report/api/search?q=immature+OS+oncology+rejected&limit=5"
 
 # Local dashboard preview (any static server works)
-python -m http.server 8000        # then open localhost:8000/site_preview.html
+python -m http.server 8000        # then open localhost:8000/
 
 # Manual Vercel deploy (alternative to git push)
 vercel --prod
@@ -199,10 +215,10 @@ vercel --prod
 
 ## When in doubt
 
-- Read `site_preview.html` to understand the rendered surface area.
-- Read `build_site_data.py` to understand the data shape that the dashboard
-  receives.
-- Read `extract_psd_text.py`'s `USER_PROMPT_TEMPLATE` to see exactly what fields
-  are extracted from each PSD.
+- Read `index.html` to understand the rendered surface area.
+- Read `script_report/builders/site_builder.py` (and the loaders it imports)
+  to understand the data shape that the dashboard receives.
+- Read `script_report/extractors/psd_extractor.py`'s `USER_PROMPT_TEMPLATE`
+  to see exactly what fields are extracted from each PSD.
 - The `data/` folder is the integration boundary — every script writes there,
   the dashboard reads from there (via site_data.js).

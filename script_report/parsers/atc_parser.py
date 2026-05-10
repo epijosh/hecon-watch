@@ -44,9 +44,10 @@ import csv
 import sys
 from pathlib import Path
 
-HERE = Path(__file__).parent
-DATA = HERE / "data"
-DATA.mkdir(exist_ok=True)
+from script_report.config import REPO_ROOT, DATA_DIR
+
+HERE = REPO_ROOT
+DATA = DATA_DIR
 
 try:
     from bs4 import BeautifulSoup
@@ -238,7 +239,10 @@ def main():
     print("=" * 60)
 
     # Auto-detect the two files
-    xls_files = sorted(HERE.glob("PBS_Data*.xls")) + sorted(HERE.glob("PBS_Data*.xlsx"))
+    xls_files = (
+        sorted(HERE.glob("PBS_Data*.xls"))  + sorted(HERE.glob("PBS_Data*.xlsx")) +
+        sorted(DATA.glob("PBS_Data*.xls")) + sorted(DATA.glob("PBS_Data*.xlsx"))
+    )
     if not xls_files:
         print("ERROR: No PBS_Data*.xls files found in this folder.")
         print("Copy both downloaded XLS files here first.")

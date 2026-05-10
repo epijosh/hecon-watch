@@ -56,18 +56,14 @@ except ImportError:
     print("Missing dependency. Run:\n  pip install pdfplumber --break-system-packages")
     sys.exit(1)
 
-HERE   = Path(__file__).parent
-DATA   = HERE / "data"
-DATA.mkdir(exist_ok=True)
+from script_report.config import REPO_ROOT, DATA_DIR
+from script_report.utils.helpers import MONTH_MAP as MONTHS
+
+HERE   = REPO_ROOT
+DATA   = DATA_DIR
 OUTPUT = DATA / "pbac_calendar.json"
 
 # ── Constants ────────────────────────────────────────────────────────────────
-MONTHS = {
-    "jan": 1, "january": 1, "feb": 2, "february": 2, "mar": 3, "march": 3,
-    "apr": 4, "april":   4, "may": 5,            "jun": 6, "june":  6,
-    "jul": 7, "july":    7, "aug": 8, "august":  8, "sep": 9, "september": 9,
-    "oct":10, "october":10, "nov":11, "november":11, "dec":12, "december":12,
-}
 MONTH_NAME = {3: "March", 7: "July", 11: "November"}
 PBAC_MONTHS = {3, 7, 11}     # PBAC meets three times a year
 CYCLE_TO_MONTH = {1: 3, 2: 7, 3: 11}   # 2024/1 = March, /2 = July, /3 = November
@@ -311,7 +307,10 @@ def extract_from_pdf(pdf_path: Path, verbose: bool = True,
 
 
 def find_default_pdfs() -> list[Path]:
-    candidates = list(HERE.glob("PBS-Cycle*.pdf")) + list(HERE.glob("PBS-cycle*.pdf"))
+    candidates = (
+        list(HERE.glob("PBS-Cycle*.pdf"))  + list(HERE.glob("PBS-cycle*.pdf")) +
+        list(DATA.glob("PBS-Cycle*.pdf")) + list(DATA.glob("PBS-cycle*.pdf"))
+    )
     return sorted({p.resolve(): None for p in candidates})  # dedup
 
 

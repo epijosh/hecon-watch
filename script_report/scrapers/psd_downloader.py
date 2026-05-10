@@ -39,12 +39,15 @@ except ImportError:
     sys.exit(1)
 
 # ── config ────────────────────────────────────────────────────────────────────
-HERE       = Path(__file__).parent
-OUTPUT_DIR = HERE / "data" / "psds"
+from script_report.config import REPO_ROOT, DATA_DIR, PSDS_DIR
+from script_report.utils.helpers import MONTH_ABBR, MONTH_NUM
+
+HERE       = REPO_ROOT
+OUTPUT_DIR = PSDS_DIR
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # Folders to scan for PSDs you already have (so we never re-download)
-EXISTING_DIRS = [HERE, HERE / "data", HERE / "data" / "psds"]
+EXISTING_DIRS = [HERE, DATA_DIR, PSDS_DIR]
 
 REQUEST_DELAY = 1.5    # seconds between every request
 TIMEOUT       = 30
@@ -78,19 +81,8 @@ HEADERS = {
     "Accept-Language": "en-AU,en;q=0.9",
 }
 
-MONTH_ABBR = {
-    "january": "jan", "february": "feb", "march": "mar", "april": "apr",
-    "may":     "may", "june":     "jun", "july":  "jul", "august":  "aug",
-    "september": "sep", "october": "oct", "november": "nov", "december": "dec",
-}
-MONTH_NUM = {
-    "jan": "01", "feb": "02", "mar": "03", "apr": "04",
-    "may": "05", "jun": "06", "jul": "07", "aug": "08",
-    "sep": "09", "oct": "10", "nov": "11", "dec": "12",
-}
-
 # ── logging ───────────────────────────────────────────────────────────────────
-log_path = HERE / "download_log.txt"
+log_path = DATA_DIR / "download_log.txt"
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s  %(levelname)-7s  %(message)s",

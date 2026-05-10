@@ -26,9 +26,10 @@ import sys
 import time
 from pathlib import Path
 
-HERE = Path(__file__).parent
-DATA = HERE / "data"
-DATA.mkdir(exist_ok=True)
+from script_report.config import REPO_ROOT, DATA_DIR
+
+HERE = REPO_ROOT
+DATA = DATA_DIR
 
 # ── Known Excel URLs by financial year end ────────────────────────────────────
 EXCEL_URLS = {
@@ -67,7 +68,7 @@ def download_excel(url: str, dest: Path) -> bool:
         sys.exit(1)
 
     headers = {
-        "User-Agent": "Mozilla/5.0 (compatible; PBAC Watch research tool; +https://pbacwatch.vercel.app)",
+        "User-Agent": "Mozilla/5.0 (compatible; script.report research tool; +https://script.report)",
         "Accept": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,*/*",
     }
     print(f"  Downloading: {url}")

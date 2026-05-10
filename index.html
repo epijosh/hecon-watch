@@ -550,7 +550,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
         <div class="chart-wrap h-300">
           <canvas id="pbs-chart"></canvas>
           <div class="chart-placeholder" id="pbs-chart-placeholder">
-            Run <code style="background:var(--bg3);padding:2px 6px">python build_site_data.py</code> to load PBS data
+            Run <code style="background:var(--bg3);padding:2px 6px">python -m script_report build</code> to load PBS data
           </div>
         </div>
         <div id="atc-legend" style="margin-top:14px;display:none;flex-wrap:wrap;gap:8px"></div>
@@ -657,7 +657,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
           </div>
           <div class="panel-body">
             <ol class="rank-list" id="atc-list">
-              <li class="rank-item"><span class="rank-num">—</span><div class="muted">Run build_site_data.py to load ATC data</div><span></span></li>
+              <li class="rank-item"><span class="rank-num">—</span><div class="muted">Run python -m script_report build to load ATC data</div><span></span></li>
             </ol>
           </div>
           <div class="panel-foot sans">Government benefit (AUD) by Anatomical Therapeutic Chemical class.</div>
@@ -804,7 +804,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
             </tr>
           </thead>
           <tbody id="browse-tbody">
-            <tr><td colspan="7" style="text-align:center;padding:32px;font-family:var(--ui);font-size:13px;color:var(--text3)">Run build_site_data.py to populate the decisions table</td></tr>
+            <tr><td colspan="7" style="text-align:center;padding:32px;font-family:var(--ui);font-size:13px;color:var(--text3)">Run python -m script_report build to populate the decisions table</td></tr>
           </tbody>
         </table>
       </div>

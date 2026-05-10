@@ -44,10 +44,15 @@ import sys
 import time
 from pathlib import Path
 
-HERE = Path(__file__).parent
-DATA = HERE / "data"          # CSVs written here; fall back to HERE for legacy
-DATA.mkdir(exist_ok=True)
-PSDS = DATA / "psds"          # PDFs live here after migration (or in HERE before)
+from script_report.config import REPO_ROOT, DATA_DIR, PSDS_DIR, HAIKU_MODEL
+from script_report.utils.helpers import load_dotenv_safely
+
+HERE = REPO_ROOT
+DATA = DATA_DIR
+PSDS = PSDS_DIR
+
+load_dotenv_safely()
+
 
 def _pdf_dirs() -> list[Path]:
     """Folders to scan for PSD PDFs (psds/ first, then root fallback)."""
@@ -57,12 +62,6 @@ def _pdf_dirs() -> list[Path]:
     dirs.append(HERE)
     return dirs
 
-# ── Try loading .env ──────────────────────────────────────────────────────────
-try:
-    from dotenv import load_dotenv
-    load_dotenv(HERE / ".env")
-except ImportError:
-    pass  # python-dotenv optional; key can come from environment directly
 
 # ── Dependencies check ────────────────────────────────────────────────────────
 try:
@@ -70,7 +69,7 @@ try:
     import anthropic
     from bs4 import BeautifulSoup
 except ImportError:
-    print("Missing dependency. Run:\n  pip install pdfplumber anthropic python-dotenv beautifulsoup4 --break-system-packages")
+    print("Missing dependency. Run:\n  pip install -r requirements.txt --break-system-packages")
     sys.exit(1)
 
 # ── CSV output fields ─────────────────────────────────────────────────────────
@@ -221,7 +220,7 @@ def call_claude(client: anthropic.Anthropic, text: str) -> dict:
     while retries <= 4:
         try:
             msg = client.messages.create(
-                model="claude-haiku-4-5-20251001",
+                model=HAIKU_MODEL,
                 max_tokens=1536,
                 system=SYSTEM_PROMPT,
                 messages=[{"role": "user", "content": prompt}],
@@ -267,14 +266,11 @@ def load_done(path: Path) -> set[str]:
 def parse_psd_date(filename: str) -> tuple[str, str]:
     """Extract year and month from a PSD filename like 'drug-psd-march-2023.pdf'
     or 'drug-psd-nov-2024.html'."""
-    MONTHS = {
-        "jan": "1", "feb": "2", "mar": "3", "apr": "4", "may": "5", "jun": "6",
-        "jul": "7", "aug": "8", "sep": "9", "oct": "10", "nov": "11", "dec": "12",
-    }
+    from script_report.utils.helpers import MONTH_MAP
     m = re.search(r'-psd-([a-z]+)-(\d{4})\.(?:pdf|html)$', filename.lower())
     if m:
-        mon = MONTHS.get(m.group(1)[:3], "")
-        return m.group(2), mon
+        mon_int = MONTH_MAP.get(m.group(1)[:3])
+        return m.group(2), str(mon_int) if mon_int else ""
     # Alternate pattern: drug-psd-03-2023.pdf
     m2 = re.search(r'-psd-(\d{1,2})-(\d{4})\.(?:pdf|html)$', filename.lower())
     if m2:

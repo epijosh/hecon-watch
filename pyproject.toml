@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "script-report"
+version = "0.11.0"
+description = "Australian medicine subsidy tracker — PBAC PSD + PBS expenditure dashboard"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Joshua Ciardi", email = "joshua.ciardi@gmail.com" }]
+keywords = ["pbac", "pbs", "australia", "health-economics", "hta"]
+
+dependencies = [
+    "requests>=2.31.0",
+    "beautifulsoup4>=4.12.0",
+    "lxml>=5.0.0",
+    "pdfplumber>=0.10.0",
+    "anthropic>=0.25.0",
+    "python-dotenv>=1.0.0",
+    "openpyxl>=3.1.0",
+    "voyageai>=0.3.0",
+    "numpy>=1.24",
+]
+
+[project.urls]
+Homepage = "https://script.report"
+Repository = "https://github.com/epijosh/hecon-watch"
+
+[project.scripts]
+script-report = "script_report.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["script_report*"]

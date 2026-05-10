@@ -11,59 +11,33 @@ just the data, structured.
 
 ## Stack
 
-- **Frontend** — single-file dashboard `site_preview.html` (vanilla
-  HTML/CSS/JS). Plus `site_data.js`, an auto-generated
-  `window.SITE_DATA = {...}` payload the dashboard reads at load time.
+- **Frontend** — single-file dashboard `index.html` (vanilla HTML/CSS/JS)
+  plus `site_data.js`, an auto-generated `window.SITE_DATA = {...}` payload.
 - **Charts** — Chart.js v4 from cdnjs.
 - **Backend** — one Python serverless function (`api/search.py`) on Vercel
   that does semantic precedent search over Voyage AI embeddings (~12 MB
   float32 binary, in-memory cosine similarity).
+- **Pipeline** — Python package `script_report/` with subpackages for
+  scrapers, extractors, embedders, parsers, and the site builder.
 - **Extraction** — Claude Haiku (`claude-haiku-4-5-20251001`) turns each
   PSD's text into structured CSV fields.
 - **Embeddings** — Voyage AI (`voyage-3` by default) builds a per-drug
-  "decision profile" vector that powers similar-drug recommendations and
-  free-text semantic search.
-
----
-
-## Data pipeline
-
-Each script writes to `data/`. Most are `--resume`-aware so re-running only
-does new work.
-
-```
-1. download_missing_psds.py    →  data/psds/*.pdf  +  data/psds/*.html
-2. extract_psd_text.py --resume →  data/psd_extracted.csv
-3. fetch_pbs_drug_spend.py     →  data/pbs_drug_spend.csv
-4. parse_atc_data.py           →  data/atc_benefit.csv  +  data/atc_services.csv
-5. parse_pbac_calendar.py      →  data/pbac_calendar.json
-6. embed_psds.py --resume      →  data/psd_embeddings.bin
-                                +  data/psd_embeddings_meta.json
-                                +  data/psd_nearest.json
-7. build_site_data.py          →  site_data.js
-8. vercel --prod  (or git push)
-```
-
-`refresh.py` runs steps 1–7 with flags:
-
-- `--build-only`  skip downloads/extract/embed, just rebuild `site_data.js`
-- `--no-psds`     skip PSD downloading
-- `--no-embed`    skip Voyage embedding
-- `--no-deploy`   build but don't push to Vercel
+  "decision profile" vector that powers similar-drug recommendations
+  (with an ATC-prefix tiebreaker) and free-text semantic search.
 
 ---
 
 ## Setup
 
 ```bash
-pip install -r requirements.txt
+# Install the package (editable mode so source edits are picked up live)
+pip install -e .
 
-# Local secrets (never committed)
-#   ANTHROPIC_API_KEY=...    (extract_psd_text.py)
-#   VOYAGE_API_KEY=...       (embed_psds.py + api/search.py)
-# put them in .env
+# Local secrets in .env (never committed):
+#   ANTHROPIC_API_KEY=...    (extract step)
+#   VOYAGE_API_KEY=...       (embed step + api/search.py)
 
-python refresh.py --build-only   # smoke-test the build
+python -m script_report build   # smoke-test the site builder
 ```
 
 For Vercel, set `VOYAGE_API_KEY` in Project Settings → Environment Variables
@@ -71,61 +45,69 @@ For Vercel, set `VOYAGE_API_KEY` in Project Settings → Environment Variables
 
 ---
 
-## Common commands
+## CLI
 
-```bash
-# Add new PSDs and rebuild everything
-python refresh.py
+Everything is dispatched through `python -m script_report <command>`:
 
-# Just rebuild site_data.js after manual CSV edits
-python build_site_data.py
+| Command   | What it does                                                   |
+|-----------|----------------------------------------------------------------|
+| `build`   | Read every CSV/JSON, write `site_data.js`.                     |
+| `refresh` | Full pipeline: download → extract → spend → embed → build → deploy. |
+| `download`| Polite scraper of new PBAC PSDs (HTML + PDF).                  |
+| `extract` | Haiku-powered field extraction over the PSD corpus.            |
+| `spend`   | Fetch PBS drug-level expenditure Excel.                        |
+| `atc`     | Parse PBS ATC-class spend / scripts.                           |
+| `calendar`| Parse PBS Cycle Timeframe PDFs into `pbac_calendar.json`.      |
+| `embed`   | Voyage embeddings + nearest-neighbours table (ATC tiebreaker). |
 
-# Embed only newly added drugs (cheap)
-python embed_psds.py --resume
+`refresh` accepts `--build-only`, `--no-psds`, `--no-embed`, `--no-deploy`.
 
-# Test the live semantic search endpoint
-curl "https://script.report/api/search?q=immature+OS+oncology+rejected&limit=5"
+---
 
-# Local dashboard preview
-python -m http.server 8000     # then open localhost:8000/site_preview.html
+## Package layout
 
-# Manual Vercel deploy (alternative to git push)
-vercel --prod
 ```
+script_report/
+├── __init__.py            # version, package marker
+├── __main__.py            # CLI dispatcher (python -m script_report)
+├── config.py              # paths, model names, batch sizes, pricing
+├── refresh.py             # full-pipeline orchestrator
+├── data/
+│   └── loaders.py         # load_atc_data / load_pbac_psds / load_psd_extracted /
+│                          # load_drug_spend / load_pbac_calendar / load_psd_nearest
+├── builders/
+│   └── site_builder.py    # writes site_data.js
+├── scrapers/
+│   ├── psd_downloader.py  # polite PBAC PSD scraper (HTML + PDF)
+│   └── pbs_spend.py       # PBS expenditure Excel fetcher
+├── extractors/
+│   └── psd_extractor.py   # Haiku-powered structured field extraction
+├── embedders/
+│   └── voyage_embedder.py # Voyage embeddings + nearest table (with ATC tiebreaker)
+├── parsers/
+│   ├── atc_parser.py      # PBS ATC HTML-as-XLS parser
+│   └── pbac_calendar.py   # PBS Cycle Timeframe PDF parser
+└── utils/
+    ├── helpers.py         # MONTH_MAP, data_path resolver, .env loading
+    ├── similarity.py      # ATC-prefix tiebreaker for cosine ties
+    └── logging.py         # banner / step helpers
+```
+
+`data/` (under the repo root, not in the package) is the I/O boundary —
+every script reads and writes there. Both the dashboard (`index.html` →
+`site_data.js`) and the Vercel function (`api/search.py` →
+`psd_embeddings.bin` / `psd_embeddings_meta.json`) consume from it.
 
 ---
 
 ## Deployment
 
-- Vercel project: `hecon-watch` (legacy name — domain is `script.report`).
+- Vercel project: `hecon-watch` (legacy name; domain is `script.report`).
 - Auto-deploys on git push to `main`.
-- Static files served from project root; the `rewrites` rule in
-  `vercel.json` serves `site_preview.html` at `/`.
+- `index.html` is served at `/` by default; no rewrites needed.
 - `api/search.py` runs as a Python serverless function (512 MB, 10 s max).
 - `.vercelignore` excludes the 3,000 source PDFs in `data/psds/` — they
   aren't needed at runtime; the dashboard links straight to pbs.gov.au.
-
----
-
-## Project structure
-
-| Path                        | What                                                                |
-|-----------------------------|---------------------------------------------------------------------|
-| `site_preview.html`         | The dashboard. Renamed to `index.html` on Vercel.                   |
-| `site_data.js`              | **Auto-generated.** Do not edit. Run `build_site_data.py`.          |
-| `build_site_data.py`        | Reads every CSV/JSON and produces `site_data.js`.                   |
-| `download_missing_psds.py`  | Polite scraper. Fingerprint dedup; only downloads new PSDs.         |
-| `extract_psd_text.py`       | Haiku-powered field extraction. Reads PDFs and HTML PSDs.           |
-| `embed_psds.py`             | Voyage embeddings + precomputed nearest-neighbours table.           |
-| `parse_atc_data.py`         | PBS ATC-class spend breakdown.                                      |
-| `parse_pbac_calendar.py`    | One-shot parser for `PBS-Cycle-timeframe-*.pdf` files.              |
-| `fetch_pbs_drug_spend.py`   | Per-drug government benefit and script counts.                      |
-| `api/search.py`             | Vercel function. Embeds queries, returns top-N by cosine.           |
-| `api/requirements.txt`      | Function deps: `voyageai`, `numpy`.                                 |
-| `vercel.json`               | Function config + headers + rewrites.                               |
-| `.vercelignore`             | Excludes source PDFs and other heavy local-only files.              |
-| `.env`                      | Local secrets (gitignored). Vercel env vars hold the prod copies.   |
-| `refresh.py`                | Full pipeline runner.                                               |
 
 ---
 
@@ -138,7 +120,7 @@ vercel --prod
 
 ## Things to avoid
 
-- Hand-editing `site_data.js` — always run `build_site_data.py`.
+- Hand-editing `site_data.js` — always run `python -m script_report build`.
 - Re-adding NICE/UK comparisons.
 - Committing the source PDF folder (`data/psds/`).
 - Committing `.env` or any other secret.
@@ -150,4 +132,5 @@ vercel --prod
 - PSD master index — https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/psd/public-summary-documents-by-product
 - PBS expenditure stats — https://www.pbs.gov.au/info/statistics/expenditure-prescriptions/expenditure-and-prescriptions-twelve-months
 - PBAC meetings landing — https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings
+- PBS calendar / cycle timeframes — https://www.pbs.gov.au/info/industry/useful-resources/pbs-calendar
 - TGA ARTG — https://www.tga.gov.au/resources/artg
