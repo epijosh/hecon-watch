@@ -123,8 +123,8 @@ only does new work.
   PBS expenditure → similar precedents → clinical evidence → decision context
   → rejection reasons (if applicable) → submission history → external links.
 - **Lay-friendly language**. The site explains PBAC the first time it appears
-  in the lede; acronyms should ideally have tooltips (not yet done — see
-  pending work).
+  in the lede; acronyms have glossary tooltips (HTA / PBAC terms — ICER, QALY,
+  RSA, PSCR, ESC, DUSC, etc.).
 
 ---
 
@@ -132,25 +132,31 @@ only does new work.
 
 **Working:**
 - Full Australian dashboard (KPI strip, all charts, browse table).
-- Drug detail pages with all 25+ extracted PSD fields surfaced.
+- Drug detail pages with all 25+ extracted PSD fields surfaced, plus:
+  - Comparator + trial backlinks
+  - Resubmission story (per-drug deltas across attempts)
+  - Cost-basis label (Cost-min / Dominant / Redacted / ICER value)
 - Similar Drugs panel (precomputed nearest-neighbours from Voyage).
 - Semantic precedent search at `/api/search` — UI mode toggle in the search
   bar, sentence-style suggestions, loading + error states, in-session cache.
+- Homepage analytical panels:
+  - Recently-published feed (top of dashboard)
+  - "Earned their listing" — drugs that succeeded after rejection
+  - Time-to-listing (first-try success rate, multi-attempt median, by-year trend)
+  - Cost-basis labels in the browse table + recent feed
+- Hash routing: shareable per-drug URLs (`#/drug/<name>`).
+- Glossary tooltips on HTA / PBAC acronyms.
+- Open Graph meta + inline SVG favicon + branded `og.png`.
+- Vercel Web Analytics wired in.
+- PBAC cycle calendar wired (Next deadline header pill + upcoming-meetings panel).
 - Both PDF and HTML PSDs are captured and extracted.
+- ATC code backfill from PBS Schedule monthly CSV bundle.
 - Dark mode toggle.
 - Deployed to script.report.
 
-**Built but not yet wired into the dashboard:**
-- (none — pbac_calendar.json is now wired through `build_site_data.py`'s
-  `load_pbac_calendar()` and rendered as a "Next deadline" header pill plus
-  an upcoming-meetings timeline panel beneath the KPI strip).
-
 **Not yet built:**
-- Per-drug shareable URLs (hash routing — `#/drug/<name>`).
 - About / Methodology page.
 - Contact page.
-- Open Graph meta tags + a real favicon.
-- Glossary tooltips on acronyms (ICER, QALY, RSA, PSCR, ESC, DUSC, etc.).
 - Filters on semantic search results (the API already supports
   `&filter_outcome=`; no UI for it yet).
 - Snippet highlighting on semantic results (showing which sentence matched).

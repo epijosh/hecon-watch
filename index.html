@@ -137,6 +137,18 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 .search-mode-btn .badge { display: inline-block; margin-left: 4px; padding: 1px 6px; background: var(--red); color: #fff; border-radius: 8px; font-size: 9px; font-weight: 700; letter-spacing: .3px; vertical-align: 1px; }
 .search-mode-hint { font-family: var(--ui); font-size: 11px; color: var(--text3); font-style: italic; margin-left: auto; }
 
+/* ── Search filters (semantic mode only) ──────────────────── */
+.search-filters { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); flex-wrap: wrap; align-items: center; gap: 14px; row-gap: 8px; }
+.search-filters.visible { display: flex; }
+.search-filters .filter-group { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.search-filters .filter-label { font-family: var(--ui); font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text3); margin-right: 4px; }
+.search-filters .chip { background: var(--bg2); border: 1px solid var(--border); padding: 3px 10px; border-radius: 12px; cursor: pointer; font-family: var(--ui); font-size: 11px; color: var(--text2); transition: background .12s, border-color .12s, color .12s; }
+.search-filters .chip:hover { color: var(--text); border-color: var(--text3); }
+.search-filters .chip.active { background: var(--red); color: #fff; border-color: var(--red); }
+.search-filters .filter-clear { font-family: var(--ui); font-size: 11px; color: var(--text3); cursor: pointer; margin-left: auto; text-decoration: underline; }
+.search-filters .filter-clear:hover { color: var(--red); }
+.semantic-header .filter-note { font-family: var(--ui); font-size: 12px; color: var(--text3); font-weight: 400; margin-left: 6px; }
+
 /* ── Search loading spinner inside the input ───────────────── */
 .search-spinner { position: absolute; right: 44px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; border: 2px solid var(--bg3); border-top-color: var(--red); border-radius: 50%; animation: search-spin .8s linear infinite; display: none; }
 .search-spinner.visible { display: block; }
@@ -580,6 +592,23 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
       <button class="search-mode-btn active" id="mode-keyword" onclick="setSearchMode('keyword',this)">Keyword</button>
       <button class="search-mode-btn" id="mode-semantic" onclick="setSearchMode('semantic',this)">Precedent <span class="badge">AI</span></button>
       <span class="search-mode-hint" id="search-mode-hint">Live filter as you type</span>
+    </div>
+    <div class="search-filters" id="search-filters">
+      <div class="filter-group">
+        <span class="filter-label">Outcome</span>
+        <button class="chip active" data-filter="outcome" data-value="" onclick="setSemanticFilter('outcome','',this)">Any</button>
+        <button class="chip" data-filter="outcome" data-value="recommended" onclick="setSemanticFilter('outcome','recommended',this)">Recommended</button>
+        <button class="chip" data-filter="outcome" data-value="not" onclick="setSemanticFilter('outcome','not',this)">Not recommended</button>
+        <button class="chip" data-filter="outcome" data-value="deferred" onclick="setSemanticFilter('outcome','deferred',this)">Deferred</button>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Year</span>
+        <button class="chip active" data-filter="yearmin" data-value="" onclick="setSemanticFilter('yearmin','',this)">All time</button>
+        <button class="chip" data-filter="yearmin" data-value="2024" onclick="setSemanticFilter('yearmin','2024',this)">2024+</button>
+        <button class="chip" data-filter="yearmin" data-value="2022" onclick="setSemanticFilter('yearmin','2022',this)">2022+</button>
+        <button class="chip" data-filter="yearmin" data-value="2020" onclick="setSemanticFilter('yearmin','2020',this)">2020+</button>
+      </div>
+      <span class="filter-clear" id="filter-clear" onclick="clearSemanticFilters()" style="display:none">Clear filters</span>
     </div>
   </div>
 </div>
@@ -2363,16 +2392,19 @@ function setSearchMode(mode, btn) {
   const hint = document.getElementById('search-mode-hint');
   const sugK = document.getElementById('search-suggest-keyword');
   const sugS = document.getElementById('search-suggest-semantic');
+  const fil  = document.getElementById('search-filters');
   if (_searchMode === 'semantic') {
     inp.placeholder = 'Describe a clinical or PBAC situation — press Enter to search…';
     if (hint) hint.textContent = 'Semantic search · powered by Voyage embeddings · press Enter to run';
     if (sugK) sugK.style.display = 'none';
     if (sugS) sugS.style.display = 'flex';
+    if (fil)  fil.classList.add('visible');
   } else {
     inp.placeholder = 'Search by drug name, brand, or indication…';
     if (hint) hint.textContent = 'Live filter as you type';
     if (sugK) sugK.style.display = 'flex';
     if (sugS) sugS.style.display = 'none';
+    if (fil)  fil.classList.remove('visible');
   }
 
   const q = (inp.value || '').trim();
@@ -2380,6 +2412,36 @@ function setSearchMode(mode, btn) {
     if (_searchMode === 'semantic') performSemanticSearch(q);
     else handleSearch(inp.value);
   }
+}
+
+// ── Semantic filters (outcome → server, year → client) ──────────────────────
+let _semanticFilters = { outcome: '', yearmin: '' };
+
+function setSemanticFilter(kind, value, btn) {
+  _semanticFilters[kind] = value || '';
+  document.querySelectorAll(`.search-filters .chip[data-filter="${kind}"]`).forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  const anyActive = !!(_semanticFilters.outcome || _semanticFilters.yearmin);
+  const cl = document.getElementById('filter-clear');
+  if (cl) cl.style.display = anyActive ? 'inline' : 'none';
+
+  const inp = document.getElementById('search-input');
+  const q = (inp && inp.value || '').trim();
+  if (q && _searchMode === 'semantic') performSemanticSearch(q);
+}
+
+function clearSemanticFilters() {
+  _semanticFilters = { outcome: '', yearmin: '' };
+  document.querySelectorAll('.search-filters .chip').forEach(b => {
+    b.classList.toggle('active', !b.dataset.value);
+  });
+  const cl = document.getElementById('filter-clear');
+  if (cl) cl.style.display = 'none';
+
+  const inp = document.getElementById('search-input');
+  const q = (inp && inp.value || '').trim();
+  if (q && _searchMode === 'semantic') performSemanticSearch(q);
 }
 
 function handleSearchKey(e) {
@@ -2403,9 +2465,13 @@ async function performSemanticSearch(q) {
   showResults();
   document.getElementById('search-clear').classList.add('visible');
 
-  // Cache hit — render immediately
-  if (_semanticCache.has(q)) {
-    renderSemanticResults(q, _semanticCache.get(q));
+  // Cache key includes server-side filter (outcome). Year filter is applied
+  // client-side at render time so it can change without a refetch.
+  const outcome = _semanticFilters.outcome || '';
+  const cacheKey = `${q}${outcome}`;
+
+  if (_semanticCache.has(cacheKey)) {
+    renderSemanticResults(q, _semanticCache.get(cacheKey));
     return;
   }
 
@@ -2424,7 +2490,8 @@ async function performSemanticSearch(q) {
     </div>`;
 
   try {
-    const url = `/api/search?q=${encodeURIComponent(q)}&limit=25`;
+    let url = `/api/search?q=${encodeURIComponent(q)}&limit=50`;
+    if (outcome) url += `&filter_outcome=${encodeURIComponent(outcome)}`;
     const r = await fetch(url, { signal: _semanticAbort.signal });
     if (!r.ok) {
       let body = ''; try { body = await r.text(); } catch(e) {}
@@ -2432,7 +2499,7 @@ async function performSemanticSearch(q) {
     }
     const data = await r.json();
     if (data.error) throw new Error(data.error);
-    _semanticCache.set(q, data);
+    _semanticCache.set(cacheKey, data);
     renderSemanticResults(q, data);
   } catch (e) {
     if (e.name === 'AbortError') return;
@@ -2443,20 +2510,36 @@ async function performSemanticSearch(q) {
 }
 
 function renderSemanticResults(query, data) {
-  const results = (data && data.results) || [];
+  const allResults = (data && data.results) || [];
   const model = (data && data.model) || 'voyage';
 
+  // Apply client-side year filter (server already applied outcome).
+  const yearMin = parseInt(_semanticFilters.yearmin || '0', 10) || 0;
+  const results = yearMin
+    ? allResults.filter(r => parseInt(r.year || '0', 10) >= yearMin)
+    : allResults;
+
+  const filteredOut = allResults.length - results.length;
+  const filterNote = filteredOut > 0
+    ? ` <span class="filter-note">(${filteredOut} hidden by year filter)</span>`
+    : '';
+
   if (!results.length) {
+    const reason = allResults.length
+      ? `All ${allResults.length} matches were filtered out`
+      : `No precedents matched “${escapeHtml(query)}”`;
     document.getElementById('result-content').innerHTML = `
       <div class="semantic-header">
         <div>
           <div class="eyebrow">Semantic precedent search</div>
-          <span class="results-title">No precedents matched “${query}”</span>
+          <span class="results-title">${reason}</span>
         </div>
-        <span class="results-sub">${model}</span>
+        <span class="results-sub">${escapeHtml(model)}</span>
       </div>
       <div style="padding:24px 0;color:var(--text3);font-family:var(--ui);font-size:14px">
-        Try rephrasing — describe the indication, the type of evidence, the comparator, or the rejection reason.
+        ${allResults.length
+          ? 'Try widening the year filter or clearing the outcome filter.'
+          : 'Try rephrasing — describe the indication, the type of evidence, the comparator, or the rejection reason.'}
       </div>
       <div style="margin-top:14px"><span class="sans" style="cursor:pointer;color:var(--text3)" onclick="clearSearch()">← Back to dashboard</span></div>`;
     return;
@@ -2497,7 +2580,7 @@ function renderSemanticResults(query, data) {
     <div class="semantic-header">
       <div>
         <div class="eyebrow">Semantic precedent search</div>
-        <span class="results-title">${results.length} precedent${results.length!==1?'s':''} for “${escapeHtml(query)}”</span>
+        <span class="results-title">${results.length} precedent${results.length!==1?'s':''} for “${escapeHtml(query)}”${filterNote}</span>
       </div>
       <span class="results-sub">${escapeHtml(model)} · ranked by cosine similarity</span>
     </div>
