@@ -190,8 +190,8 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
   .recent-aside { flex-direction: row; align-items: center; min-width: 0; gap: 10px; }
 }
 
-/* ── Top-zone grid: Recently-published (2/3) + Coming-up (1/3) ───── */
-.top-zone-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 32px; align-items: start; }
+/* ── Top-zone grid: Recently-published + Coming-up, 50/50 ────────── */
+.top-zone-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
 .top-zone-right { border-left: 1px solid var(--border); padding-left: 28px; }
 @media (max-width: 900px) {
   .top-zone-grid { grid-template-columns: 1fr; gap: 24px; }
@@ -209,21 +209,25 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 .coming-mkind  { font-family: var(--ui); font-size: 9.5px; font-weight: 700; letter-spacing: 1.1px; text-transform: uppercase; padding: 3px 7px; background: var(--bg2); color: var(--text3); border: 1px solid var(--border); white-space: nowrap; flex-shrink: 0; }
 .coming-mkind.intracycle { color: var(--red); border-color: var(--red); }
 .coming-items { display: flex; flex-direction: column; gap: 1px; background: var(--border); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-.coming-item { padding: 10px 12px; background: var(--bg); border-left: 2px solid transparent; transition: background .12s, border-left-color .12s; }
+.coming-item { padding: 8px 12px; background: var(--bg); border-left: 2px solid transparent; transition: background .12s, border-left-color .12s; }
 .coming-item.linked { cursor: pointer; }
 .coming-item.linked:hover { background: var(--bg2); border-left-color: var(--red); }
 .coming-item.linked:hover .coming-drug { color: var(--red); }
 .coming-item.linked:focus-visible { outline: 2px solid var(--red); outline-offset: -2px; }
-.coming-drug { font-family: var(--display); font-size: 14px; font-weight: 700; letter-spacing: -.1px; line-height: 1.25; transition: color .15s; }
-.coming-meta { font-family: var(--body); font-size: 11.5px; color: var(--text2); margin-top: 3px; line-height: 1.4; }
+.coming-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.coming-drug { font-family: var(--display); font-size: 13.5px; font-weight: 700; letter-spacing: -.1px; line-height: 1.3; transition: color .15s; flex: 1; min-width: 0; }
+.coming-meta { font-family: var(--body); font-size: 11.5px; color: var(--text2); margin-top: 2px; line-height: 1.35; }
 .coming-ind { color: var(--text); font-weight: 500; }
 .coming-sponsor { color: var(--text3); }
 .coming-tags { font-family: var(--ui); margin-top: 5px; display: flex; gap: 4px; flex-wrap: wrap; }
-.coming-tag { font-size: 9.5px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; padding: 2px 6px; background: var(--bg2); color: var(--text3); border: 1px solid var(--border); }
+.coming-tag { font-size: 9px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; padding: 2px 6px; background: var(--bg2); color: var(--text3); border: 1px solid var(--border); white-space: nowrap; flex-shrink: 0; }
 .coming-tag.major { color: var(--red); border-color: var(--red); }
 .coming-tag.resub { color: var(--orange); border-color: var(--orange); }
 .coming-tag.stake { color: var(--blue); border-color: var(--blue); }
 .coming-purpose { font-family: var(--body); font-size: 11.5px; color: var(--text3); margin-top: 5px; line-height: 1.4; font-style: italic; }
+.coming-more { padding: 10px 0 4px; text-align: center; }
+.coming-more button { background: none; border: 1px solid var(--border); color: var(--red); font-family: var(--ui); font-size: 11.5px; font-weight: 600; padding: 6px 14px; cursor: pointer; }
+.coming-more button:hover { background: var(--bg2); }
 .coming-source { font-family: var(--ui); font-size: 10.5px; margin-top: 8px; }
 .coming-source a { color: var(--text3); text-decoration: none; border-bottom: 1px dotted var(--border); }
 .coming-source a:hover { color: var(--red); border-bottom-color: var(--red); }
@@ -1610,6 +1614,9 @@ function _comingMeetingDate(iso, label) {
   return `${MONTHS[+m[2]] || ''} ${m[1]}`;
 }
 
+let _comingExpanded = false;
+const COMING_DEFAULT_PER_MEETING = 6;
+
 function buildComingUp() {
   const D = window.SITE_DATA;
   const ag = D && D.agendas;
@@ -1627,40 +1634,59 @@ function buildComingUp() {
     return;
   }
 
+  const totalItems = meetings.reduce((a, m) => a + ((m.items||[]).length), 0);
   if (sub) {
     const nM = ag.n_meetings || meetings.length;
-    const nI = ag.n_items || meetings.reduce((a, m) => a + ((m.items||[]).length), 0);
-    sub.textContent = `${nM} meeting${nM===1?'':'s'} · ${nI} item${nI===1?'':'s'}`;
+    sub.textContent = `${nM} meeting${nM===1?'':'s'} · ${totalItems} item${totalItems===1?'':'s'}`;
   }
 
+  const expanded = _comingExpanded;
+  let hidden = 0;
+
   list.innerHTML = meetings.map(m => {
-    const items = (m.items || []).map(it => {
-      const slugs = it.drug_slugs || [];
+    const all     = m.items || [];
+    const visible = expanded ? all : all.slice(0, COMING_DEFAULT_PER_MEETING);
+    hidden += all.length - visible.length;
+
+    const items = visible.map(it => {
+      const slugs  = it.drug_slugs || [];
       const linked = slugs.length > 0;
       const click  = linked ? `onclick="selectFromResults('${jsAttr(slugs[0])}')"` : '';
       const role   = linked ? 'role="button" tabindex="0"' : '';
       const drug   = titleCase(it.drug || '—');
-      const tags = [];
-      if (it.submission_category) {
-        tags.push(`<span class="coming-tag ${_comingTagClass(it.submission_category)}">${escapeHtml(it.submission_category)}</span>`);
-      }
-      if (it.submission_pathway) {
-        tags.push(`<span class="coming-tag">${escapeHtml(it.submission_pathway)}</span>`);
-      }
+
+      // Category chip is the primary signal — render inline with the drug.
+      // Pathway and purpose only show in expanded mode (kept the row compact
+      // by default so the agenda height matches the recent-feed column).
+      const catTag = it.submission_category
+        ? `<span class="coming-tag ${_comingTagClass(it.submission_category)}">${escapeHtml(it.submission_category)}</span>`
+        : '';
+      const pathTag = (expanded && it.submission_pathway)
+        ? `<div class="coming-tags"><span class="coming-tag">${escapeHtml(it.submission_pathway)}</span></div>`
+        : '';
+
       const indHtml = it.indication
         ? `<span class="coming-ind">${glossify(escapeHtml(it.indication))}</span>`
         : '';
       const sponsorHtml = it.sponsor
         ? `<span class="coming-sponsor"> · ${escapeHtml(it.sponsor)}</span>`
         : '';
-      const purpose = it.purpose && it.purpose.length > 140
-        ? it.purpose.slice(0, 138) + '…'
-        : (it.purpose || '');
-      return `<div class="coming-item ${linked?'linked':''}" ${click} ${role}>
-        <div class="coming-drug">${escapeHtml(drug)}</div>
+
+      const purposeHtml = (expanded && it.purpose)
+        ? `<div class="coming-purpose">${escapeHtml(it.purpose)}</div>`
+        : '';
+
+      // Hover tooltip in collapsed mode so the purpose isn't lost entirely.
+      const titleAttr = it.purpose ? `title="${escapeHtml(it.purpose)}"` : '';
+
+      return `<div class="coming-item ${linked?'linked':''}" ${click} ${role} ${titleAttr}>
+        <div class="coming-row">
+          <span class="coming-drug">${escapeHtml(drug)}</span>
+          ${catTag}
+        </div>
         ${(indHtml || sponsorHtml) ? `<div class="coming-meta">${indHtml}${sponsorHtml}</div>` : ''}
-        ${tags.length ? `<div class="coming-tags">${tags.join('')}</div>` : ''}
-        ${purpose ? `<div class="coming-purpose">${escapeHtml(purpose)}</div>` : ''}
+        ${pathTag}
+        ${purposeHtml}
       </div>`;
     }).join('');
 
@@ -1680,9 +1706,16 @@ function buildComingUp() {
       <div class="coming-items">${items || '<div class="coming-empty" style="padding:10px 12px">No items extracted.</div>'}</div>
       ${sourceLink}
     </div>`;
-  }).join('');
+  }).join('') + (hidden > 0
+    ? `<div class="coming-more"><button onclick="expandComing()">Show all ${totalItems} items →</button></div>`
+    : '');
 
   if (strip) strip.style.display = '';
+}
+
+function expandComing() {
+  _comingExpanded = true;
+  buildComingUp();
 }
 
 // ╔═══════════════════════════════════════════════════════════════════╗
