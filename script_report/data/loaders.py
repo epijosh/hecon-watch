@@ -288,12 +288,45 @@ def load_psd_extracted() -> dict:
           f"Not recommended: {by_rec.get('Not recommended', 0)}")
     print(f"  Year coverage: {len(by_year)} years, {sum(by_year.values())} records")
 
+    # ── Recently-published feed (top 50 PSDs by meeting date) ────────────────
+    # One row per PSD record (not deduped by drug — a drug with two recent
+    # submissions appears twice). Sort by (year, month) desc.
+    recent: list[dict] = []
+    for row in good:
+        yr = _safe_int(row.get("pbac_year"))
+        mo = _safe_int(row.get("pbac_month"))
+        if not yr:
+            continue
+        drug = (row.get("drug") or "").strip().lower()
+        if not drug:
+            m = re.match(r'^(.+?)-psd-', (row.get("filename") or "").lower())
+            drug = m.group(1).replace("-", " ") if m else ""
+        if not drug:
+            continue
+        recent.append({
+            "drug":           drug,
+            "year":           str(yr),
+            "month":          mo or 0,
+            "recommendation": row.get("recommendation", ""),
+            "listing_type":   row.get("listing_type", ""),
+            "icer_low":       _safe_int(row.get("icer_low")),
+            "icer_high":      _safe_int(row.get("icer_high")),
+            "indication":     (row.get("indication") or "").strip()[:140],
+            "therapy_area":   row.get("therapy_area", ""),
+            "filename":       row.get("filename", ""),
+        })
+    recent.sort(key=lambda r: (int(r["year"]), r["month"] or 0), reverse=True)
+    recent = recent[:50]
+    if recent:
+        print(f"  Recent feed   : {len(recent)} most-recent PSDs (latest {recent[0]['year']}-{recent[0]['month']:02d})")
+
     return {
         "total":             len(drug_summaries),
         "drugs":             drug_summaries,
         "by_recommendation": dict(sorted(by_rec.items(),     key=lambda x: -x[1])),
         "by_therapy":        dict(sorted(by_therapy.items(), key=lambda x: -x[1])),
         "by_year":           dict(sorted(by_year.items())),
+        "recent":            recent,
     }
 
 

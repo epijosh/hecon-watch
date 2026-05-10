@@ -154,6 +154,30 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 .semantic-callout strong { color: var(--text); font-weight: 600; }
 
 /* ── KPI Strip ───────────────────────────────────────────────── */
+/* ── Recently-published feed ──────────────────────────────── */
+.recent-strip { padding: 26px 0; border-bottom: 1px solid var(--border); background: var(--bg); }
+.recent-head { display: flex; align-items: baseline; justify-content: space-between; gap: 18px; flex-wrap: wrap; margin-bottom: 14px; }
+.recent-head h3 { font-family: var(--display); font-size: 22px; font-weight: 700; letter-spacing: -.2px; }
+.recent-head .recent-sub { font-family: var(--ui); font-size: 12px; color: var(--text3); }
+.recent-list { border-top: 1px solid var(--border); }
+.recent-row { display: grid; grid-template-columns: 90px 1fr auto; gap: 16px; padding: 12px 4px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background .12s, padding-left .12s; align-items: start; }
+.recent-row:hover { background: var(--bg2); padding-left: 12px; }
+.recent-row:hover .recent-name { color: var(--red); }
+.recent-row:focus-visible { outline: 2px solid var(--red); outline-offset: -2px; }
+.recent-date { font-family: var(--ui); font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); padding-top: 3px; }
+.recent-name { font-family: var(--display); font-size: 16px; font-weight: 700; letter-spacing: -.2px; transition: color .15s; }
+.recent-meta { font-family: var(--body); font-size: 12.5px; color: var(--text2); margin-top: 3px; line-height: 1.45; }
+.recent-meta .recent-therapy { font-family: var(--ui); font-size: 10.5px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: var(--text3); margin-right: 8px; }
+.recent-aside { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; min-width: 110px; padding-top: 2px; }
+.recent-icer { font-family: var(--ui); font-size: 11px; font-weight: 600; color: var(--text3); }
+.recent-more { padding: 14px 0 4px; text-align: center; }
+.recent-more button { background: none; border: 0; font-family: var(--ui); font-size: 12px; font-weight: 600; color: var(--red); cursor: pointer; padding: 6px 14px; border: 1px solid var(--border); }
+.recent-more button:hover { background: var(--bg2); }
+@media (max-width: 800px) {
+  .recent-row { grid-template-columns: 1fr; gap: 4px; }
+  .recent-aside { flex-direction: row; align-items: center; min-width: 0; gap: 10px; }
+}
+
 /* ── PBAC cycle calendar panel ─────────────────────────────── */
 .cal-strip { padding: 26px 0; border-bottom: 1px solid var(--border); background: var(--bg2); }
 .cal-head { display: flex; align-items: baseline; justify-content: space-between; gap: 18px; flex-wrap: wrap; margin-bottom: 14px; }
@@ -549,6 +573,20 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
           <div class="kpi-sub" id="kpi-scripts-sub">prescriptions filled</div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- ─── RECENTLY PUBLISHED ───────────────────────────────────────── -->
+  <div class="recent-strip" id="recent-strip" style="display:none">
+    <div class="container">
+      <div class="recent-head">
+        <div>
+          <div class="eyebrow">Recently published</div>
+          <h3>Latest PBAC decisions</h3>
+        </div>
+        <div class="recent-sub" id="recent-sub">—</div>
+      </div>
+      <div id="recent-list" class="recent-list"></div>
     </div>
   </div>
 
@@ -1224,6 +1262,61 @@ function buildCalendar() {
   }).join('');
   list.innerHTML = html;
   strip.style.display = '';
+}
+
+// ╔═══════════════════════════════════════════════════════════════════╗
+// ║  RECENTLY PUBLISHED FEED                                              ║
+// ╚═══════════════════════════════════════════════════════════════════╝
+let _recentExpanded = false;
+
+function buildRecentFeed() {
+  const D = window.SITE_DATA;
+  const strip = document.getElementById('recent-strip');
+  if (!strip || !D || !D.psd || !Array.isArray(D.psd.recent) || !D.psd.recent.length) return;
+
+  const all = D.psd.recent;
+  const visible = _recentExpanded ? all : all.slice(0, 12);
+
+  // Source line: span of dates covered
+  const last = all[0], first = all[all.length - 1];
+  const fmt = (yr, mo) => `${MONTHS[+mo] || ''} ${yr}`.trim();
+  const sub = document.getElementById('recent-sub');
+  if (sub) {
+    sub.textContent = `${all.length} most recent decisions · ${fmt(first.year, first.month)} → ${fmt(last.year, last.month)}`;
+  }
+
+  const list = document.getElementById('recent-list');
+  if (!list) return;
+  const rows = visible.map(r => {
+    const recCls = recCssClass(r.recommendation);
+    const recLabel = r.recommendation || '—';
+    const date = fmt(r.year, r.month);
+    const ind = r.indication || '';
+    const truncated = ind.length >= 140;
+    const icer = (r.icer_high || r.icer_low) ? fmtICER(r.icer_high || r.icer_low) : '';
+    return `<div class="recent-row" role="button" tabindex="0" onclick="selectFromResults('${jsAttr(r.drug)}')">
+      <div class="recent-date">${escapeHtml(date)}</div>
+      <div>
+        <div class="recent-name">${escapeHtml(titleCase(r.drug))}</div>
+        <div class="recent-meta">${r.therapy_area ? `<span class="recent-therapy">${escapeHtml(r.therapy_area)}</span>` : ''}${ind ? glossify(escapeHtml(ind)) + (truncated ? '…' : '') : '—'}</div>
+      </div>
+      <div class="recent-aside">
+        <span class="drec ${recCls}">${escapeHtml(recLabel)}</span>
+        ${icer ? `<span class="recent-icer">ICER ${icer}</span>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+
+  const moreBtn = (!_recentExpanded && all.length > 12)
+    ? `<div class="recent-more"><button onclick="expandRecent()">Show all ${all.length} →</button></div>`
+    : '';
+  list.innerHTML = rows + moreBtn;
+  strip.style.display = '';
+}
+
+function expandRecent() {
+  _recentExpanded = true;
+  buildRecentFeed();
 }
 
 // ╔═══════════════════════════════════════════════════════════════════╗
@@ -2662,6 +2755,7 @@ function initAll() {
   buildDrugDB();
   initKPIs();
   initBrowse();
+  buildRecentFeed();
   buildPBSChart();
   buildOutcomesDonut();
   buildSubmissionsChart();
