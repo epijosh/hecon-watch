@@ -662,9 +662,9 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
         <li><a id="nav-about" onclick="navTo('about');return false;">About</a></li>
       </ul>
       <div class="nav-actions">
-        <button class="theme-btn sans" onclick="toggleTheme()" title="Toggle between light and dark mode" aria-label="Toggle theme">
+        <button class="theme-btn sans" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
           <span id="theme-icon">☽</span>
-          <span id="theme-label">Dark mode</span>
+          <span id="theme-label">Theme</span>
         </button>
       </div>
     </div>
@@ -1190,7 +1190,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
       <section class="about-section">
         <h2>Where the data comes from</h2>
         <ul>
-          <li><strong>Decisions</strong> — PBAC PSDs (PDF + HTML) scraped from pbs.gov.au.</li>
+          <li><strong>Decisions</strong> — every PBAC Public Summary Document (PDF + HTML) published on pbs.gov.au.</li>
           <li><strong>Expenditure</strong> — monthly PBS expenditure stats from Services Australia.</li>
           <li><strong>Drug schedule + ATC codes</strong> — the monthly PBS Schedule API.</li>
           <li><strong>Upcoming meetings</strong> — PBAC cycle calendar PDFs and meeting agendas.</li>
@@ -1199,13 +1199,15 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
       </section>
 
       <section class="about-section">
-        <h2>How extraction works</h2>
-        <p>PSDs are 4–80+ page documents written in dense PBAC prose. Anthropic's Claude Haiku model extracts a fixed schema of around 25 fields from each one — indication, comparator, evidence type, ICER, recommendation, rejection reasons — into a structured CSV. Drug pages then surface those fields with a backlink to the original PSD.</p>
+        <h2>How the dataset is built</h2>
+        <p>I've been extracting and cataloguing the data inside PSDs for many years. They are 4–80+ page documents written in dense PBAC prose, and the fields that matter — indication, comparator, evidence type, ICER, recommendation, rejection reasons — are buried throughout. Each PSD is normalised into a structured row of around 25 fields, surfaced on the drug page with a backlink to the source document.</p>
       </section>
 
       <section class="about-section">
-        <h2>How precedent search works</h2>
-        <p>Each drug's extracted profile is converted into an embedding vector with Voyage AI's <code>voyage-3</code> model. Your query is embedded the same way and results are ranked by cosine similarity. The Match score on each card is that similarity (0–1). The outcome / year / therapy chips narrow the candidate pool.</p>
+        <h2>Precedent search — the heart of the site</h2>
+        <p>This is where the dataset really earns its keep. Every drug's extracted profile is converted into a high-dimensional embedding vector using Voyage AI's <code>voyage-3</code> model, and the whole corpus lives in an in-memory vector index that the <code>/api/search</code> endpoint queries on every request.</p>
+        <p>Embeddings work unusually well on PSDs. The documents share a tight, technical vocabulary — comparators, ICER framings, ESC commentary, DUSC concerns, managed-entry mechanics, immature-OS arguments, nominated-price reductions — so similar precedents end up neighbours in vector space even when they use different drug names, different indications, or different wording. A query like <em>"immature OS in second-line oncology rejected on uncertain ICER"</em> doesn't return keyword hits; it returns the actual precedents PBAC has weighed before.</p>
+        <p>Your query is embedded the same way and ranked by cosine similarity. The Match score on each card is that similarity (0–1). The outcome / year / therapy chips narrow the candidate pool.</p>
       </section>
 
       <section class="about-section">
@@ -3927,7 +3929,7 @@ function applyThemeButtonLabel() {
   const icon = document.getElementById('theme-icon');
   const label = document.getElementById('theme-label');
   if (icon) icon.textContent = isDark ? '☀' : '☽';
-  if (label) label.textContent = isDark ? 'Light mode' : 'Dark mode';
+  if (label) label.textContent = 'Theme';
 }
 function toggleTheme() {
   const html = document.documentElement;
