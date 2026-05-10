@@ -411,7 +411,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
 <header class="page-head">
   <div class="container">
     <div class="eyebrow" style="margin-bottom:10px">Australian medicine subsidy tracker</div>
-    <h1>Which medicines Australia funds — and which it doesn't</h1>
+    <h1>Which medicines Australia funds — and what they cost</h1>
     <p class="lede">script.report tracks every decision the Pharmaceutical Benefits Advisory Committee (PBAC) makes about adding a medicine to the PBS, and the government spend that follows. Outcomes, evidence, ICERs, and prescriptions — all drawn from <span style="font-family:var(--ui);font-size:13px">pbs.gov.au</span>.</p>
     <div class="meta-row">
       <span class="pill"><strong id="meta-psds">—</strong>PSDs indexed</span>
@@ -1227,13 +1227,9 @@ async function buildSubmissionsChart() {
     }
   }
 
-  const sorted = Object.entries(byYear).filter(([y]) => /^\d{4}$/.test(y) && +y >= 2000).sort();
-  if (!sorted.length) return;
-  // Drop leading years where volume is below 10% of peak — hides the sparse early extraction tail
-  const peak = Math.max(...sorted.map(e => +e[1] || 0), 1);
-  let start = 0;
-  while (start < sorted.length - 1 && (+sorted[start][1] || 0) < peak * 0.10) start++;
-  const entries = sorted.slice(start);
+  // Clip to 2013+ — pre-2013 has only ~23 incidental retrospective uploads
+  // across 4 years vs ~1,990 systematic from 2013 onward.
+  const entries = Object.entries(byYear).filter(([y]) => /^\d{4}$/.test(y) && +y >= 2013).sort();
   if (!entries.length) return;
 
   document.getElementById('submissions-placeholder').style.display = 'none';
