@@ -264,8 +264,21 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 .coming-source a:hover { color: var(--red); border-bottom-color: var(--red); }
 .coming-empty { font-family: var(--body); font-size: 12.5px; color: var(--text3); padding: 14px 0; font-style: italic; line-height: 1.5; }
 
+/* ── Story strip (flips + time-to-listing, side-by-side) ───── */
+.story-strip { padding: 26px 0; border-bottom: 1px solid var(--border); background: var(--bg); }
+.story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+.story-cell { min-width: 0; }
+.story-cell + .story-cell { padding-left: 32px; border-left: 1px solid var(--border); }
+@media (max-width: 800px) {
+  .story-grid { grid-template-columns: 1fr; gap: 28px; }
+  .story-cell + .story-cell { padding-left: 0; border-left: 0; padding-top: 28px; border-top: 1px solid var(--border); }
+}
+
 /* ── Resubmission flip stories ───────────────────────────── */
 .flips-strip { padding: 26px 0; border-bottom: 1px solid var(--border); background: var(--bg2); }
+/* When nested inside .story-strip, drop our own outer padding/border/bg */
+.story-strip .flips-strip { padding: 0; border-bottom: 0; background: transparent; }
+.story-strip .flips-list { grid-template-columns: 1fr; }
 .flips-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
 .flip-card { background: var(--bg); padding: 16px 18px; cursor: pointer; transition: background .12s; display: grid; gap: 8px; }
 .flip-card:hover { background: var(--bg2); }
@@ -296,6 +309,12 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 
 /* ── Time to listing ───────────────────────────────────────── */
 .ttl-strip { padding: 26px 0; border-bottom: 1px solid var(--border); background: var(--bg); }
+/* When nested inside .story-strip, drop our own outer padding/border/bg */
+.story-strip .ttl-strip { padding: 0; border-bottom: 0; background: transparent; }
+/* Inside the story-strip the right column is narrower — collapse the 3-up
+   stat row so each stat still has breathing room. */
+.story-strip .ttl-stats { grid-template-columns: 1fr 1fr 1fr; }
+@media (max-width: 1000px) { .story-strip .ttl-stats { grid-template-columns: 1fr; } }
 .ttl-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 18px; }
 .ttl-stat { background: var(--bg); padding: 14px 18px; }
 .ttl-stat-label { font-family: var(--ui); font-size: 10.5px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text3); margin-bottom: 4px; }
@@ -831,71 +850,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
     </div>
   </div>
 
-  <!-- ─── DRUGS THAT EARNED THEIR LISTING ──────────────────────────── -->
-  <div class="flips-strip" id="flips-strip" style="display:none">
-    <div class="container">
-      <div class="recent-head">
-        <div>
-          <div class="eyebrow">Resubmission stories</div>
-          <h3>Drugs that earned their listing</h3>
-        </div>
-        <div class="recent-sub" id="flips-sub">—</div>
-      </div>
-      <div id="flips-list" class="flips-list"></div>
-    </div>
-  </div>
-
-  <!-- ─── TIME TO LISTING ──────────────────────────────────────────── -->
-  <div class="ttl-strip" id="ttl-strip" style="display:none">
-    <div class="container">
-      <div class="recent-head">
-        <div>
-          <div class="eyebrow">Time to listing</div>
-          <h3>How long from first submission to first listing?</h3>
-        </div>
-        <div class="recent-sub" id="ttl-sub">—</div>
-      </div>
-      <div class="ttl-stats" id="ttl-stats"></div>
-      <div class="ttl-chart-wrap">
-        <div class="ttl-chart-title">Median months (resubmission journeys only) by year of recommendation</div>
-        <div class="ttl-chart-canvas-wrap"><canvas id="ttl-chart"></canvas></div>
-        <div class="ttl-foot" id="ttl-foot"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ─── SPONSOR LEADERBOARD ──────────────────────────────────────── -->
-  <div class="lb-strip" id="lb-strip" style="display:none">
-    <div class="container">
-      <div class="recent-head">
-        <div>
-          <div class="eyebrow">Sponsors</div>
-          <h3>Pharma leaderboard</h3>
-        </div>
-        <div class="recent-sub" id="lb-sub">—</div>
-      </div>
-      <div class="lb-table-head">
-        <div>#</div>
-        <div>Sponsor</div>
-        <div>Submissions</div>
-        <div class="lb-col-drugs">Drugs</div>
-        <div style="text-align:right">PBS spend captured</div>
-      </div>
-      <div id="lb-list" class="lb-list"></div>
-      <div class="lb-foot">
-        Sponsors with at least 5 submissions on file. PBS spend = FY-latest
-        government benefit; each drug's spend is credited to a single sponsor —
-        the one with the most recent Recommended PBAC decision for that drug —
-        so biosimilars and originator brands aren't double-counted. Originator
-        sponsors superseded by a more recent biosimilar approval will therefore
-        show $0 here even though they still earn revenue. Newer drugs may have
-        no PBS expenditure linked yet. Win rate counts Recommended (incl. with
-        restriction) out of bucketable decisions.
-      </div>
-    </div>
-  </div>
-
-  <!-- ─── PBAC CYCLE CALENDAR ──────────────────────────────────────── -->
+  <!-- ─── PBAC CYCLE CALENDAR (freshness zone, with recently+coming-up) ─ -->
   <div class="cal-strip" id="cal-strip" style="display:none">
     <div class="container">
       <div class="cal-head">
@@ -906,6 +861,43 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
         <div class="cal-sub" id="cal-source">—</div>
       </div>
       <div id="cal-list"></div>
+    </div>
+  </div>
+
+  <!-- ─── RESUBMISSION STORY ZONE (flips + time-to-listing, merged) ──── -->
+  <div class="story-strip" id="story-strip">
+    <div class="container">
+      <div class="story-grid">
+        <div class="story-cell">
+          <div class="flips-strip" id="flips-strip" style="display:none">
+            <div class="recent-head">
+              <div>
+                <div class="eyebrow">Resubmission stories</div>
+                <h3>Drugs that earned their listing</h3>
+              </div>
+              <div class="recent-sub" id="flips-sub">—</div>
+            </div>
+            <div id="flips-list" class="flips-list"></div>
+          </div>
+        </div>
+        <div class="story-cell">
+          <div class="ttl-strip" id="ttl-strip" style="display:none">
+            <div class="recent-head">
+              <div>
+                <div class="eyebrow">Time to listing</div>
+                <h3>How long from first submission to first listing?</h3>
+              </div>
+              <div class="recent-sub" id="ttl-sub">—</div>
+            </div>
+            <div class="ttl-stats" id="ttl-stats"></div>
+            <div class="ttl-chart-wrap">
+              <div class="ttl-chart-title">Median months (resubmission journeys only) by year of recommendation</div>
+              <div class="ttl-chart-canvas-wrap"><canvas id="ttl-chart"></canvas></div>
+              <div class="ttl-foot" id="ttl-foot"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1011,6 +1003,37 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
       </div>
     </div>
   </section>
+
+  <!-- ─── SPONSOR LEADERBOARD (money zone — sits with drug spend) ──── -->
+  <div class="lb-strip" id="lb-strip" style="display:none">
+    <div class="container">
+      <div class="recent-head">
+        <div>
+          <div class="eyebrow">Sponsors</div>
+          <h3>Pharma leaderboard</h3>
+        </div>
+        <div class="recent-sub" id="lb-sub">—</div>
+      </div>
+      <div class="lb-table-head">
+        <div>#</div>
+        <div>Sponsor</div>
+        <div>Submissions</div>
+        <div class="lb-col-drugs">Drugs</div>
+        <div style="text-align:right">PBS spend captured</div>
+      </div>
+      <div id="lb-list" class="lb-list"></div>
+      <div class="lb-foot">
+        Sponsors with at least 5 submissions on file. PBS spend = FY-latest
+        government benefit; each drug's spend is credited to a single sponsor —
+        the one with the most recent Recommended PBAC decision for that drug —
+        so biosimilars and originator brands aren't double-counted. Originator
+        sponsors superseded by a more recent biosimilar approval will therefore
+        show $0 here even though they still earn revenue. Newer drugs may have
+        no PBS expenditure linked yet. Win rate counts Recommended (incl. with
+        restriction) out of bucketable decisions.
+      </div>
+    </div>
+  </div>
 
   <!-- ─── SECTION 4 · ATC CLASS BREAKDOWN ──────────────────────────── -->
   <section class="panel-section alt">
@@ -4044,6 +4067,18 @@ function initAll() {
   buildPersistChart();
   buildTherapyOutcomes();
   buildTherapyFilterChips();
+
+  // Hide the merged resubmission-story wrapper if neither half has data
+  // (happens in dev before the pipeline has run; in prod both populate).
+  {
+    const f = document.getElementById('flips-strip');
+    const t = document.getElementById('ttl-strip');
+    const w = document.getElementById('story-strip');
+    if (w && f && t && f.style.display === 'none' && t.style.display === 'none') {
+      w.style.display = 'none';
+    }
+  }
+
   // If the page was opened with a #/drug/<name> or #/about deep-link, route to it.
   routeFromHash();
 }
