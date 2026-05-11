@@ -128,10 +128,17 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 .page-head .meta-row .pill strong { color: var(--text); font-weight: 600; margin-right: 4px; }
 
 /* ── Search ──────────────────────────────────────────────────── */
-.search-row { padding: 18px 0; border-bottom: 1px solid var(--border); background: var(--bg2); }
-.search-wrap { position: relative; max-width: 640px; }
+.search-row { padding: 22px 0 18px; border-bottom: 1px solid var(--border); background: var(--bg2); }
+.search-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; max-width: 1100px; }
+.search-card { background: var(--bg); border: 1px solid var(--border); padding: 14px 16px 12px; position: relative; transition: border-color .15s; }
+.search-card:focus-within { border-color: var(--red); }
+.search-card-semantic { border-top: 3px solid var(--red); padding-top: 12px; }
+.search-card-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+.search-card-eyebrow { font-family: var(--ui); font-size: 11px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text); }
+.search-card-sub { font-family: var(--ui); font-size: 11.5px; color: var(--text3); font-style: italic; }
+.search-wrap { position: relative; }
 .search-input {
-  width: 100%; padding: 11px 44px 11px 16px; font-family: var(--body); font-size: 15px;
+  width: 100%; padding: 11px 44px 11px 14px; font-family: var(--body); font-size: 15px;
   color: var(--text); background: var(--bg); border: 1.5px solid var(--text); outline: none;
   transition: border-color .15s;
 }
@@ -139,21 +146,15 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 .search-input:focus { border-color: var(--red); }
 .search-clear { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text3); font-size: 18px; cursor: pointer; display: none; }
 .search-clear.visible { display: block; }
-.search-suggest { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 10px; align-items: center; font-family: var(--ui); font-size: 11.5px; color: var(--text3); }
+.search-suggest { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; align-items: center; font-family: var(--ui); font-size: 11.5px; color: var(--text3); }
 .search-suggest strong { color: var(--text2); cursor: pointer; font-weight: 600; }
 .search-suggest strong:hover { color: var(--red); }
+@media (max-width: 720px) {
+  .search-duo { grid-template-columns: 1fr; gap: 14px; }
+}
 
-/* ── Search-mode toggle ─────────────────────────────────────── */
-.search-mode-row { display: flex; align-items: center; gap: 0; margin-top: 12px; flex-wrap: wrap; }
-.search-mode-row .label { font-family: var(--ui); font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text3); margin-right: 10px; }
-.search-mode-btn { background: none; border: none; padding: 5px 12px; cursor: pointer; font-family: var(--ui); font-size: 11.5px; color: var(--text3); border-bottom: 2px solid transparent; transition: color .12s, border-color .12s; }
-.search-mode-btn:hover { color: var(--text2); }
-.search-mode-btn.active { color: var(--red); border-bottom-color: var(--red); font-weight: 600; }
-.search-mode-btn .badge { display: inline-block; margin-left: 4px; padding: 1px 6px; background: var(--red); color: #fff; border-radius: 8px; font-size: 9px; font-weight: 700; letter-spacing: .3px; vertical-align: 1px; }
-.search-mode-hint { font-family: var(--ui); font-size: 11px; color: var(--text3); font-style: italic; margin-left: auto; }
-
-/* ── Search filters (semantic mode only) ──────────────────── */
-.search-filters { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); flex-wrap: wrap; align-items: center; gap: 14px; row-gap: 8px; }
+/* ── Search filters (semantic only) ───────────────────────── */
+.search-filters { display: none; margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--border); flex-wrap: wrap; align-items: center; gap: 14px; row-gap: 8px; max-width: 1100px; }
 .search-filters.visible { display: flex; }
 .search-filters .filter-group { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .search-filters .filter-label { font-family: var(--ui); font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text3); margin-right: 4px; }
@@ -760,35 +761,53 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
 <!-- ─── SEARCH ──────────────────────────────────────────────────────── -->
 <div class="search-row">
   <div class="container">
-    <div class="search-wrap">
-      <input class="search-input" id="search-input" type="text"
-             placeholder="Search by drug name, brand, or indication…"
-             autocomplete="off"
-             oninput="handleSearch(this.value)"
-             onkeydown="handleSearchKey(event)">
-      <div class="search-spinner" id="search-spinner"></div>
-      <button class="search-clear" id="search-clear" onclick="clearSearch()">×</button>
-    </div>
-    <div class="search-suggest sans" id="search-suggest-keyword">
-      <span>Try:</span>
-      <strong onclick="runSearch('pembrolizumab')">pembrolizumab</strong>
-      <strong onclick="runSearch('adalimumab')">adalimumab</strong>
-      <strong onclick="runSearch('semaglutide')">semaglutide</strong>
-      <strong onclick="runSearch('venetoclax')">venetoclax</strong>
-      <strong onclick="runSearch('oncology')">oncology</strong>
-      <strong onclick="runSearch('rare disease')">rare disease</strong>
-    </div>
-    <div class="search-suggest sans" id="search-suggest-semantic" style="display:none">
-      <span>Try a precedent query:</span>
-      <strong onclick="runSearch('first-in-class oncology with immature OS data and high ICER')">first-in-class oncology with immature OS</strong>
-      <strong onclick="runSearch('rare disease single-arm trial managed access agreement')">rare disease single-arm with managed access</strong>
-      <strong onclick="runSearch('not recommended due to uncertain comparator choice')">rejected for comparator choice</strong>
-    </div>
-    <div class="search-mode-row">
-      <span class="label">Search mode</span>
-      <button class="search-mode-btn active" id="mode-keyword" onclick="setSearchMode('keyword',this)">Keyword</button>
-      <button class="search-mode-btn" id="mode-semantic" onclick="setSearchMode('semantic',this)">Precedent <span class="badge">AI</span></button>
-      <span class="search-mode-hint" id="search-mode-hint">Live filter as you type</span>
+    <div class="search-duo">
+      <!-- Smart Search (semantic / precedent) -->
+      <div class="search-card search-card-semantic">
+        <div class="search-card-head">
+          <span class="search-card-eyebrow">Smart search</span>
+          <span class="search-card-sub">Find precedents or ask in plain English</span>
+        </div>
+        <div class="search-wrap">
+          <input class="search-input" id="search-input-semantic" type="text"
+                 placeholder="e.g. first-in-class oncology with immature OS and high ICER…"
+                 autocomplete="off"
+                 onfocus="onSemanticFocus()"
+                 onkeydown="onSemanticKey(event)">
+          <div class="search-spinner" id="search-spinner"></div>
+          <button class="search-clear" id="search-clear-semantic" onclick="clearSearch()">×</button>
+        </div>
+        <div class="search-suggest sans">
+          <span>Try:</span>
+          <strong onclick="runSearch('first-in-class oncology with immature OS data and high ICER','semantic')">first-in-class oncology with immature OS</strong>
+          <strong onclick="runSearch('rare disease single-arm trial managed access agreement','semantic')">rare disease single-arm with managed access</strong>
+          <strong onclick="runSearch('not recommended due to uncertain comparator choice','semantic')">rejected for comparator choice</strong>
+        </div>
+      </div>
+
+      <!-- Keyword search -->
+      <div class="search-card">
+        <div class="search-card-head">
+          <span class="search-card-eyebrow">Keyword search</span>
+          <span class="search-card-sub">Find a specific drug, brand, or word</span>
+        </div>
+        <div class="search-wrap">
+          <input class="search-input" id="search-input-keyword" type="text"
+                 placeholder="e.g. pembrolizumab, Keytruda, oncology…"
+                 autocomplete="off"
+                 oninput="onKeywordInput(this.value)"
+                 onkeydown="onKeywordKey(event)">
+          <button class="search-clear" id="search-clear-keyword" onclick="clearSearch()">×</button>
+        </div>
+        <div class="search-suggest sans">
+          <span>Try:</span>
+          <strong onclick="runSearch('pembrolizumab','keyword')">pembrolizumab</strong>
+          <strong onclick="runSearch('adalimumab','keyword')">adalimumab</strong>
+          <strong onclick="runSearch('semaglutide','keyword')">semaglutide</strong>
+          <strong onclick="runSearch('oncology','keyword')">oncology</strong>
+          <strong onclick="runSearch('rare disease','keyword')">rare disease</strong>
+        </div>
+      </div>
     </div>
     <div class="search-filters" id="search-filters">
       <div class="filter-group">
@@ -2892,42 +2911,88 @@ function scoreDrug(name, brand, indication, therapy, q) {
 }
 
 // ── Search mode (keyword | semantic) ─────────────────────────────────────────
+// Each mode now has its own input box (.search-card). _searchMode reflects
+// the mode of the *most recently submitted* query, used for analytics and for
+// deciding which input the legacy `setSearchMode` helper should focus.
 let _searchMode = 'keyword';
 const _semanticCache = new Map();
 let _semanticAbort = null;
 
+function _showSemanticFilters(show) {
+  const fil = document.getElementById('search-filters');
+  if (fil) fil.classList.toggle('visible', !!show);
+}
+
+function onSemanticFocus() {
+  _showSemanticFilters(true);
+}
+
+function focusKeywordInput() {
+  const inp = document.getElementById('search-input-keyword');
+  if (inp) { inp.focus(); inp.select(); }
+}
+
+function focusSemanticInput() {
+  const inp = document.getElementById('search-input-semantic');
+  if (inp) { inp.focus(); inp.select(); }
+  _showSemanticFilters(true);
+}
+
+// Legacy entry point — preserved for the "switch to X mode" links that may
+// appear inside rendered error / no-result states. Re-uses whatever text is
+// currently in the destination input.
 function setSearchMode(mode, btn) {
   const newMode = mode === 'semantic' ? 'semantic' : 'keyword';
   if (newMode !== _searchMode) trackEvent('SearchModeChange', { mode: newMode });
   _searchMode = newMode;
-  document.querySelectorAll('.search-mode-btn').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  else document.getElementById('mode-' + _searchMode)?.classList.add('active');
-
-  const inp = document.getElementById('search-input');
-  const hint = document.getElementById('search-mode-hint');
-  const sugK = document.getElementById('search-suggest-keyword');
-  const sugS = document.getElementById('search-suggest-semantic');
-  const fil  = document.getElementById('search-filters');
-  if (_searchMode === 'semantic') {
-    inp.placeholder = 'Describe a clinical or PBAC situation — press Enter to search…';
-    if (hint) hint.textContent = 'Semantic search · powered by Voyage embeddings · press Enter to run';
-    if (sugK) sugK.style.display = 'none';
-    if (sugS) sugS.style.display = 'flex';
-    if (fil)  fil.classList.add('visible');
+  if (newMode === 'semantic') {
+    focusSemanticInput();
+    const q = (document.getElementById('search-input-semantic').value || '').trim();
+    if (q) performSemanticSearch(q);
   } else {
-    inp.placeholder = 'Search by drug name, brand, or indication…';
-    if (hint) hint.textContent = 'Live filter as you type';
-    if (sugK) sugK.style.display = 'flex';
-    if (sugS) sugS.style.display = 'none';
-    if (fil)  fil.classList.remove('visible');
+    focusKeywordInput();
+    const q = (document.getElementById('search-input-keyword').value || '').trim();
+    if (q) handleSearch(q);
   }
+}
 
-  const q = (inp.value || '').trim();
-  if (q) {
-    if (_searchMode === 'semantic') performSemanticSearch(q);
-    else handleSearch(inp.value);
-  }
+function onKeywordInput(val) {
+  _searchMode = 'keyword';
+  document.getElementById('search-clear-keyword').classList.toggle('visible', (val || '').trim().length > 0);
+  handleSearch(val);
+}
+
+function onKeywordKey(e) {
+  if (e.key !== 'Enter') return;
+  const q = (e.target.value || '').trim();
+  if (!q) return;
+  _searchMode = 'keyword';
+  trackEvent('Search', {
+    mode: 'keyword',
+    source: 'enter',
+    q: q.toLowerCase(),
+    q_len: q.length
+  });
+  handleSearch(e.target.value);
+}
+
+function onSemanticKey(e) {
+  if (e.key !== 'Enter') return;
+  const q = (e.target.value || '').trim();
+  if (!q) return;
+  _searchMode = 'semantic';
+  document.getElementById('search-clear-semantic').classList.add('visible');
+  _showSemanticFilters(true);
+  trackEvent('Search', {
+    mode: 'semantic',
+    source: 'enter',
+    q: q.toLowerCase(),
+    q_len: q.length,
+    outcome: _semanticFilters.outcome || '',
+    year_min: _semanticFilters.yearmin || '',
+    therapy:  _semanticFilters.therapy || ''
+  });
+  performSemanticSearch(q);
 }
 
 // ── Semantic filters (outcome → server, year + therapy → client) ────────────
@@ -2945,9 +3010,9 @@ function setSemanticFilter(kind, value, btn) {
   const cl = document.getElementById('filter-clear');
   if (cl) cl.style.display = anyActive ? 'inline' : 'none';
 
-  const inp = document.getElementById('search-input');
+  const inp = document.getElementById('search-input-semantic');
   const q = (inp && inp.value || '').trim();
-  if (q && _searchMode === 'semantic') performSemanticSearch(q);
+  if (q) performSemanticSearch(q);
 }
 
 function clearSemanticFilters() {
@@ -2958,9 +3023,9 @@ function clearSemanticFilters() {
   const cl = document.getElementById('filter-clear');
   if (cl) cl.style.display = 'none';
 
-  const inp = document.getElementById('search-input');
+  const inp = document.getElementById('search-input-semantic');
   const q = (inp && inp.value || '').trim();
-  if (q && _searchMode === 'semantic') performSemanticSearch(q);
+  if (q) performSemanticSearch(q);
 }
 
 // Build therapy-area chips from the top N most-common therapy areas in the
@@ -2988,23 +3053,6 @@ function buildTherapyFilterChips() {
     btn.addEventListener('click', () => setSemanticFilter('therapy', value, btn));
     group.appendChild(btn);
   }
-}
-
-function handleSearchKey(e) {
-  if (e.key !== 'Enter') return;
-  const q = (e.target.value || '').trim();
-  if (!q) return;
-  trackEvent('Search', {
-    mode: _searchMode,
-    source: 'enter',
-    q: q.toLowerCase(),
-    q_len: q.length,
-    outcome: _semanticFilters.outcome || '',
-    year_min: _semanticFilters.yearmin || '',
-    therapy:  _semanticFilters.therapy || ''
-  });
-  if (_searchMode === 'semantic') performSemanticSearch(q);
-  else handleSearch(e.target.value);
 }
 
 // ── Snippet highlighting (lexical overlap on profile sentences) ─────────────
@@ -3057,7 +3105,7 @@ async function performSemanticSearch(q) {
   if (q.length < 4) return;
 
   showResults();
-  document.getElementById('search-clear').classList.add('visible');
+  document.getElementById('search-clear-semantic').classList.add('visible');
 
   // Cache key includes server-side filter (outcome). Year filter is applied
   // client-side at render time so it can change without a refetch.
@@ -3223,7 +3271,7 @@ function renderSemanticError(query, err) {
       <div style="margin-top:10px">
         <span class="sans" style="cursor:pointer;color:var(--red);font-weight:600" onclick="performSemanticSearch('${jsAttr(query||'')}')">↻ Retry</span>
         <span style="margin:0 10px;color:var(--text3)">·</span>
-        <span class="sans" style="cursor:pointer;color:var(--text3)" onclick="setSearchMode('keyword',document.getElementById('mode-keyword'))">Switch to keyword mode</span>
+        <span class="sans" style="cursor:pointer;color:var(--text3)" onclick="focusKeywordInput()">Switch to keyword mode</span>
         <span style="margin:0 10px;color:var(--text3)">·</span>
         <span class="sans" style="cursor:pointer;color:var(--text3)" onclick="clearSearch()">Back to dashboard</span>
       </div>
@@ -3233,12 +3281,8 @@ function renderSemanticError(query, err) {
 // ── Keyword search (existing local logic) ────────────────────────────────────
 function handleSearch(val) {
   const q = (val||'').trim().toLowerCase();
-  document.getElementById('search-clear').classList.toggle('visible', q.length > 0);
+  document.getElementById('search-clear-keyword').classList.toggle('visible', q.length > 0);
   if (!q) { clearSearch(); return; }
-
-  // Semantic mode: don't auto-fire on every keystroke (API cost / latency).
-  // The user presses Enter, or we route to the API on a longer pause.
-  if (_searchMode === 'semantic') return;
 
   const candidates = [];
   Object.values(DRUG_DB).forEach(d => {
@@ -3252,9 +3296,9 @@ function handleSearch(val) {
     document.getElementById('result-content').innerHTML = `
       <div class="results-header"><span class="results-title">No results for "${val}"</span></div>
       <div style="padding:24px 0;color:var(--text3);font-family:var(--ui);font-size:14px">
-        Try a partial drug name (e.g. <strong style="color:var(--red);cursor:pointer" onclick="runSearch('pembro')">pembro</strong>),
-        a therapy area (<strong style="color:var(--red);cursor:pointer" onclick="runSearch('oncology')">oncology</strong>),
-        or switch to <strong style="color:var(--red);cursor:pointer" onclick="setSearchMode('semantic',document.getElementById('mode-semantic'))">Precedent search</strong> for sentence-style queries.
+        Try a partial drug name (e.g. <strong style="color:var(--red);cursor:pointer" onclick="runSearch('pembro','keyword')">pembro</strong>),
+        a therapy area (<strong style="color:var(--red);cursor:pointer" onclick="runSearch('oncology','keyword')">oncology</strong>),
+        or switch to <strong style="color:var(--red);cursor:pointer" onclick="focusSemanticInput()">Precedent search</strong> for sentence-style queries.
       </div>
       <div style="margin-top:14px"><span class="sans" style="cursor:pointer;color:var(--text3)" onclick="clearSearch()">← Back to dashboard</span></div>`;
     return;
@@ -3308,37 +3352,45 @@ function selectFromResults(name) {
     showDrugDetail(d);
     return;
   }
-  // Fall back to a keyword search even if the user is in semantic mode —
-  // this is a name-navigation click, so behave like one.
-  const inp = document.getElementById('search-input');
+  // Name-navigation click — route through the keyword box.
+  const inp = document.getElementById('search-input-keyword');
   if (inp) inp.value = name;
-  document.getElementById('search-clear')?.classList.add('visible');
-  // Force keyword behaviour for the fallback so the user sees something useful
-  const prevMode = _searchMode;
+  document.getElementById('search-clear-keyword')?.classList.add('visible');
   _searchMode = 'keyword';
-  try { handleSearch(name); } finally { _searchMode = prevMode; }
+  handleSearch(name);
 }
 
-function runSearch(term) {
-  const inp = document.getElementById('search-input');
-  inp.value = term;
+function runSearch(term, mode) {
+  const targetMode = mode === 'semantic' ? 'semantic' : 'keyword';
+  _searchMode = targetMode;
+  const inp = document.getElementById(
+    targetMode === 'semantic' ? 'search-input-semantic' : 'search-input-keyword'
+  );
+  if (inp) inp.value = term;
   trackEvent('Search', {
-    mode: _searchMode,
+    mode: targetMode,
     source: 'suggestion',
     q: (term || '').toLowerCase(),
     q_len: (term || '').length
   });
-  if (_searchMode === 'semantic') {
+  if (targetMode === 'semantic') {
+    document.getElementById('search-clear-semantic')?.classList.add('visible');
+    _showSemanticFilters(true);
     performSemanticSearch(term);
   } else {
+    document.getElementById('search-clear-keyword')?.classList.add('visible');
     handleSearch(term);
   }
-  inp.focus();
+  if (inp) inp.focus();
 }
 
 function clearSearch() {
-  document.getElementById('search-input').value = '';
-  document.getElementById('search-clear').classList.remove('visible');
+  const kw = document.getElementById('search-input-keyword');
+  const sm = document.getElementById('search-input-semantic');
+  if (kw) kw.value = '';
+  if (sm) sm.value = '';
+  document.getElementById('search-clear-keyword')?.classList.remove('visible');
+  document.getElementById('search-clear-semantic')?.classList.remove('visible');
   showMain();
   // Drop a #/drug/<name>, #/sponsor/<key>, or #/about hash if present, so the
   // URL reflects "back to dashboard".
