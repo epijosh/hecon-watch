@@ -1277,6 +1277,26 @@ let _browseSort = { field: 'year', asc: false };
 let _browseFilters = { outcome: 'all', therapy: 'all' };
 let _currentMode = 'browse'; // 'browse' | 'results' | 'detail' | 'about'
 
+// ── Vercel Analytics custom events ──────────────────────────────────────────
+// Vercel's /_vercel/insights/script.js exposes window.va() once it loads. If
+// the script is blocked (ad-blocker, dev preview, etc.) the call is a no-op.
+// Property values must be strings / numbers / booleans; keep cardinality
+// reasonable. Search query is lower-cased and truncated to 80 chars — clinical
+// terms only, no PII expected.
+function trackEvent(name, props) {
+  try {
+    const clean = {};
+    if (props) for (const k in props) {
+      const v = props[k];
+      if (v == null || v === '') continue;
+      clean[k] = typeof v === 'string' ? v.slice(0, 80) : v;
+    }
+    if (typeof window.va === 'function') {
+      window.va('event', Object.assign({ name }, clean));
+    }
+  } catch (e) { /* analytics must never break the UI */ }
+}
+
 const COLOURS = {
   primary: '#C62828',
   green:   '#2e7d32',
@@ -2813,7 +2833,9 @@ const _semanticCache = new Map();
 let _semanticAbort = null;
 
 function setSearchMode(mode, btn) {
-  _searchMode = mode === 'semantic' ? 'semantic' : 'keyword';
+  const newMode = mode === 'semantic' ? 'semantic' : 'keyword';
+  if (newMode !== _searchMode) trackEvent('SearchModeChange', { mode: newMode });
+  _searchMode = newMode;
   document.querySelectorAll('.search-mode-btn').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
   else document.getElementById('mode-' + _searchMode)?.classList.add('active');
@@ -2848,6 +2870,9 @@ function setSearchMode(mode, btn) {
 let _semanticFilters = { outcome: '', yearmin: '', therapy: '' };
 
 function setSemanticFilter(kind, value, btn) {
+  if ((_semanticFilters[kind] || '') !== (value || '')) {
+    trackEvent('SearchFilter', { kind: kind, value: (value || '(all)') });
+  }
   _semanticFilters[kind] = value || '';
   document.querySelectorAll(`.search-filters .chip[data-filter="${kind}"]`).forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
@@ -2905,6 +2930,15 @@ function handleSearchKey(e) {
   if (e.key !== 'Enter') return;
   const q = (e.target.value || '').trim();
   if (!q) return;
+  trackEvent('Search', {
+    mode: _searchMode,
+    source: 'enter',
+    q: q.toLowerCase(),
+    q_len: q.length,
+    outcome: _semanticFilters.outcome || '',
+    year_min: _semanticFilters.yearmin || '',
+    therapy:  _semanticFilters.therapy || ''
+  });
   if (_searchMode === 'semantic') performSemanticSearch(q);
   else handleSearch(e.target.value);
 }
@@ -3224,6 +3258,12 @@ function selectFromResults(name) {
 function runSearch(term) {
   const inp = document.getElementById('search-input');
   inp.value = term;
+  trackEvent('Search', {
+    mode: _searchMode,
+    source: 'suggestion',
+    q: (term || '').toLowerCase(),
+    q_len: (term || '').length
+  });
   if (_searchMode === 'semantic') {
     performSemanticSearch(term);
   } else {
@@ -3270,6 +3310,7 @@ function showAbout() {
   document.getElementById('main-content').style.display = 'none';
   const ab = document.getElementById('about-content');
   if (ab) ab.style.display = '';
+  if (_currentMode !== 'about') trackEvent('AboutView');
   _currentMode = 'about';
   document.title = 'About — script.report';
   document.querySelectorAll('#nav-links a').forEach(a => a.classList.remove('active'));
@@ -3284,6 +3325,11 @@ function showAbout() {
 function showDrugDetail(d) {
   if (!d) return;
   const pd = getPBACData(d.name) || {};
+  trackEvent('DrugView', {
+    drug: (d.name || '').toLowerCase(),
+    therapy: (d.therapy || pd.therapy_area || '').toLowerCase(),
+    outcome: (d.pbac_status || pd.recommendation || '').toLowerCase()
+  });
   const name = titleCase(d.name);
   const brand = d.brand || pd.brand_name || '';
   const indication = d.indication || pd.indication || '';
@@ -3660,6 +3706,7 @@ function openSponsor(key) {
   if (!D || !D.psd || !D.psd.sponsor_details) return;
   const det = D.psd.sponsor_details[key];
   if (!det) return;
+  trackEvent('SponsorView', { sponsor: (key || '').toLowerCase() });
   _currentMode = 'detail';
   hideMain();
   showSponsorDetail(det);
@@ -3899,6 +3946,7 @@ window.addEventListener('popstate', routeFromHash);
 // ║  NAVIGATION                                                           ║
 // ╚═══════════════════════════════════════════════════════════════════╝
 function navTo(section) {
+  trackEvent('Nav', { section: section });
   document.querySelectorAll('#nav-links a').forEach(a => a.classList.remove('active'));
   const el = document.getElementById('nav-' + section);
   if (el) el.classList.add('active');
@@ -3935,6 +3983,7 @@ function toggleTheme() {
   const html = document.documentElement;
   const isDark = html.dataset.theme === 'dark';
   html.dataset.theme = isDark ? 'light' : 'dark';
+  trackEvent('ThemeToggle', { theme: html.dataset.theme });
   applyThemeButtonLabel();
   try { localStorage.setItem('theme', html.dataset.theme); } catch(e) {}
   // Rebuild charts that need axis colours updated
