@@ -699,6 +699,97 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
   .spec-grid .spec-val { padding-top: 4px; border-top: none; }
   .page-head h1 { font-size: 26px; }
 }
+
+/* ── Jump rail (sticky left-edge section index) ────────────────── */
+.jump-rail {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 90;
+  padding: 12px 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-left: 0;
+  font-family: var(--ui);
+  font-size: 11.5px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 1px 1px 0 rgba(0,0,0,0.04);
+  transition: padding-right .2s ease;
+}
+.jump-rail:hover { padding-right: 16px; }
+.jump-rail ul { list-style: none; padding: 0; margin: 0; }
+.jump-rail .jr-parent + .jr-parent { margin-top: 4px; }
+.jump-rail a {
+  display: flex; align-items: center; gap: 8px;
+  text-decoration: none; color: var(--text2);
+  padding: 3px 4px;
+  border-radius: 3px;
+  transition: color .12s, background .12s;
+  cursor: pointer;
+}
+.jump-rail a:hover { color: var(--red); background: var(--bg2); }
+.jump-rail .jr-parent > a { font-weight: 600; color: var(--text); }
+.jump-rail .jr-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--text3);
+  flex-shrink: 0;
+  transition: background .12s, transform .12s, box-shadow .12s;
+}
+.jump-rail a:hover .jr-dot { background: var(--red); }
+.jump-rail .jr-active > a .jr-dot {
+  background: var(--red);
+  transform: scale(1.45);
+  box-shadow: 0 0 0 2px rgba(198,40,40,0.18);
+}
+.jump-rail .jr-active > a { color: var(--red); }
+.jump-rail .jr-num {
+  font-weight: 700; font-size: 11px;
+  width: 12px; text-align: center;
+  color: var(--text3);
+  flex-shrink: 0;
+}
+.jump-rail .jr-active > a .jr-num { color: var(--red); }
+.jump-rail .jr-children {
+  margin: 2px 0 0 22px;
+  padding-left: 10px;
+  border-left: 1px solid var(--border);
+  /* hide entire child group until hover/active-parent — keeps rail compact */
+  max-height: 0; overflow: hidden;
+  transition: max-height .25s ease, margin-top .2s ease;
+}
+.jump-rail:hover .jr-children,
+.jump-rail .jr-parent.jr-active .jr-children { max-height: 240px; }
+.jump-rail .jr-children a { font-size: 10.5px; color: var(--text3); padding: 2px 4px; }
+.jump-rail .jr-children a:hover { color: var(--red); }
+.jump-rail .jr-sub {
+  font-style: italic;
+  width: 8px; text-align: center;
+  font-size: 10px;
+  color: var(--text3);
+  flex-shrink: 0;
+}
+.jump-rail .jr-children a:hover .jr-sub { color: var(--red); }
+.jump-rail .jr-child-active > a { color: var(--red); }
+.jump-rail .jr-child-active > a .jr-sub { color: var(--red); }
+/* Labels — collapsed by default, visible on rail hover or for active row */
+.jump-rail .jr-lbl {
+  white-space: nowrap;
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-width .25s ease, opacity .15s ease;
+}
+.jump-rail:hover .jr-lbl,
+.jump-rail .jr-active > a .jr-lbl,
+.jump-rail .jr-child-active > a .jr-lbl { max-width: 180px; opacity: 1; }
+/* Anchored sections clear the sticky topnav when scrolled to */
+[data-jr-section] { scroll-margin-top: 70px; }
+@media (max-width: 1100px) {
+  .jump-rail { display: none !important; }
+}
 </style>
 </head>
 <body>
@@ -845,8 +936,52 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
 <!-- ─── MAIN DASHBOARD ──────────────────────────────────────────────── -->
 <div id="main-content">
 
+  <!-- ─── JUMP RAIL (sticky left-edge section index) ────────────────── -->
+  <aside class="jump-rail" id="jump-rail" aria-label="Page sections">
+    <ul>
+      <li class="jr-parent" data-target="sec-kpi">
+        <a href="#sec-kpi"><span class="jr-dot"></span><span class="jr-num">1</span><span class="jr-lbl">Snapshot</span></a>
+      </li>
+      <li class="jr-parent" data-target="recent-strip">
+        <a href="#recent-strip"><span class="jr-dot"></span><span class="jr-num">2</span><span class="jr-lbl">News</span></a>
+        <ul class="jr-children">
+          <li data-target="sec-latest"><a href="#sec-latest"><span class="jr-sub">a</span><span class="jr-lbl">Latest</span></a></li>
+          <li data-target="sec-agenda"><a href="#sec-agenda"><span class="jr-sub">b</span><span class="jr-lbl">Agenda</span></a></li>
+          <li data-target="cal-strip"><a href="#cal-strip"><span class="jr-sub">c</span><span class="jr-lbl">Calendar</span></a></li>
+        </ul>
+      </li>
+      <li class="jr-parent" data-target="story-strip">
+        <a href="#flips-strip"><span class="jr-dot"></span><span class="jr-num">3</span><span class="jr-lbl">Track record</span></a>
+        <ul class="jr-children">
+          <li data-target="flips-strip"><a href="#flips-strip"><span class="jr-sub">a</span><span class="jr-lbl">Rejected→listed</span></a></li>
+          <li data-target="ttl-strip"><a href="#ttl-strip"><span class="jr-sub">b</span><span class="jr-lbl">Time-to-list</span></a></li>
+        </ul>
+      </li>
+      <li class="jr-parent" data-target="sec-pbs-spend">
+        <a href="#sec-pbs-spend"><span class="jr-dot"></span><span class="jr-num">4</span><span class="jr-lbl">Money</span></a>
+        <ul class="jr-children">
+          <li data-target="sec-pbs-spend"><a href="#sec-pbs-spend"><span class="jr-sub">a</span><span class="jr-lbl">Spend growth</span></a></li>
+          <li data-target="spend-section"><a href="#spend-section"><span class="jr-sub">b</span><span class="jr-lbl">Top drugs</span></a></li>
+          <li data-target="lb-strip"><a href="#lb-strip"><span class="jr-sub">c</span><span class="jr-lbl">Top pharma</span></a></li>
+          <li data-target="sec-drug-class"><a href="#sec-drug-class"><span class="jr-sub">d</span><span class="jr-lbl">Drug class</span></a></li>
+        </ul>
+      </li>
+      <li class="jr-parent" data-target="sec-outcomes-mix">
+        <a href="#sec-outcomes-mix"><span class="jr-dot"></span><span class="jr-num">5</span><span class="jr-lbl">Outcomes</span></a>
+        <ul class="jr-children">
+          <li data-target="sec-outcomes-mix"><a href="#sec-outcomes-mix"><span class="jr-sub">a</span><span class="jr-lbl">Mix</span></a></li>
+          <li data-target="sec-icers"><a href="#sec-icers"><span class="jr-sub">b</span><span class="jr-lbl">ICERs</span></a></li>
+          <li data-target="sec-therapy"><a href="#sec-therapy"><span class="jr-sub">c</span><span class="jr-lbl">By therapy</span></a></li>
+        </ul>
+      </li>
+      <li class="jr-parent" data-target="browse-section">
+        <a href="#browse-section"><span class="jr-dot"></span><span class="jr-num">6</span><span class="jr-lbl">Browse</span></a>
+      </li>
+    </ul>
+  </aside>
+
   <!-- ─── KPI STRIP ─────────────────────────────────────────────────── -->
-  <div class="kpi-strip">
+  <div class="kpi-strip" id="sec-kpi" data-jr-section>
     <div class="container">
       <div class="kpi-grid">
         <div class="kpi-cell">
@@ -882,7 +1017,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
   <div class="recent-strip" id="recent-strip" style="display:none">
     <div class="container">
       <div class="top-zone-grid">
-        <div class="top-zone-left">
+        <div class="top-zone-left" id="sec-latest" data-jr-section>
           <div class="recent-head">
             <div>
               <div class="eyebrow">Recently published</div>
@@ -892,7 +1027,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
           </div>
           <div id="recent-list" class="recent-list scroll-list"></div>
         </div>
-        <div class="top-zone-right">
+        <div class="top-zone-right" id="sec-agenda" data-jr-section>
           <div class="recent-head">
             <div>
               <div class="eyebrow">Coming up at PBAC</div>
@@ -907,7 +1042,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
   </div>
 
   <!-- ─── PBAC CYCLE CALENDAR (freshness zone, with recently+coming-up) ─ -->
-  <div class="cal-strip" id="cal-strip" style="display:none">
+  <div class="cal-strip" id="cal-strip" data-jr-section style="display:none">
     <div class="container">
       <div class="cal-head">
         <div>
@@ -925,7 +1060,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
     <div class="container">
       <div class="story-grid">
         <div class="story-cell">
-          <div class="flips-strip" id="flips-strip" style="display:none">
+          <div class="flips-strip" id="flips-strip" data-jr-section style="display:none">
             <div class="recent-head">
               <div>
                 <div class="eyebrow">Resubmission stories</div>
@@ -937,7 +1072,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
           </div>
         </div>
         <div class="story-cell">
-          <div class="ttl-strip" id="ttl-strip" style="display:none">
+          <div class="ttl-strip" id="ttl-strip" data-jr-section style="display:none">
             <div class="recent-head">
               <div>
                 <div class="eyebrow">Time to listing</div>
@@ -958,7 +1093,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
   </div>
 
   <!-- ─── SECTION 1 · PBS SPEND OVER TIME ──────────────────────────── -->
-  <section class="panel-section" id="sec-pbs-spend">
+  <section class="panel-section" id="sec-pbs-spend" data-jr-section>
     <div class="container">
       <div class="section-title-row">
         <div>
@@ -980,7 +1115,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
   </section>
 
   <!-- ─── SECTION 2 · OUTCOMES + SUBMISSIONS PER YEAR ──────────────── -->
-  <section class="panel-section alt">
+  <section class="panel-section alt" id="sec-outcomes-mix" data-jr-section>
     <div class="container">
       <div class="panel-grid cols-2">
         <div class="panel">
@@ -1019,7 +1154,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
   </section>
 
   <!-- ─── SECTION 3 · PBS DRUG SPEND ───────────────────────────────── -->
-  <section class="panel-section" id="spend-section">
+  <section class="panel-section" id="spend-section" data-jr-section>
     <div class="container">
       <div class="section-title-row">
         <div>
@@ -1061,7 +1196,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
   </section>
 
   <!-- ─── SPONSOR LEADERBOARD (money zone — sits with drug spend) ──── -->
-  <div class="lb-strip" id="lb-strip" style="display:none">
+  <div class="lb-strip" id="lb-strip" data-jr-section style="display:none">
     <div class="container">
       <div class="recent-head">
         <div>
@@ -1092,7 +1227,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
   </div>
 
   <!-- ─── SECTION 4 · ATC CLASS BREAKDOWN ──────────────────────────── -->
-  <section class="panel-section alt">
+  <section class="panel-section alt" id="sec-drug-class" data-jr-section>
     <div class="container">
       <div class="section-title-row">
         <div>
@@ -1132,7 +1267,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
   </section>
 
   <!-- ─── SECTION 5 · COST EFFECTIVENESS ───────────────────────────── -->
-  <section class="panel-section">
+  <section class="panel-section" id="sec-icers" data-jr-section>
     <div class="container">
       <div class="section-title-row">
         <div>
@@ -1170,7 +1305,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
   </section>
 
   <!-- ─── SECTION 6 · RECOMMENDATION RATE BY THERAPY ───────────────── -->
-  <section class="panel-section alt">
+  <section class="panel-section alt" id="sec-therapy" data-jr-section>
     <div class="container">
       <div class="section-title-row">
         <div>
@@ -1211,7 +1346,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
   </section>
 
   <!-- ─── SECTION 7 · BROWSE DECISIONS ─────────────────────────────── -->
-  <section id="browse-section" class="panel-section">
+  <section id="browse-section" class="panel-section" data-jr-section>
     <div class="container">
       <div class="section-title-row">
         <div>
@@ -4086,6 +4221,62 @@ function navTo(section) {
 }
 
 // ╔═══════════════════════════════════════════════════════════════════╗
+// ║  JUMP RAIL                                                            ║
+// ╚═══════════════════════════════════════════════════════════════════╝
+function initJumpRail() {
+  const rail = document.getElementById('jump-rail');
+  if (!rail) return;
+  const TOPNAV_OFFSET = 64;
+
+  // Smooth-scroll on click; replaceState so back-button isn't spammed
+  rail.addEventListener('click', e => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const id = a.getAttribute('href').slice(1);
+    const target = document.getElementById(id);
+    if (!target) return;
+    e.preventDefault();
+    const y = target.getBoundingClientRect().top + window.pageYOffset - TOPNAV_OFFSET;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+    try { history.replaceState(null, '', '#' + id); } catch(_) {}
+    trackEvent && trackEvent('JumpRail', { target: id });
+  });
+
+  // Active-section tracking via scroll
+  const items = [...rail.querySelectorAll('[data-target]')];
+  function onScroll() {
+    const probe = TOPNAV_OFFSET + 20;
+    let activeId = null;
+    for (const it of items) {
+      const sec = document.getElementById(it.dataset.target);
+      if (!sec) continue;
+      // skip hidden sections (e.g., flips/ttl/cal hidden when no data)
+      if (sec.offsetParent === null && getComputedStyle(sec).position !== 'fixed') continue;
+      const top = sec.getBoundingClientRect().top;
+      if (top - probe <= 0) activeId = it.dataset.target;
+    }
+    items.forEach(it => {
+      const isActive = it.dataset.target === activeId;
+      if (it.classList.contains('jr-parent')) it.classList.toggle('jr-active', isActive);
+      else it.classList.toggle('jr-child-active', isActive);
+    });
+    // Also light up the parent containing the active child
+    if (activeId) {
+      rail.querySelectorAll('.jr-parent').forEach(p => {
+        const childMatch = p.querySelector(`.jr-children [data-target="${activeId}"]`);
+        if (childMatch) p.classList.add('jr-active');
+      });
+    }
+  }
+  let raf = 0;
+  window.addEventListener('scroll', () => {
+    if (raf) return;
+    raf = requestAnimationFrame(() => { raf = 0; onScroll(); });
+  }, { passive: true });
+  onScroll();
+}
+
+// ╔═══════════════════════════════════════════════════════════════════╗
 // ║  THEME                                                                ║
 // ╚═══════════════════════════════════════════════════════════════════╝
 function applyThemeButtonLabel() {
@@ -4146,6 +4337,7 @@ function initAll() {
   buildPersistChart();
   buildTherapyOutcomes();
   buildTherapyFilterChips();
+  initJumpRail();
 
   // Hide the merged resubmission-story wrapper if neither half has data
   // (happens in dev before the pipeline has run; in prod both populate).
