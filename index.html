@@ -197,6 +197,46 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 .about-back { margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--border); font-family: var(--ui); font-size: 12px; }
 
 /* ── KPI Strip ───────────────────────────────────────────────── */
+/* ── Scrollable list container ─────────────────────────────
+   Used by long lists (recent feed, coming-up, flips, sponsor
+   leaderboard) so they fit in a fixed window instead of
+   pushing everything below them down the page. */
+.scroll-list {
+  max-height: 480px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--text3) transparent;
+}
+.scroll-list::-webkit-scrollbar { width: 6px; }
+.scroll-list::-webkit-scrollbar-track { background: transparent; }
+.scroll-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+.scroll-list::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+/* Different lists want slightly different windows. */
+#recent-list.scroll-list,
+#coming-list.scroll-list { max-height: 460px; }
+#flips-list.scroll-list  { max-height: 520px; }
+#lb-list.scroll-list     { max-height: 520px; }
+
+/* ── Browse table — sticky thead + scrollable body ───────── */
+.browse-scroll {
+  max-height: 360px;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--text3) transparent;
+}
+.browse-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+.browse-scroll::-webkit-scrollbar-track { background: transparent; }
+.browse-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+.browse-scroll::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+.browse-scroll table.dtable thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--bg);
+  /* Re-draw the bottom border since border-collapse drops it under sticky. */
+  box-shadow: inset 0 -1px 0 var(--border);
+}
+
 /* ── Recently-published feed ──────────────────────────────── */
 .recent-strip { padding: 26px 0; border-bottom: 1px solid var(--border); background: var(--bg); }
 .recent-head { display: flex; align-items: baseline; justify-content: space-between; gap: 18px; flex-wrap: wrap; margin-bottom: 14px; }
@@ -213,9 +253,6 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 .recent-meta .recent-therapy { font-family: var(--ui); font-size: 10.5px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: var(--text3); margin-right: 8px; }
 .recent-aside { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; min-width: 110px; padding-top: 2px; }
 .recent-icer { font-family: var(--ui); font-size: 11px; font-weight: 600; color: var(--text3); }
-.recent-more { padding: 14px 0 4px; text-align: center; }
-.recent-more button { background: none; border: 0; font-family: var(--ui); font-size: 12px; font-weight: 600; color: var(--red); cursor: pointer; padding: 6px 14px; border: 1px solid var(--border); }
-.recent-more button:hover { background: var(--bg2); }
 @media (max-width: 800px) {
   .recent-row { grid-template-columns: 1fr; gap: 4px; }
   .recent-aside { flex-direction: row; align-items: center; min-width: 0; gap: 10px; }
@@ -834,7 +871,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
             </div>
             <div class="recent-sub" id="recent-sub">—</div>
           </div>
-          <div id="recent-list" class="recent-list"></div>
+          <div id="recent-list" class="recent-list scroll-list"></div>
         </div>
         <div class="top-zone-right">
           <div class="recent-head">
@@ -844,7 +881,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
             </div>
             <div class="recent-sub" id="coming-sub">—</div>
           </div>
-          <div id="coming-list" class="coming-list"></div>
+          <div id="coming-list" class="coming-list scroll-list"></div>
         </div>
       </div>
     </div>
@@ -864,7 +901,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
     </div>
   </div>
 
-  <!-- ─── RESUBMISSION STORY ZONE (flips + time-to-listing, merged) ──── -->
+  <!-- ─── RESUBMISSION STORY ZONE (from-rejected-to-listed + time-to-listing) ── -->
   <div class="story-strip" id="story-strip">
     <div class="container">
       <div class="story-grid">
@@ -873,11 +910,11 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
             <div class="recent-head">
               <div>
                 <div class="eyebrow">Resubmission stories</div>
-                <h3>Drugs that earned their listing</h3>
+                <h3>From rejected to listed</h3>
               </div>
               <div class="recent-sub" id="flips-sub">—</div>
             </div>
-            <div id="flips-list" class="flips-list"></div>
+            <div id="flips-list" class="flips-list scroll-list"></div>
           </div>
         </div>
         <div class="story-cell">
@@ -1021,7 +1058,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
         <div class="lb-col-drugs">Drugs</div>
         <div style="text-align:right">PBS spend captured</div>
       </div>
-      <div id="lb-list" class="lb-list"></div>
+      <div id="lb-list" class="lb-list scroll-list"></div>
       <div class="lb-foot">
         Sponsors with at least 5 submissions on file. PBS spend = FY-latest
         government benefit; each drug's spend is credited to a single sponsor —
@@ -1186,7 +1223,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
         <div class="muted">Showing latest decision per drug</div>
       </div>
 
-      <div style="overflow-x:auto">
+      <div class="browse-scroll">
         <table class="dtable" id="browse-table">
           <thead>
             <tr>
@@ -1763,15 +1800,13 @@ function buildCalendar() {
 // ╔═══════════════════════════════════════════════════════════════════╗
 // ║  RECENTLY PUBLISHED FEED                                              ║
 // ╚═══════════════════════════════════════════════════════════════════╝
-let _recentExpanded = false;
-
 function buildRecentFeed() {
   const D = window.SITE_DATA;
   const strip = document.getElementById('recent-strip');
   if (!strip || !D || !D.psd || !Array.isArray(D.psd.recent) || !D.psd.recent.length) return;
 
   const all = D.psd.recent;
-  const visible = _recentExpanded ? all : all.slice(0, 12);
+  const visible = all.slice(0, 8);
 
   // Source line: span of dates covered
   const last = all[0], first = all[all.length - 1];
@@ -1815,16 +1850,8 @@ function buildRecentFeed() {
     </div>`;
   }).join('');
 
-  const moreBtn = (!_recentExpanded && all.length > 12)
-    ? `<div class="recent-more"><button onclick="expandRecent()">Show all ${all.length} →</button></div>`
-    : '';
-  list.innerHTML = rows + moreBtn;
+  list.innerHTML = rows;
   strip.style.display = '';
-}
-
-function expandRecent() {
-  _recentExpanded = true;
-  buildRecentFeed();
 }
 
 // ╔═══════════════════════════════════════════════════════════════════╗
@@ -1967,7 +1994,7 @@ function buildFlipsSection() {
   const strip = document.getElementById('flips-strip');
   if (!strip || !D || !D.psd || !Array.isArray(D.psd.flips) || !D.psd.flips.length) return;
   const all = D.psd.flips;
-  const visible = all.slice(0, 12);
+  const visible = all.slice(0, 6);
 
   const sub = document.getElementById('flips-sub');
   if (sub) sub.textContent = `${all.length} drugs went from rejection or deferral to a recommendation · click to open`;
@@ -2139,7 +2166,7 @@ function buildSponsorLeaderboard() {
   // the win-rate column uses for displaying confident figures.
   const MIN_SUBS = 5;
   const qualified = D.psd.sponsors.filter(s => s.n_submissions >= MIN_SUBS);
-  const visible = qualified.slice(0, 15);
+  const visible = qualified.slice(0, 10);
 
   const sub = document.getElementById('lb-sub');
   if (sub) {
