@@ -34,7 +34,10 @@
 <!-- Vercel Web Analytics — static-site script injection.
      Cookie-less, no PII collected. Vercel serves /_vercel/insights/script.js
      from the edge once Analytics is enabled in the project dashboard
-     (Vercel → script.report → Analytics → Enable). -->
+     (Vercel → script.report → Analytics → Enable).
+     The shim queues window.va() calls fired before the deferred script loads;
+     the real script.js drains window.vaq once it boots. -->
+<script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script>
 <script defer src="/_vercel/insights/script.js"></script>
 <style>
 /* ── Tokens (kept) ───────────────────────────────────────────── */
