@@ -101,6 +101,10 @@ def main() -> None:
         steps_ok.append(("PBS schedule (ATC)",
                          _run_step("Backfill ATC codes from PBS Schedule", schedule_main)))
 
+        from script_report.builders.brand_map_builder import main as brandmap_main
+        steps_ok.append(("Brand map",
+                         _run_step("Build brand->generic map for Smart Search", brandmap_main)))
+
         from script_report.extractors.agenda_extractor import main as agenda_main
         steps_ok.append(("Agendas",
                          _run_step("Extract upcoming PBAC + Intracycle agendas", agenda_main)))

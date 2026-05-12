@@ -112,8 +112,12 @@ def _f(row: dict, key: str, prefix: str = "") -> str:
     return f"{prefix}{v}"
 
 
-def build_profile(row: dict) -> str:
-    """Single string capturing the salient features of a PBAC decision."""
+def build_profile(row: dict, extra_brands: list[str] | None = None) -> str:
+    """Single string capturing the salient features of a PBAC decision.
+
+    ``extra_brands`` (optional) appends additional brand keywords from the
+    brand→generic map so embeddings score well on brand-only queries.
+    """
     name = (row.get("drug") or "").strip()
     brand = (row.get("brand_name") or "").strip()
     yr = (row.get("pbac_year") or "").strip()
@@ -153,7 +157,12 @@ def build_profile(row: dict) -> str:
         ("Risk-sharing arrangement: " + (row.get("risk_sharing_note") or "yes")) if (row.get("risk_sharing") or "").lower() == "yes" else "",
         _f(row, "rejection_reasons", "PBAC concerns: "),
         _f(row, "key_trials",        "Trials: "),
+        _f(row, "sponsor",           "Sponsor: "),
     ]
+    if extra_brands:
+        uniq = sorted({b for b in extra_brands if b and b != brand.lower()})
+        if uniq:
+            parts.append("Other brand names: " + ", ".join(uniq))
     profile = ". ".join([p for p in parts if p])
 
     # Defensive cap so a runaway extraction doesn't burn tokens
@@ -211,6 +220,39 @@ def write_outputs(drugs: list[dict], vectors: np.ndarray, model: str, top_k: int
     print(f"  Writing {n} × {d} float32 vectors → {EMB_BIN}")
     vectors.astype(np.float32).tofile(EMB_BIN)
 
+    # ATC + brand-aliases for richer per-drug metadata. Both are precomputed
+    # so write_outputs stays single-pass.
+    drug_atc_for_meta = _load_drug_atc_map()
+    names_for_meta = [drugs[i]["_drug_name"] for i in range(n)]
+    atc_by_idx_for_meta = {i: _atc_for_drug(nm, drug_atc_for_meta) for i, nm in enumerate(names_for_meta)}
+    generic_to_brands = _load_generic_to_brands()
+
+    def _icer_value(row: dict) -> float | None:
+        lo = (row.get("icer_low") or "").strip()
+        hi = (row.get("icer_high") or "").strip()
+        try:
+            if lo and hi:
+                return (float(lo) + float(hi)) / 2.0
+            if lo or hi:
+                return float(lo or hi)
+        except (TypeError, ValueError):
+            return None
+        return None
+
+    def _trial_design(row: dict) -> str | None:
+        ev = (row.get("evidence_type") or "").strip().lower()
+        if not ev:
+            return None
+        if "indirect" in ev or "itc" in ev or "mtc" in ev or "network" in ev:
+            return "itc"
+        if "single" in ev:
+            return "single_arm"
+        if "rct" in ev or "randomis" in ev or "randomiz" in ev:
+            return "rct"
+        if "observational" in ev or "registry" in ev:
+            return "observational"
+        return ev[:40]
+
     meta = {
         "model": model,
         "dim": int(d),
@@ -219,11 +261,24 @@ def write_outputs(drugs: list[dict], vectors: np.ndarray, model: str, top_k: int
         "input_type_queries":   "query",
         "drugs": [
             {
-                "name":       drugs[i]["_drug_name"],
-                "year":       (drugs[i].get("pbac_year") or "").strip(),
-                "indication": (drugs[i].get("indication") or "").strip()[:140],
-                "outcome":    (drugs[i].get("recommendation") or "").strip(),
-                "profile":    build_profile(drugs[i])[:800],
+                "name":          drugs[i]["_drug_name"],
+                "year":          (drugs[i].get("pbac_year") or "").strip(),
+                "month":         (drugs[i].get("pbac_month") or "").strip(),
+                "indication":    (drugs[i].get("indication") or "").strip()[:140],
+                "outcome":       (drugs[i].get("recommendation") or "").strip(),
+                "profile":       build_profile(drugs[i])[:800],
+                "sponsor":       (drugs[i].get("sponsor") or "").strip(),
+                "brand_primary": (drugs[i].get("brand_name") or "").strip(),
+                "brands":        sorted(generic_to_brands.get(drugs[i]["_drug_name"].lower(), [])),
+                "atc":           atc_by_idx_for_meta.get(i),
+                "therapy_area":  (drugs[i].get("therapy_area") or "").strip(),
+                "comparator":    (drugs[i].get("comparator") or "").strip()[:200],
+                "icer_value":    _icer_value(drugs[i]),
+                "icer_note":     (drugs[i].get("icer_note") or "").strip()[:200],
+                "trial_design":  _trial_design(drugs[i]),
+                "economic_model":(drugs[i].get("economic_model") or "").strip()[:60],
+                "listing_type":  (drugs[i].get("listing_type") or "").strip()[:60],
+                "rejection_reasons": (drugs[i].get("rejection_reasons") or "").strip()[:400],
             }
             for i in range(n)
         ],
@@ -271,6 +326,20 @@ def write_outputs(drugs: list[dict], vectors: np.ndarray, model: str, top_k: int
 
 
 SCHEDULE_ATC_CSV = DATA_DIR / "pbs_schedule_atc.csv"
+BRAND_MAP_JSON   = DATA_DIR / "brand_to_generic.json"
+
+
+def _load_generic_to_brands() -> dict[str, list[str]]:
+    """Reverse the brand→generic map so each generic gets its list of brand
+    aliases. Used both to widen the embedded profile and to populate the
+    ``brands`` field in the meta JSON."""
+    if not BRAND_MAP_JSON.exists():
+        return {}
+    raw = json.loads(BRAND_MAP_JSON.read_text(encoding="utf-8"))
+    out: dict[str, list[str]] = {}
+    for brand, generic in raw.items():
+        out.setdefault((generic or "").lower(), []).append(brand)
+    return out
 
 
 def _load_drug_atc_map() -> dict[str, str]:
@@ -370,7 +439,8 @@ def main():
         drugs = drugs[: args.limit]
         print(f"  Limit applied: {len(drugs):,}")
 
-    profiles = [build_profile(d) for d in drugs]
+    g2b = _load_generic_to_brands()
+    profiles = [build_profile(d, extra_brands=g2b.get((d["_drug_name"] or "").lower(), [])) for d in drugs]
 
     # ── Resume? ──────────────────────────────────────────────────────────────
     existing_vec = None

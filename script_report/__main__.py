@@ -13,6 +13,7 @@ Usage:
     python -m script_report calendar      # parse PBS Cycle Timeframe PDFs
     python -m script_report agendas       # extract upcoming PBAC + Intracycle meeting agendas
     python -m script_report embed         # build Voyage embeddings + nearest table
+    python -m script_report brandmap      # build data/brand_to_generic.json from PBS Schedule + PSDs
 
 Each subcommand passes any remaining argv on to the underlying entry function,
 so flags like --resume / --no-deploy work as before.
@@ -36,6 +37,7 @@ _COMMANDS = {
     "calendar": ("script_report.parsers.pbac_calendar",     "main"),
     "agendas":  ("script_report.extractors.agenda_extractor","main"),
     "embed":    ("script_report.embedders.voyage_embedder", "main"),
+    "brandmap": ("script_report.builders.brand_map_builder", "main"),
 }
 
 

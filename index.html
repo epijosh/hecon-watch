@@ -181,6 +181,44 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 .semantic-callout { padding: 12px 16px; background: var(--bg2); border-left: 3px solid var(--blue); margin: 12px 0 18px; font-family: var(--ui); font-size: 12px; color: var(--text2); line-height: 1.5; }
 .semantic-callout strong { color: var(--text); font-weight: 600; }
 
+/* Changelog entries */
+.cl-entry { padding: 14px 0 18px; border-bottom: 1px solid var(--border); }
+.cl-entry:last-child { border-bottom: 0; }
+.cl-entry-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 6px; flex-wrap: wrap; }
+.cl-entry-date { font-family: var(--ui); font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text3); }
+.cl-entry-tag { font-family: var(--ui); font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: #fff; background: var(--red); padding: 2px 7px; border-radius: 2px; }
+.cl-entry-tag.minor { background: var(--text3); }
+.cl-entry-title { font-family: var(--display); font-size: 19px; font-weight: 700; margin: 2px 0 6px; color: var(--text); }
+.cl-entry-body { font-family: var(--body); font-size: 14.5px; color: var(--text2); line-height: 1.55; }
+.cl-entry-body ul { margin: 6px 0 0 18px; padding: 0; }
+.cl-entry-body li { margin-bottom: 4px; }
+
+/* Inline "what's new" tip under Smart Search input */
+.ss-tip { display: flex; align-items: flex-start; gap: 10px; margin-top: 10px; padding: 9px 12px; background: var(--bg2); border: 1px dashed var(--red); font-family: var(--ui); font-size: 12px; color: var(--text2); line-height: 1.5; position: relative; }
+.ss-tip.hidden { display: none; }
+.ss-tip-pulse { display: inline-block; width: 7px; height: 7px; background: var(--red); border-radius: 50%; flex-shrink: 0; margin-top: 5px; animation: ss-tip-pulse 1.6s ease-in-out infinite; }
+@keyframes ss-tip-pulse { 0%,100% { opacity: .35; transform: scale(.85); } 50% { opacity: 1; transform: scale(1.1); } }
+.ss-tip-body { flex: 1; }
+.ss-tip-body strong { color: var(--text); font-weight: 700; }
+.ss-tip-body a { color: var(--red); cursor: pointer; font-weight: 600; }
+.ss-tip-body a:hover { text-decoration: underline; }
+.ss-tip-ex { display: inline-block; font-family: var(--body); font-style: italic; color: var(--text); cursor: pointer; padding: 1px 6px; background: var(--bg); border: 1px solid var(--border); margin: 0 2px; }
+.ss-tip-ex:hover { border-color: var(--red); color: var(--red); }
+.ss-tip-x { font-size: 16px; line-height: 1; color: var(--text3); cursor: pointer; background: none; border: 0; padding: 0 0 0 6px; flex-shrink: 0; }
+.ss-tip-x:hover { color: var(--red); }
+
+/* AI-generated synthesis above smart-search results */
+.search-synthesis { margin: 14px 0 18px; padding: 14px 18px 12px; background: var(--bg2); border: 1px solid var(--border); border-left: 3px solid var(--red); position: relative; }
+.search-synthesis-tag { display: inline-block; font-family: var(--ui); font-size: 9.5px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: var(--red); margin-bottom: 6px; }
+.search-synthesis-body { font-family: var(--body); font-size: 15px; font-style: italic; color: var(--text); line-height: 1.55; }
+.search-synthesis-body strong { font-style: normal; font-weight: 700; color: var(--text); }
+.search-synthesis-cites { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px 10px; }
+.search-synthesis-cite { display: inline-flex; align-items: baseline; gap: 6px; font-family: var(--ui); font-size: 11px; padding: 2px 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text2); cursor: pointer; transition: border-color .12s, color .12s; }
+.search-synthesis-cite:hover { border-color: var(--red); color: var(--red); }
+.search-synthesis-cite .ssc-yr { color: var(--text3); font-size: 10.5px; }
+.search-synthesis-foot { margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--border); font-family: var(--ui); font-size: 10.5px; color: var(--text3); line-height: 1.5; }
+.search-synthesis-foot em { font-style: normal; color: var(--text2); }
+
 /* ── About page ────────────────────────────────────────────── */
 .about-article { max-width: 720px; margin: 0 auto; padding: 32px 20px 56px; }
 .about-header { padding-bottom: 22px; border-bottom: 2px solid var(--text); margin-bottom: 26px; }
@@ -874,6 +912,18 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
           <strong onclick="runSearch('rare disease single-arm trial managed access agreement','semantic')">rare disease single-arm with managed access</strong>
           <strong onclick="runSearch('not recommended due to uncertain comparator choice','semantic')">rejected for comparator choice</strong>
         </div>
+        <div class="ss-tip" id="ss-tip-v2">
+          <span class="ss-tip-pulse"></span>
+          <div class="ss-tip-body">
+            <strong>New — ask in plain English.</strong>
+            Smart Search now understands brand names and direct questions. Try
+            <span class="ss-tip-ex" onclick="runSearch('What ICER was mirvetuximab recommended at?','semantic')">"What ICER was mirvetuximab recommended at?"</span>
+            or
+            <span class="ss-tip-ex" onclick="runSearch('Which Pfizer medications','semantic')">"Which Pfizer medications"</span>.
+            <a onclick="navTo('changelog')">See what's new →</a>
+          </div>
+          <button class="ss-tip-x" onclick="dismissSsTip('v2')" aria-label="Dismiss">×</button>
+        </div>
       </div>
 
       <!-- Keyword search -->
@@ -1460,6 +1510,25 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
   </div>
 </div>
 
+<!-- ─── CHANGELOG ──────────────────────────────────────────────────── -->
+<div id="changelog-content" style="display:none">
+  <div class="container">
+    <article class="about-article">
+      <header class="about-header">
+        <div class="eyebrow">Changelog</div>
+        <h1 class="about-title">What's new</h1>
+        <p class="about-lede">A running log of features, data refreshes, and improvements as they ship.</p>
+      </header>
+      <section class="about-section">
+        <div id="changelog-entries"></div>
+      </section>
+      <div class="about-back">
+        <span class="sans" style="cursor:pointer;color:var(--text3)" onclick="navTo('dashboard')">← Back to dashboard</span>
+      </div>
+    </article>
+  </div>
+</div>
+
 <!-- ─── FOOTER ──────────────────────────────────────────────────────── -->
 <footer>
   <div class="container">
@@ -1481,6 +1550,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
         <button class="footer-link" onclick="navTo('spend')">PBS spend</button>
         <button class="footer-link" onclick="navTo('trends')">Trends</button>
         <button class="footer-link" onclick="navTo('about')">About</button>
+        <button class="footer-link" onclick="navTo('changelog')">What's new</button>
       </div>
       <div class="footer-col">
         <div class="footer-col-title">Contact</div>
@@ -3239,6 +3309,7 @@ async function performSemanticSearch(q) {
   q = (q || '').trim();
   if (q.length < 4) return;
 
+  autoHideSsTipsOnUse();
   showResults();
   document.getElementById('search-clear-semantic').classList.add('visible');
 
@@ -3368,14 +3439,29 @@ function renderSemanticResults(query, data) {
     </div>`;
   }).join('');
 
+  const intent = (data && data.intent) || 'precedent';
+  const synthesis = (data && data.synthesis) || null;
+  const synthesisHtml = renderSynthesisBlock(synthesis);
+  const headerEyebrow = ({
+    factoid:     'Smart search · Direct answer',
+    drug_lookup: 'Smart search · Drug record',
+    filter:      'Smart search · Filtered',
+    precedent:   'Semantic precedent search',
+    legacy:      'Semantic precedent search',
+  })[intent] || 'Smart search';
+  const headerCount = (intent === 'factoid' || intent === 'drug_lookup')
+    ? `${results.length} record${results.length!==1?'s':''} for “${escapeHtml(query)}”`
+    : `${results.length} precedent${results.length!==1?'s':''} for “${escapeHtml(query)}”`;
+
   document.getElementById('result-content').innerHTML = `
     <div class="semantic-header">
       <div>
-        <div class="eyebrow">Semantic precedent search</div>
-        <span class="results-title">${results.length} precedent${results.length!==1?'s':''} for “${escapeHtml(query)}”${filterNote}</span>
+        <div class="eyebrow">${escapeHtml(headerEyebrow)}</div>
+        <span class="results-title">${headerCount}${filterNote}</span>
       </div>
       <span class="results-sub">${escapeHtml(model)} · ranked by cosine similarity</span>
     </div>
+    ${synthesisHtml}
     <div class="semantic-callout">
       <strong>Tip:</strong> these are PBAC decisions whose <em>full decision profile</em>
       (indication, evidence type, comparator, ICER, rejection reasons, etc.) most closely matches your query.
@@ -3385,6 +3471,23 @@ function renderSemanticResults(query, data) {
     <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border)">
       <span class="sans" style="font-size:12px;color:var(--text3);cursor:pointer" onclick="clearSearch()">← Back to dashboard</span>
     </div>`;
+}
+
+function renderSynthesisBlock(synthesis) {
+  if (!synthesis || !synthesis.answer) return '';
+  const cites = Array.isArray(synthesis.citations) ? synthesis.citations : [];
+  const sourceCount = synthesis.generated_from_count || cites.length || 0;
+  const cited = cites.slice(0, 8).map(c => {
+    const drug = (c && c.drug) || '';
+    const year = (c && c.year) || '';
+    return `<span class="search-synthesis-cite" onclick="selectFromResults('${jsAttr((drug||'').toLowerCase())}')">${escapeHtml(titleCase(drug))} <span class="ssc-yr">${escapeHtml(year)}</span></span>`;
+  }).join('');
+  return `<div class="search-synthesis">
+    <span class="search-synthesis-tag">AI summary</span>
+    <div class="search-synthesis-body">${escapeHtml(synthesis.answer)}</div>
+    ${cited ? `<div class="search-synthesis-cites">${cited}</div>` : ''}
+    <div class="search-synthesis-foot">Generated from <em>${sourceCount}</em> PBAC PSD record${sourceCount!==1?'s':''} — verify against the linked sources before relying on values.</div>
+  </div>`;
 }
 
 function renderSemanticError(query, err) {
@@ -3529,7 +3632,7 @@ function clearSearch() {
   showMain();
   // Drop a #/drug/<name>, #/sponsor/<key>, or #/about hash if present, so the
   // URL reflects "back to dashboard".
-  if (location.hash.startsWith('#/drug/') || location.hash.startsWith('#/sponsor/') || location.hash === '#/about') {
+  if (location.hash.startsWith('#/drug/') || location.hash.startsWith('#/sponsor/') || location.hash === '#/about' || location.hash === '#/changelog') {
     history.pushState(null, '', location.pathname + location.search);
     document.title = _DEFAULT_TITLE;
   }
@@ -3538,6 +3641,7 @@ function clearSearch() {
 function showResults() {
   document.getElementById('main-content').style.display = 'none';
   const ab = document.getElementById('about-content'); if (ab) ab.style.display = 'none';
+  const cl = document.getElementById('changelog-content'); if (cl) cl.style.display = 'none';
   document.getElementById('search-results').classList.add('active');
   _currentMode = 'results';
 }
@@ -3546,6 +3650,7 @@ function showMain() {
   document.getElementById('search-results').classList.remove('active');
   document.getElementById('main-content').style.display = '';
   const ab = document.getElementById('about-content'); if (ab) ab.style.display = 'none';
+  const cl = document.getElementById('changelog-content'); if (cl) cl.style.display = 'none';
   _currentMode = 'browse';
   applyBrowseFilters();
 }
@@ -3553,12 +3658,14 @@ function showMain() {
 function hideMain() {
   document.getElementById('main-content').style.display = 'none';
   const ab = document.getElementById('about-content'); if (ab) ab.style.display = 'none';
+  const cl = document.getElementById('changelog-content'); if (cl) cl.style.display = 'none';
   document.getElementById('search-results').classList.add('active');
 }
 
 function showAbout() {
   document.getElementById('search-results').classList.remove('active');
   document.getElementById('main-content').style.display = 'none';
+  const cl = document.getElementById('changelog-content'); if (cl) cl.style.display = 'none';
   const ab = document.getElementById('about-content');
   if (ab) ab.style.display = '';
   if (_currentMode !== 'about') trackEvent('AboutView');
@@ -3568,6 +3675,92 @@ function showAbout() {
   const link = document.getElementById('nav-about');
   if (link) link.classList.add('active');
   window.scrollTo({ top: 0, behavior: 'auto' });
+}
+
+// ── Changelog ────────────────────────────────────────────────────────────────
+const CHANGELOG = [
+  {
+    date: '2026-05-13',
+    tag: 'Feature',
+    title: 'Smart Search v2 — ask in plain English',
+    bullets: [
+      'Ask direct questions like "What ICER was mirvetuximab recommended at?" — get a grounded one-line answer above the result cards, cited by (drug, year).',
+      'Brand names auto-resolve to their generic — search "kesimpta" and the system understands ofatumumab.',
+      'Filter queries like "Which Pfizer medications" or "approved with high ICER" now route to structured filters instead of fuzzy similarity.',
+      'Honest-by-default: when the records don\'t answer the question, the system says so rather than making something up.',
+    ],
+  },
+  {
+    date: '2026-05-12',
+    tag: 'Launch',
+    title: 'script.report is live',
+    bullets: [
+      'Public launch with every PBAC Public Summary Document indexed and linked to PBS expenditure.',
+      'Semantic precedent search powered by Voyage AI embeddings.',
+      'Drug detail pages with 25+ structured fields per submission.',
+      'Editorial homepage covering money, freshness, and narrative zones.',
+    ],
+  },
+];
+
+function renderChangelog() {
+  const host = document.getElementById('changelog-entries');
+  if (!host) return;
+  host.innerHTML = CHANGELOG.map(e => {
+    const bullets = (e.bullets || []).map(b => `<li>${escapeHtml(b)}</li>`).join('');
+    const tagClass = (e.tag === 'Minor' || e.tag === 'Fix') ? 'cl-entry-tag minor' : 'cl-entry-tag';
+    return `<div class="cl-entry">
+      <div class="cl-entry-head">
+        <span class="cl-entry-date">${escapeHtml(e.date)}</span>
+        ${e.tag ? `<span class="${tagClass}">${escapeHtml(e.tag)}</span>` : ''}
+      </div>
+      <div class="cl-entry-title">${escapeHtml(e.title)}</div>
+      <div class="cl-entry-body"><ul>${bullets}</ul></div>
+    </div>`;
+  }).join('');
+}
+
+function showChangelog() {
+  document.getElementById('search-results').classList.remove('active');
+  document.getElementById('main-content').style.display = 'none';
+  const ab = document.getElementById('about-content'); if (ab) ab.style.display = 'none';
+  renderChangelog();
+  const cl = document.getElementById('changelog-content');
+  if (cl) cl.style.display = '';
+  if (_currentMode !== 'changelog') trackEvent('ChangelogView');
+  _currentMode = 'changelog';
+  document.title = "What's new — script.report";
+  document.querySelectorAll('#nav-links a').forEach(a => a.classList.remove('active'));
+  window.scrollTo({ top: 0, behavior: 'auto' });
+}
+
+// ── Smart Search "what's new" tip ────────────────────────────────────────────
+const _SS_TIP_KEY_PREFIX = 'ss_tip_seen_';
+
+function initSsTips() {
+  ['v2'].forEach(v => {
+    const el = document.getElementById('ss-tip-' + v);
+    if (!el) return;
+    if (localStorage.getItem(_SS_TIP_KEY_PREFIX + v) === '1') {
+      el.classList.add('hidden');
+    }
+  });
+}
+
+function dismissSsTip(v) {
+  const el = document.getElementById('ss-tip-' + v);
+  if (el) el.classList.add('hidden');
+  try { localStorage.setItem(_SS_TIP_KEY_PREFIX + v, '1'); } catch(_) {}
+  trackEvent && trackEvent('SsTipDismiss', { version: v });
+}
+
+function autoHideSsTipsOnUse() {
+  ['v2'].forEach(v => {
+    const el = document.getElementById('ss-tip-' + v);
+    if (!el || el.classList.contains('hidden')) return;
+    el.classList.add('hidden');
+    try { localStorage.setItem(_SS_TIP_KEY_PREFIX + v, '1'); } catch(_) {}
+  });
 }
 
 // ╔═══════════════════════════════════════════════════════════════════╗
@@ -4167,6 +4360,10 @@ function routeFromHash() {
     showAbout();
     return;
   }
+  if (location.hash === '#/changelog') {
+    showChangelog();
+    return;
+  }
   const m = (location.hash || '').match(/^#\/drug\/(.+)$/);
   if (m) {
     const name = decodeURIComponent(m[1]).toLowerCase();
@@ -4185,7 +4382,7 @@ function routeFromHash() {
     return;
   }
   // Hash empty or no match — make sure we're on the dashboard view
-  if (_currentMode === 'detail' || _currentMode === 'about') {
+  if (_currentMode === 'detail' || _currentMode === 'about' || _currentMode === 'changelog') {
     showMain();
     document.title = _DEFAULT_TITLE;
   }
@@ -4205,6 +4402,12 @@ function navTo(section) {
   if (section === 'about') {
     if (location.hash !== '#/about') history.pushState(null, '', '#/about');
     showAbout();
+    return;
+  }
+
+  if (section === 'changelog') {
+    if (location.hash !== '#/changelog') history.pushState(null, '', '#/changelog');
+    showChangelog();
     return;
   }
 
@@ -4338,6 +4541,7 @@ function initAll() {
   buildTherapyOutcomes();
   buildTherapyFilterChips();
   initJumpRail();
+  initSsTips();
 
   // Hide the merged resubmission-story wrapper if neither half has data
   // (happens in dev before the pipeline has run; in prod both populate).
