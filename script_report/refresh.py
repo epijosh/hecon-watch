@@ -115,6 +115,10 @@ def main() -> None:
                              _run_step("Embed PSDs via Voyage AI",
                                        embed_main, argv=["--resume"])))
 
+            from script_report.builders.map_builder import main as map_main
+            steps_ok.append(("Cosmos map",
+                             _run_step("Project embeddings to 2D (UMAP)", map_main)))
+
     from script_report.builders.site_builder import main as build_main
     steps_ok.append(("Build", _run_step("Build site_data.js", build_main)))
 

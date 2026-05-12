@@ -848,6 +848,27 @@ def load_psd_extracted() -> dict:
 
 # ── 4. Nearest-neighbour links from embed_psds.py ────────────────────────────
 
+def load_psd_map() -> dict:
+    """Load data/psd_map.json (produced by map_builder.py).
+
+    Schema:
+        { schema: [...], n: int, points: [[x, y, name, therapy, outcome_bucket, year], ...] }
+    """
+    path = data_path("psd_map.json")
+    if not path.exists():
+        print("  psd_map.json not found — run `python -m script_report map` to enable the cosmos plot")
+        return {}
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        if not isinstance(data, dict) or "points" not in data:
+            return {}
+        return data
+    except Exception as e:
+        print(f"  Failed to load psd_map.json: {e}")
+        return {}
+
+
 def load_psd_nearest() -> dict:
     """Load data/psd_nearest.json (produced by embed_psds.py).
 

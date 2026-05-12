@@ -53,8 +53,9 @@ only does new work.
 9.  python -m script_report embed --resume        →  data/psd_embeddings.bin
                                                    +  data/psd_embeddings_meta.json
                                                    +  data/psd_nearest.json
-10. python -m script_report build                 →  site_data.js
-11. vercel --prod  (or git push)
+10. python -m script_report map                   →  data/psd_map.json   (UMAP 2D projection for the cosmos plot)
+11. python -m script_report build                 →  site_data.js
+12. vercel --prod  (or git push)
 ```
 
 `python -m script_report refresh` orchestrates 1–9 with flags:

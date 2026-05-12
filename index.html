@@ -30,7 +30,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Lora:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
 <script>window.SITE_DATA = window.SITE_DATA || null;</script>
-<script src="site_data.js?v=69cb623d"></script>
+<script src="site_data.js?v=12e6c2b1"></script>
 
 <!-- Vercel Web Analytics — static-site script injection.
      Cookie-less, no PII collected. Vercel serves /_vercel/insights/script.js
@@ -228,6 +228,27 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 
 .semantic-callout { padding: 12px 16px; background: var(--bg2); border-left: 3px solid var(--blue); margin: 12px 0 18px; font-family: var(--ui); font-size: 12px; color: var(--text2); line-height: 1.5; }
 .semantic-callout strong { color: var(--text); font-weight: 600; }
+
+/* Cosmos — 2D embedding plot */
+.cosmos-controls { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin: 14px 0 12px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+.cosmos-control-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.cosmos-control-label { font-family: var(--ui); font-size: 10px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text3); margin-right: 4px; }
+.cosmos-hint { font-size: 11.5px; color: var(--text3); font-style: italic; }
+.cosmos-stage { position: relative; width: 100%; aspect-ratio: 4/3; max-height: 680px; margin: 0 auto; background: var(--bg2); border: 1px solid var(--border); overflow: hidden; }
+#cosmos-canvas { display: block; width: 100%; height: 100%; cursor: crosshair; }
+.cosmos-tooltip { position: absolute; pointer-events: none; opacity: 0; transition: opacity .08s; background: var(--bg); border: 1px solid var(--text); padding: 8px 12px; max-width: 280px; font-family: var(--ui); font-size: 12px; line-height: 1.45; color: var(--text); box-shadow: 0 4px 14px rgba(0,0,0,.18); z-index: 5; transform: translate(0, 0); }
+.cosmos-tooltip.visible { opacity: 1; }
+.cosmos-tooltip .ct-name { font-family: var(--display); font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 2px; line-height: 1.2; }
+.cosmos-tooltip .ct-meta { color: var(--text3); font-size: 11px; margin-bottom: 4px; }
+.cosmos-tooltip .ct-row { display: flex; gap: 8px; align-items: baseline; }
+.cosmos-tooltip .ct-label { color: var(--text3); font-size: 10.5px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; min-width: 50px; }
+.cosmos-tooltip .ct-val { color: var(--text); font-size: 12px; }
+.cosmos-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 12px; padding: 4px 0 0; }
+.cosmos-legend-item { display: inline-flex; align-items: center; gap: 7px; font-family: var(--ui); font-size: 11.5px; color: var(--text2); cursor: pointer; padding: 2px 6px; border-radius: 2px; transition: background .12s; }
+.cosmos-legend-item:hover { background: var(--bg2); }
+.cosmos-legend-item.dim { opacity: .35; }
+.cosmos-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.cosmos-legend-count { color: var(--text3); font-size: 10.5px; margin-left: 2px; }
 
 /* Changelog entries */
 .cl-entry { padding: 14px 0 18px; border-bottom: 1px solid var(--border); }
@@ -1534,6 +1555,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
         <p>This is where the dataset really earns its keep. Every drug's extracted profile is converted into a high-dimensional embedding vector using Voyage AI's <code>voyage-3</code> model, and the whole corpus lives in an in-memory vector index that the <code>/api/search</code> endpoint queries on every request.</p>
         <p>Embeddings work unusually well on PSDs. The documents share a tight, technical vocabulary — comparators, ICER framings, ESC commentary, DUSC concerns, managed-entry mechanics, immature-OS arguments, nominated-price reductions — so similar precedents end up neighbours in vector space even when they use different drug names, different indications, or different wording. A query like <em>"immature OS in second-line oncology rejected on uncertain ICER"</em> doesn't return keyword hits; it returns the actual precedents PBAC has weighed before.</p>
         <p>Your query is embedded the same way and ranked by cosine similarity. The Match score on each card is that similarity (0–1). The outcome / year / therapy chips narrow the candidate pool.</p>
+        <p style="margin-top:10px"><a onclick="navTo('cosmos')" style="color:var(--red);font-weight:600;cursor:pointer">See every PBAC decision on a single map →</a></p>
       </section>
 
       <section class="about-section">
@@ -1549,6 +1571,44 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
       <section class="about-section">
         <h2>Who built it</h2>
         <p>script.report is built and maintained by Josh Ciardi (<a href="mailto:joshciardi@icloud.com">joshciardi@icloud.com</a>). Found a bug, a missing PSD, or want a feature — get in touch.</p>
+      </section>
+
+      <div class="about-back">
+        <span class="sans" style="cursor:pointer;color:var(--text3)" onclick="navTo('dashboard')">← Back to dashboard</span>
+      </div>
+    </article>
+  </div>
+</div>
+
+<!-- ─── COSMOS ─────────────────────────────────────────────────────── -->
+<div id="cosmos-content" style="display:none">
+  <div class="container">
+    <article class="about-article">
+      <header class="about-header">
+        <div class="eyebrow">Map</div>
+        <h1 class="about-title">The PBAC <em>cosmos</em></h1>
+        <p class="about-lede">Every Australian PBAC decision since 2003, projected onto a single plane. Drugs aren't placed by therapy area or outcome — those labels were never given to the model. Each position is learned from the text of the decision itself. Drugs that read like each other end up near each other.</p>
+      </header>
+
+      <div class="cosmos-controls">
+        <div class="cosmos-control-group">
+          <span class="cosmos-control-label">Colour by</span>
+          <button class="chip active" data-cosmos-mode="therapy" onclick="setCosmosMode('therapy')">Therapy area</button>
+          <button class="chip" data-cosmos-mode="outcome" onclick="setCosmosMode('outcome')">PBAC outcome</button>
+        </div>
+        <div class="cosmos-hint sans">Hover a point for the drug · click to open the record</div>
+      </div>
+
+      <div class="cosmos-stage">
+        <canvas id="cosmos-canvas" aria-label="2D projection of PBAC decision embeddings"></canvas>
+        <div class="cosmos-tooltip" id="cosmos-tooltip"></div>
+      </div>
+      <div class="cosmos-legend" id="cosmos-legend"></div>
+
+      <section class="about-section" style="margin-top:24px">
+        <h2>How to read this</h2>
+        <p>Each dot is one PBAC submission. Position is set by a 1,024-dimensional embedding of the decision's full text — indication, comparator, evidence, ICER framing, rejection reasoning — compressed down to 2D using UMAP. The clusters you see weren't drawn by hand; the model learned the structure of pharma decision-making from prose alone.</p>
+        <p>Toggle "PBAC outcome" to see how recommendations and rejections distribute through the space — there are pockets where almost everything was recommended, and pockets where the committee has consistently said no, even across therapy areas.</p>
       </section>
 
       <div class="about-back">
@@ -1597,6 +1657,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
         <button class="footer-link" onclick="navTo('decisions')">All decisions</button>
         <button class="footer-link" onclick="navTo('spend')">PBS spend</button>
         <button class="footer-link" onclick="navTo('trends')">Trends</button>
+        <button class="footer-link" onclick="navTo('cosmos')">The PBAC cosmos</button>
         <button class="footer-link" onclick="navTo('about')">About</button>
         <button class="footer-link" onclick="navTo('changelog')">What's new</button>
       </div>
@@ -3688,7 +3749,7 @@ function clearSearch() {
   showMain();
   // Drop a #/drug/<name>, #/sponsor/<key>, or #/about hash if present, so the
   // URL reflects "back to dashboard".
-  if (location.hash.startsWith('#/drug/') || location.hash.startsWith('#/sponsor/') || location.hash === '#/about' || location.hash === '#/changelog') {
+  if (location.hash.startsWith('#/drug/') || location.hash.startsWith('#/sponsor/') || location.hash === '#/about' || location.hash === '#/changelog' || location.hash === '#/map') {
     history.pushState(null, '', location.pathname + location.search);
     document.title = _DEFAULT_TITLE;
   }
@@ -3698,6 +3759,7 @@ function showResults() {
   document.getElementById('main-content').style.display = 'none';
   const ab = document.getElementById('about-content'); if (ab) ab.style.display = 'none';
   const cl = document.getElementById('changelog-content'); if (cl) cl.style.display = 'none';
+  const co = document.getElementById('cosmos-content'); if (co) co.style.display = 'none';
   document.getElementById('search-results').classList.add('active');
   _currentMode = 'results';
 }
@@ -3707,6 +3769,7 @@ function showMain() {
   document.getElementById('main-content').style.display = '';
   const ab = document.getElementById('about-content'); if (ab) ab.style.display = 'none';
   const cl = document.getElementById('changelog-content'); if (cl) cl.style.display = 'none';
+  const co = document.getElementById('cosmos-content'); if (co) co.style.display = 'none';
   _currentMode = 'browse';
   applyBrowseFilters();
 }
@@ -3715,6 +3778,7 @@ function hideMain() {
   document.getElementById('main-content').style.display = 'none';
   const ab = document.getElementById('about-content'); if (ab) ab.style.display = 'none';
   const cl = document.getElementById('changelog-content'); if (cl) cl.style.display = 'none';
+  const co = document.getElementById('cosmos-content'); if (co) co.style.display = 'none';
   document.getElementById('search-results').classList.add('active');
 }
 
@@ -3722,6 +3786,7 @@ function showAbout() {
   document.getElementById('search-results').classList.remove('active');
   document.getElementById('main-content').style.display = 'none';
   const cl = document.getElementById('changelog-content'); if (cl) cl.style.display = 'none';
+  const co = document.getElementById('cosmos-content'); if (co) co.style.display = 'none';
   const ab = document.getElementById('about-content');
   if (ab) ab.style.display = '';
   if (_currentMode !== 'about') trackEvent('AboutView');
@@ -3733,8 +3798,312 @@ function showAbout() {
   window.scrollTo({ top: 0, behavior: 'auto' });
 }
 
+// ── Cosmos (2D embedding plot) ───────────────────────────────────────────────
+const COSMOS_THERAPY_COLOURS = ['#C62828','#1565C0','#6A1B9A','#00838F','#E65100','#2E7D32','#5D4037','#C0CA33','#AD1457','#455A64'];
+const COSMOS_OUTCOME_COLOURS = {
+  recommended: '#2e7d32',
+  not:         '#C62828',
+  deferred:    '#E65100',
+  noted:       '#1565C0',
+  other:       '#9e9e9e',
+};
+const COSMOS_OUTCOME_LABEL = {
+  recommended: 'Recommended',
+  not:         'Not recommended',
+  deferred:    'Deferred',
+  noted:       'Noted',
+  other:       'Other / unstated',
+};
+let _cosmosState = null;
+
+function buildCosmosState() {
+  const D = window.SITE_DATA;
+  const c = D && D.cosmos;
+  if (!c || !Array.isArray(c.points) || !c.points.length) return null;
+
+  // Schema: [x, y, name, therapy, outcome_bucket, year]
+  const points = c.points.map(p => ({
+    x: p[0], y: p[1], name: p[2] || '',
+    therapy: p[3] || '', outcome: p[4] || 'other', year: p[5] || '',
+  }));
+
+  // Top therapy areas → colour mapping (rest fall into "Other")
+  const tCounts = {};
+  points.forEach(p => { const t = p.therapy || 'Other'; tCounts[t] = (tCounts[t] || 0) + 1; });
+  const tSorted = Object.entries(tCounts).sort((a,b) => b[1] - a[1]);
+  const topT = tSorted.slice(0, COSMOS_THERAPY_COLOURS.length - 1).map(e => e[0]);
+  const tColour = {};
+  topT.forEach((t, i) => tColour[t] = COSMOS_THERAPY_COLOURS[i]);
+  const otherTColour = COSMOS_THERAPY_COLOURS[COSMOS_THERAPY_COLOURS.length - 1];
+
+  // Outcome counts for the legend
+  const oCounts = {};
+  points.forEach(p => { oCounts[p.outcome] = (oCounts[p.outcome] || 0) + 1; });
+
+  return {
+    points,
+    therapyColours: tColour,
+    therapyOther: otherTColour,
+    therapyCounts: tCounts,
+    therapyOrder: [...topT, '__other__'],
+    outcomeCounts: oCounts,
+    mode: 'therapy',
+    hidden: new Set(),
+    hoverIdx: -1,
+    dpr: window.devicePixelRatio || 1,
+  };
+}
+
+function _cosmosColourFor(p, s) {
+  if (s.mode === 'outcome') return COSMOS_OUTCOME_COLOURS[p.outcome] || COSMOS_OUTCOME_COLOURS.other;
+  return s.therapyColours[p.therapy] || s.therapyOther;
+}
+
+function _cosmosBucketFor(p, s) {
+  if (s.mode === 'outcome') return p.outcome;
+  return s.therapyColours[p.therapy] ? p.therapy : '__other__';
+}
+
+function renderCosmos() {
+  const s = _cosmosState;
+  if (!s) return;
+  const canvas = document.getElementById('cosmos-canvas');
+  if (!canvas) return;
+
+  // Resize for retina
+  const rect = canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  s.dpr = dpr;
+  canvas.width  = Math.round(rect.width * dpr);
+  canvas.height = Math.round(rect.height * dpr);
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  s.ctx = ctx;
+  s.width = rect.width;
+  s.height = rect.height;
+
+  // Background
+  ctx.clearRect(0, 0, rect.width, rect.height);
+
+  // Subtle grid (every 0.25)
+  const gridColour = getComputedStyle(document.documentElement).getPropertyValue('--border').trim() || '#e5e0d6';
+  ctx.strokeStyle = gridColour;
+  ctx.lineWidth = 0.5;
+  ctx.globalAlpha = 0.4;
+  for (let i = 1; i < 4; i++) {
+    const x = (i / 4) * rect.width;
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, rect.height); ctx.stroke();
+    const y = (i / 4) * rect.height;
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(rect.width, y); ctx.stroke();
+  }
+  ctx.globalAlpha = 1;
+
+  // Points
+  const margin = 18;
+  const W = rect.width - margin * 2;
+  const H = rect.height - margin * 2;
+  s.layout = { margin, W, H };
+
+  // First pass: dim points (hidden in legend filter)
+  for (let i = 0; i < s.points.length; i++) {
+    const p = s.points[i];
+    const bucket = _cosmosBucketFor(p, s);
+    if (!s.hidden.has(bucket)) continue;
+    const cx = margin + p.x * W;
+    const cy = margin + (1 - p.y) * H;
+    ctx.fillStyle = gridColour;
+    ctx.globalAlpha = 0.25;
+    ctx.beginPath(); ctx.arc(cx, cy, 2.5, 0, Math.PI * 2); ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+
+  // Second pass: active points
+  for (let i = 0; i < s.points.length; i++) {
+    if (i === s.hoverIdx) continue;
+    const p = s.points[i];
+    const bucket = _cosmosBucketFor(p, s);
+    if (s.hidden.has(bucket)) continue;
+    const cx = margin + p.x * W;
+    const cy = margin + (1 - p.y) * H;
+    ctx.fillStyle = _cosmosColourFor(p, s);
+    ctx.globalAlpha = 0.78;
+    ctx.beginPath(); ctx.arc(cx, cy, 3.4, 0, Math.PI * 2); ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+
+  // Hover halo
+  if (s.hoverIdx >= 0 && s.hoverIdx < s.points.length) {
+    const p = s.points[s.hoverIdx];
+    const cx = margin + p.x * W;
+    const cy = margin + (1 - p.y) * H;
+    ctx.beginPath(); ctx.arc(cx, cy, 8, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(198,40,40,0.55)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.fillStyle = _cosmosColourFor(p, s);
+    ctx.beginPath(); ctx.arc(cx, cy, 4.5, 0, Math.PI * 2); ctx.fill();
+  }
+}
+
+function renderCosmosLegend() {
+  const s = _cosmosState;
+  if (!s) return;
+  const host = document.getElementById('cosmos-legend');
+  if (!host) return;
+
+  let entries;
+  if (s.mode === 'outcome') {
+    entries = ['recommended','not','deferred','noted','other']
+      .filter(k => (s.outcomeCounts[k] || 0) > 0)
+      .map(k => ({ key: k, label: COSMOS_OUTCOME_LABEL[k], colour: COSMOS_OUTCOME_COLOURS[k], n: s.outcomeCounts[k] || 0 }));
+  } else {
+    entries = s.therapyOrder.map(t => {
+      if (t === '__other__') {
+        const others = Object.entries(s.therapyCounts).filter(([k]) => !s.therapyColours[k]);
+        const n = others.reduce((a, [,v]) => a + v, 0);
+        return { key: '__other__', label: 'Other', colour: s.therapyOther, n };
+      }
+      return { key: t, label: t, colour: s.therapyColours[t], n: s.therapyCounts[t] || 0 };
+    }).filter(e => e.n > 0);
+  }
+
+  host.innerHTML = entries.map(e => {
+    const dim = s.hidden.has(e.key) ? ' dim' : '';
+    return `<span class="cosmos-legend-item${dim}" data-bucket="${escapeHtml(e.key)}">
+      <span class="cosmos-legend-dot" style="background:${e.colour}"></span>
+      <span>${escapeHtml(e.label)}</span>
+      <span class="cosmos-legend-count">${e.n}</span>
+    </span>`;
+  }).join('');
+
+  host.querySelectorAll('.cosmos-legend-item').forEach(el => {
+    el.addEventListener('click', () => {
+      const b = el.dataset.bucket;
+      if (s.hidden.has(b)) s.hidden.delete(b); else s.hidden.add(b);
+      el.classList.toggle('dim');
+      renderCosmos();
+    });
+  });
+}
+
+function _cosmosHitTest(clientX, clientY) {
+  const s = _cosmosState;
+  if (!s || !s.layout) return -1;
+  const canvas = document.getElementById('cosmos-canvas');
+  const rect = canvas.getBoundingClientRect();
+  const x = clientX - rect.left;
+  const y = clientY - rect.top;
+  const { margin, W, H } = s.layout;
+  if (x < margin - 8 || x > rect.width - margin + 8) return -1;
+  if (y < margin - 8 || y > rect.height - margin + 8) return -1;
+
+  let best = -1, bestDist = 64; // px^2 — must be within ~8px
+  for (let i = 0; i < s.points.length; i++) {
+    const p = s.points[i];
+    if (s.hidden.has(_cosmosBucketFor(p, s))) continue;
+    const cx = margin + p.x * W;
+    const cy = margin + (1 - p.y) * H;
+    const dx = cx - x, dy = cy - y;
+    const d = dx * dx + dy * dy;
+    if (d < bestDist) { bestDist = d; best = i; }
+  }
+  return best;
+}
+
+function _cosmosShowTooltip(idx, clientX, clientY) {
+  const s = _cosmosState;
+  if (!s || idx < 0) {
+    const t = document.getElementById('cosmos-tooltip');
+    if (t) t.classList.remove('visible');
+    return;
+  }
+  const p = s.points[idx];
+  const t = document.getElementById('cosmos-tooltip');
+  if (!t) return;
+  const out = COSMOS_OUTCOME_LABEL[p.outcome] || '';
+  t.innerHTML = `
+    <div class="ct-name">${escapeHtml(titleCase(p.name))}</div>
+    <div class="ct-meta">${escapeHtml([p.therapy, p.year].filter(Boolean).join(' · '))}</div>
+    ${out ? `<div class="ct-row"><span class="ct-label">PBAC</span><span class="ct-val" style="color:${COSMOS_OUTCOME_COLOURS[p.outcome]||'inherit'}">${escapeHtml(out)}</span></div>` : ''}
+  `;
+  const stage = document.querySelector('.cosmos-stage').getBoundingClientRect();
+  const x = clientX - stage.left + 12;
+  const y = clientY - stage.top + 12;
+  // Clamp inside stage
+  t.style.left = Math.min(x, stage.width - 280) + 'px';
+  t.style.top  = Math.min(y, stage.height - 80)  + 'px';
+  t.classList.add('visible');
+}
+
+function showCosmos() {
+  document.getElementById('search-results').classList.remove('active');
+  document.getElementById('main-content').style.display = 'none';
+  const ab = document.getElementById('about-content'); if (ab) ab.style.display = 'none';
+  const cl = document.getElementById('changelog-content'); if (cl) cl.style.display = 'none';
+  const co = document.getElementById('cosmos-content'); if (co) co.style.display = 'none';
+  const co = document.getElementById('cosmos-content');
+  if (co) co.style.display = '';
+  if (_currentMode !== 'cosmos') trackEvent('CosmosView');
+  _currentMode = 'cosmos';
+  document.title = "Map — script.report";
+  document.querySelectorAll('#nav-links a').forEach(a => a.classList.remove('active'));
+  window.scrollTo({ top: 0, behavior: 'auto' });
+
+  if (!_cosmosState) {
+    _cosmosState = buildCosmosState();
+    if (!_cosmosState) return;
+    const canvas = document.getElementById('cosmos-canvas');
+    canvas.addEventListener('mousemove', (e) => {
+      const idx = _cosmosHitTest(e.clientX, e.clientY);
+      if (idx !== _cosmosState.hoverIdx) {
+        _cosmosState.hoverIdx = idx;
+        renderCosmos();
+      }
+      _cosmosShowTooltip(idx, e.clientX, e.clientY);
+    });
+    canvas.addEventListener('mouseleave', () => {
+      _cosmosState.hoverIdx = -1;
+      renderCosmos();
+      const t = document.getElementById('cosmos-tooltip'); if (t) t.classList.remove('visible');
+    });
+    canvas.addEventListener('click', (e) => {
+      const idx = _cosmosHitTest(e.clientX, e.clientY);
+      if (idx < 0) return;
+      const name = _cosmosState.points[idx].name;
+      trackEvent && trackEvent('CosmosOpen', { drug: (name || '').toLowerCase() });
+      selectFromResults(name);
+    });
+    window.addEventListener('resize', () => { renderCosmos(); });
+  }
+  renderCosmosLegend();
+  // Defer initial render until layout settles
+  requestAnimationFrame(renderCosmos);
+}
+
+function setCosmosMode(mode) {
+  if (!_cosmosState) return;
+  _cosmosState.mode = mode;
+  _cosmosState.hidden = new Set();
+  document.querySelectorAll('[data-cosmos-mode]').forEach(b => {
+    b.classList.toggle('active', b.dataset.cosmosMode === mode);
+  });
+  renderCosmosLegend();
+  renderCosmos();
+  trackEvent && trackEvent('CosmosMode', { mode });
+}
+
 // ── Changelog ────────────────────────────────────────────────────────────────
 const CHANGELOG = [
+  {
+    date: '2026-05-13',
+    tag: 'Feature',
+    title: 'The PBAC cosmos — every decision on a single map',
+    bullets: [
+      'New "/#/map" route projects all 870 PBAC decisions into a 2D plane using UMAP on the Voyage embeddings.',
+      'Therapy areas and outcomes cluster on their own — the model learned the structure of PBAC decision-making from text alone.',
+      'Hover any point for the drug; click to open its record. Toggle colour-by-outcome to see where rejections concentrate.',
+    ],
+  },
   {
     date: '2026-05-13',
     tag: 'Feature',
@@ -4420,6 +4789,10 @@ function routeFromHash() {
     showChangelog();
     return;
   }
+  if (location.hash === '#/map') {
+    showCosmos();
+    return;
+  }
   const m = (location.hash || '').match(/^#\/drug\/(.+)$/);
   if (m) {
     const name = decodeURIComponent(m[1]).toLowerCase();
@@ -4438,7 +4811,7 @@ function routeFromHash() {
     return;
   }
   // Hash empty or no match — make sure we're on the dashboard view
-  if (_currentMode === 'detail' || _currentMode === 'about' || _currentMode === 'changelog') {
+  if (_currentMode === 'detail' || _currentMode === 'about' || _currentMode === 'changelog' || _currentMode === 'cosmos') {
     showMain();
     document.title = _DEFAULT_TITLE;
   }
@@ -4464,6 +4837,12 @@ function navTo(section) {
   if (section === 'changelog') {
     if (location.hash !== '#/changelog') history.pushState(null, '', '#/changelog');
     showChangelog();
+    return;
+  }
+
+  if (section === 'cosmos') {
+    if (location.hash !== '#/map') history.pushState(null, '', '#/map');
+    showCosmos();
     return;
   }
 
