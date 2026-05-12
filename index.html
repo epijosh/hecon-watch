@@ -27,6 +27,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Lora:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
 <script>window.SITE_DATA = window.SITE_DATA || null;</script>
 <script src="site_data.js?v=69cb623d"></script>
@@ -67,9 +68,27 @@
   --blue:    #1565C0;
   --purple:  #6A1B9A;
   --teal:    #00838F;
-  --display: 'Playfair Display', Georgia, 'Times New Roman', serif;
-  --body:    'Lora', Georgia, 'Times New Roman', serif;
+  --display: 'Playfair Display', 'Playfair Fallback', Georgia, 'Times New Roman', serif;
+  --body:    'Lora', 'Lora Fallback', Georgia, 'Times New Roman', serif;
   --ui:      -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Metric-matched fallbacks so font swap doesn't trigger CLS */
+@font-face {
+  font-family: 'Playfair Fallback';
+  src: local('Georgia');
+  size-adjust: 107%;
+  ascent-override: 81%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Lora Fallback';
+  src: local('Georgia');
+  size-adjust: 110%;
+  ascent-override: 92%;
+  descent-override: 25%;
+  line-gap-override: 0%;
 }
 [data-theme="dark"] {
   --red:    #EF5350;
@@ -87,6 +106,35 @@
 body { font-family: var(--body); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.55; transition: background .25s, color .25s; }
 a { color: inherit; text-decoration: none; }
 button { font-family: inherit; }
+
+/* CLS — reserve space for above-fold strips populated after site_data.js loads.
+   Strips start with visibility:hidden so the layout slot exists at first paint;
+   render functions reveal them (or hide entirely if there's no data). */
+.recent-strip { min-height: 360px; }
+.cal-strip    { min-height: 56px; }
+
+/* Dead-click attribution — route clicks on inner spans up to the wrapper that
+   actually has the onclick handler. Without this, Clarity logs the inner span
+   as a dead click because it has no handler of its own. */
+.nav-logo *,
+.mcard *,
+.lb-row *,
+.recent-row *,
+.flip-card *,
+.similar-card *  { pointer-events: none; }
+/* Keep glossary abbreviations and explicit links hover/clickable inside those wrappers */
+.mcard a, .mcard abbr,
+.lb-row a, .lb-row abbr,
+.recent-row a, .recent-row abbr,
+.flip-card a, .flip-card abbr,
+.similar-card a, .similar-card abbr { pointer-events: auto; }
+
+/* Non-interactive labels — explicit default cursor so users don't try clicking */
+.kpi-label, .kpi-num, .kpi-sub,
+.callout-eyebrow,
+.flips-sub, #flips-sub,
+.search-card-eyebrow, .search-card-sub,
+.results-title, .results-sub { cursor: default; }
 
 /* ── Utilities ───────────────────────────────────────────────── */
 .sans { font-family: var(--ui); }
@@ -1064,7 +1112,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
   </div>
 
   <!-- ─── RECENTLY PUBLISHED + COMING UP AT PBAC ──────────────────── -->
-  <div class="recent-strip" id="recent-strip" style="display:none">
+  <div class="recent-strip" id="recent-strip" style="visibility:hidden">
     <div class="container">
       <div class="top-zone-grid">
         <div class="top-zone-left" id="sec-latest" data-jr-section>
@@ -1092,7 +1140,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
   </div>
 
   <!-- ─── PBAC CYCLE CALENDAR (freshness zone, with recently+coming-up) ─ -->
-  <div class="cal-strip" id="cal-strip" data-jr-section style="display:none">
+  <div class="cal-strip" id="cal-strip" data-jr-section style="visibility:hidden">
     <div class="container">
       <div class="cal-head">
         <div>
@@ -1940,7 +1988,10 @@ function buildCalendar() {
   const D = window.SITE_DATA;
   const cal = D && D.calendar;
   const strip = document.getElementById('cal-strip');
-  if (!strip || !cal || !Array.isArray(cal.meetings) || !cal.meetings.length) return;
+  if (!strip || !cal || !Array.isArray(cal.meetings) || !cal.meetings.length) {
+    if (strip) strip.style.display = 'none';
+    return;
+  }
 
   const today = new Date().toISOString().slice(0, 10);
 
@@ -2019,6 +2070,7 @@ function buildCalendar() {
   }).join('');
   list.innerHTML = html;
   strip.style.display = '';
+  strip.style.visibility = 'visible';
 }
 
 // ╔═══════════════════════════════════════════════════════════════════╗
@@ -2027,7 +2079,10 @@ function buildCalendar() {
 function buildRecentFeed() {
   const D = window.SITE_DATA;
   const strip = document.getElementById('recent-strip');
-  if (!strip || !D || !D.psd || !Array.isArray(D.psd.recent) || !D.psd.recent.length) return;
+  if (!strip || !D || !D.psd || !Array.isArray(D.psd.recent) || !D.psd.recent.length) {
+    if (strip) strip.style.display = 'none';
+    return;
+  }
 
   const all = D.psd.recent;
   const visible = all.slice(0, 8);
@@ -2076,6 +2131,7 @@ function buildRecentFeed() {
 
   list.innerHTML = rows;
   strip.style.display = '';
+  strip.style.visibility = 'visible';
 }
 
 // ╔═══════════════════════════════════════════════════════════════════╗
