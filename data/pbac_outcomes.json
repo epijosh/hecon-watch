@@ -17,167 +17,587 @@
           "submission_category": "Major submission",
           "submission_pathway": "New listing",
           "outcome": "Recommended",
-          "outcome_detail": "Recommended for inclusion in PBS General Schedule and PBS Section 100"
+          "outcome_detail": "Recommended for listing in PBS General Schedule and PBS Section 100 (Highly Specialised Drugs Program) under same circumstances as reference biologic Humira"
         },
         {
           "drug": "ADALIMUMAB",
           "trade_name": "Yuflyma®",
           "sponsor": "CELLTRION HEALTHCARE AUSTRALIA PTY LTD",
-          "indication": "Moderate to severe ulcerative colitis, severe juvenile idiopathic arthritis, severe chronic plaque psoriasis, severe Crohn disease, vision-threatening non-infectious uveitis, enthesitis/spondylitis related juvenile idiopathic arthritis",
+          "indication": "Moderate to severe ulcerative colitis, severe juvenile idiopathic arthritis, severe chronic plaque psoriasis, severe Crohn disease, vision-threatening non-infectious uveitis",
           "submission_category": "Major submission",
           "submission_pathway": "New listing",
           "outcome": "Recommended",
-          "outcome_detail": "Recommended for inclusion in PBS General Schedule and PBS Section 100"
+          "outcome_detail": "Recommended for listing in PBS General Schedule and PBS Section 100 (Highly Specialised Drugs Program)"
         },
         {
           "drug": "ADRENALINE (EPINEPHRINE)",
           "trade_name": "Neffy®",
           "sponsor": "SEQIRUS (AUSTRALIA) PTY LTD",
-          "indication": "Acute severe allergic reactions in children (over 4 years and 15 kg) or adults at significant risk of anaphylaxis",
+          "indication": "Acute severe allergic reactions in children and adults at significant risk of anaphylaxis",
           "submission_category": "Major submission",
           "submission_pathway": "New listing",
           "outcome": "Recommended",
-          "outcome_detail": "Recommended for inclusion in PBS General Schedule"
+          "outcome_detail": "Recommended for listing in PBS General Schedule as alternative to EpiPen auto-injector"
         },
         {
           "drug": "ALECTINIB",
           "trade_name": "Alecensa®",
           "sponsor": "ROCHE PRODUCTS PTY LTD",
-          "indication": "Anaplastic lymphoma kinase (ALK)-positive non-small cell lung cancer (NSCLC) for adjuvant treatment after tumour resection; re-treatment with ALK inhibitor in metastatic setting",
-          "submission_category": "Stakeholder meeting",
+          "indication": "Non-small cell lung cancer (NSCLC) anaplastic lymphoma kinase (ALK)-positive",
+          "submission_category": "Minor submission",
           "submission_pathway": "Change to existing listing",
-          "outcome": "Recommended",
-          "outcome_detail": "Advice Provided; re-treatment with another ALK inhibitor if cancer advances would be cost-effective"
+          "outcome": "Noted",
+          "outcome_detail": "Advice provided on re-treatment with ALK inhibitors in metastatic setting following adjuvant alectinib"
         },
         {
           "drug": "AMIVANTAMAB",
           "trade_name": "Rybrevant®",
           "sponsor": "JANSSEN-CILAG PTY LTD",
-          "indication": "Epidermal growth factor receptor gene mutated (EGFRm) locally advanced/metastatic non-small cell lung cancer (NSCLC) with progression during or after osimertinib treatment",
+          "indication": "Non-small cell lung cancer (NSCLC) with epidermal growth factor receptor (EGFR) gene mutation, locally advanced or metastatic, progressed on or after osimertinib",
           "submission_category": "Major submission",
           "submission_pathway": "Change to existing listing",
           "outcome": "Recommended",
-          "outcome_detail": "Recommended for use in combination with platinum-based doublet chemotherapy"
+          "outcome_detail": "Recommended for listing in combination with platinum-based chemotherapy in PBS Section 100 (Efficient Funding of Chemotherapy Program)"
         },
         {
           "drug": "ASCIMINIB",
           "trade_name": null,
           "sponsor": "NOVARTIS PHARMACEUTICALS AUSTRALIA PTY LIMITED",
-          "indication": "Chronic myeloid leukaemia (CML) in chronic phase for initial treatment",
+          "indication": "Chronic myeloid leukaemia (CML) in chronic phase, newly diagnosed",
           "submission_category": "Major submission",
           "submission_pathway": "Change to existing listing",
           "outcome": "Withdrawn",
-          "outcome_detail": "This item was withdrawn"
+          "outcome_detail": null
         },
         {
           "drug": "ASCIMINIB",
           "trade_name": "Scemblix®",
           "sponsor": "NOVARTIS PHARMACEUTICALS AUSTRALIA PTY LIMITED",
-          "indication": "Chronic myeloid leukaemia (CML) in chronic phase for continuing treatment; prescribing by nurse practitioners",
-          "submission_category": "Major submission",
+          "indication": "Chronic myeloid leukaemia (CML)",
+          "submission_category": "Minor submission",
           "submission_pathway": "Change to existing listing",
           "outcome": "Recommended",
-          "outcome_detail": "Recommended to allow prescribing by nurse practitioners for continuing treatment phase"
+          "outcome_detail": "Recommended addition of nurse practitioners as authorised prescribers for continuing treatment phase"
         },
         {
           "drug": "AVACINCAPTAD PEGOL",
           "trade_name": "Izervay®",
           "sponsor": "ASTELLAS PHARMA AUSTRALIA PTY LTD",
-          "indication": "Geographic atrophy (GA) secondary to age-related macular degeneration (AMD) with intact fovea and central vision threatened by GA lesion growth",
+          "indication": "Geographic atrophy (GA) secondary to age-related macular degeneration (AMD)",
           "submission_category": "Major submission",
           "submission_pathway": "New listing",
           "outcome": "Recommended",
-          "outcome_detail": "Recommended for PBS General Schedule with pricing reduced and restriction to monocular vision patients"
+          "outcome_detail": "Recommended for listing in PBS General Schedule with restriction to monocular vision patients and price reduction"
         },
         {
           "drug": "BUROSUMAB",
           "trade_name": "Crysvita®",
           "sponsor": "KYOWA KIRIN AUSTRALIA PTY LTD",
-          "indication": "Unresectable tumour induced osteomalacia (TIO) presenting with hypophosphataemia due to fibroblast growth factor 23 (FGF23)",
+          "indication": "Tumour induced osteomalacia (TIO) with hypophosphataemia",
           "submission_category": "Major submission",
           "submission_pathway": "Change to existing listing",
           "outcome": "Recommended",
-          "outcome_detail": "Recommended for inclusion in PBS Section 100"
+          "outcome_detail": "Recommended for listing in PBS Section 100 (Highly Specialised Drugs Program)"
         },
         {
           "drug": "CANAKINUMAB",
           "trade_name": "Ilaris®",
           "sponsor": "NOVARTIS PHARMACEUTICALS AUSTRALIA PTY LIMITED",
-          "indication": "Colchicine-resistant Familial Mediterranean Fever (crFMF) in paediatric patients continuing into adulthood",
+          "indication": "Colchicine-resistant Familial Mediterranean Fever (crFMF) in children aged 2 years and older",
           "submission_category": "Major submission",
           "submission_pathway": "New listing",
           "outcome": "Recommended",
-          "outcome_detail": "Recommended for inclusion in PBS Section 100"
+          "outcome_detail": "Recommended for listing in PBS Section 100 (Highly Specialised Drugs Program) with price reduction"
         },
         {
           "drug": "CANNABIDIOL",
           "trade_name": "Epidyolex®",
           "sponsor": "JAZZ PHARMACEUTICALS ANZ PTY LTD",
           "indication": "Severe myoclonic epilepsy in infancy (Dravet syndrome)",
-          "submission_category": "Major submission",
+          "submission_category": "Minor submission",
           "submission_pathway": "Change to existing listing",
           "outcome": "Recommended",
-          "outcome_detail": "Recommended to amend authority requirements to Authority Required (STREAMLINED) and allow prescribing by paediatricians"
+          "outcome_detail": "Recommended amendment to authority requirements from Authority Required (Telephone/online) to Authority Required (STREAMLINED)"
         },
         {
           "drug": "CICLOSPORIN",
           "trade_name": "Vevye®",
           "sponsor": "AFT PHARMACEUTICALS (AU) PTY LTD",
-          "indication": "Chronic severe dry eye disease with keratitis in adult patients inadequately controlled by artificial tears substitute",
+          "indication": "Dry eye disease with keratitis",
           "submission_category": "Major submission",
           "submission_pathway": "New listing",
           "outcome": "Recommended",
-          "outcome_detail": "Recommended for inclusion in PBS General Schedule"
+          "outcome_detail": "Recommended for General Schedule listing at same price as existing PBS-listed ciclosporin eye drops"
         },
         {
           "drug": "DUPILUMAB",
           "trade_name": "Dupixent®",
           "sponsor": "SANOFI-AVENTIS AUSTRALIA PTY LTD",
-          "indication": "Uncontrolled chronic obstructive pulmonary disease (COPD) in adults with raised blood eosinophils on triple inhaled therapy",
+          "indication": "Uncontrolled chronic obstructive pulmonary disease (COPD) with type 2 inflammation",
           "submission_category": "Major submission",
           "submission_pathway": "Change to existing listing",
           "outcome": "Recommended",
-          "outcome_detail": "Recommended as add-on maintenance treatment with price reduction and risk sharing arrangement"
+          "outcome_detail": "Recommended for listing as add-on maintenance treatment with price reduction and risk sharing arrangement"
         },
         {
           "drug": "DURVALUMAB",
           "trade_name": "Imfinzi®",
           "sponsor": "ASTRAZENECA PTY LTD",
-          "indication": "Gastric cancer (GC) or gastro-oesophageal junction cancer (GOJC) for perioperative treatment with FLOT chemotherapy",
+          "indication": "Gastric cancer (GC) or gastro-oesophageal junction cancer (GOJC)",
           "submission_category": "Major submission",
           "submission_pathway": "Change to existing listing",
           "outcome": "Recommended",
-          "outcome_detail": "Recommended for inclusion in PBS Section 100"
+          "outcome_detail": "Recommended for perioperative treatment with neoadjuvant FLOT chemotherapy in PBS Section 100 (Efficient Funding of Chemotherapy Program)"
         },
         {
           "drug": "EDARAVONE",
           "trade_name": "Radicava®",
           "sponsor": "TEVA PHARMA AUSRALIA PTY LTD",
-          "indication": "Amyotrophic lateral sclerosis (ALS) for initial treatment outside hospital settings",
-          "submission_category": "Major submission",
+          "indication": "Amyotrophic lateral sclerosis (ALS)",
+          "submission_category": "Minor submission",
           "submission_pathway": "Change to existing listing",
           "outcome": "Recommended",
-          "outcome_detail": "Recommendation made out of session between November 2025 and March 2026"
+          "outcome_detail": "Recommended change to allow initiation outside hospital settings (considered out of session)"
         },
         {
           "drug": "EFGARTIGIMOD ALFA",
           "trade_name": "Vyvgart®",
           "sponsor": "ARGENX AUSTRALIA PTY. LTD.",
-          "indication": "Generalised myasthenia gravis (gMG) anti-acetylcholine receptor (AChR) antibody positive for initial and continuing treatment",
+          "indication": "Generalised myasthenia gravis (gMG) with anti-acetylcholine receptor (AChR) antibody positive",
           "submission_category": "Major submission",
           "submission_pathway": "New listing",
           "outcome": "Recommended",
-          "outcome_detail": "Recommended for inclusion in PBS General Schedule as pre-filled syringe form"
+          "outcome_detail": "Recommended pre-filled syringe form for PBS Section 100 (Highly Specialised Drug) at price equivalent to other gMG medicines"
         },
         {
           "drug": "EFGARTIGIMOD ALFA",
           "trade_name": "Vyvgart®",
           "sponsor": "ARGENX AUSTRALIA PTY. LTD.",
-          "indication": "Active chronic inflammatory demyelinating polyneuropathy (CIDP) with inadequate response to immunoglobulin or intolerant/refractory to immunoglobulin",
+          "indication": "Chronic inflammatory demyelinating polyneuropathy (CIDP)",
           "submission_category": "Major submission",
           "submission_pathway": "Change to existing listing",
           "outcome": "Not recommended",
-          "outcome_detail": "Not recommended; insufficient evidence on which patients should receive treatment and clinical benefits uncertain"
+          "outcome_detail": null
+        },
+        {
+          "drug": "ENOXAPARIN",
+          "trade_name": "Clexane® Safety-Lock, Clexane® Forte Safety-Lock",
+          "sponsor": "SANOFI-AVENTIS AUSTRALIA PTY LTD",
+          "indication": "Prevention and treatment of thromboembolic disorders, haemodialysis",
+          "submission_category": "Other matter",
+          "submission_pathway": "Other matters",
+          "outcome": "Withdrawn",
+          "outcome_detail": null
+        },
+        {
+          "drug": "ENZALUTAMIDE",
+          "trade_name": "Xtandi®",
+          "sponsor": "ASTELLAS PHARMA AUSTRALIA PTY LTD",
+          "indication": "Non-metastatic hormone sensitive prostate cancer (nmHSPC) with biochemical recurrence at high-risk for metastasis",
+          "submission_category": "Resubmission",
+          "submission_pathway": "Change to existing listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for listing with concurrent androgen deprivation therapy in PBS General Schedule"
+        },
+        {
+          "drug": "GLYCOMACROPEPTIDE FORMULA WITH DOCOSAHEXAENOIC ACID AND LOW PHENYLALANINE",
+          "trade_name": "PKU GMPro® Delight",
+          "sponsor": "NUTRICIA AUSTRALIA PTY LIMITED",
+          "indication": "Phenylketonuria (PKU)",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for dietary management of PKU at cost-minimised price to PKU Sphere20"
+        },
+        {
+          "drug": "INCOBOTULINUMTOXINA",
+          "trade_name": "Xeomin®",
+          "sponsor": "MERZ AUSTRALIA PTY LTD",
+          "indication": "Moderate to severe spasticity of the lower limb in adults following stroke, traumatic brain injury, or spinal cord injury",
+          "submission_category": "Major submission",
+          "submission_pathway": "Change to existing listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for listing under PBS Section 100 (Botulinum Toxin Program) at cost not more than Botox or Dysport"
+        },
+        {
+          "drug": "INOTUZUMAB OZOGAMICIN",
+          "trade_name": "Besponsa®",
+          "sponsor": "PFIZER AUSTRALIA PTY LTD",
+          "indication": "Acute lymphoblastic leukaemia (ALL)",
+          "submission_category": "Other matter",
+          "submission_pathway": "Other matters",
+          "outcome": "Noted",
+          "outcome_detail": "Risk Sharing Arrangement (RSA) component can be removed"
+        },
+        {
+          "drug": "LANREOTIDE",
+          "trade_name": "LACREO",
+          "sponsor": "SUN PHARMA ANZ PTY LTD",
+          "indication": "Acromegaly, functional carcinoid tumour, non-functional gastroenteropancreatic neuroendocrine tumour (GEP-NET)",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for listing in PBS Section 100 (Highly Specialised Drugs Program)"
+        },
+        {
+          "drug": "LONCASTUXIMAB TESIRINE",
+          "trade_name": "Zynlonta®",
+          "sponsor": "SWEDISH ORPHAN BIOVITRUM PTY LTD",
+          "indication": "Diffuse large B-cell lymphoma (DLBCL) relapsed or refractory",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "outcome": "Not recommended",
+          "outcome_detail": "Advised early re-entry submission addressing additional price reduction and risk sharing arrangement"
+        },
+        {
+          "drug": "MEPOLIZUMAB",
+          "trade_name": "Nucala®",
+          "sponsor": "GLAXOSMITHKLINE AUSTRALIA PTY LTD",
+          "indication": "Chronic obstructive pulmonary disease (COPD) with eosinophilic phenotype",
+          "submission_category": "Major submission",
+          "submission_pathway": "Change to existing listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for add-on maintenance treatment with price reduction and risk sharing arrangement"
+        },
+        {
+          "drug": "MULTICOMPONENT MENINGOCOCCAL GROUP B VACCINE",
+          "trade_name": "Bexsero®",
+          "sponsor": "GLAXOSMITHKLINE AUSTRALIA PTY LTD",
+          "indication": "Prevention of invasive meningococcal disease (IMD) caused by Neisseria meningitidis group B",
+          "submission_category": "Minor submission",
+          "submission_pathway": "Change to existing NIP listing",
+          "outcome": "Noted",
+          "outcome_detail": "Advice provided that price reduction would be required for expanded NIP listing"
+        },
+        {
+          "drug": "NEMOLIZUMAB",
+          "trade_name": "Nemluvio®",
+          "sponsor": "GALDERMA AUSTRALIA PTY LTD",
+          "indication": "Atopic dermatitis, moderate to severe",
+          "submission_category": "Resubmission",
+          "submission_pathway": "New listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for PBS General Schedule at cost no more than dupilumab or upadacitinib"
+        },
+        {
+          "drug": "NIVOLUMAB",
+          "trade_name": "Opdivo®",
+          "sponsor": "BRISTOL-MYERS SQUIBB AUSTRALIA PTY LTD",
+          "indication": "Malignant melanoma, non-small cell lung cancer (NSCLC), renal cell carcinoma (RCC), squamous cell carcinoma of head and neck (SCCHN), urothelial carcinoma (UC), oesophageal/gastro-oesophageal cancers (OC/GC)",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended subcutaneous injection 600 mg in 5 mL for listing with dual PBS General Schedule and PBS Section 100 listing"
+        },
+        {
+          "drug": "OBINUTUZUMAB",
+          "trade_name": "Gazyva®",
+          "sponsor": "ROCHE PRODUCTS PTY LTD",
+          "indication": "Lupus nephritis, active class III or IV",
+          "submission_category": "Major submission",
+          "submission_pathway": "Change to existing listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for listing in PBS Section 100 (Highly Specialised Drugs Program) with price reduction and risk sharing arrangement"
+        },
+        {
+          "drug": "OMALIZUMAB",
+          "trade_name": "Omlyclo®",
+          "sponsor": "CELLTRION HEALTHCARE AUSTRALIA PTY LTD",
+          "indication": "Uncontrolled severe asthma, severe chronic spontaneous urticaria",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended pre-filled pen forms (75 mg and 150 mg) for PBS Section 100 (Highly Specialised Drugs Program)"
+        },
+        {
+          "drug": "ODEVIXIBAT",
+          "trade_name": "Bylvay®",
+          "sponsor": "IPSEN PTY LTD",
+          "indication": "Alagille syndrome (ALGS), cholestatic pruritus",
+          "submission_category": "Major submission",
+          "submission_pathway": "Change to existing listing",
+          "outcome": "Not recommended",
+          "outcome_detail": null
+        },
+        {
+          "drug": "PEGCETACOPLAN",
+          "trade_name": "Empaveli®",
+          "sponsor": "SWEDISH ORPHAN BIOVITRUM PTY LTD",
+          "indication": "Complement 3 glomerulopathy (C3G) or primary immune complex membranoproliferative glomerulonephritis (IC-MPGN)",
+          "submission_category": "Major submission",
+          "submission_pathway": "Change to existing listing",
+          "outcome": "Not recommended",
+          "outcome_detail": "Advised early re-entry submission with cost per responder approach"
+        },
+        {
+          "drug": "PEGVALIASE",
+          "trade_name": "Palynziq®",
+          "sponsor": "BIOMARIN PHARMACEUTICAL AUSTRALIA PTY LTD",
+          "indication": "Phenylketonuria (PKU)",
+          "submission_category": "Resubmission",
+          "submission_pathway": "New listing",
+          "outcome": "Deferred",
+          "outcome_detail": "Deferred to allow consultation on pricing structure and risk sharing arrangement"
+        },
+        {
+          "drug": "RESPIRATORY SYNCYTIAL VIRUS VACCINE",
+          "trade_name": "Arexvy®",
+          "sponsor": "GLAXOSMITHKLINE AUSTRALIA PTY LTD",
+          "indication": "Prevention of lower respiratory tract disease caused by respiratory syncytial virus (RSV)",
+          "submission_category": "Resubmission",
+          "submission_pathway": "Change to existing NIP listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended NIP listing for adults aged 60-74 years (or 60 years and above with pricing considerations)"
+        },
+        {
+          "drug": "RETIFANLIMAB",
+          "trade_name": "Zynyz®",
+          "sponsor": "SPECIALISED THERAPEUTICS ALIM PTY LTD",
+          "indication": "Squamous cell anal carcinoma (SCAC), locally recurrent or metastatic, not previously treated with chemotherapy",
+          "submission_category": "Other matter",
+          "submission_pathway": "New listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for combination with carboplatin and paclitaxel in PBS Section 100 (Efficient Funding of Chemotherapy Program)"
+        },
+        {
+          "drug": "RETIFANLIMAB",
+          "trade_name": "Zynyz®",
+          "sponsor": "SPECIALISED THERAPEUTICS ALIM PTY LTD",
+          "indication": "Merkel cell carcinoma (MCC), metastatic or recurrent",
+          "submission_category": "Other matter",
+          "submission_pathway": "New listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for listing in PBS Section 100 (Efficient Funding of Chemotherapy Program) at cost no more than avelumab"
+        },
+        {
+          "drug": "RILUZOLE",
+          "trade_name": "Teglutik®",
+          "sponsor": "ASTERI PHARMA PTY LTD",
+          "indication": "Amyotrophic lateral sclerosis (ALS)",
+          "submission_category": "Minor submission",
+          "submission_pathway": "Change to existing listing",
+          "outcome": "Noted",
+          "outcome_detail": "Oral suspension form can be considered as exempt item under section 84AH of National Health Act 1953"
+        },
+        {
+          "drug": "RISPERIDONE",
+          "trade_name": "Uzedy®",
+          "sponsor": "TEVA PHARMA AUSTRALIA PTY LTD",
+          "indication": "Schizophrenia",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended long-acting subcutaneous modified release form for PBS General Schedule"
+        },
+        {
+          "drug": "ROMIDEPSIN",
+          "trade_name": "ROMIDEPSIN-REACH",
+          "sponsor": "REACH PHARMACEUTICALS PTY LTD",
+          "indication": "Peripheral T-cell lymphoma relapsed or refractory",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for PBS Section 100 (Efficient Funding of Chemotherapy Program) at cost no more than pralatrexate"
+        },
+        {
+          "drug": "RUXOLITINIB",
+          "trade_name": "Jakavi®",
+          "sponsor": "NOVARTIS PHARMACEUTICALS AUSTRALIA PTY LIMITED",
+          "indication": "Myelofibrosis, graft versus host disease, polycythemia vera",
+          "submission_category": "Minor submission",
+          "submission_pathway": "Change to existing listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended addition of nurse practitioners as authorised prescribers for continuing treatment phase"
+        },
+        {
+          "drug": "SARS-CoV-2 mRNA",
+          "trade_name": "Spikevax®",
+          "sponsor": "MODERNA AUSTRALIA PTY LTD",
+          "indication": "Prevention of coronavirus disease 2019 (COVID-19)",
+          "submission_category": "Major submission",
+          "submission_pathway": "New NIP listing",
+          "outcome": "Not Applicable",
+          "outcome_detail": "Recommendation cannot be made public until TGA outcome is known"
+        },
+        {
+          "drug": "SELPERCATINIB",
+          "trade_name": "Retevmo®",
+          "sponsor": "ELI LILLY AUSTRALIA PTY LTD",
+          "indication": "Medullary thyroid cancer (MTC), locally advanced or metastatic, with RET gene variant",
+          "submission_category": "Major submission",
+          "submission_pathway": "Change to existing listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for PBS General Schedule at price comparable to lung cancer indication through Pricing Pathway A"
+        },
+        {
+          "drug": "TACROLIMUS",
+          "trade_name": "aZematop®",
+          "sponsor": "ARROTEX PHARMACEUTICALS PTY LTD",
+          "indication": "Atopic dermatitis",
+          "submission_category": "Other matter",
+          "submission_pathway": "New listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended 0.1% ointment for flare-ups in moderate to severe AD with risk sharing arrangement"
+        },
+        {
+          "drug": "TAFAMIDIS",
+          "trade_name": "Vyndamax®",
+          "sponsor": "PFIZER AUSTRALIA PTY LTD",
+          "indication": "Transthyretin amyloid cardiomyopathy (ATTR-CM)",
+          "submission_category": "Other matter",
+          "submission_pathway": "Other matters",
+          "outcome": "Not recommended",
+          "outcome_detail": "Did not recommend changes to risk sharing arrangement; advised submission required on diagnostic equivalence"
+        },
+        {
+          "drug": "TAFASITAMAB",
+          "trade_name": "Minjuvi®",
+          "sponsor": "SPECIALISED THERAPEUTICS ALIM PTY LTD",
+          "indication": "Follicular lymphoma (FL), relapsed or refractory",
+          "submission_category": "Other matter",
+          "submission_pathway": "New listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for combination with lenalidomide and rituximab in PBS Section 100 (Efficient Funding of Chemotherapy Program) with price reduction"
+        },
+        {
+          "drug": "TARLATAMAB",
+          "trade_name": "Imdelltra®",
+          "sponsor": "AMGEN AUSTRALIA PTY LIMITED",
+          "indication": "Extensive-stage small cell lung cancer (ES-SCLC)",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "outcome": "Not recommended",
+          "outcome_detail": "Advised early re-entry submission addressing safety concerns (ICANS, CRS) and model assumptions"
+        },
+        {
+          "drug": "TECLISTAMAB",
+          "trade_name": "Tecvayli®",
+          "sponsor": "JANSSEN-CILAG PTY LTD",
+          "indication": "Relapsed or refractory multiple myeloma (RRMM)",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for PBS Section 100 (Efficient Funding of Chemotherapy Program) at price equal to elranatamab"
+        },
+        {
+          "drug": "TILDRAKIZUMAB",
+          "trade_name": "Ilumya®",
+          "sponsor": "SUN PHARMA ANZ PTY LTD",
+          "indication": "Severe chronic plaque psoriasis",
+          "submission_category": "Minor submission",
+          "submission_pathway": "Change to existing listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended increase of maintenance dose from 100 mg to 200 mg per administration every 12 weeks"
+        },
+        {
+          "drug": "TIRZEPATIDE",
+          "trade_name": "Mounjaro®, Mounjaro® KwikPen®",
+          "sponsor": "ELI LILLY AUSTRALIA PTY LTD",
+          "indication": "Type 2 diabetes mellitus (T2DM) inadequately controlled",
+          "submission_category": "Other matter",
+          "submission_pathway": "New listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for PBS General Schedule for 10 mg and 15 mg strengths; 5 mg with price reduction"
+        },
+        {
+          "drug": "TOFERSEN",
+          "trade_name": "Qalsody®",
+          "sponsor": "BIOGEN AUSTRALIA PTY LTD",
+          "indication": "Amyotrophic lateral sclerosis (ALS) with superoxide dismutase 1 (SOD1) gene mutation",
+          "submission_category": "Resubmission",
+          "submission_pathway": "New listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for PBS Section 100 (Highly Specialised Drugs Program) with risk sharing arrangement"
+        },
+        {
+          "drug": "TRASTUZUMAB DERUXTECAN",
+          "trade_name": "Enhertu®",
+          "sponsor": "ASTRAZENECA PTY LTD",
+          "indication": "Breast cancer, hormone receptor positive (HR-positive) HER2-low or HER2-ultralow metastatic",
+          "submission_category": "Major submission",
+          "submission_pathway": "Change to existing listing",
+          "outcome": "Not recommended",
+          "outcome_detail": null
+        },
+        {
+          "drug": "UPADACITINIB",
+          "trade_name": "Rinvoq®",
+          "sponsor": "ABBVIE PTY LTD",
+          "indication": "Fistulising Crohn's disease (FCD)",
+          "submission_category": "Major submission",
+          "submission_pathway": "Change to existing listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for PBS General Schedule at cost not higher than least costly PBS listed FCD therapy"
+        },
+        {
+          "drug": "USTEKINUMAB",
+          "trade_name": "Ardelya®",
+          "sponsor": "SANDOZ PTY LTD",
+          "indication": "Severe chronic plaque psoriasis, severe psoriatic arthritis",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended biosimilar for PBS General Schedule on cost-minimisation basis"
+        },
+        {
+          "drug": "VORASIDENIB",
+          "trade_name": "Voranigo®",
+          "sponsor": "SERVIER LABORATORIES (AUST.) PTY. LTD.",
+          "indication": "Astrocytoma or oligodendroglioma, isocitrate dehydrogenase-mutant",
+          "submission_category": "Resubmission",
+          "submission_pathway": "New listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for PBS General Schedule at reduced price from resubmission"
+        },
+        {
+          "drug": "ADALIMUMAB, ETRASIMOD, GOLIMUMAB, INFLIXIMAB, OZANIMOD, TOFACITINIB, UPADACITINIB, USTEKINUMAB, VEDOLIZUMAB",
+          "trade_name": "Various",
+          "sponsor": "Various",
+          "indication": "Inflammatory bowel disease (severe Crohn disease, moderate to severe Crohn disease, severe ulcerative colitis, fistulising Crohn disease, moderate to severe chronic pouchitis)",
+          "submission_category": "Other matter",
+          "submission_pathway": "Change to existing listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended series of amendments to align restrictions and improve consistency across IBD PBS listings"
+        },
+        {
+          "drug": "ADALIMUMAB, INFLIXIMAB",
+          "trade_name": "Humira®, Amgevita®, Hadlima®, Hyrimoz®, Yuflyma®, Abrilada®, Inflectra®, Ixifi®, Remicade®, Remsima®, Renflexis®",
+          "sponsor": "ABBVIE PTY LTD, ARROTEX PHARMACEUTICALS PTY LTD, ARROW PHARMA PTY LTD, SANDOZ PTY LTD, CELLTRION HEALTHCARE AUSTRALIA PTY LTD, PFIZER AUSTRALIA PTY LTD, JANSSEN-CILAG PTY LTD, ORGANON PHARMA PTY LTD",
+          "indication": "Crohn disease and ulcerative colitis in paediatric patients",
+          "submission_category": "Other matter",
+          "submission_pathway": "Change to existing listing",
+          "outcome": "Noted",
+          "outcome_detail": "Advice provided on prior therapy requirements and first-line therapy for high-risk paediatric patients"
+        },
+        {
+          "drug": "ERYTHROPOIETIN STIMULATING AGENTS, IRON CHELATING AGENTS, BULEVIRTIDE",
+          "trade_name": null,
+          "sponsor": "Various",
+          "indication": "Various",
+          "submission_category": "Other matter",
+          "submission_pathway": "Change to existing listing",
+          "outcome": "Noted",
+          "outcome_detail": "Advice provided on nurse practitioner and non-specialist medical practitioner prescribing; bulevirtide listing amended to s100 Community Access benefit only"
+        },
+        {
+          "drug": "PRESERVATIVE-FREE OCULAR LUBRICANTS",
+          "trade_name": null,
+          "sponsor": "Various",
+          "indication": "Severe dry eye disease",
+          "submission_category": "Other matter",
+          "submission_pathway": "Other matters",
+          "outcome": "Noted",
+          "outcome_detail": "Rescinded November 2025 recommendation; recommended Option 1 (changing restriction level to align with preservative-containing products with price reduction)"
+        },
+        {
+          "drug": "DESIGNATED REGISTERED NURSE PRESCRIBING MEDICINES",
+          "trade_name": null,
+          "sponsor": null,
+          "indication": "Various",
+          "submission_category": "Other matter",
+          "submission_pathway": "Other matters",
+          "outcome": "Noted",
+          "outcome_detail": "Advised medicines for RN prescribing be grouped by pharmacological class or ATC code"
         }
       ],
       "extracted_at": "2026-05-14"

@@ -254,13 +254,17 @@ def call_haiku(client: anthropic.Anthropic, text: str) -> dict:
     if len(text.strip()) < 80:
         return {"items": [], "error": "no usable text"}
 
-    prompt = USER_PROMPT_TEMPLATE.format(text=text[:40_000])
+    # The outcomes PDFs run 60+ pages (~150 KB of text) because each item gets
+    # a multi-paragraph rationale. Haiku 4.5 has a 200K context window, so we
+    # pass the whole document rather than truncating like the agenda extractor
+    # does (agendas are 3–8 pages).
+    prompt = USER_PROMPT_TEMPLATE.format(text=text[:180_000])
     retries = 0
     while retries <= 4:
         try:
             msg = client.messages.create(
                 model=HAIKU_MODEL,
-                max_tokens=8192,
+                max_tokens=16_384,
                 system=SYSTEM_PROMPT,
                 messages=[{"role": "user", "content": prompt}],
             )
