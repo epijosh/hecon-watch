@@ -21,6 +21,7 @@ from script_report.data.loaders import (
     load_drug_spend,
     load_pbac_calendar,
     load_pbac_agendas,
+    load_pbac_outcomes,
     load_psd_nearest,
     load_psd_map,
     attach_nearest_to_psd,
@@ -60,6 +61,7 @@ def write_site_data(
     drug_spend: dict | None = None,
     calendar: dict | None = None,
     agendas: dict | None = None,
+    outcomes: dict | None = None,
     cosmos: dict | None = None,
 ) -> None:
     """Compose the SITE_DATA payload and write site_data.js."""
@@ -91,6 +93,7 @@ def write_site_data(
         "drug_spend": drug_spend or {"total": 0, "top_spend": [], "top_cost_per_script": [], "by_drug": {}},
         "calendar":   calendar or {"meetings": [], "last_updated": None, "last_milestone": None},
         "agendas":    agendas  or {"meetings": [], "n_meetings": 0, "n_items": 0, "last_updated": None},
+        "outcomes":   outcomes or {"meetings": [], "n_meetings": 0, "n_items": 0, "last_updated": None},
         "cosmos":     cosmos   or {"points": [], "n": 0},
     }
 
@@ -130,18 +133,21 @@ def main() -> None:
     nearest = load_psd_nearest()
     attach_nearest_to_psd(psd, nearest)
 
-    print("\n[7/8] Loading upcoming PBAC + Intracycle agendas...")
+    print("\n[7/9] Loading upcoming PBAC + Intracycle agendas...")
     agendas = load_pbac_agendas()
     attach_agenda_drug_slugs(agendas, psd)
 
-    print("\n[8/8] Loading 2D embedding projection (cosmos)...")
+    print("\n[8/9] Loading recent PBAC outcomes (post-meeting, pre-PSD)...")
+    outcomes = load_pbac_outcomes(psd)
+
+    print("\n[9/9] Loading 2D embedding projection (cosmos)...")
     cosmos = load_psd_map()
 
     print("\nJoining sponsor stats with PBS drug spend...")
     attach_sponsor_spend(psd, drug_spend)
 
     print("\nWriting output...")
-    write_site_data(pbs, pbac, psd, drug_spend, calendar, agendas, cosmos)
+    write_site_data(pbs, pbac, psd, drug_spend, calendar, agendas, outcomes, cosmos)
 
     # Pre-render static SEO landing pages from the freshly-built payload.
     # Importing inline avoids a circular dependency at module load time.

@@ -109,6 +109,10 @@ def main() -> None:
         steps_ok.append(("Agendas",
                          _run_step("Extract upcoming PBAC + Intracycle agendas", agenda_main)))
 
+        from script_report.extractors.outcomes_extractor import main as outcomes_main
+        steps_ok.append(("Outcomes",
+                         _run_step("Extract PBAC outcomes summaries", outcomes_main)))
+
         if not args.no_embed:
             from script_report.embedders.voyage_embedder import main as embed_main
             steps_ok.append(("Embed",

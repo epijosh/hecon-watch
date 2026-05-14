@@ -1,0 +1,187 @@
+{
+  "meetings": [
+    {
+      "source_url": "https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/pbac-outcomes/recommendations-made-by-the-pbac-march-2026",
+      "pdf_url": "https://www.pbs.gov.au/industry/listing/elements/pbac-meetings/pbac-outcomes/2026-03/pbac-web-outcomes-03-2026-v3.pdf",
+      "pdf_filename": "pbac-web-outcomes-03-2026-v3.pdf",
+      "pdf_sha256": "7dad21cf6670bc15a91c974657242ce59d97f4788cae497492b74f666e1296b5",
+      "meeting_label": "March 2026 PBAC Meeting",
+      "meeting_date": "2026-03-01",
+      "meeting_kind": "PBAC",
+      "items": [
+        {
+          "drug": "ADALIMUMAB",
+          "trade_name": "Amgevita®",
+          "sponsor": "AMGEN AUSTRALIA PTY LIMITED",
+          "indication": "Crohn disease, ulcerative colitis, active juvenile idiopathic arthritis, complex refractory fistulising Crohn disease, active rheumatoid arthritis, psoriatic arthritis, ankylosing spondylitis, chronic plaque psoriasis, hidradenitis suppurativa",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for inclusion in PBS General Schedule and PBS Section 100"
+        },
+        {
+          "drug": "ADALIMUMAB",
+          "trade_name": "Yuflyma®",
+          "sponsor": "CELLTRION HEALTHCARE AUSTRALIA PTY LTD",
+          "indication": "Moderate to severe ulcerative colitis, severe juvenile idiopathic arthritis, severe chronic plaque psoriasis, severe Crohn disease, vision-threatening non-infectious uveitis, enthesitis/spondylitis related juvenile idiopathic arthritis",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for inclusion in PBS General Schedule and PBS Section 100"
+        },
+        {
+          "drug": "ADRENALINE (EPINEPHRINE)",
+          "trade_name": "Neffy®",
+          "sponsor": "SEQIRUS (AUSTRALIA) PTY LTD",
+          "indication": "Acute severe allergic reactions in children (over 4 years and 15 kg) or adults at significant risk of anaphylaxis",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for inclusion in PBS General Schedule"
+        },
+        {
+          "drug": "ALECTINIB",
+          "trade_name": "Alecensa®",
+          "sponsor": "ROCHE PRODUCTS PTY LTD",
+          "indication": "Anaplastic lymphoma kinase (ALK)-positive non-small cell lung cancer (NSCLC) for adjuvant treatment after tumour resection; re-treatment with ALK inhibitor in metastatic setting",
+          "submission_category": "Stakeholder meeting",
+          "submission_pathway": "Change to existing listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Advice Provided; re-treatment with another ALK inhibitor if cancer advances would be cost-effective"
+        },
+        {
+          "drug": "AMIVANTAMAB",
+          "trade_name": "Rybrevant®",
+          "sponsor": "JANSSEN-CILAG PTY LTD",
+          "indication": "Epidermal growth factor receptor gene mutated (EGFRm) locally advanced/metastatic non-small cell lung cancer (NSCLC) with progression during or after osimertinib treatment",
+          "submission_category": "Major submission",
+          "submission_pathway": "Change to existing listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for use in combination with platinum-based doublet chemotherapy"
+        },
+        {
+          "drug": "ASCIMINIB",
+          "trade_name": null,
+          "sponsor": "NOVARTIS PHARMACEUTICALS AUSTRALIA PTY LIMITED",
+          "indication": "Chronic myeloid leukaemia (CML) in chronic phase for initial treatment",
+          "submission_category": "Major submission",
+          "submission_pathway": "Change to existing listing",
+          "outcome": "Withdrawn",
+          "outcome_detail": "This item was withdrawn"
+        },
+        {
+          "drug": "ASCIMINIB",
+          "trade_name": "Scemblix®",
+          "sponsor": "NOVARTIS PHARMACEUTICALS AUSTRALIA PTY LIMITED",
+          "indication": "Chronic myeloid leukaemia (CML) in chronic phase for continuing treatment; prescribing by nurse practitioners",
+          "submission_category": "Major submission",
+          "submission_pathway": "Change to existing listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended to allow prescribing by nurse practitioners for continuing treatment phase"
+        },
+        {
+          "drug": "AVACINCAPTAD PEGOL",
+          "trade_name": "Izervay®",
+          "sponsor": "ASTELLAS PHARMA AUSTRALIA PTY LTD",
+          "indication": "Geographic atrophy (GA) secondary to age-related macular degeneration (AMD) with intact fovea and central vision threatened by GA lesion growth",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for PBS General Schedule with pricing reduced and restriction to monocular vision patients"
+        },
+        {
+          "drug": "BUROSUMAB",
+          "trade_name": "Crysvita®",
+          "sponsor": "KYOWA KIRIN AUSTRALIA PTY LTD",
+          "indication": "Unresectable tumour induced osteomalacia (TIO) presenting with hypophosphataemia due to fibroblast growth factor 23 (FGF23)",
+          "submission_category": "Major submission",
+          "submission_pathway": "Change to existing listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for inclusion in PBS Section 100"
+        },
+        {
+          "drug": "CANAKINUMAB",
+          "trade_name": "Ilaris®",
+          "sponsor": "NOVARTIS PHARMACEUTICALS AUSTRALIA PTY LIMITED",
+          "indication": "Colchicine-resistant Familial Mediterranean Fever (crFMF) in paediatric patients continuing into adulthood",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for inclusion in PBS Section 100"
+        },
+        {
+          "drug": "CANNABIDIOL",
+          "trade_name": "Epidyolex®",
+          "sponsor": "JAZZ PHARMACEUTICALS ANZ PTY LTD",
+          "indication": "Severe myoclonic epilepsy in infancy (Dravet syndrome)",
+          "submission_category": "Major submission",
+          "submission_pathway": "Change to existing listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended to amend authority requirements to Authority Required (STREAMLINED) and allow prescribing by paediatricians"
+        },
+        {
+          "drug": "CICLOSPORIN",
+          "trade_name": "Vevye®",
+          "sponsor": "AFT PHARMACEUTICALS (AU) PTY LTD",
+          "indication": "Chronic severe dry eye disease with keratitis in adult patients inadequately controlled by artificial tears substitute",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for inclusion in PBS General Schedule"
+        },
+        {
+          "drug": "DUPILUMAB",
+          "trade_name": "Dupixent®",
+          "sponsor": "SANOFI-AVENTIS AUSTRALIA PTY LTD",
+          "indication": "Uncontrolled chronic obstructive pulmonary disease (COPD) in adults with raised blood eosinophils on triple inhaled therapy",
+          "submission_category": "Major submission",
+          "submission_pathway": "Change to existing listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended as add-on maintenance treatment with price reduction and risk sharing arrangement"
+        },
+        {
+          "drug": "DURVALUMAB",
+          "trade_name": "Imfinzi®",
+          "sponsor": "ASTRAZENECA PTY LTD",
+          "indication": "Gastric cancer (GC) or gastro-oesophageal junction cancer (GOJC) for perioperative treatment with FLOT chemotherapy",
+          "submission_category": "Major submission",
+          "submission_pathway": "Change to existing listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for inclusion in PBS Section 100"
+        },
+        {
+          "drug": "EDARAVONE",
+          "trade_name": "Radicava®",
+          "sponsor": "TEVA PHARMA AUSRALIA PTY LTD",
+          "indication": "Amyotrophic lateral sclerosis (ALS) for initial treatment outside hospital settings",
+          "submission_category": "Major submission",
+          "submission_pathway": "Change to existing listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommendation made out of session between November 2025 and March 2026"
+        },
+        {
+          "drug": "EFGARTIGIMOD ALFA",
+          "trade_name": "Vyvgart®",
+          "sponsor": "ARGENX AUSTRALIA PTY. LTD.",
+          "indication": "Generalised myasthenia gravis (gMG) anti-acetylcholine receptor (AChR) antibody positive for initial and continuing treatment",
+          "submission_category": "Major submission",
+          "submission_pathway": "New listing",
+          "outcome": "Recommended",
+          "outcome_detail": "Recommended for inclusion in PBS General Schedule as pre-filled syringe form"
+        },
+        {
+          "drug": "EFGARTIGIMOD ALFA",
+          "trade_name": "Vyvgart®",
+          "sponsor": "ARGENX AUSTRALIA PTY. LTD.",
+          "indication": "Active chronic inflammatory demyelinating polyneuropathy (CIDP) with inadequate response to immunoglobulin or intolerant/refractory to immunoglobulin",
+          "submission_category": "Major submission",
+          "submission_pathway": "Change to existing listing",
+          "outcome": "Not recommended",
+          "outcome_detail": "Not recommended; insufficient evidence on which patients should receive treatment and clinical benefits uncertain"
+        }
+      ],
+      "extracted_at": "2026-05-14"
+    }
+  ],
+  "last_updated": "2026-05-14"
+}

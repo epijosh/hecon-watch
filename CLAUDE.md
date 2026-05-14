@@ -49,13 +49,14 @@ only does new work.
 5.  python -m script_report atc                   →  data/atc_benefit.csv  +  data/atc_services.csv
 6.  python -m script_report calendar              →  data/pbac_calendar.json   (cycle-timeframe PDFs)
 7.  python -m script_report agendas               →  data/pbac_agendas.json    (upcoming meeting agendas)
-8.  python -m script_report brandmap              →  data/brand_to_generic.json (Smart Search brand normalisation)
-9.  python -m script_report embed --resume        →  data/psd_embeddings.bin
+8.  python -m script_report outcomes              →  data/pbac_outcomes.json   (post-meeting outcomes summaries — bridge between agendas and PSDs)
+9.  python -m script_report brandmap              →  data/brand_to_generic.json (Smart Search brand normalisation)
+10. python -m script_report embed --resume        →  data/psd_embeddings.bin
                                                    +  data/psd_embeddings_meta.json
                                                    +  data/psd_nearest.json
-10. python -m script_report map                   →  data/psd_map.json   (UMAP 2D projection for the cosmos plot)
-11. python -m script_report build                 →  site_data.js
-12. vercel --prod  (or git push)
+11. python -m script_report map                   →  data/psd_map.json   (UMAP 2D projection for the cosmos plot)
+12. python -m script_report build                 →  site_data.js
+13. vercel --prod  (or git push)
 ```
 
 `python -m script_report refresh` orchestrates 1–9 with flags:
@@ -83,10 +84,12 @@ only does new work.
 | `script_report/scrapers/pbs_schedule.py` | Monthly PBS Schedule API CSV bundle → ATC backfill. |
 | `script_report/extractors/psd_extractor.py` | Haiku-powered field extraction (PDFs + HTML PSDs). |
 | `script_report/extractors/agenda_extractor.py` | Pulls upcoming PBAC + Intracycle meeting agendas (URLs in `data/agenda_sources.json`) → `data/pbac_agendas.json` via Haiku. |
+| `script_report/extractors/outcomes_extractor.py` | Pulls the short "Recommendations made by the PBAC" outcomes PDFs (URLs in `data/outcomes_sources.json`) → `data/pbac_outcomes.json` via Haiku. Drives the homepage "Just decided" panel. |
 | `script_report/embedders/voyage_embedder.py` | Voyage embeddings + nearest table (ATC tiebreaker). |
 | `script_report/parsers/atc_parser.py` | PBS ATC HTML-as-XLS parser. |
 | `script_report/parsers/pbac_calendar.py` | PBS Cycle Timeframe PDF parser. |
 | `data/agenda_sources.json` | Hand-curated list of upcoming PBAC / Intracycle agenda URLs. New ones get pasted in ~6 weeks before each meeting. |
+| `data/outcomes_sources.json` | Hand-curated list of PBAC outcomes URLs (the short post-meeting summaries). New ones get pasted in after each meeting; entries auto-retire once the matching PSDs land. |
 | `script_report/utils/helpers.py` | MONTH_MAP, data_path resolver, .env loader. |
 | `script_report/utils/similarity.py` | ATC-prefix tiebreaker for cosine ties. |
 | `script_report/utils/drug_names.py` | Drug-name normalisation + salt-strip / multi-drug split candidate keys. |
@@ -163,6 +166,12 @@ only does new work.
     PBAC + Intracycle meetings, drugs/indications on the docket, with
     backlinks to existing drug pages where the drug is already in the
     extracted set
+  - "Just decided" panel (top-right, above the agenda panel) — recent
+    PBAC outcomes from the short post-meeting summary PDFs, bridging the
+    6–8 week gap between a meeting and the full PSDs landing. Each item
+    shows drug + indication + outcome chip (Recommended / Not recommended
+    / Deferred / Withdrawn). Items auto-retire on the build side once the
+    matching PSD enters the corpus.
   - "Earned their listing" — drugs that succeeded after rejection
   - Time-to-listing (first-try success rate, multi-attempt median, by-year trend)
   - Cost-basis labels in the browse table + recent feed

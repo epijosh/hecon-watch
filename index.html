@@ -30,7 +30,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Lora:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
 <script>window.SITE_DATA = window.SITE_DATA || null;</script>
-<script src="site_data.js?v=12e6c2b1"></script>
+<script src="site_data.js?v=a58c1d9f"></script>
 
 <!-- Vercel Web Analytics — static-site script injection.
      Cookie-less, no PII collected. Vercel serves /_vercel/insights/script.js
@@ -107,11 +107,18 @@ body { font-family: var(--body); background: var(--bg); color: var(--text); font
 a { color: inherit; text-decoration: none; }
 button { font-family: inherit; }
 
-/* CLS — reserve space for above-fold strips populated after site_data.js loads.
-   Strips start with visibility:hidden so the layout slot exists at first paint;
-   render functions reveal them (or hide entirely if there's no data). */
-.recent-strip { min-height: 360px; }
-.cal-strip    { min-height: 56px; }
+/* CLS — reserve space for strips populated after site_data.js loads.
+   The min-heights are conservative undershoots of the typical post-render
+   height so they hold the layout slot at first paint without creating
+   whitespace once the data arrives. Each render function clears its strip's
+   min-height after populating, so the strip auto-sizes to actual content. */
+.decided-strip { min-height: 320px; }
+.recent-strip  { min-height: 380px; }
+.coming-strip  { min-height: 580px; }
+.cal-strip     { min-height: 240px; }
+.flips-strip   { min-height: 460px; }
+.ttl-strip     { min-height: 460px; }
+.lb-strip      { min-height: 500px; }
 
 /* Dead-click attribution — route clicks on inner spans up to the wrapper that
    actually has the onclick handler. Without this, Clarity logs the inner span
@@ -322,6 +329,7 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 /* Different lists want slightly different windows. */
 #recent-list.scroll-list,
 #coming-list.scroll-list { max-height: 460px; }
+#decided-list.scroll-list { max-height: 360px; }
 #flips-list.scroll-list  { max-height: 520px; }
 #lb-list.scroll-list     { max-height: 520px; }
 
@@ -346,12 +354,23 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 }
 
 /* ── Recently-published feed ──────────────────────────────── */
-.recent-strip { padding: 26px 0; border-bottom: 1px solid var(--border); background: var(--bg); }
+/* Three news strips, stacked full-width. Each gets a slim coloured top accent
+   so they read as distinct sections rather than three identical lists. */
+.decided-strip,
+.recent-strip,
+.coming-strip { padding: 26px 0; border-bottom: 1px solid var(--border); position: relative; }
+.decided-strip { background: var(--bg); border-top: 3px solid var(--red); }
+.recent-strip  { background: var(--bg2); }
+.coming-strip  { background: var(--bg); }
+.decided-strip .eyebrow { color: var(--red); }
+.recent-strip  .eyebrow { color: var(--text3); }
+/* coming-strip eyebrow stays default red to match the rest of the page */
 .recent-head { display: flex; align-items: baseline; justify-content: space-between; gap: 18px; flex-wrap: wrap; margin-bottom: 14px; }
 .recent-head h3 { font-family: var(--display); font-size: 22px; font-weight: 700; letter-spacing: -.2px; }
 .recent-head .recent-sub { font-family: var(--ui); font-size: 12px; color: var(--text3); }
+.recent-head .recent-sub strong { color: var(--text); font-weight: 700; }
 .recent-list { border-top: 1px solid var(--border); }
-.recent-row { display: grid; grid-template-columns: 90px 1fr auto; gap: 16px; padding: 12px 4px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background .12s, padding-left .12s; align-items: start; }
+.recent-row { display: grid; grid-template-columns: 90px 1fr auto; gap: 16px; padding: 9px 4px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background .12s, padding-left .12s; align-items: start; }
 .recent-row:hover { background: var(--bg2); padding-left: 12px; }
 .recent-row:hover .recent-name { color: var(--red); }
 .recent-row:focus-visible { outline: 2px solid var(--red); outline-offset: -2px; }
@@ -385,7 +404,7 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 .coming-mkind  { font-family: var(--ui); font-size: 9.5px; font-weight: 700; letter-spacing: 1.1px; text-transform: uppercase; padding: 3px 7px; background: var(--bg2); color: var(--text3); border: 1px solid var(--border); white-space: nowrap; flex-shrink: 0; }
 .coming-mkind.intracycle { color: var(--red); border-color: var(--red); }
 .coming-items { display: flex; flex-direction: column; gap: 1px; background: var(--border); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-.coming-item { padding: 8px 12px; background: var(--bg); border-left: 2px solid transparent; transition: background .12s, border-left-color .12s; }
+.coming-item { padding: 6px 12px; background: var(--bg); border-left: 2px solid transparent; transition: background .12s, border-left-color .12s; }
 .coming-item.linked { cursor: pointer; }
 .coming-item.linked:hover { background: var(--bg2); border-left-color: var(--red); }
 .coming-item.linked:hover .coming-drug { color: var(--red); }
@@ -408,6 +427,46 @@ nav.topnav { border-bottom: 1px solid var(--border); background: var(--bg); posi
 .coming-source a { color: var(--text3); text-decoration: none; border-bottom: 1px dotted var(--border); }
 .coming-source a:hover { color: var(--red); border-bottom-color: var(--red); }
 .coming-empty { font-family: var(--body); font-size: 12.5px; color: var(--text3); padding: 14px 0; font-style: italic; line-height: 1.5; }
+
+/* ── Just decided (post-meeting outcomes, pre-PSD) ──────────── */
+.decided-block { font-family: var(--ui); }
+.decided-meeting { padding: 12px 0 14px; border-top: 1px solid var(--border); }
+.decided-meeting:last-child { border-bottom: 1px solid var(--border); }
+.decided-meeting:first-child { border-top: 0; padding-top: 4px; }
+.decided-mhead { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.decided-mlabel { font-family: var(--display); font-size: 15px; font-weight: 700; letter-spacing: -.1px; line-height: 1.25; }
+.decided-mdate  { font-family: var(--ui); font-size: 11px; color: var(--text3); margin-top: 2px; letter-spacing: .2px; }
+.decided-mtally { font-family: var(--ui); font-size: 10.5px; color: var(--text2); margin-top: 4px; letter-spacing: .3px; display: flex; gap: 10px; flex-wrap: wrap; }
+.decided-mtally span strong { font-weight: 700; color: var(--text); }
+.decided-mtally .t-rec    strong { color: var(--green); }
+.decided-mtally .t-not    strong { color: var(--red); }
+.decided-mtally .t-def    strong { color: var(--orange); }
+.decided-items { display: flex; flex-direction: column; gap: 1px; background: var(--border); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.decided-item { padding: 6px 12px; background: var(--bg); border-left: 2px solid transparent; transition: background .12s, border-left-color .12s; }
+.decided-item.linked { cursor: pointer; }
+.decided-item.linked:hover { background: var(--bg2); border-left-color: var(--red); }
+.decided-item.linked:hover .decided-drug { color: var(--red); }
+.decided-item.linked:focus-visible { outline: 2px solid var(--red); outline-offset: -2px; }
+.decided-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.decided-drug { font-family: var(--display); font-size: 13.5px; font-weight: 700; letter-spacing: -.1px; line-height: 1.3; transition: color .15s; flex: 1; min-width: 0; }
+.decided-meta { font-family: var(--body); font-size: 11.5px; color: var(--text2); margin-top: 2px; line-height: 1.35; }
+.decided-ind { color: var(--text); font-weight: 500; }
+.decided-sponsor { color: var(--text3); }
+.decided-detail { font-family: var(--body); font-size: 11.5px; color: var(--text3); margin-top: 5px; line-height: 1.4; font-style: italic; }
+.decided-chip { font-family: var(--ui); font-size: 9.5px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; padding: 2px 7px; border: 1px solid var(--border); white-space: nowrap; flex-shrink: 0; background: var(--bg); }
+.decided-chip.rec { color: var(--green); border-color: var(--green); }
+.decided-chip.not { color: var(--red);   border-color: var(--red); }
+.decided-chip.def { color: var(--orange); border-color: var(--orange); }
+.decided-chip.wd  { color: var(--text3); border-color: var(--border); }
+.decided-more { padding: 10px 0 4px; text-align: center; }
+.decided-more button { background: none; border: 1px solid var(--border); color: var(--red); font-family: var(--ui); font-size: 11.5px; font-weight: 600; padding: 6px 14px; cursor: pointer; }
+.decided-more button:hover { background: var(--bg2); }
+.decided-source { font-family: var(--ui); font-size: 10.5px; margin-top: 8px; }
+.decided-source a { color: var(--text3); text-decoration: none; border-bottom: 1px dotted var(--border); }
+.decided-source a:hover { color: var(--red); border-bottom-color: var(--red); }
+.decided-foot { font-family: var(--body); font-size: 11px; color: var(--text3); font-style: italic; margin: 8px 0 16px; line-height: 1.45; }
+/* Divider between the two right-column panels */
+.right-zone-divider { height: 1px; background: var(--border); margin: 22px 0; }
 
 /* ── Story strip (flips + time-to-listing, side-by-side) ───── */
 .story-strip { padding: 26px 0; border-bottom: 1px solid var(--border); background: var(--bg); }
@@ -1065,8 +1124,9 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
         <a href="#recent-strip"><span class="jr-dot"></span><span class="jr-num">2</span><span class="jr-lbl">News</span></a>
         <ul class="jr-children">
           <li data-target="sec-latest"><a href="#sec-latest"><span class="jr-sub">a</span><span class="jr-lbl">Latest</span></a></li>
-          <li data-target="sec-agenda"><a href="#sec-agenda"><span class="jr-sub">b</span><span class="jr-lbl">Agenda</span></a></li>
-          <li data-target="cal-strip"><a href="#cal-strip"><span class="jr-sub">c</span><span class="jr-lbl">Calendar</span></a></li>
+          <li data-target="sec-decided"><a href="#sec-decided"><span class="jr-sub">b</span><span class="jr-lbl">Just decided</span></a></li>
+          <li data-target="sec-agenda"><a href="#sec-agenda"><span class="jr-sub">c</span><span class="jr-lbl">Agenda</span></a></li>
+          <li data-target="cal-strip"><a href="#cal-strip"><span class="jr-sub">d</span><span class="jr-lbl">Calendar</span></a></li>
         </ul>
       </li>
       <li class="jr-parent" data-target="story-strip">
@@ -1132,30 +1192,53 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
     </div>
   </div>
 
-  <!-- ─── RECENTLY PUBLISHED + COMING UP AT PBAC ──────────────────── -->
-  <div class="recent-strip" id="recent-strip" style="visibility:hidden">
+  <!-- ─── NEWS ZONE · three stacked cards ─────────────────────────── -->
+  <!--  1. Just decided    (post-meeting outcomes, pre-PSD)            -->
+  <!--  2. Recently published (PSDs that have landed)                  -->
+  <!--  3. Coming up at PBAC (next meeting's agenda)                   -->
+
+  <div class="decided-strip" id="decided-strip" data-jr-section style="visibility:hidden">
     <div class="container">
-      <div class="top-zone-grid">
-        <div class="top-zone-left" id="sec-latest" data-jr-section>
-          <div class="recent-head">
-            <div>
-              <div class="eyebrow">Recently published</div>
-              <h3>Latest PBAC decisions</h3>
-            </div>
-            <div class="recent-sub" id="recent-sub">—</div>
+      <div id="sec-decided">
+        <div class="recent-head">
+          <div>
+            <div class="eyebrow">Just decided</div>
+            <h3 id="decided-title">Latest PBAC outcomes</h3>
           </div>
-          <div id="recent-list" class="recent-list scroll-list"></div>
+          <div class="recent-sub" id="decided-sub">—</div>
         </div>
-        <div class="top-zone-right" id="sec-agenda" data-jr-section>
-          <div class="recent-head">
-            <div>
-              <div class="eyebrow">Coming up at PBAC</div>
-              <h3>On the agenda</h3>
-            </div>
-            <div class="recent-sub" id="coming-sub">—</div>
+        <div id="decided-foot" class="decided-foot"></div>
+        <div id="decided-list" class="decided-block scroll-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="recent-strip" id="recent-strip" data-jr-section style="visibility:hidden">
+    <div class="container">
+      <div id="sec-latest">
+        <div class="recent-head">
+          <div>
+            <div class="eyebrow">Recently published</div>
+            <h3>Latest PSDs in the database</h3>
           </div>
-          <div id="coming-list" class="coming-list scroll-list"></div>
+          <div class="recent-sub" id="recent-sub">—</div>
         </div>
+        <div id="recent-list" class="recent-list scroll-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="coming-strip" id="coming-strip" data-jr-section style="visibility:hidden">
+    <div class="container">
+      <div id="sec-agenda">
+        <div class="recent-head">
+          <div>
+            <div class="eyebrow">Coming up at PBAC</div>
+            <h3>On the agenda</h3>
+          </div>
+          <div class="recent-sub" id="coming-sub">—</div>
+        </div>
+        <div id="coming-list" class="coming-list scroll-list"></div>
       </div>
     </div>
   </div>
@@ -1179,7 +1262,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
     <div class="container">
       <div class="story-grid">
         <div class="story-cell">
-          <div class="flips-strip" id="flips-strip" data-jr-section style="display:none">
+          <div class="flips-strip" id="flips-strip" data-jr-section style="visibility:hidden">
             <div class="recent-head">
               <div>
                 <div class="eyebrow">Resubmission stories</div>
@@ -1191,7 +1274,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
           </div>
         </div>
         <div class="story-cell">
-          <div class="ttl-strip" id="ttl-strip" data-jr-section style="display:none">
+          <div class="ttl-strip" id="ttl-strip" data-jr-section style="visibility:hidden">
             <div class="recent-head">
               <div>
                 <div class="eyebrow">Time to listing</div>
@@ -1315,7 +1398,7 @@ footer { background: var(--bg2); border-top: 4px solid var(--text); padding: 32p
   </section>
 
   <!-- ─── SPONSOR LEADERBOARD (money zone — sits with drug spend) ──── -->
-  <div class="lb-strip" id="lb-strip" data-jr-section style="display:none">
+  <div class="lb-strip" id="lb-strip" data-jr-section style="visibility:hidden">
     <div class="container">
       <div class="recent-head">
         <div>
@@ -2132,6 +2215,7 @@ function buildCalendar() {
   list.innerHTML = html;
   strip.style.display = '';
   strip.style.visibility = 'visible';
+  strip.style.minHeight = '0';
 }
 
 // ╔═══════════════════════════════════════════════════════════════════╗
@@ -2146,7 +2230,7 @@ function buildRecentFeed() {
   }
 
   const all = D.psd.recent;
-  const visible = all.slice(0, 8);
+  const visible = all.slice(0, 6);
 
   // Source line: span of dates covered
   const last = all[0], first = all[all.length - 1];
@@ -2193,6 +2277,152 @@ function buildRecentFeed() {
   list.innerHTML = rows;
   strip.style.display = '';
   strip.style.visibility = 'visible';
+  strip.style.minHeight = '0';
+}
+
+// ╔═══════════════════════════════════════════════════════════════════╗
+// ║  JUST DECIDED (post-meeting outcomes, pre-PSD)                       ║
+// ╚═══════════════════════════════════════════════════════════════════╝
+// Bridges the 6–8 week gap between a PBAC meeting and the full PSDs:
+// shows drug + indication + outcome from the short "Recommendations made
+// by the PBAC" summary PDFs. Items auto-retire on the Python side once
+// the matching PSD lands in the corpus.
+function _decidedChip(outcome) {
+  const o = (outcome || '').toLowerCase();
+  if (o.startsWith('recommended'))     return { cls: 'rec', label: 'Recommended' };
+  if (o.startsWith('not'))             return { cls: 'not', label: 'Not recommended' };
+  if (o.startsWith('deferred'))        return { cls: 'def', label: 'Deferred' };
+  if (o.startsWith('withdrawn'))       return { cls: 'wd',  label: 'Withdrawn' };
+  if (o.startsWith('noted'))           return { cls: 'wd',  label: 'Noted' };
+  return { cls: 'wd', label: outcome || 'Outcome' };
+}
+
+function _decidedMeetingDate(iso) {
+  if (!iso) return '';
+  const m = /^(\d{4})-(\d{2})/.exec(iso);
+  if (!m) return iso;
+  return `${MONTHS[+m[2]] || ''} ${m[1]}`;
+}
+
+let _decidedExpanded = false;
+const DECIDED_DEFAULT_PER_MEETING = 5;
+
+function buildJustDecided() {
+  const D = window.SITE_DATA;
+  const oc = D && D.outcomes;
+  const strip = document.getElementById('decided-strip');
+  const list  = document.getElementById('decided-list');
+  const sub   = document.getElementById('decided-sub');
+  const foot  = document.getElementById('decided-foot');
+  const title = document.getElementById('decided-title');
+  if (!strip || !list) return;
+
+  const meetings = (oc && oc.meetings) || [];
+  if (!meetings.length) {
+    strip.style.display = 'none';
+    return;
+  }
+  // Reveal: the strip is preserved in document flow via min-height to avoid
+  // a layout shift when the data arrives.
+  strip.style.display = '';
+  strip.style.visibility = '';
+
+  const totalItems = meetings.reduce((a, m) => a + ((m.items || []).length), 0);
+  // Suffix the title with the most-recent meeting label so the header tells
+  // you immediately which meeting you're looking at — e.g. "Latest PBAC
+  // outcomes — March 2026". Strips the trailing " Meeting" word for brevity.
+  if (title) {
+    const m0 = meetings[0];
+    const lbl = (m0 && m0.meeting_label)
+      ? m0.meeting_label.replace(/\s+Meeting$/i, '')
+      : '';
+    title.textContent = lbl ? `Latest PBAC outcomes — ${lbl}` : 'Latest PBAC outcomes';
+  }
+  if (sub) {
+    const nM = meetings.length;
+    sub.textContent = `${nM} meeting${nM === 1 ? '' : 's'} · ${totalItems} decision${totalItems === 1 ? '' : 's'}`;
+  }
+  if (foot) {
+    foot.textContent = 'Short outcomes summaries published ~6 weeks after each meeting. Full PSDs (with ICERs, comparators, evidence) follow later and merge into the rest of the dashboard.';
+  }
+
+  const expanded = _decidedExpanded;
+  let hidden = 0;
+
+  list.innerHTML = meetings.map(m => {
+    const all     = m.items || [];
+    const visible = expanded ? all : all.slice(0, DECIDED_DEFAULT_PER_MEETING);
+    hidden += all.length - visible.length;
+
+    const items = visible.map(it => {
+      const slugs  = it.drug_slugs || [];
+      const linked = slugs.length > 0;
+      const click  = linked ? `onclick="selectFromResults('${jsAttr(slugs[0])}')"` : '';
+      const role   = linked ? 'role="button" tabindex="0"' : '';
+      const drug   = titleCase(it.drug || '—');
+      const chip   = _decidedChip(it.outcome);
+
+      const indHtml = it.indication
+        ? `<span class="decided-ind">${glossify(escapeHtml(it.indication))}</span>`
+        : '';
+      const sponsorHtml = it.sponsor
+        ? `<span class="decided-sponsor"> · ${escapeHtml(it.sponsor)}</span>`
+        : '';
+      const detailHtml = (expanded && it.outcome_detail)
+        ? `<div class="decided-detail">${escapeHtml(it.outcome_detail)}</div>`
+        : '';
+      const titleAttr = it.outcome_detail ? `title="${escapeHtml(it.outcome_detail)}"` : '';
+
+      return `<div class="decided-item ${linked ? 'linked' : ''}" ${click} ${role} ${titleAttr}>
+        <div class="decided-row">
+          <span class="decided-drug">${escapeHtml(drug)}</span>
+          <span class="decided-chip ${chip.cls}">${escapeHtml(chip.label)}</span>
+        </div>
+        ${(indHtml || sponsorHtml) ? `<div class="decided-meta">${indHtml}${sponsorHtml}</div>` : ''}
+        ${detailHtml}
+      </div>`;
+    }).join('');
+
+    const date  = _decidedMeetingDate(m.meeting_date);
+    const tally = m.outcome_tally || {};
+    const tallyHtml = (() => {
+      const order = [
+        ['Recommended',     't-rec'],
+        ['Not recommended', 't-not'],
+        ['Deferred',        't-def'],
+        ['Withdrawn',       ''],
+        ['Noted',           ''],
+      ];
+      return order
+        .filter(([k]) => tally[k])
+        .map(([k, cls]) => `<span class="${cls}"><strong>${tally[k]}</strong> ${k.toLowerCase()}</span>`)
+        .join('');
+    })();
+    const sourceLink = m.source_url
+      ? `<div class="decided-source"><a href="${escapeHtml(m.source_url)}" target="_blank" rel="noopener">View official outcomes →</a></div>`
+      : '';
+
+    return `<div class="decided-meeting">
+      <div class="decided-mhead">
+        <div>
+          <div class="decided-mlabel">${escapeHtml(m.meeting_label || 'PBAC meeting')}</div>
+          ${date ? `<div class="decided-mdate">${escapeHtml(date)}</div>` : ''}
+          ${tallyHtml ? `<div class="decided-mtally">${tallyHtml}</div>` : ''}
+        </div>
+      </div>
+      <div class="decided-items">${items || '<div class="coming-empty" style="padding:10px 12px">No items.</div>'}</div>
+      ${sourceLink}
+    </div>`;
+  }).join('') + (hidden > 0
+    ? `<div class="decided-more"><button onclick="expandDecided()">Show all ${totalItems} decisions →</button></div>`
+    : '');
+
+  strip.style.minHeight = '0';
+}
+
+function expandDecided() {
+  _decidedExpanded = true;
+  buildJustDecided();
 }
 
 // ╔═══════════════════════════════════════════════════════════════════╗
@@ -2217,17 +2447,23 @@ function _comingMeetingDate(iso, label) {
 }
 
 let _comingExpanded = false;
-const COMING_DEFAULT_PER_MEETING = 6;
+const COMING_DEFAULT_PER_MEETING = 4;
+// Cap upcoming meetings visible — PBAC publishes ~2 ahead at any time; keep
+// the panel scannable rather than letting a long backlog fill the homepage.
+const COMING_MAX_MEETINGS = 2;
 
 function buildComingUp() {
   const D = window.SITE_DATA;
   const ag = D && D.agendas;
   const list  = document.getElementById('coming-list');
   const sub   = document.getElementById('coming-sub');
-  const strip = document.getElementById('recent-strip');
+  const strip = document.getElementById('coming-strip');
   if (!list) return;
 
-  const meetings = (ag && ag.meetings) || [];
+  const allMeetings = (ag && ag.meetings) || [];
+  // Cap to the next N upcoming meetings — additional are kept in SITE_DATA for
+  // future use but trimmed from the homepage to keep the news zone scannable.
+  const meetings = allMeetings.slice(0, COMING_MAX_MEETINGS);
 
   if (!meetings.length) {
     list.innerHTML = '<div class="coming-empty">No agendas published yet — PBAC typically posts ~6 weeks before each meeting.</div>';
@@ -2238,7 +2474,7 @@ function buildComingUp() {
 
   const totalItems = meetings.reduce((a, m) => a + ((m.items||[]).length), 0);
   if (sub) {
-    const nM = ag.n_meetings || meetings.length;
+    const nM = meetings.length;
     sub.textContent = `${nM} meeting${nM===1?'':'s'} · ${totalItems} item${totalItems===1?'':'s'}`;
   }
 
@@ -2312,7 +2548,11 @@ function buildComingUp() {
     ? `<div class="coming-more"><button onclick="expandComing()">Show all ${totalItems} items →</button></div>`
     : '');
 
-  if (strip) strip.style.display = '';
+  if (strip) {
+    strip.style.display = '';
+    strip.style.visibility = '';
+    strip.style.minHeight = '0';
+  }
 }
 
 function expandComing() {
@@ -2333,7 +2573,10 @@ function _formatDeltaChanges(changes) {
 function buildFlipsSection() {
   const D = window.SITE_DATA;
   const strip = document.getElementById('flips-strip');
-  if (!strip || !D || !D.psd || !Array.isArray(D.psd.flips) || !D.psd.flips.length) return;
+  if (!strip || !D || !D.psd || !Array.isArray(D.psd.flips) || !D.psd.flips.length) {
+    if (strip) strip.style.display = 'none';
+    return;
+  }
   const all = D.psd.flips;
   const visible = all.slice(0, 6);
 
@@ -2357,7 +2600,8 @@ function buildFlipsSection() {
       ${changes ? `<div class="flip-changes">${changes}</div>` : ''}
     </div>`;
   }).join('');
-  strip.style.display = '';
+  strip.style.visibility = '';
+  strip.style.minHeight = '0';
 }
 
 // Drug-detail: render the full resubmission story for a given drug summary.
@@ -2402,7 +2646,10 @@ async function buildTimeToListing() {
   const D = window.SITE_DATA;
   const ttl = D && D.psd && D.psd.time_to_listing;
   const strip = document.getElementById('ttl-strip');
-  if (!strip || !ttl || !ttl.n_with_recommendation) return;
+  if (!strip || !ttl || !ttl.n_with_recommendation) {
+    if (strip) strip.style.display = 'none';
+    return;
+  }
 
   // Three KPI stats — first-try rate, returned-later rate, multi-attempt median
   const stats = document.getElementById('ttl-stats');
@@ -2434,7 +2681,8 @@ async function buildTimeToListing() {
   if (!years.length) {
     const foot = document.getElementById('ttl-foot');
     if (foot) foot.textContent = 'Per-year trend not shown — fewer than 3 multi-attempt drugs in any year.';
-    strip.style.display = '';
+    strip.style.visibility = '';
+    strip.style.minHeight = '0';
     return;
   }
 
@@ -2490,7 +2738,8 @@ async function buildTimeToListing() {
       `Hover for cohort size — most years have only 4–9 drugs, so the trend is suggestive rather than statistically tight. ` +
       `The 2019–20 peak (40–50 mo) is real but reflects a small cohort.`;
   }
-  strip.style.display = '';
+  strip.style.visibility = '';
+  strip.style.minHeight = '0';
 }
 
 // ╔═══════════════════════════════════════════════════════════════════╗
@@ -2500,7 +2749,10 @@ function buildSponsorLeaderboard() {
   const D = window.SITE_DATA;
   const strip = document.getElementById('lb-strip');
   const list  = document.getElementById('lb-list');
-  if (!strip || !list || !D || !D.psd || !Array.isArray(D.psd.sponsors) || !D.psd.sponsors.length) return;
+  if (!strip || !list || !D || !D.psd || !Array.isArray(D.psd.sponsors) || !D.psd.sponsors.length) {
+    if (strip) strip.style.display = 'none';
+    return;
+  }
 
   // Require ≥5 submissions so a single biosimilar approval doesn't put
   // an otherwise-unknown sponsor on the leaderboard. Matches the threshold
@@ -2556,7 +2808,8 @@ function buildSponsorLeaderboard() {
     </div>`;
   }).join('');
 
-  strip.style.display = '';
+  strip.style.visibility = '';
+  strip.style.minHeight = '0';
 }
 
 // ╔═══════════════════════════════════════════════════════════════════╗
@@ -4960,6 +5213,7 @@ function initAll() {
   initKPIs();
   initBrowse();
   buildRecentFeed();
+  buildJustDecided();
   buildComingUp();
   buildFlipsSection();
   buildTimeToListing();

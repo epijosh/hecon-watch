@@ -1271,3 +1271,117 @@ def attach_agenda_drug_slugs(agendas: dict, psd: dict) -> None:
                 matched += 1
     if matched:
         print(f"  Linked {matched} agenda items to existing drug pages")
+
+
+# ── 8. PBAC outcomes (post-meeting summaries, pre-PSD) ───────────────────────
+
+def load_pbac_outcomes(psd: dict | None = None) -> dict:
+    """Load data/pbac_outcomes.json (produced by outcomes_extractor.py).
+
+    Each meeting holds the rows from the "Recommendations made by the PBAC"
+    summary PDF. These bridge the 6–8 week gap between a PBAC meeting and the
+    full PSDs landing.
+
+    Per-item retire: if the same drug already has a PSD-extracted record
+    matching this meeting's (year, month), drop that item — the full PSD
+    carries richer detail elsewhere in the dashboard. Once every item in a
+    meeting is retired, the meeting drops out entirely.
+
+    Also enriches each item with `drug_slug` if the drug exists in the
+    dashboard's drugs DB (for backlinking the UI).
+    """
+    path = data_path("pbac_outcomes.json")
+    empty = {"meetings": [], "n_meetings": 0, "n_items": 0, "last_updated": None}
+    if not path.exists():
+        print("  pbac_outcomes.json not found — run `python -m script_report outcomes`")
+        return empty
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as e:
+        print(f"  Could not parse pbac_outcomes.json ({e})")
+        return empty
+
+    drugs_map = (psd or {}).get("drugs") or {}
+
+    # Build a lookup: drug_key -> set of (year, month) tuples that already have a PSD.
+    drug_psd_months: dict[str, set[tuple[int, int]]] = {}
+    for drug_key, summary in drugs_map.items():
+        months: set[tuple[int, int]] = set()
+        for h in summary.get("history") or []:
+            try:
+                yr = int(h.get("year") or 0)
+                mo = int(h.get("month") or 0)
+            except (TypeError, ValueError):
+                continue
+            if yr and mo:
+                months.add((yr, mo))
+        if months:
+            drug_psd_months[drug_key] = months
+
+    out_meetings: list[dict] = []
+    retired = 0
+    linked = 0
+    for m in data.get("meetings", []) or []:
+        mdate = m.get("meeting_date") or ""
+        try:
+            myr = int(mdate[:4])
+            mmo = int(mdate[5:7])
+        except (ValueError, TypeError):
+            myr = mmo = 0
+
+        kept: list[dict] = []
+        for item in m.get("items") or []:
+            slugs: list[str] = []
+            for cand in candidate_keys(item.get("drug") or ""):
+                if cand in drugs_map and cand not in slugs:
+                    slugs.append(cand)
+
+            # Retire if any matching drug already has a PSD from this meeting.
+            already_psd = False
+            if myr and mmo:
+                for s in slugs:
+                    if (myr, mmo) in drug_psd_months.get(s, set()):
+                        already_psd = True
+                        break
+            if already_psd:
+                retired += 1
+                continue
+
+            new_item = dict(item)
+            if slugs:
+                new_item["drug_slugs"] = slugs
+                linked += 1
+            kept.append(new_item)
+
+        if not kept:
+            continue
+
+        # Per-meeting outcome tally for the panel header
+        tally: dict[str, int] = {}
+        for it in kept:
+            o = (it.get("outcome") or "").strip() or "Unknown"
+            tally[o] = tally.get(o, 0) + 1
+
+        out_meetings.append({
+            "meeting_label": m.get("meeting_label"),
+            "meeting_date":  mdate or None,
+            "meeting_kind":  m.get("meeting_kind"),
+            "source_url":    m.get("source_url"),
+            "pdf_url":       m.get("pdf_url"),
+            "items":         kept,
+            "outcome_tally": tally,
+            "n_items":       len(kept),
+        })
+
+    # Most-recent meeting first (newest decisions on top).
+    out_meetings.sort(key=lambda r: (r.get("meeting_date") or ""), reverse=True)
+    n_items = sum(m["n_items"] for m in out_meetings)
+    print(f"  PBAC outcomes: {len(out_meetings)} meetings, {n_items} items "
+          f"({retired} retired by matching PSDs, {linked} drug backlinks)")
+
+    return {
+        "meetings":     out_meetings,
+        "n_meetings":   len(out_meetings),
+        "n_items":      n_items,
+        "last_updated": data.get("last_updated"),
+    }

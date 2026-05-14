@@ -1,0 +1,6 @@
+{
+  "_comment": "Hand-curated list of PBAC Outcomes URLs (the short outcomes summaries that PBAC publishes ~6 weeks after each meeting, well before the full PSDs land). Each URL can be a direct PDF or the HTML wrapper page (the extractor finds the PDF link). New outcomes are added after each meeting; entries auto-retire once the PSDs for that meeting are in the corpus (the loader filters them out).",
+  "sources": [
+    "https://www.pbs.gov.au/info/industry/listing/elements/pbac-meetings/pbac-outcomes/recommendations-made-by-the-pbac-march-2026"
+  ]
+}

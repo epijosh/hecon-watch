@@ -12,6 +12,7 @@ Usage:
     python -m script_report atc           # parse ATC class data
     python -m script_report calendar      # parse PBS Cycle Timeframe PDFs
     python -m script_report agendas       # extract upcoming PBAC + Intracycle meeting agendas
+    python -m script_report outcomes      # extract PBAC outcomes summaries (the short post-meeting PDFs)
     python -m script_report embed         # build Voyage embeddings + nearest table
     python -m script_report brandmap      # build data/brand_to_generic.json from PBS Schedule + PSDs
     python -m script_report map           # project embeddings to 2D for the "PBAC cosmos" homepage map
@@ -37,6 +38,7 @@ _COMMANDS = {
     "atc":      ("script_report.parsers.atc_parser",        "main"),
     "calendar": ("script_report.parsers.pbac_calendar",     "main"),
     "agendas":  ("script_report.extractors.agenda_extractor","main"),
+    "outcomes": ("script_report.extractors.outcomes_extractor","main"),
     "embed":    ("script_report.embedders.voyage_embedder", "main"),
     "brandmap": ("script_report.builders.brand_map_builder", "main"),
     "map":      ("script_report.builders.map_builder",       "main"),
